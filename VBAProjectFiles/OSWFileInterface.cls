@@ -93,7 +93,7 @@ Sub ExportToOSW( _
     Set cb_zoneDetails = Sheets("Parameter").CheckBoxes("checkbox_ZoneDetails")
     Dim cb_detailedHVAC As CheckBox
     Set cb_detailedHVAC = Sheets("Parameter").CheckBoxes("checkbox_hvac")
-    
+
     Dim dd60 As DropDown 'Solltemp Heizung
     Set dd60 = Sheets("HAUPTSEITE").DropDowns("Dropdown60")
     Dim dd86 As DropDown 'Solltemp Kühlung
@@ -121,14 +121,14 @@ Sub ExportToOSW( _
         sOSMFileName = Replace(sOSMFileName, Chr(196), "Ae")
         sOSMFileName = Replace(sOSMFileName, Chr(220), "Ue")
         sOSMFileName = Replace(sOSMFileName, Chr(214), "Oe")
-        
+
         If Not (bDoCustomExport) Then
             Dim localOSMPath As String
             localOSMPath = GetOutputFolder() + "\" + sOSMFileName
             FileCopy sOSMPathName, localOSMPath
         End If
         jFile.CreateFile localOSMPath, GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-        
+
         jFile.AddArgument "WeatherFilePath", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
         jFile.AddArgument "Timestep", Timestep_s
         jFile.AddMeasure "SetWeatherAxisTimestep"
@@ -142,33 +142,33 @@ Sub ExportToOSW( _
         jFile.AddArgument "Timestep", Timestep_s
         jFile.AddMeasure "SetWeatherAxisTimestep"
     End If
-    
+
     '--------Alle zusätzlichen Parameter für den 'CustomExport'
     If (bDoCustomExport) Then
-    
+
         'Parameter Modell
         jFile.AddArgument "buildingSim", IIf(cb_buildingSim.Value = 1, 1, 0)
         jFile.AddArgument "pvSim", IIf(cb_pvSim.Value = 1, 1, 0)
         jFile.AddArgument "zoneDetails", IIf(cb_zoneDetails.Value = 1, 1, 0)
         jFile.AddArgument "detailedHVAC", IIf(cb_detailedHVAC.Value = 1, 1, 0)
         jFile.AddArgument "ventilation_type", dd_lueftung.Value
-        
+
         'Parameter Geometrie, die nicht für Modellerzeugung benötigt werden
         jFile.AddArgument "floor_length", Range("LAENGE")
         jFile.AddArgument "floor_width", Range("BREITE")
         jFile.AddArgument "ratio_NRF_BGF", ddRatio1.List(ddRatio1.Value)
         jFile.AddArgument "NRF_BGF", Range("BGF_zu_NRF")
-        
+
         ' Arguments "selected_standard", "is_custom_standard", "selected_masses" are added in Measure "AddingMaterialsAndConstructions"
         ' weitere Argumente are added in Measure "AddingInternalLoads"
         ' Arguments "hvacSchedule", "is_custom_hvac" are added in "AddDetailedHVAC" bzw. "AddingIdealAirLoads" (je nach cb_hvac)
-        
+
         '  Nutzung - Feiertage
         Dim strArg As String
         strArg = ""
         Dim iEntry As Integer
         iEntry = 0
-            
+
         Do While Not (IsEmpty(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 0)))
             strArg = strArg + CStr(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 0))
             strArg = strArg + ";" + CStr(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 1)) + ";"
@@ -176,29 +176,29 @@ Sub ExportToOSW( _
         Loop
         jFile.AddArgument "Holidays", strArg
 
-        
+
         'Lüftungsanlage
         jFile.AddArgument "vorlauf_Luft", Range("Vorlauf_Lüftung")
         jFile.AddArgument "nachlauf_Luft", Range("Nachlauf_Lüftung")
-        
+
         'Weiteres
         jFile.AddArgument "Shadingcontrol", IIf(cb_shadingcontrol.Value = 1, 1, 0)
         jFile.AddArgument "Infiltration", IIf(cb_inf.Value = 1, 1, 0)
         jFile.AddArgument "Lightingcontrol", IIf(cb_lightingcontrol.Value = 1, 1, 0)
         jFile.AddArgument "Windowvent", IIf(cb_windowvent.Value = 1, 1, 0)
-        
+
         'Geometrie
         If bGeneric Then
             jFile.AddArgument "genGeom", 1      'Range("geometry_source")
         Else
             jFile.AddArgument "genGeom", 2
         End If
-                
+
         'Lüftung (neue Parameter "konditionierte Raumhöhe" und "Geschosshöhe Geometrieimport"
         jFile.AddArgument "FloorHeight_kond", Range("FloorHeight_kond")
         jFile.AddArgument "FloorHeight_import", Range("FloorHeight_import")
         jFile.AddArgument "ACH_Input_Parameter", Range("ACH")
-        
+
         jFile.AddMeasure "CustomExportParams"
 
     End If
@@ -307,7 +307,7 @@ Sub ExportToOSW( _
             jFile.AddSchedule "PeopleSchedule", Range("PeopleWD")
             jFile.AddSchedule "PeopleActivitySchedule", Range("PeopleActivityWD")
             jFile.AddHolidays "Holidays", Range("Feiertage")
-            
+
             If (bDoCustomExport) Then
                 jFile.AddArgument "area_bgf_import", Range("BldgArea_import")
                 jFile.AddArgument "NRF/BGF", CStr(nrf_bgf)
@@ -337,7 +337,7 @@ Sub ExportToOSW( _
         Else
 
             Range("IdealLoads") = "Start ..."
-                              
+
             ' Pressure Rise
             If Range("WRG") = "None" Then
                 PressureRise_ReturnFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
@@ -346,14 +346,14 @@ Sub ExportToOSW( _
                 PressureRise_ReturnFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
                 PressureRise_SupplyFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
             End If
-                      
+
             'Korrektur der zu hohen Luftwechselrate, weil das konditionierte Raumvolumen um die Zwischendecken-Dicke zu groß ist
             If Range("geometry_source") = 1 Then
                 FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight")
             Else
                 FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight_import")
             End If
-            
+
             ' common arguments
             jFile.AddArgument "wrg", Range("WRG")
             jFile.AddArgument "latent", Range("LATENT")
@@ -365,7 +365,7 @@ Sub ExportToOSW( _
                jFile.AddArgument "hvacSchedule", dd55.List(dd55.Value)
                jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
             End If
-            
+
             If bDetailedHVAC Then
                 jFile.AddSchedule "zoneHeatingTempSched", Range("HeatingWD")
                 jFile.AddSchedule "zoneCoolingTempSched", Range("CoolingWD")
@@ -381,7 +381,7 @@ Sub ExportToOSW( _
             Else
                 jFile.AddMeasure "AddingIdealAirLoads"
             End If
-            
+
             Range("IdealLoads") = "Definiert"
         End If
         DoEvents
@@ -506,7 +506,7 @@ Sub ExportToOSW( _
         ' update the progress messages
         DoEvents
     End If
-    
+
     '''''''''''''''' Calling IDF Radiant Surface Measure
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
@@ -619,7 +619,7 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             Set cb_zoneDetails = Sheets("Parameter").CheckBoxes("checkbox_ZoneDetails")
             Dim cb_detailedHVAC As CheckBox
             Set cb_detailedHVAC = Sheets("Parameter").CheckBoxes("checkbox_hvac")
-            
+
             Dim cb_shadingcontrol As CheckBox
             Set cb_shadingcontrol = Sheets("HAUPTSEITE").CheckBoxes("checkbox_shadingcontrol")
             Dim cb_inf As CheckBox
@@ -628,10 +628,10 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             Set cb_lightingcontrol = Sheets("HAUPTSEITE").CheckBoxes("checkbox lightingcontrol")
             Dim cb_windowvent As CheckBox
             Set cb_windowvent = Sheets("HAUPTSEITE").CheckBoxes("Checkbox_windowvent")
-                
+
             Dim dd_lueftung As DropDown 'Lüftungsanlage Typ
             Set dd_lueftung = Sheets("HAUPTSEITE").DropDowns("dd_lueftung")
-            
+
             'Parameter Modell
             If args.Exists("buildingSim") Then cb_buildingSim.Value = args("buildingSim")
             If args.Exists("pvSim") Then cb_pvSim.Value = args("pvSim")
@@ -639,24 +639,24 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             If args.Exists("detailedHVAC") Then cb_detailedHVAC.Value = args("detailedHVAC")
             If args.Exists("ventilation_type") Then dd_lueftung.Value = args("ventilation_type")
             Call dropdown_Lueftung
-            
+
             'Parameter Geometrie, die nicht für Modellerzeugung benötigt werden
             If args.Exists("floor_length") Then Range("LAENGE") = args("floor_length")
             If args.Exists("floor_width") Then Range("BREITE") = args("floor_width")
             If args.Exists("NRF_BGF") Then Range("BGF_zu_NRF") = args("NRF_BGF")
             If args.Exists("ratio_NRF_BGF") Then DDFindAndSetValue ddRatio1, args("ratio_NRF_BGF")  'dd oben deklariert
             Call DropDown_BGF_NRF_Generisch
-            
+
             'Lüftungsanlage
             If args.Exists("vorlauf_Luft") Then Range("Vorlauf_Lüftung") = args("vorlauf_Luft")
             If args.Exists("nachlauf_Luft") Then Range("Nachlauf_Lüftung") = args("nachlauf_Luft")
-            
+
             'Weiteres
             If args.Exists("Shadingcontrol") Then cb_shadingcontrol.Value = args("Shadingcontrol")
             If args.Exists("Infiltration") Then cb_inf.Value = args("Infiltration")
             If args.Exists("Lightingcontrol") Then cb_lightingcontrol.Value = args("Lightingcontrol")
             If args.Exists("Windowvent") Then cb_windowvent.Value = args("Windowvent")
-            
+
             'Geometrie Generisch/Importiert
             If args.Exists("genGeom") Then Range("geometry_source") = args("genGeom")
             Call label_geom
@@ -665,7 +665,7 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             Dim datum() As String
             Dim iEntry  As Integer
             iEntry = 0
-            
+
             'Lüftung
              If args.Exists("FloorHeight_kond") Then Range("FloorHeight_kond") = args("FloorHeight_kond")
              If args.Exists("FloorHeight_import") Then Range("FloorHeight_import") = args("FloorHeight_import")
@@ -680,7 +680,7 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
                     iEntry = iEntry + 1
                 Loop
             End If
-            
+
         Case "SetWeatherAxisTimestep":
             If args.Exists("WeatherFilePath") Then
                 Dim parts() As String
@@ -796,7 +796,7 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
                     If args("is_custom_ratio") = "true" Then Range("BGF_zu_NRF") = args("NRF/BGF")
                 End If
             End If
-            
+
             If args.Exists("ElectricEquipmentSchedule") And args.Exists("is_custom_ElectricEquipment") Then _
                 ImportSchedule args, "ElectricEquipment", "B10:B105", "B8"
             If args.Exists("LightSchedule") And args.Exists("is_custom_Light") Then _
@@ -826,7 +826,7 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
         Case "AddingIdealAirLoads":
             'Dim dd33 As DropDown: Set dd33 = Sheets("HAUPTSEITE").DropDowns("Dropdown33")
             'Dim dd55 As DropDown: Set dd55 = Sheets("HAUPTSEITE").DropDowns("Dropdown55")
-    
+
             If args.Exists("wrg") Then
             '    Dim wrgVal As String
                 wrgVal = IIf(args("wrg") = "None", "Keine", IIf(args("wrg") = "Sensible", "Sensibel", "Latent"))
@@ -839,10 +839,10 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             If args.Exists("hvacSchedule") Then
                 DDFindAndSetValue dd55, args("hvacSchedule")
             End If
-            
+
             If args.Exists("latent") Then Range("LATENT") = args("latent")
             If args.Exists("sensible") Then Range("SENSIBLE") = args("sensible")
-        
+
         Case "AddDetailedHVAC":                                                                 'Doppelpunkt hat gefehlt?!
             'Dim dd33 As DropDown: Set dd33 = Sheets("HAUPTSEITE").DropDowns("Dropdown33")
             'Dim dd55 As DropDown: Set dd55 = Sheets("HAUPTSEITE").DropDowns("Dropdown55")
@@ -859,7 +859,7 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             If args.Exists("hvacSchedule") Then
                 DDFindAndSetValue dd55, args("hvacSchedule")
             End If
-        
+
             If args.Exists("latent") Then Range("LATENT") = args("latent")
             If args.Exists("sensible") Then Range("SENSIBLE") = args("sensible")
 
