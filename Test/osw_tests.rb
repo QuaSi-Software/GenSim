@@ -23,7 +23,23 @@ end
 # @param expected (Hash) The expected values
 # @param exported (Hash) The exported values
 def check_measure(expected, exported)
+    assert(exported.key?("measure_dir_name"), "Missing key measure_dir_name\n")
+    assert_equal(expected["measure_dir_name"], exported["measure_dir_name"])
 
+    assert(exported.key?("arguments"), "Missing key arguments\n")
+    assert_equal(expected["arguments"].length, exported["arguments"].length)
+
+    expected["arguments"].each do |key, value|
+        assert(
+            exported["arguments"].key?(key),
+            "Missing parameter key #{key} in measure#{expected["measure_dir_name"]}"
+        )
+        if key.include?("Path") || key.include?("path")
+            assert_equal(prepare_path(value), prepare_path(exported["arguments"][key]))
+        else
+            assert_equal(value, exported["arguments"][key])
+        end
+    end
 end
 
 # Tests for the export of parameters to an OSW file
