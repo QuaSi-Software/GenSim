@@ -1,0 +1,357 @@
+{
+   "measure_paths": [
+      "$GENSIM_PATH$\\Measures"
+   ],
+   "seed_file": "Model.osm",
+   "weather_file": "$GENSIM_PATH$\\Wetter\\TRY2015_Stuttgart_Jahr.epw",
+   "steps": [
+      {
+         "arguments": {
+         },
+         "measure_dir_name": "CreateAnEmptyModel"
+      },
+      {
+         "arguments": {
+            "WeatherFilePath": "$GENSIM_PATH$\\Wetter\\TRY2015_Stuttgart_Jahr.epw",
+            "NorthAxis": "0",
+            "Timestep": "4"
+         },
+         "measure_dir_name": "SetWeatherAxisTimestep"
+      },
+      {
+         "arguments": {
+            "buildingSim": "1",
+            "pvSim": "0",
+            "zoneDetails": "0",
+            "detailedHVAC": "0",
+            "ventilation_type": "2",
+            "floor_length": "25",
+            "floor_width": "25",
+            "ratio_NRF_BGF": "BKI 2015 - Buerogebaeude ",
+            "NRF_BGF": "0.851",
+            "Holidays": "",
+            "vorlauf_Luft": "1",
+            "nachlauf_Luft": "1",
+            "Shadingcontrol": "1",
+            "Infiltration": "1",
+            "Lightingcontrol": "1",
+            "Windowvent": "1",
+            "genGeom": "1",
+            "FloorHeight_kond": "2.6",
+            "FloorHeight_import": "3",
+            "ACH_Input_Parameter": "2"
+         },
+         "measure_dir_name": "CustomExportParams"
+      },
+      {
+         "arguments": {
+            "floor_area": "1875",
+            "ns_to_ew_ratio": "1",
+            "number_of_stories": "3",
+            "floor_to_floor_height": "3",
+            "surface_matching": "true",
+            "make_zones": "true",
+            "window_to_wall_ratio_north": "0.5",
+            "window_to_wall_ratio_east": "0.5",
+            "window_to_wall_ratio_south": "0.5",
+            "window_to_wall_ratio_west": "0.5",
+            "AdiabaticNorth": "false",
+            "AdiabaticEast": "false",
+            "AdiabaticSouth": "false",
+            "AdiabaticWest": "false",
+            "AdiabaticRoof": "false",
+            "AdiabaticFloor": "false",
+            "perimeterdepth": "0"
+         },
+         "measure_dir_name": "BarAspectRatioStudy"
+      },
+      {
+         "arguments": {
+            "ExternalWallMat1Name": "Zementestrich",
+            "ExternalWallMat1Thickness": "0.01",
+            "ExternalWallMat1Conductivity": "0.7",
+            "ExternalWallMat1Density": "1400",
+            "ExternalWallMat1SpecificHeat": "1100",
+            "ExternalWallMat2Name": "Daemmung",
+            "ExternalWallMat2Thickness": "0.135",
+            "ExternalWallMat2Conductivity": "0.032",
+            "ExternalWallMat2Density": "30",
+            "ExternalWallMat2SpecificHeat": "1500",
+            "ExternalWallMat3Name": "Stahlbeton",
+            "ExternalWallMat3Thickness": "0.2",
+            "ExternalWallMat3Conductivity": "2.5",
+            "ExternalWallMat3Density": "2400",
+            "ExternalWallMat3SpecificHeat": "880",
+            "ExternalWallMat4Name": "Zementestrich",
+            "ExternalWallMat4Thickness": "0.005",
+            "ExternalWallMat4Conductivity": "0.87",
+            "ExternalWallMat4Density": "1400",
+            "ExternalWallMat4SpecificHeat": "1000",
+            "RoofMat1Name": "Daemmung",
+            "RoofMat1Thickness": "0.18",
+            "RoofMat1Conductivity": "0.032",
+            "RoofMat1Density": "30",
+            "RoofMat1SpecificHeat": "1500",
+            "RoofMat2Name": "Stahlbeton",
+            "RoofMat2Thickness": "0.2",
+            "RoofMat2Conductivity": "2.5",
+            "RoofMat2Density": "2400",
+            "RoofMat2SpecificHeat": "880",
+            "RoofMat3Name": "Zementestrich",
+            "RoofMat3Thickness": "0.005",
+            "RoofMat3Conductivity": "0.87",
+            "RoofMat3Density": "1400",
+            "RoofMat3SpecificHeat": "1000",
+            "RoofMat4Name": "",
+            "RoofMat4Thickness": "0",
+            "RoofMat4Conductivity": "0",
+            "RoofMat4Density": "0",
+            "RoofMat4SpecificHeat": "0",
+            "SlabMat1Name": "Zementestrich",
+            "SlabMat1Thickness": "0.01",
+            "SlabMat1Conductivity": "0.7",
+            "SlabMat1Density": "1400",
+            "SlabMat1SpecificHeat": "1100",
+            "SlabMat2Name": "Daemmung",
+            "SlabMat2Thickness": "0.145",
+            "SlabMat2Conductivity": "0.04",
+            "SlabMat2Density": "30",
+            "SlabMat2SpecificHeat": "1500",
+            "SlabMat3Name": "Stahlbeton",
+            "SlabMat3Thickness": "0.2",
+            "SlabMat3Conductivity": "2.5",
+            "SlabMat3Density": "2400",
+            "SlabMat3SpecificHeat": "880",
+            "SlabMat4Name": "Zementestrich",
+            "SlabMat4Thickness": "0.005",
+            "SlabMat4Conductivity": "0.87",
+            "SlabMat4Density": "1400",
+            "SlabMat4SpecificHeat": "1000",
+            "Massen1Name": "Kalksandstein 1.8",
+            "Massen1Thickness": "0.15",
+            "Massen1Conductivity": "0.99",
+            "Massen1Density": "1800",
+            "Massen1SpecificHeat": "1000",
+            "Massen2Name": "",
+            "Massen2Thickness": "0",
+            "Massen2Conductivity": "0",
+            "Massen2Density": "0",
+            "Massen2SpecificHeat": "0",
+            "Massen3Name": "",
+            "Massen3Thickness": "0",
+            "Massen3Conductivity": "0",
+            "Massen3Density": "0",
+            "Massen3SpecificHeat": "0",
+            "InteriorSlabs1Name": "Daemmung",
+            "InteriorSlabs1Thickness": "0.1",
+            "InteriorSlabs1Conductivity": "0.032",
+            "InteriorSlabs1Density": "20",
+            "InteriorSlabs1SpecificHeat": "1500",
+            "InteriorSlabs2Name": "Stahlbeton",
+            "InteriorSlabs2Thickness": "0.2",
+            "InteriorSlabs2Conductivity": "2.5",
+            "InteriorSlabs2Density": "2400",
+            "InteriorSlabs2SpecificHeat": "880",
+            "InteriorSlabs3Name": "",
+            "InteriorSlabs3Thickness": "0",
+            "InteriorSlabs3Conductivity": "0",
+            "InteriorSlabs3Density": "0",
+            "InteriorSlabs3SpecificHeat": "0",
+            "InteriorSlabs4Name": "",
+            "InteriorSlabs4Thickness": "0",
+            "InteriorSlabs4Conductivity": "0",
+            "InteriorSlabs4Density": "0",
+            "InteriorSlabs4SpecificHeat": "0",
+            "ChilledCeilingSourceLayer": "2",
+            "ChilledCeilingTempCalcLayer": "2",
+            "ChilledCeilingDimCTF": "2",
+            "ChilledCeilingTubeSpacing": "0.15",
+            "ChilledCeiling1Name": "I01 25mm insulation board",
+            "ChilledCeiling1Thickness": "0.0254",
+            "ChilledCeiling1Conductivity": "0.03",
+            "ChilledCeiling1Density": "43",
+            "ChilledCeiling1SpecificHeat": "1210",
+            "ChilledCeiling2Name": "Metal",
+            "ChilledCeiling2Thickness": "0.01",
+            "ChilledCeiling2Conductivity": "45",
+            "ChilledCeiling2Density": "7824",
+            "ChilledCeiling2SpecificHeat": "800",
+            "ChilledCeiling3Name": "",
+            "ChilledCeiling3Thickness": "0",
+            "ChilledCeiling3Conductivity": "0",
+            "ChilledCeiling3Density": "0",
+            "ChilledCeiling3SpecificHeat": "0",
+            "ChilledCeiling4Name": "",
+            "ChilledCeiling4Thickness": "0",
+            "ChilledCeiling4Conductivity": "0",
+            "ChilledCeiling4Density": "0",
+            "ChilledCeiling4SpecificHeat": "0",
+            "WindowsName": "Fenster mit 3-Scheiben-Waermeschutz-Verglasung",
+            "WindowsUValue": "0.9",
+            "WindowsSHGC": "0.5",
+            "selected_standard": "Neubau: EH 55",
+            "is_custom_standard": "false",
+            "selected_masses": "Mittel"
+         },
+         "measure_dir_name": "AddingMaterialsAndConstructions"
+      },
+      {
+         "arguments": {
+         },
+         "measure_dir_name": "DetectingExternalZones"
+      },
+      {
+         "arguments": {
+            "ElectricEquipmentPowerPerFloorArea": "8.51",
+            "LightingPowerPerFloorArea": "5.106",
+            "PeoplePerFloorArea": "9.45555555555555E-02",
+            "ElectricEquipmentScheduleWerktag": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0.15;0.15;0.15;0.15;0.6;0.6;0.6;0.6;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.6;0.6;0.6;0.6;0.2;0.2;0.2;0.2;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "ElectricEquipmentScheduleSamstag": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "ElectricEquipmentScheduleSonntag": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "ElectricEquipmentScheduleFeiertag": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "LightScheduleWerktag": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "LightScheduleSamstag": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "LightScheduleSonntag": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "LightScheduleFeiertag": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "PeopleScheduleWerktag": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0.15;0.15;0.15;0.15;0.6;0.6;0.6;0.6;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.6;0.6;0.6;0.6;0.2;0.2;0.2;0.2;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "PeopleScheduleSamstag": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "PeopleScheduleSonntag": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "PeopleScheduleFeiertag": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "PeopleActivityScheduleWerktag": " 140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140",
+            "PeopleActivityScheduleSamstag": " 140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140",
+            "PeopleActivityScheduleSonntag": " 140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140",
+            "PeopleActivityScheduleFeiertag": " 140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140",
+            "Holidays": "-",
+            "area_bgf_import": "2515",
+            "NRF/BGF": "0.851",
+            "selected_ratio": "BKI 2015 - Buerogebaeude ",
+            "is_custom_ratio": "false",
+            "is_imported": "false",
+            "ElectricEquipmentSchedule": "DIN 18599: Einzel-/Gruppen-/Gro\u00DFraumbuero",
+            "LightSchedule": "DIN 18599: Gro\u00DFraumbuero",
+            "PeopleSchedule": "DIN 18599: Einzel-/Gruppen-/Gro\u00DFraumbuero",
+            "PeopleActivitySchedule": "DIN 18599: Standard",
+            "is_custom_ElectricEquipment": "false",
+            "is_custom_Light": "false",
+            "is_custom_People": "false",
+            "is_custom_PeopleActivity": "false"
+         },
+         "measure_dir_name": "AddingInternalLoads"
+      },
+      {
+         "arguments": {
+            "wrg": "Sensible",
+            "latent": "1",
+            "sensible": "0.75",
+            "ach": 1.47506666666667,
+            "hvacSchedWerktag": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "hvacSchedSamstag": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "hvacSchedSonntag": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "hvacSchedFeiertag": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "Holidays": "-",
+            "hvacSchedule": "DIN 18599: Einzel-/Gruppen-/Gro\u00DFraumbuero",
+            "is_custom_hvac": "false",
+            "zoneHeatingTempSchedWerktag": " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20",
+            "zoneHeatingTempSchedSamstag": " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20",
+            "zoneHeatingTempSchedSonntag": " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20",
+            "zoneHeatingTempSchedFeiertag": " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20",
+            "zoneCoolingTempSchedWerktag": " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25",
+            "zoneCoolingTempSchedSamstag": " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25",
+            "zoneCoolingTempSchedSonntag": " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25",
+            "zoneCoolingTempSchedFeiertag": " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25",
+            "hotWaterTempSetpoint": "82",
+            "hotWaterDeltaT": "11",
+            "coldWaterTempSetpoint": "10",
+            "coldWaterDeltaT": "5",
+            "fanPressureRiseSupply": "750",
+            "fanPressureRiseReturn": "750",
+            "system_type": "2"
+         },
+         "measure_dir_name": "AddDetailedHVAC"
+      },
+      {
+         "arguments": {
+            "SolarSetpoint": "180"
+         },
+         "measure_dir_name": "AddingShadingControls"
+      },
+      {
+         "arguments": {
+            "AirChangesPerHour": "7.37533333333333E-02"
+         },
+         "measure_dir_name": "AddingInfiltration"
+      },
+      {
+         "arguments": {
+            "DaylightingSetpoint": "500"
+         },
+         "measure_dir_name": "AddingLightingControls"
+      },
+      {
+         "arguments": {
+            "heatingTemp": "Konstant 20\u00B0C",
+            "coolingTemp": "Konstant 25\u00B0C",
+            "is_custom_heating": "false",
+            "is_custom_cooling": "false",
+            "zoneHeatingTempScheduleWerktag": " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20",
+            "zoneHeatingTempScheduleSamstag": " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20",
+            "zoneHeatingTempScheduleSonntag": " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20",
+            "zoneHeatingTempScheduleFeiertag": " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20",
+            "zoneCoolingTempScheduleWerktag": " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25",
+            "zoneCoolingTempScheduleSamstag": " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25",
+            "zoneCoolingTempScheduleSonntag": " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25",
+            "zoneCoolingTempScheduleFeiertag": " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25",
+            "Holidays": "-"
+         },
+         "measure_dir_name": "AddingTemperatureSetpoints"
+      },
+      {
+         "arguments": {
+            "Azimuth": "0",
+            "Slope": "35",
+            "CellEfficiency": "0.2",
+            "InverterEfficiency": "0.83",
+            "FractionActiveSurfaceArea": "1"
+         },
+         "measure_dir_name": "AddingPhotovoltaic"
+      },
+      {
+         "arguments": {
+            "pathtosave": "$GENSIM_PATH$\\Output",
+            "FileName": "Model"
+         },
+         "measure_dir_name": "SaveModel"
+      },
+      {
+         "arguments": {
+            "VentilationACH": "2",
+            "MinIndoorTemperature": "24",
+            "DeltaT": "0"
+         },
+         "measure_dir_name": "InjectZoneVentilationIDF"
+      },
+      {
+         "arguments": {
+            "HeatRecoveryType": "Sensible",
+            "SensibleEffectiveness": "0.75",
+            "LatentEffectiveness": "1",
+            "ACH": 1.47506666666667
+         },
+         "measure_dir_name": "InjectIdealLoadParametersIDF"
+      },
+      {
+         "arguments": {
+         },
+         "measure_dir_name": "InjectRadiantSurfacesIDF"
+      },
+      {
+         "arguments": {
+            "Timestep": "4",
+            "DayToStartSimulation": "Sunday",
+            "HeatingSizingFactor": "1.25",
+            "CoolingSizingFactor": "1.15"
+         },
+         "measure_dir_name": "SetMeters"
+      }
+   ]
+}
