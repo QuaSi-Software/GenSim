@@ -307,16 +307,6 @@
       },
       {
          "arguments": {
-            "Azimuth": "0",
-            "Slope": "35",
-            "CellEfficiency": "0.2",
-            "InverterEfficiency": "0.83",
-            "FractionActiveSurfaceArea": "1"
-         },
-         "measure_dir_name": "AddingPhotovoltaic"
-      },
-      {
-         "arguments": {
             "pathtosave": "$GENSIM_PATH$\\Output",
             "FileName": "Model"
          },
