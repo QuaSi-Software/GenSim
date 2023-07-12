@@ -106,7 +106,7 @@ Sub ExportToOSW( _
     Dim jFile As New JSONFile
 
     If Not bGeneric Then
-        Dim localOSMPath As String: Set localOSMPath = ""
+        Dim localOSMPath As String: localOSMPath = ""
 
         If bCopyOSMFile Then
             Dim fso As New FileSystemObject
