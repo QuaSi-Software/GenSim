@@ -42,6 +42,12 @@ Public Sub AddArgument(sArgName As String, sArg As String)
         If InStr(sArg, "ö") Then
             sArg = Replace(sArg, "ö", "oe")
         End If
+        If InStr(sArg, "ß") Then
+            sArg = Replace(sArg, "ß", "ss")
+        End If
+        If InStr(sArg, "°") Then
+            sArg = Replace(sArg, "°", "deg")
+        End If
         JSONArgs.Add sArgName, sArg
     End If
 End Sub
