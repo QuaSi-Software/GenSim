@@ -1,0 +1,54 @@
+<measure>
+  <schema_version>3.0</schema_version>
+  <name>custom_export_params</name>
+  <uid>28949d7c-e721-4d6c-9784-0d9840672a49</uid>
+  <version_id>b8058cec-0ea3-423a-89ab-4736afe77a9c</version_id>
+  <version_modified>20230710T083034Z</version_modified>
+  <xml_checksum>2AF3A68E</xml_checksum>
+  <class_name>CustomExportParams</class_name>
+  <display_name>CustomExportParams</display_name>
+  <description>A dummy measure to contain custom parameters</description>
+  <modeler_description>A dummy measure to contain custom parameters</modeler_description>
+  <arguments>
+  </arguments>
+  <outputs/>
+  <provenances/>
+  <tags>
+    <tag>Envelope.Form</tag>
+  </tags>
+  <attributes>
+    <attribute>
+      <name>Measure Type</name>
+      <value>ModelMeasure</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>Apply Measure Now</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>OpenStudio Application</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>Parametric Analysis Tool</value>
+      <datatype>string</datatype>
+    </attribute>
+  </attributes>
+  <files>
+    <file>
+      <version>
+        <software_program>OpenStudio</software_program>
+        <identifier>2.7.0</identifier>
+        <min_compatible>2.7.0</min_compatible>
+      </version>
+      <filename>measure.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>script</usage_type>
+      <checksum></checksum>
+    </file>
+  </files>
+</measure>
