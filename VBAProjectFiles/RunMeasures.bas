@@ -105,7 +105,7 @@ Sub CreateWorkflowAndExecute()
 
     ' export steps, measures and parameters to OSW file
     Dim interface As OSWFileInterface: Set interface = New OSWFileInterface
-    Call interface.ExportToOSW(GetOutputFolder() & "\" + Range("FileName") + ".osw", True, bBuildingSim, bGeneric, bDetailedHVAC)
+    Call interface.ExportToOSW(GetOutputFolder() & "\" + Range("FileName") + ".osw", bBuildingSim, bGeneric, True, bDetailedHVAC)
 
     ' status
     Range("Status").Offset(0, 1) = "beendet (" & WorksheetFunction.Round((Time - Startzeit_indv) * 86400, 1) & " s)"

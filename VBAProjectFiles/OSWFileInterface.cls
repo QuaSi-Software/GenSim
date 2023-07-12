@@ -25,17 +25,19 @@ Attribute VB_Exposed = False
 ' @param sFilename String ByRef The filename of the exported file. Ths file
 '     is automatically written to the output folder, so the filename should
 '     only contain subdirectories of the output folder.
-' @param bDoCustomExport Boolean ByVal If true, adds some parameters that are
-'     not required (or expected) for a simulation run, but are useful for
-'     saving a parameter configuration as a seperate file
 ' @param bBuildingSim Boolean ByVal If the building simulation should run or not
 ' @param bGeneric Boolean ByVal If a generic building model should be used or
 '     instead an existing model be imported
+' @param bCopyOSMFile Boolean ByVal If true, copies the OSM file, provided that
+'     the geometry is imported and not generic, to the run folder. This is
+'     necessary for a simulation run, but not for the export of paramters.
+' @param bDetailedHVAC Boolean ByVal If true, sets the simulation up with a
+'     detailed HVAC model, otherwise with ideal loads
 Sub ExportToOSW( _
     ByVal sFilename As String, _
-    ByVal bDoCustomExport As Boolean, _
     ByVal bBuildingSim As Boolean, _
     ByVal bGeneric As Boolean, _
+    ByVal bCopyOSMFile As Boolean, _
     ByVal bDetailedHVAC As Boolean _
 )
     Dim dd1 As DropDown 'Wetterdaten
@@ -106,25 +108,26 @@ Sub ExportToOSW( _
     Dim jFile As New JSONFile
 
     If bBuildingSim And Not bGeneric Then
-        ' only if we have an import and geometry sim selected we import the external OSM file
-        ' copy the imported osm file into the currrent folder and replace any umlaut
-        Dim fso As New FileSystemObject
-        Dim sOSMFileName As String
-        Dim sOSMPathName As String
-        sOSMPathName = Range("path_geometry_Import")
-        sOSMFileName = fso.GetFileName(sOSMPathName)
-        sOSMFileName = Replace(sOSMFileName, Chr(228), "ae")
-        sOSMFileName = Replace(sOSMFileName, Chr(252), "ue")
-        sOSMFileName = Replace(sOSMFileName, Chr(246), "oe")
-        sOSMFileName = Replace(sOSMFileName, Chr(196), "Ae")
-        sOSMFileName = Replace(sOSMFileName, Chr(220), "Ue")
-        sOSMFileName = Replace(sOSMFileName, Chr(214), "Oe")
+        Dim localOSMPath As String: Set localOSMPath = ""
 
-        If Not (bDoCustomExport) Then
-            Dim localOSMPath As String
+        If bCopyOSMFile Then
+            Dim fso As New FileSystemObject
+            Dim sOSMFileName As String
+            Dim sOSMPathName As String
+            sOSMPathName = Range("path_geometry_Import")
+            sOSMFileName = fso.GetFileName(sOSMPathName)
+            sOSMFileName = Replace(sOSMFileName, Chr(223), "ss")
+            sOSMFileName = Replace(sOSMFileName, Chr(228), "ae")
+            sOSMFileName = Replace(sOSMFileName, Chr(252), "ue")
+            sOSMFileName = Replace(sOSMFileName, Chr(246), "oe")
+            sOSMFileName = Replace(sOSMFileName, Chr(196), "Ae")
+            sOSMFileName = Replace(sOSMFileName, Chr(220), "Ue")
+            sOSMFileName = Replace(sOSMFileName, Chr(214), "Oe")
+
             localOSMPath = GetOutputFolder() + "\" + sOSMFileName
             FileCopy sOSMPathName, localOSMPath
         End If
+
         jFile.CreateFile localOSMPath, GetWeatherFolder() & "\" & dd1.List(dd1.Value)
 
         jFile.AddArgument "WeatherFilePath", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
