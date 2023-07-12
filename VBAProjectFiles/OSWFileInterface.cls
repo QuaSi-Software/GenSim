@@ -142,64 +142,61 @@ Sub ExportToOSW( _
     End If
 
     '--------Alle zusätzlichen Parameter für den 'CustomExport'
-    If (bDoCustomExport) Then
 
-        'Parameter Modell
-        jFile.AddArgument "buildingSim", IIf(cb_buildingSim.Value = 1, 1, 0)
-        jFile.AddArgument "pvSim", IIf(cb_pvSim.Value = 1, 1, 0)
-        jFile.AddArgument "zoneDetails", IIf(cb_zoneDetails.Value = 1, 1, 0)
-        jFile.AddArgument "detailedHVAC", IIf(cb_detailedHVAC.Value = 1, 1, 0)
-        jFile.AddArgument "ventilation_type", dd_lueftung.Value
+    'Parameter Modell
+    jFile.AddArgument "buildingSim", IIf(cb_buildingSim.Value = 1, 1, 0)
+    jFile.AddArgument "pvSim", IIf(cb_pvSim.Value = 1, 1, 0)
+    jFile.AddArgument "zoneDetails", IIf(cb_zoneDetails.Value = 1, 1, 0)
+    jFile.AddArgument "detailedHVAC", IIf(cb_detailedHVAC.Value = 1, 1, 0)
+    jFile.AddArgument "ventilation_type", dd_lueftung.Value
 
-        'Parameter Geometrie, die nicht für Modellerzeugung benötigt werden
-        jFile.AddArgument "floor_length", Range("LAENGE")
-        jFile.AddArgument "floor_width", Range("BREITE")
-        jFile.AddArgument "ratio_NRF_BGF", ddRatio1.List(ddRatio1.Value)
-        jFile.AddArgument "NRF_BGF", Range("BGF_zu_NRF")
+    'Parameter Geometrie, die nicht für Modellerzeugung benötigt werden
+    jFile.AddArgument "floor_length", Range("LAENGE")
+    jFile.AddArgument "floor_width", Range("BREITE")
+    jFile.AddArgument "ratio_NRF_BGF", ddRatio1.List(ddRatio1.Value)
+    jFile.AddArgument "NRF_BGF", Range("BGF_zu_NRF")
 
-        ' Arguments "selected_standard", "is_custom_standard", "selected_masses" are added in Measure "AddingMaterialsAndConstructions"
-        ' weitere Argumente are added in Measure "AddingInternalLoads"
-        ' Arguments "hvacSchedule", "is_custom_hvac" are added in "AddDetailedHVAC" bzw. "AddingIdealAirLoads" (je nach cb_hvac)
+    ' Arguments "selected_standard", "is_custom_standard", "selected_masses" are added in Measure "AddingMaterialsAndConstructions"
+    ' weitere Argumente are added in Measure "AddingInternalLoads"
+    ' Arguments "hvacSchedule", "is_custom_hvac" are added in "AddDetailedHVAC" bzw. "AddingIdealAirLoads" (je nach cb_hvac)
 
-        '  Nutzung - Feiertage
-        Dim strArg As String
-        strArg = ""
-        Dim iEntry As Integer
-        iEntry = 0
+    '  Nutzung - Feiertage
+    Dim strArg As String
+    strArg = ""
+    Dim iEntry As Integer
+    iEntry = 0
 
-        Do While Not (IsEmpty(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 0)))
-            strArg = strArg + CStr(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 0))
-            strArg = strArg + ";" + CStr(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 1)) + ";"
-            iEntry = iEntry + 1
-        Loop
-        jFile.AddArgument "Holidays", strArg
+    Do While Not (IsEmpty(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 0)))
+        strArg = strArg + CStr(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 0))
+        strArg = strArg + ";" + CStr(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 1)) + ";"
+        iEntry = iEntry + 1
+    Loop
+    jFile.AddArgument "Holidays", strArg
 
 
-        'Lüftungsanlage
-        jFile.AddArgument "vorlauf_Luft", Range("Vorlauf_Lüftung")
-        jFile.AddArgument "nachlauf_Luft", Range("Nachlauf_Lüftung")
+    'Lüftungsanlage
+    jFile.AddArgument "vorlauf_Luft", Range("Vorlauf_Lüftung")
+    jFile.AddArgument "nachlauf_Luft", Range("Nachlauf_Lüftung")
 
-        'Weiteres
-        jFile.AddArgument "Shadingcontrol", IIf(cb_shadingcontrol.Value = 1, 1, 0)
-        jFile.AddArgument "Infiltration", IIf(cb_inf.Value = 1, 1, 0)
-        jFile.AddArgument "Lightingcontrol", IIf(cb_lightingcontrol.Value = 1, 1, 0)
-        jFile.AddArgument "Windowvent", IIf(cb_windowvent.Value = 1, 1, 0)
+    'Weiteres
+    jFile.AddArgument "Shadingcontrol", IIf(cb_shadingcontrol.Value = 1, 1, 0)
+    jFile.AddArgument "Infiltration", IIf(cb_inf.Value = 1, 1, 0)
+    jFile.AddArgument "Lightingcontrol", IIf(cb_lightingcontrol.Value = 1, 1, 0)
+    jFile.AddArgument "Windowvent", IIf(cb_windowvent.Value = 1, 1, 0)
 
-        'Geometrie
-        If bGeneric Then
-            jFile.AddArgument "genGeom", 1      'Range("geometry_source")
-        Else
-            jFile.AddArgument "genGeom", 2
-        End If
-
-        'Lüftung (neue Parameter "konditionierte Raumhöhe" und "Geschosshöhe Geometrieimport"
-        jFile.AddArgument "FloorHeight_kond", Range("FloorHeight_kond")
-        jFile.AddArgument "FloorHeight_import", Range("FloorHeight_import")
-        jFile.AddArgument "ACH_Input_Parameter", Range("ACH")
-
-        jFile.AddMeasure "CustomExportParams"
-
+    'Geometrie
+    If bGeneric Then
+        jFile.AddArgument "genGeom", 1      'Range("geometry_source")
+    Else
+        jFile.AddArgument "genGeom", 2
     End If
+
+    'Lüftung (neue Parameter "konditionierte Raumhöhe" und "Geschosshöhe Geometrieimport"
+    jFile.AddArgument "FloorHeight_kond", Range("FloorHeight_kond")
+    jFile.AddArgument "FloorHeight_import", Range("FloorHeight_import")
+    jFile.AddArgument "ACH_Input_Parameter", Range("ACH")
+
+    jFile.AddMeasure "CustomExportParams"
 
     ''''''''''''''''''''''''''''''' Building Model
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -251,12 +248,9 @@ Sub ExportToOSW( _
             jFile.AddConstruction "InteriorSlabs", Range("ZwischenDecke"), 4
             jFile.AddInternalSourceConstructionHardcoded "ChilledCeiling", 2, 2, 2, 0.15, Range("ZwischenDecke"), 2
             jFile.AddWindowConstruction "Windows", Range("WINDOWSSLS"), Range("WINDOWSSLS").Offset(0, -1), Range("WINDOWSSLS").Offset(0, 1)
-
-            If (bDoCustomExport) Then
-                jFile.AddArgument "selected_standard", dd21.List(dd21.Value)
-                jFile.AddArgument "is_custom_standard", IIf(dd21.Value > (dd21.ListCount - 4), "Ja", "Nein")
-                jFile.AddArgument "selected_masses", dd22.List(dd22.Value)
-            End If
+            jFile.AddArgument "selected_standard", dd21.List(dd21.Value)
+            jFile.AddArgument "is_custom_standard", IIf(dd21.Value > (dd21.ListCount - 4), "Ja", "Nein")
+            jFile.AddArgument "selected_masses", dd22.List(dd22.Value)
 
             jFile.AddMeasure "AddingMaterialsAndConstructions"
             Range("UStatus") = "Definiert"
@@ -305,22 +299,19 @@ Sub ExportToOSW( _
             jFile.AddSchedule "PeopleSchedule", Range("PeopleWD")
             jFile.AddSchedule "PeopleActivitySchedule", Range("PeopleActivityWD")
             jFile.AddHolidays "Holidays", Range("Feiertage")
-
-            If (bDoCustomExport) Then
-                jFile.AddArgument "area_bgf_import", Range("BldgArea_import")
-                jFile.AddArgument "NRF/BGF", CStr(nrf_bgf)
-                jFile.AddArgument "selected_ratio", selected
-                jFile.AddArgument "is_custom_ratio", IIf(isCustom, "true", "false")
-                jFile.AddArgument "is_imported", IIf(bGeneric, "false", "true")
-                jFile.AddArgument "ElectricEquipmentSchedule", dd23.List(dd23.Value)
-                jFile.AddArgument "LightSchedule", dd49.List(dd49.Value)
-                jFile.AddArgument "PeopleSchedule", dd50.List(dd50.Value)
-                jFile.AddArgument "PeopleActivitySchedule", dd51.List(dd51.Value)
-                jFile.AddArgument "is_custom_ElectricEquipment", IIf(dd23.Value > (dd23.ListCount - 2), "true", "false")
-                jFile.AddArgument "is_custom_Light", IIf(dd49.Value > (dd49.ListCount - 2), "true", "false")
-                jFile.AddArgument "is_custom_People", IIf(dd50.Value > (dd50.ListCount - 2), "true", "false")
-                jFile.AddArgument "is_custom_PeopleActivity", IIf(dd51.Value > (dd51.ListCount - 2), "true", "false")
-            End If
+            jFile.AddArgument "area_bgf_import", Range("BldgArea_import")
+            jFile.AddArgument "NRF/BGF", CStr(nrf_bgf)
+            jFile.AddArgument "selected_ratio", selected
+            jFile.AddArgument "is_custom_ratio", IIf(isCustom, "true", "false")
+            jFile.AddArgument "is_imported", IIf(bGeneric, "false", "true")
+            jFile.AddArgument "ElectricEquipmentSchedule", dd23.List(dd23.Value)
+            jFile.AddArgument "LightSchedule", dd49.List(dd49.Value)
+            jFile.AddArgument "PeopleSchedule", dd50.List(dd50.Value)
+            jFile.AddArgument "PeopleActivitySchedule", dd51.List(dd51.Value)
+            jFile.AddArgument "is_custom_ElectricEquipment", IIf(dd23.Value > (dd23.ListCount - 2), "true", "false")
+            jFile.AddArgument "is_custom_Light", IIf(dd49.Value > (dd49.ListCount - 2), "true", "false")
+            jFile.AddArgument "is_custom_People", IIf(dd50.Value > (dd50.ListCount - 2), "true", "false")
+            jFile.AddArgument "is_custom_PeopleActivity", IIf(dd51.Value > (dd51.ListCount - 2), "true", "false")
 
             jFile.AddMeasure "AddingInternalLoads"
             Range("LoadStatus") = "Definiert"
@@ -359,10 +350,8 @@ Sub ExportToOSW( _
             jFile.AddArgument "ach", Range("ACH") * FloorHeight_Ratio * nrf_bgf 'Bugfix 01/22 : Korrektur kond. Raumhöhe sowie Korrektur NRF/BGF
             jFile.AddSchedule "hvacSched", Range("HVACWD")
             jFile.AddHolidays "Holidays", Range("Feiertage")
-            If (bDoCustomExport) Then
-               jFile.AddArgument "hvacSchedule", dd55.List(dd55.Value)
-               jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
-            End If
+            jFile.AddArgument "hvacSchedule", dd55.List(dd55.Value)
+            jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
 
             If bDetailedHVAC Then
                 jFile.AddSchedule "zoneHeatingTempSched", Range("HeatingWD")
@@ -428,16 +417,14 @@ Sub ExportToOSW( _
         If Not bBuildingSim Then
             Range("TempSetpoint") = "Deaktiviert"
         Else
-            If (bDoCustomExport) Then
-                jFile.AddArgument "heatingTemp", dd60.List(dd60.Value)
-                jFile.AddArgument "coolingTemp", dd86.List(dd86.Value)
-                jFile.AddArgument "is_custom_heating", IIf(dd60.Value > 3, "true", "false")  ' da bisher nur drei feste Profile zur Auswahl stehen
-                jFile.AddArgument "is_custom_cooling", IIf(dd86.Value > 3, "true", "false")
-            End If
-' _  DEBUGGING
-' _  SCHED durch SCHEDULE ersetzt, da beim 'ImportSchedule' abgefragt wird: scheduleName = "hvac" und entsprechend SCHEDULE und nicht SCHED zurück gegeben wird...
-'            jFile.AddSchedule "zoneHeatingTempSched", Range("HeatingWD")
-'            jFile.AddSchedule "zoneCoolingTempSched", Range("CoolingWD")
+            jFile.AddArgument "heatingTemp", dd60.List(dd60.Value)
+            jFile.AddArgument "coolingTemp", dd86.List(dd86.Value)
+            jFile.AddArgument "is_custom_heating", IIf(dd60.Value > 3, "true", "false")  ' da bisher nur drei feste Profile zur Auswahl stehen
+            jFile.AddArgument "is_custom_cooling", IIf(dd86.Value > 3, "true", "false")
+            ' _  DEBUGGING
+            ' _  SCHED durch SCHEDULE ersetzt, da beim 'ImportSchedule' abgefragt wird: scheduleName = "hvac" und entsprechend SCHEDULE und nicht SCHED zurück gegeben wird...
+            ' jFile.AddSchedule "zoneHeatingTempSched", Range("HeatingWD")
+            ' jFile.AddSchedule "zoneCoolingTempSched", Range("CoolingWD")
             jFile.AddSchedule "zoneHeatingTempSchedule", Range("HeatingWD")
             jFile.AddSchedule "zoneCoolingTempSchedule", Range("CoolingWD")
             jFile.AddHolidays "Holidays", Range("Feiertage")
