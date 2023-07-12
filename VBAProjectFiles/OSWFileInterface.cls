@@ -83,10 +83,6 @@ Sub ExportToOSW( _
     Set cb_lightingcontrol = Sheets("HAUPTSEITE").CheckBoxes("checkbox lightingcontrol")
     Dim cb_shadingcontrol As CheckBox
     Set cb_shadingcontrol = Sheets("HAUPTSEITE").CheckBoxes("checkbox_shadingcontrol")
-    Dim cb_buildingSim As CheckBox
-    Set cb_buildingSim = Sheets("HAUPTSEITE").CheckBoxes("checkbox_buildingsim")
-    Dim cb_pvSim As CheckBox
-    Set cb_pvSim = Sheets("HAUPTSEITE").CheckBoxes("checkbox_pvsim")
     Dim cb_zoneDetails As CheckBox
     Set cb_zoneDetails = Sheets("Parameter").CheckBoxes("checkbox_ZoneDetails")
     Dim cb_detailedHVAC As CheckBox
@@ -145,8 +141,6 @@ Sub ExportToOSW( _
     '--------Alle zusätzlichen Parameter für den 'CustomExport'
 
     'Parameter Modell
-    jFile.AddArgument "buildingSim", IIf(cb_buildingSim.Value = 1, 1, 0)
-    jFile.AddArgument "pvSim", IIf(cb_pvSim.Value = 1, 1, 0)
     jFile.AddArgument "zoneDetails", IIf(cb_zoneDetails.Value = 1, 1, 0)
     jFile.AddArgument "detailedHVAC", IIf(cb_detailedHVAC.Value = 1, 1, 0)
     jFile.AddArgument "ventilation_type", dd_lueftung.Value
@@ -541,10 +535,6 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
 
     Select Case item("measure_dir_name")
         Case "CustomExportParams":
-            Dim cb_buildingSim As CheckBox
-            Set cb_buildingSim = Sheets("HAUPTSEITE").CheckBoxes("checkbox_buildingsim")
-            Dim cb_pvSim As CheckBox
-            Set cb_pvSim = Sheets("HAUPTSEITE").CheckBoxes("checkbox_pvsim")
             Dim cb_zoneDetails As CheckBox
             Set cb_zoneDetails = Sheets("Parameter").CheckBoxes("checkbox_ZoneDetails")
             Dim cb_detailedHVAC As CheckBox
@@ -563,8 +553,6 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             Set dd_lueftung = Sheets("HAUPTSEITE").DropDowns("dd_lueftung")
 
             'Parameter Modell
-            If args.Exists("buildingSim") Then cb_buildingSim.Value = args("buildingSim")
-            If args.Exists("pvSim") Then cb_pvSim.Value = args("pvSim")
             If args.Exists("zoneDetails") Then cb_zoneDetails.Value = args("zoneDetails")
             If args.Exists("detailedHVAC") Then cb_detailedHVAC.Value = args("detailedHVAC")
             If args.Exists("ventilation_type") Then dd_lueftung.Value = args("ventilation_type")

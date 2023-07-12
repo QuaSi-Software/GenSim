@@ -20,8 +20,6 @@
       },
       {
          "arguments": {
-            "buildingSim": "1",
-            "pvSim": "0",
             "zoneDetails": "0",
             "detailedHVAC": "0",
             "ventilation_type": "2",

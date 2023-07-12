@@ -24,14 +24,6 @@ class CustomExportParams < OpenStudio::Measure::ModelMeasure
     def arguments(model)
         args = OpenStudio::Measure::OSArgumentVector.new
 
-        do_building_sim = OpenStudio::Ruleset::OSArgument::makeIntegerArgument("buildingSim", true)
-        do_building_sim.setDisplayName("Run building sim?")
-        args << do_building_sim
-
-        do_pv_sim = OpenStudio::Ruleset::OSArgument::makeIntegerArgument("pvSim", true)
-        do_pv_sim.setDisplayName("Run PV sim?")
-        args << do_pv_sim
-
         has_zone_details = OpenStudio::Ruleset::OSArgument::makeIntegerArgument("zoneDetails", true)
         has_zone_details.setDisplayName("Has zone details?")
         args << has_zone_details
