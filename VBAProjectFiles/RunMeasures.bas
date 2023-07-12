@@ -52,15 +52,12 @@ Sub CreateWorkflowAndExecute()
     If Range("PerimeterDepth") * 2 > WorksheetFunction.Min(Range("LAENGE"), Range("BREITE")) - 1 Then MsgBox "Fehler in der Geometrie-Eingabe: 'Tiefe Auﬂenzonen' zu groﬂ!": Exit Sub
 
     ' control flow variables
-    Dim bPVSim As Boolean: bPVSim = False
     Dim bBuildingSim As Boolean: bBuildingSim = False
     Dim bGeneric As Boolean: bGeneric = False
     Dim bDetailedHVAC As Boolean: bDetailedHVAC = True
 
     Dim cb_buidlingsim As CheckBox
     Set cb_buidlingsim = Sheets("HAUPTSEITE").CheckBoxes("checkbox_buildingsim")
-    Dim cb_pvSim As CheckBox
-    Set cb_pvSim = Sheets("HAUPTSEITE").CheckBoxes("checkbox_pvsim")
     Dim cb_hvac As CheckBox
     Set cb_hvac = Sheets("Parameter").CheckBoxes("checkbox_hvac")
 
@@ -75,9 +72,6 @@ Sub CreateWorkflowAndExecute()
     End If
     If cb_buidlingsim.Value = 1 Then
         bBuildingSim = True
-    End If
-    If cb_pvSim.Value = 1 Then
-        bPVSim = True
     End If
     
     If bPVSim = False And bBuildingSim = False Then
@@ -111,7 +105,7 @@ Sub CreateWorkflowAndExecute()
 
     ' export steps, measures and parameters to OSW file
     Dim interface As OSWFileInterface: Set interface = New OSWFileInterface
-    Call interface.ExportToOSW(GetOutputFolder() & "\" + Range("FileName") + ".osw", True, bPVSim, bBuildingSim, bGeneric, bDetailedHVAC)
+    Call interface.ExportToOSW(GetOutputFolder() & "\" + Range("FileName") + ".osw", True, bBuildingSim, bGeneric, bDetailedHVAC)
 
     ' status
     Range("Status").Offset(0, 1) = "beendet (" & WorksheetFunction.Round((Time - Startzeit_indv) * 86400, 1) & " s)"

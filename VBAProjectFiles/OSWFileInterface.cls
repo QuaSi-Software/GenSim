@@ -28,14 +28,12 @@ Attribute VB_Exposed = False
 ' @param bDoCustomExport Boolean ByVal If true, adds some parameters that are
 '     not required (or expected) for a simulation run, but are useful for
 '     saving a parameter configuration as a seperate file
-' @param bPVSim Boolean ByVal If the PV simulation should run or not
 ' @param bBuildingSim Boolean ByVal If the building simulation should run or not
 ' @param bGeneric Boolean ByVal If a generic building model should be used or
 '     instead an existing model be imported
 Sub ExportToOSW( _
     ByVal sFilename As String, _
     ByVal bDoCustomExport As Boolean, _
-    ByVal bPVSim As Boolean, _
     ByVal bBuildingSim As Boolean, _
     ByVal bGeneric As Boolean, _
     ByVal bDetailedHVAC As Boolean _
@@ -448,27 +446,6 @@ Sub ExportToOSW( _
         End If
 
     End If 'Not bBuildingSim
-
-    '''''''''''''''' Calling Photovoltaic Measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    If Not bPVSim Then
-        Range("Photovoltaic") = "Deaktiviert"
-    Else
-        Range("Photovoltaic") = "Start ..."
-
-        If Range("azimuth") + dd2.List(dd2.Value) < 0 Then
-            jFile.AddArgument "Azimuth", Range("azimuth") + dd2.List(dd2.Value) + 360
-        Else
-            jFile.AddArgument "Azimuth", Range("azimuth") + dd2.List(dd2.Value)
-        End If
-        jFile.AddArgument "Slope", Range("slope")
-        jFile.AddArgument "CellEfficiency", Range("eff_PV")
-        jFile.AddArgument "InverterEfficiency", Range("eff_sys_PV")
-        jFile.AddArgument "FractionActiveSurfaceArea", 1
-        jFile.AddMeasure "AddingPhotovoltaic"
-        Range("Photovoltaic") = "Definiert"
-    End If
 
     ' save in the resulting OSM for debugging with the SaveToModel measure
     jFile.AddArgument "pathtosave", GetOutputFolder()
@@ -891,13 +868,6 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
 
             If args.Exists("HeatingTemperatureSetpoint") Then Range("HeatingSetpTemp") = args("HeatingTemperatureSetpoint") ' WOZU GEHÖRT DIESE RANGE ???
             If args.Exists("CoolingTemperatureSetpoint") Then Range("CoolingSetTemp") = args("CoolingTemperatureSetpoint")
-
-        Case "AddingPhotovoltaic":
-            If args.Exists("Azimuth") Then Range("azimuth") = args("Azimuth") - dd2.List(dd2.Value)
-
-            If args.Exists("Slope") Then Range("slope") = args("Slope")
-            If args.Exists("CellEfficiency") Then Range("eff_PV") = args("CellEfficiency")
-            If args.Exists("InverterEfficiency") Then Range("eff_sys_PV") = args("InverterEfficiency")
 
         Case "SaveModel":
             If args.Exists("FileName") Then Range("FileName") = args("FileName")
