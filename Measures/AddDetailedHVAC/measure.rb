@@ -37,6 +37,8 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
     ach.setDisplayName("Air changes per hours")
     ach.setDefaultValue(1)
     args << ach
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("hvacSchedule", true)
+    args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_hvac", true)
     args << OpenStudio::Measure::OSArgument.makeStringArgument("hvacSchedWerktag", true)
     args << OpenStudio::Measure::OSArgument.makeStringArgument("hvacSchedSamstag", true)
     args << OpenStudio::Measure::OSArgument.makeStringArgument("hvacSchedSonntag", true)

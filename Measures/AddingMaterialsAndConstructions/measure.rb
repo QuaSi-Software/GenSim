@@ -169,6 +169,16 @@ class AddingMaterialsAndConstructions < OpenStudio::Measure::ModelMeasure
 	args << OpenStudio::Measure::OSArgument.makeStringArgument(argumentName + "Name", true)
 	args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + "UValue", true)
 	args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + "SHGC", true)
+
+	# checkbox value for custom standard
+	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_standard", true)
+
+	# selection value for building standard
+	args << OpenStudio::Measure::OSArgument.makeStringArgument("selected_standard", true)
+
+	# selection value for inner masses
+	args << OpenStudio::Measure::OSArgument.makeStringArgument("selected_masses", true)
+
     return args
   end
 
