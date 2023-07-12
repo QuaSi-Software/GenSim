@@ -25,7 +25,6 @@ Attribute VB_Exposed = False
 ' @param sFilename String ByRef The filename of the exported file. Ths file
 '     is automatically written to the output folder, so the filename should
 '     only contain subdirectories of the output folder.
-' @param bBuildingSim Boolean ByVal If the building simulation should run or not
 ' @param bGeneric Boolean ByVal If a generic building model should be used or
 '     instead an existing model be imported
 ' @param bCopyOSMFile Boolean ByVal If true, copies the OSM file, provided that
@@ -35,7 +34,6 @@ Attribute VB_Exposed = False
 '     detailed HVAC model, otherwise with ideal loads
 Sub ExportToOSW( _
     ByVal sFilename As String, _
-    ByVal bBuildingSim As Boolean, _
     ByVal bGeneric As Boolean, _
     ByVal bCopyOSMFile As Boolean, _
     ByVal bDetailedHVAC As Boolean _
@@ -107,7 +105,7 @@ Sub ExportToOSW( _
 
     Dim jFile As New JSONFile
 
-    If bBuildingSim And Not bGeneric Then
+    If Not bGeneric Then
         Dim localOSMPath As String: Set localOSMPath = ""
 
         If bCopyOSMFile Then
@@ -204,238 +202,211 @@ Sub ExportToOSW( _
     ''''''''''''''''''''''''''''''' Building Model
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-    If Not bBuildingSim Then
-        DeactivateStatusInfoForPVOnlyRun
+    Range("GeomStatus") = "Start ..."
+
+    ''''''''''''''''''''''''''''''' Geometry
+    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+    If bGeneric Then
+        jFile.AddArgument "floor_area", Range("BldgArea")
+        jFile.AddArgument "ns_to_ew_ratio", Range("NSEWRatio")
+        jFile.AddArgument "number_of_stories", Range("NoFloors")
+        jFile.AddArgument "floor_to_floor_height", Range("FloorHeight")
+        jFile.AddArgument "surface_matching", "true"
+        jFile.AddArgument "make_zones", "true"
+        jFile.AddArgument "window_to_wall_ratio_north", Range("WWRN")
+        jFile.AddArgument "window_to_wall_ratio_east", Range("WWRO")
+        jFile.AddArgument "window_to_wall_ratio_south", Range("WWRS")
+        jFile.AddArgument "window_to_wall_ratio_west", Range("WWRW")
+        jFile.AddArgument "AdiabaticNorth", dd42.List(dd42.Value)
+        jFile.AddArgument "AdiabaticEast", dd43.List(dd43.Value)
+        jFile.AddArgument "AdiabaticSouth", dd44.List(dd44.Value)
+        jFile.AddArgument "AdiabaticWest", dd45.List(dd45.Value)
+        jFile.AddArgument "AdiabaticRoof", dd46.List(dd46.Value)
+        jFile.AddArgument "AdiabaticFloor", dd47.List(dd47.Value)
+        jFile.AddArgument "perimeterdepth", Range("PerimeterDepth")
+
+        jFile.AddMeasure "BarAspectRatioStudy"
+    End If
+
+    ' update status
+    Range("GeomStatus") = "Definiert"
+    DoEvents
+
+    ''''''''''''''''''''''''''''''' Assign Constructions
+    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+    Range("UStatus") = "Start ..."
+    jFile.AddConstruction "ExternalWallMat", Range("AWMat1"), 4
+    jFile.AddConstruction "RoofMat", Range("DMat1"), 4
+    jFile.AddConstruction "SlabMat", Range("BPMat1"), 4
+    jFile.AddConstruction "Massen", Range("Massen"), 3
+    jFile.AddConstruction "InteriorSlabs", Range("ZwischenDecke"), 4
+    jFile.AddInternalSourceConstructionHardcoded "ChilledCeiling", 2, 2, 2, 0.15, Range("ZwischenDecke"), 2
+    jFile.AddWindowConstruction "Windows", Range("WINDOWSSLS"), Range("WINDOWSSLS").Offset(0, -1), Range("WINDOWSSLS").Offset(0, 1)
+    jFile.AddArgument "selected_standard", dd21.List(dd21.Value)
+    jFile.AddArgument "is_custom_standard", IIf(dd21.Value > (dd21.ListCount - 4), "Ja", "Nein")
+    jFile.AddArgument "selected_masses", dd22.List(dd22.Value)
+
+    jFile.AddMeasure "AddingMaterialsAndConstructions"
+    Range("UStatus") = "Definiert"
+    DoEvents
+
+    ''''''''''''''''''''''''''''''' Adding Thermal Zones and Detecting External Zones
+    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+    If Not bGeneric Then jFile.AddMeasure "AddThermalZones"
+    jFile.AddMeasure "DetectingExternalZones"
+
+    ''''''''''''''''''''''''''''''' internal load measure (schedules)
+    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+    Range("LoadStatus") = "Start ..."
+
+    Dim nrf_bgf As Double
+    Dim isCustom As Boolean
+    Dim selected As String
+
+    If bGeneric Then
+        nrf_bgf = Range("BGF_zu_NRF")
+        isCustom = ddRatio1.Value = 1
+        selected = ddRatio1.List(ddRatio1.Value)
     Else
-        Range("GeomStatus") = "Start ..."
+        nrf_bgf = Range("BGF_zu_NRF_import")
+        isCustom = ddRatio2.Value = 1
+        selected = ddRatio2.List(ddRatio2.Value)
+    End If
 
-        ''''''''''''''''''''''''''''''' Geometry
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    jFile.AddArgument "ElectricEquipmentPowerPerFloorArea", Range("Electric") * nrf_bgf
+    jFile.AddArgument "LightingPowerPerFloorArea", Range("Lights") * nrf_bgf
+    jFile.AddArgument "PeoplePerFloorArea", 1 / Range("People") * nrf_bgf
+    jFile.AddSchedule "ElectricEquipmentSchedule", Range("ElectricWD")
+    jFile.AddSchedule "LightSchedule", Range("LightWD")
+    jFile.AddSchedule "PeopleSchedule", Range("PeopleWD")
+    jFile.AddSchedule "PeopleActivitySchedule", Range("PeopleActivityWD")
+    jFile.AddHolidays "Holidays", Range("Feiertage")
+    jFile.AddArgument "area_bgf_import", Range("BldgArea_import")
+    jFile.AddArgument "NRF/BGF", CStr(nrf_bgf)
+    jFile.AddArgument "selected_ratio", selected
+    jFile.AddArgument "is_custom_ratio", IIf(isCustom, "true", "false")
+    jFile.AddArgument "is_imported", IIf(bGeneric, "false", "true")
+    jFile.AddArgument "ElectricEquipmentSchedule", dd23.List(dd23.Value)
+    jFile.AddArgument "LightSchedule", dd49.List(dd49.Value)
+    jFile.AddArgument "PeopleSchedule", dd50.List(dd50.Value)
+    jFile.AddArgument "PeopleActivitySchedule", dd51.List(dd51.Value)
+    jFile.AddArgument "is_custom_ElectricEquipment", IIf(dd23.Value > (dd23.ListCount - 2), "true", "false")
+    jFile.AddArgument "is_custom_Light", IIf(dd49.Value > (dd49.ListCount - 2), "true", "false")
+    jFile.AddArgument "is_custom_People", IIf(dd50.Value > (dd50.ListCount - 2), "true", "false")
+    jFile.AddArgument "is_custom_PeopleActivity", IIf(dd51.Value > (dd51.ListCount - 2), "true", "false")
 
-        If bGeneric Then
-            jFile.AddArgument "floor_area", Range("BldgArea")
-            jFile.AddArgument "ns_to_ew_ratio", Range("NSEWRatio")
-            jFile.AddArgument "number_of_stories", Range("NoFloors")
-            jFile.AddArgument "floor_to_floor_height", Range("FloorHeight")
-            jFile.AddArgument "surface_matching", "true"
-            jFile.AddArgument "make_zones", "true"
-            jFile.AddArgument "window_to_wall_ratio_north", Range("WWRN")
-            jFile.AddArgument "window_to_wall_ratio_east", Range("WWRO")
-            jFile.AddArgument "window_to_wall_ratio_south", Range("WWRS")
-            jFile.AddArgument "window_to_wall_ratio_west", Range("WWRW")
-            jFile.AddArgument "AdiabaticNorth", dd42.List(dd42.Value)
-            jFile.AddArgument "AdiabaticEast", dd43.List(dd43.Value)
-            jFile.AddArgument "AdiabaticSouth", dd44.List(dd44.Value)
-            jFile.AddArgument "AdiabaticWest", dd45.List(dd45.Value)
-            jFile.AddArgument "AdiabaticRoof", dd46.List(dd46.Value)
-            jFile.AddArgument "AdiabaticFloor", dd47.List(dd47.Value)
-            jFile.AddArgument "perimeterdepth", Range("PerimeterDepth")
+    jFile.AddMeasure "AddingInternalLoads"
+    Range("LoadStatus") = "Definiert"
+    DoEvents
 
-            jFile.AddMeasure "BarAspectRatioStudy"
-        End If
-        ' update status
-        Range("GeomStatus") = "Definiert"
-        DoEvents
+    '''''''''''''''' Calling Ideal loads measure
+    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-        ''''''''''''''''''''''''''''''' Assign Constructions
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    Range("IdealLoads") = "Start ..."
 
-        If Not bBuildingSim Then
-            Range("UStatus") = "Deaktiviert"
-        Else
-            Range("UStatus") = "Start ..."
-            jFile.AddConstruction "ExternalWallMat", Range("AWMat1"), 4
-            jFile.AddConstruction "RoofMat", Range("DMat1"), 4
-            jFile.AddConstruction "SlabMat", Range("BPMat1"), 4
-            jFile.AddConstruction "Massen", Range("Massen"), 3
-            jFile.AddConstruction "InteriorSlabs", Range("ZwischenDecke"), 4
-            jFile.AddInternalSourceConstructionHardcoded "ChilledCeiling", 2, 2, 2, 0.15, Range("ZwischenDecke"), 2
-            jFile.AddWindowConstruction "Windows", Range("WINDOWSSLS"), Range("WINDOWSSLS").Offset(0, -1), Range("WINDOWSSLS").Offset(0, 1)
-            jFile.AddArgument "selected_standard", dd21.List(dd21.Value)
-            jFile.AddArgument "is_custom_standard", IIf(dd21.Value > (dd21.ListCount - 4), "Ja", "Nein")
-            jFile.AddArgument "selected_masses", dd22.List(dd22.Value)
+    ' Pressure Rise
+    If Range("WRG") = "None" Then
+        PressureRise_ReturnFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
+        PressureRise_SupplyFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
+    Else
+        PressureRise_ReturnFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
+        PressureRise_SupplyFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
+    End If
 
-            jFile.AddMeasure "AddingMaterialsAndConstructions"
-            Range("UStatus") = "Definiert"
-        End If
-        DoEvents
+    'Korrektur der zu hohen Luftwechselrate, weil das konditionierte Raumvolumen um die Zwischendecken-Dicke zu groß ist
+    If Range("geometry_source") = 1 Then
+        FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight")
+    Else
+        FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight_import")
+    End If
 
-        ''''''''''''''''''''''''''''''' Adding Thermal Zones and Detecting External Zones
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    ' common arguments
+    jFile.AddArgument "wrg", Range("WRG")
+    jFile.AddArgument "latent", Range("LATENT")
+    jFile.AddArgument "sensible", Range("SENSIBLE")
+    jFile.AddArgument "ach", Range("ACH") * FloorHeight_Ratio * nrf_bgf 'Bugfix 01/22 : Korrektur kond. Raumhöhe sowie Korrektur NRF/BGF
+    jFile.AddSchedule "hvacSched", Range("HVACWD")
+    jFile.AddHolidays "Holidays", Range("Feiertage")
+    jFile.AddArgument "hvacSchedule", dd55.List(dd55.Value)
+    jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
 
-        If bBuildingSim Then
+    If bDetailedHVAC Then
+        jFile.AddSchedule "zoneHeatingTempSched", Range("HeatingWD")
+        jFile.AddSchedule "zoneCoolingTempSched", Range("CoolingWD")
+        jFile.AddArgument "hotWaterTempSetpoint", 82
+        jFile.AddArgument "hotWaterDeltaT", 11
+        jFile.AddArgument "coldWaterTempSetpoint", 10
+        jFile.AddArgument "coldWaterDeltaT", 5
+        jFile.AddArgument "fanPressureRiseSupply", CStr(PressureRise_SupplyFan)
+        jFile.AddArgument "fanPressureRiseReturn", CStr(PressureRise_ReturnFan)
+        jFile.AddArgument "system_type", Range("system_type")
 
-            If Not bGeneric Then jFile.AddMeasure "AddThermalZones"
+        jFile.AddMeasure "AddDetailedHVAC"
+    Else
+        jFile.AddMeasure "AddingIdealAirLoads"
+    End If
 
-            jFile.AddMeasure "DetectingExternalZones"
+    Range("IdealLoads") = "Definiert"
+    DoEvents
 
-        End If
+    '''''''''''''''' Calling Shading Control measure
+    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-        ''''''''''''''''''''''''''''''' internal load measure (schedules)
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    If Not cb_shadingcontrol.Value = 1 Then
+        Range("ShadingControl") = "Deaktiviert"
+    Else
+        Range("ShadingControl") = "Start ..."
+        jFile.AddArgument "SolarSetpoint", Range("SHCO_IRR")
+        jFile.AddMeasure "AddingShadingControls"
+        Range("ShadingControl") = "Definiert"
+    End If
+    DoEvents
 
-        If Not bBuildingSim Then
-            Range("LoadStatus") = "Deaktiviert"
-        Else
+    '''''''''''''''' Calling infiltration measure
+    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-            Range("LoadStatus") = "Start ..."
+    If Not cb_inf.Value = 1 Then
+        Range("Infiltration") = "Deaktiviert"
+    Else
+        Range("Infiltration") = "Start ..."
+        jFile.AddArgument "AirChangesPerHour", Range("INFIL") * FloorHeight_Ratio * nrf_bgf
+        jFile.AddMeasure "AddingInfiltration"
+        Range("Infiltration") = "Definiert"
+    End If
+    DoEvents
 
-            Dim nrf_bgf As Double
-            Dim isCustom As Boolean
-            Dim selected As String
+    '''''''''''''''' Calling lighting control measure
+    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-            If bGeneric Then
-                nrf_bgf = Range("BGF_zu_NRF")
-                isCustom = ddRatio1.Value = 1
-                selected = ddRatio1.List(ddRatio1.Value)
-            Else
-                nrf_bgf = Range("BGF_zu_NRF_import")
-                isCustom = ddRatio2.Value = 1
-                selected = ddRatio2.List(ddRatio2.Value)
-            End If
+    If Not cb_lightingcontrol.Value = 1 Then
+        Range("LightingControl") = "Deaktiviert"
+    Else
+        Range("LightingControl") = "Start ..."
+        jFile.AddArgument "DaylightingSetpoint", Range("LC_LUX")
+        jFile.AddMeasure "AddingLightingControls"
+        Range("LightingControl") = "Definiert"
+    End If
 
-            jFile.AddArgument "ElectricEquipmentPowerPerFloorArea", Range("Electric") * nrf_bgf
-            jFile.AddArgument "LightingPowerPerFloorArea", Range("Lights") * nrf_bgf
-            jFile.AddArgument "PeoplePerFloorArea", 1 / Range("People") * nrf_bgf
-            jFile.AddSchedule "ElectricEquipmentSchedule", Range("ElectricWD")
-            jFile.AddSchedule "LightSchedule", Range("LightWD")
-            jFile.AddSchedule "PeopleSchedule", Range("PeopleWD")
-            jFile.AddSchedule "PeopleActivitySchedule", Range("PeopleActivityWD")
-            jFile.AddHolidays "Holidays", Range("Feiertage")
-            jFile.AddArgument "area_bgf_import", Range("BldgArea_import")
-            jFile.AddArgument "NRF/BGF", CStr(nrf_bgf)
-            jFile.AddArgument "selected_ratio", selected
-            jFile.AddArgument "is_custom_ratio", IIf(isCustom, "true", "false")
-            jFile.AddArgument "is_imported", IIf(bGeneric, "false", "true")
-            jFile.AddArgument "ElectricEquipmentSchedule", dd23.List(dd23.Value)
-            jFile.AddArgument "LightSchedule", dd49.List(dd49.Value)
-            jFile.AddArgument "PeopleSchedule", dd50.List(dd50.Value)
-            jFile.AddArgument "PeopleActivitySchedule", dd51.List(dd51.Value)
-            jFile.AddArgument "is_custom_ElectricEquipment", IIf(dd23.Value > (dd23.ListCount - 2), "true", "false")
-            jFile.AddArgument "is_custom_Light", IIf(dd49.Value > (dd49.ListCount - 2), "true", "false")
-            jFile.AddArgument "is_custom_People", IIf(dd50.Value > (dd50.ListCount - 2), "true", "false")
-            jFile.AddArgument "is_custom_PeopleActivity", IIf(dd51.Value > (dd51.ListCount - 2), "true", "false")
+    '''''''''''''''' Calling Setpoint Measure loads measure
+    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-            jFile.AddMeasure "AddingInternalLoads"
-            Range("LoadStatus") = "Definiert"
-        End If
-        DoEvents
-
-        '''''''''''''''' Calling Ideal loads measure
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-        If Not bBuildingSim Then
-            Range("IdealLoads") = "Deaktiviert"
-        Else
-
-            Range("IdealLoads") = "Start ..."
-
-            ' Pressure Rise
-            If Range("WRG") = "None" Then
-                PressureRise_ReturnFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
-                PressureRise_SupplyFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
-            Else
-                PressureRise_ReturnFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
-                PressureRise_SupplyFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
-            End If
-
-            'Korrektur der zu hohen Luftwechselrate, weil das konditionierte Raumvolumen um die Zwischendecken-Dicke zu groß ist
-            If Range("geometry_source") = 1 Then
-                FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight")
-            Else
-                FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight_import")
-            End If
-
-            ' common arguments
-            jFile.AddArgument "wrg", Range("WRG")
-            jFile.AddArgument "latent", Range("LATENT")
-            jFile.AddArgument "sensible", Range("SENSIBLE")
-            jFile.AddArgument "ach", Range("ACH") * FloorHeight_Ratio * nrf_bgf 'Bugfix 01/22 : Korrektur kond. Raumhöhe sowie Korrektur NRF/BGF
-            jFile.AddSchedule "hvacSched", Range("HVACWD")
-            jFile.AddHolidays "Holidays", Range("Feiertage")
-            jFile.AddArgument "hvacSchedule", dd55.List(dd55.Value)
-            jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
-
-            If bDetailedHVAC Then
-                jFile.AddSchedule "zoneHeatingTempSched", Range("HeatingWD")
-                jFile.AddSchedule "zoneCoolingTempSched", Range("CoolingWD")
-                jFile.AddArgument "hotWaterTempSetpoint", 82
-                jFile.AddArgument "hotWaterDeltaT", 11
-                jFile.AddArgument "coldWaterTempSetpoint", 10
-                jFile.AddArgument "coldWaterDeltaT", 5
-                jFile.AddArgument "fanPressureRiseSupply", CStr(PressureRise_SupplyFan)
-                jFile.AddArgument "fanPressureRiseReturn", CStr(PressureRise_ReturnFan)
-                jFile.AddArgument "system_type", Range("system_type")
-
-                jFile.AddMeasure "AddDetailedHVAC"
-            Else
-                jFile.AddMeasure "AddingIdealAirLoads"
-            End If
-
-            Range("IdealLoads") = "Definiert"
-        End If
-        DoEvents
-
-        '''''''''''''''' Calling Shading Control measure
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-        If Not bBuildingSim Or Not cb_shadingcontrol.Value = 1 Then
-            Range("ShadingControl") = "Deaktiviert"
-        Else
-            Range("ShadingControl") = "Start ..."
-            jFile.AddArgument "SolarSetpoint", Range("SHCO_IRR")
-            jFile.AddMeasure "AddingShadingControls"
-            Range("ShadingControl") = "Definiert"
-        End If
-        DoEvents
-
-        '''''''''''''''' Calling infiltration measure
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-        If Not bBuildingSim Or Not cb_inf.Value = 1 Then
-            Range("Infiltration") = "Deaktiviert"
-        Else
-            Range("Infiltration") = "Start ..."
-            jFile.AddArgument "AirChangesPerHour", Range("INFIL") * FloorHeight_Ratio * nrf_bgf
-            jFile.AddMeasure "AddingInfiltration"
-            Range("Infiltration") = "Definiert"
-        End If
-        DoEvents
-
-        '''''''''''''''' Calling lighting control measure
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-        If Not bBuildingSim Or Not cb_lightingcontrol.Value = 1 Then
-            Range("LightingControl") = "Deaktiviert"
-        Else
-            Range("LightingControl") = "Start ..."
-            jFile.AddArgument "DaylightingSetpoint", Range("LC_LUX")
-            jFile.AddMeasure "AddingLightingControls"
-            Range("LightingControl") = "Definiert"
-        End If
-
-        '''''''''''''''' Calling Setpoint Measure loads measure
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-        If Not bBuildingSim Then
-            Range("TempSetpoint") = "Deaktiviert"
-        Else
-            jFile.AddArgument "heatingTemp", dd60.List(dd60.Value)
-            jFile.AddArgument "coolingTemp", dd86.List(dd86.Value)
-            jFile.AddArgument "is_custom_heating", IIf(dd60.Value > 3, "true", "false")  ' da bisher nur drei feste Profile zur Auswahl stehen
-            jFile.AddArgument "is_custom_cooling", IIf(dd86.Value > 3, "true", "false")
-            ' _  DEBUGGING
-            ' _  SCHED durch SCHEDULE ersetzt, da beim 'ImportSchedule' abgefragt wird: scheduleName = "hvac" und entsprechend SCHEDULE und nicht SCHED zurück gegeben wird...
-            ' jFile.AddSchedule "zoneHeatingTempSched", Range("HeatingWD")
-            ' jFile.AddSchedule "zoneCoolingTempSched", Range("CoolingWD")
-            jFile.AddSchedule "zoneHeatingTempSchedule", Range("HeatingWD")
-            jFile.AddSchedule "zoneCoolingTempSchedule", Range("CoolingWD")
-            jFile.AddHolidays "Holidays", Range("Feiertage")
-            jFile.AddMeasure "AddingTemperatureSetpoints"
-            Range("TempSetpoint") = "Definiert"
-        End If
-
-    End If 'Not bBuildingSim
+    jFile.AddArgument "heatingTemp", dd60.List(dd60.Value)
+    jFile.AddArgument "coolingTemp", dd86.List(dd86.Value)
+    jFile.AddArgument "is_custom_heating", IIf(dd60.Value > 3, "true", "false")  ' da bisher nur drei feste Profile zur Auswahl stehen
+    jFile.AddArgument "is_custom_cooling", IIf(dd86.Value > 3, "true", "false")
+    ' _  DEBUGGING
+    ' _  SCHED durch SCHEDULE ersetzt, da beim 'ImportSchedule' abgefragt wird: scheduleName = "hvac" und entsprechend SCHEDULE und nicht SCHED zurück gegeben wird...
+    ' jFile.AddSchedule "zoneHeatingTempSched", Range("HeatingWD")
+    ' jFile.AddSchedule "zoneCoolingTempSched", Range("CoolingWD")
+    jFile.AddSchedule "zoneHeatingTempSchedule", Range("HeatingWD")
+    jFile.AddSchedule "zoneCoolingTempSchedule", Range("CoolingWD")
+    jFile.AddHolidays "Holidays", Range("Feiertage")
+    jFile.AddMeasure "AddingTemperatureSetpoints"
+    Range("TempSetpoint") = "Definiert"
 
     ' save in the resulting OSM for debugging with the SaveToModel measure
     jFile.AddArgument "pathtosave", GetOutputFolder()
@@ -445,7 +416,7 @@ Sub ExportToOSW( _
     '''''''''''''''' Calling IDF window ventilation measure
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-    If Not bBuildingSim Or Not cb_windowvent.Value = 1 Then
+    If Not cb_windowvent.Value = 1 Then
         Range("window_ventilation") = "Deaktiviert"
     Else
         Range("window_ventilation") = "Start ..."
@@ -459,28 +430,21 @@ Sub ExportToOSW( _
     '''''''''''''''' Calling IDF Ideal loads Measure
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-    If Not bBuildingSim Then
-        Range("IDFIdealLoads") = "Deaktiviert"
-    Else
-        Range("IDFIdealLoads") = "Start ..."
+    Range("IDFIdealLoads") = "Start ..."
 
-        jFile.AddArgument "HeatRecoveryType", Range("WRG")
-        jFile.AddArgument "SensibleEffectiveness", Range("SENSIBLE")
-        jFile.AddArgument "LatentEffectiveness", Range("LATENT")
-        jFile.AddArgument "ACH", Range("ACH") * FloorHeight_Ratio * nrf_bgf 'Bugfix 01/22 : Korrektur kond. Raumhöhe sowie Korrektur NRF/BGF
-        jFile.AddMeasure "InjectIdealLoadParametersIDF"
-        Range("IDFIdealLoads") = "Definiert"
-        ' update the progress messages
-        DoEvents
-    End If
+    jFile.AddArgument "HeatRecoveryType", Range("WRG")
+    jFile.AddArgument "SensibleEffectiveness", Range("SENSIBLE")
+    jFile.AddArgument "LatentEffectiveness", Range("LATENT")
+    jFile.AddArgument "ACH", Range("ACH") * FloorHeight_Ratio * nrf_bgf 'Bugfix 01/22 : Korrektur kond. Raumhöhe sowie Korrektur NRF/BGF
+    jFile.AddMeasure "InjectIdealLoadParametersIDF"
+    Range("IDFIdealLoads") = "Definiert"
+    ' update the progress messages
+    DoEvents
 
     '''''''''''''''' Calling IDF Radiant Surface Measure
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-    If Not bBuildingSim Then
-        'Range("IDFIdealLoads") = "Deaktiviert"
-    Else
-        If bDetailedHVAC Then
+    If bDetailedHVAC Then
         'Range("IDFIdealLoads") = "Start ..."
 
         jFile.AddMeasure "InjectRadiantSurfacesIDF"
@@ -488,7 +452,6 @@ Sub ExportToOSW( _
 
         ' update the progress messages
         DoEvents
-        End If
     End If
 
     '''''''''''''''' Calling IDF InjectHolidays Measure
