@@ -48,6 +48,31 @@ Public Sub AddArgument( _
     End If
 End Sub
 
+Public Sub GetArgument( _
+    oDict As Dictionary, sArgName As String, _
+    Optional forceCommaReplace As Boolean = False _
+)
+    Dim sArg As String: sArg = oDict(sArgName)
+
+    If sArg = "true" Then
+        return "Ja"
+    ElseIf sArg = "false" Then
+        return "Nein"
+    ElseIf forceCommaReplace Or IsNumeric(sArg) Then
+        return Replace(sArg, ".", ",")
+    Else
+        sArg = Replace(sArg, "$ae$", "ä")
+        sArg = Replace(sArg, "$oe$", "ö")
+        sArg = Replace(sArg, "$ue$", "ü")
+        sArg = Replace(sArg, "$AE$", "Ä")
+        sArg = Replace(sArg, "$OE$", "Ö")
+        sArg = Replace(sArg, "$UE$", "Ü")
+        sArg = Replace(sArg, "$ss$", "ß")
+        sArg = Replace(sArg, "$deg$", "°")
+        return sArg
+    End If
+End Sub
+
 Public Sub AddInternalSourceConstruction(sMatPrefix As String, iLayer As String, iTempCalc As String, iCTF As String, dSpacing As String, r As Range, iCount As Integer)
     Dim iCounter As Integer
     iCounter = 0
