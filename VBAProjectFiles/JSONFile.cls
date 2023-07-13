@@ -25,29 +25,25 @@ Public Sub CreateFile(sOSMPathName As String, sEPWFileName As String)
     Set JSONArgs = New Dictionary
 End Sub
 
-Public Sub AddArgument(sArgName As String, sArg As String)
+Public Sub AddArgument( _
+    sArgName As String, sArg As String, _
+    Optional forceCommaReplace As Boolean = False _
+)
     If sArg = "Ja" Then
         JSONArgs.Add sArgName, "true"
     ElseIf sArg = "Nein" Then
         JSONArgs.Add sArgName, "false"
-    ElseIf InStr(sArg, ",") Then
+    ElseIf forceCommaReplace Or IsNumeric(Replace(sArg, ",", ".")) Then
         JSONArgs.Add sArgName, Replace(sArg, ",", ".")
     Else
-        If InStr(sArg, "ä") Then
-            sArg = Replace(sArg, "ä", "ae")
-        End If
-        If InStr(sArg, "ü") Then
-            sArg = Replace(sArg, "ü", "ue")
-        End If
-        If InStr(sArg, "ö") Then
-            sArg = Replace(sArg, "ö", "oe")
-        End If
-        If InStr(sArg, "ß") Then
-            sArg = Replace(sArg, "ß", "ss")
-        End If
-        If InStr(sArg, "°") Then
-            sArg = Replace(sArg, "°", "deg")
-        End If
+        sArg = Replace(sArg, "ä", "$ae$")
+        sArg = Replace(sArg, "ö", "$oe$")
+        sArg = Replace(sArg, "ü", "$ue$")
+        sArg = Replace(sArg, "Ä", "$AE$")
+        sArg = Replace(sArg, "Ö", "$OE$")
+        sArg = Replace(sArg, "Ü", "$UE$")
+        sArg = Replace(sArg, "ß", "$ss$")
+        sArg = Replace(sArg, "°", "$deg$")
         JSONArgs.Add sArgName, sArg
     End If
 End Sub
@@ -159,7 +155,7 @@ Private Sub AddOneSchedule(sArgName As String, r As Range)
     For i = 1 To iCells - 1
         strArg = strArg + ";" + CStr(r.Offset(i, 0))
     Next i
-    AddArgument sArgName, strArg
+    AddArgument sArgName, strArg, True
 End Sub
 
 
