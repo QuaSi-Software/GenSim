@@ -858,22 +858,6 @@ End Sub
 ' @param dd DropDown ByRef The dropdown
 ' @param val Variant ByVal The value to look for
 Sub DDFindAndSetValue(ByRef dd As DropDown, ByVal val As Variant)
-' ----- Sonderzeichen, Umlaute usw. die im ows/json file umgeschrieben wurden, müssen wieder 'zurück übersetzt' werden
-' ----- siehe Export: JSONFile-Sub 'AddArgument'
-    If InStr(val, ".") Then            '   Braucht es die Umwandlung '.' - ','  ???        TODO: Testen!!!!
-        val = Replace(val, ".", ",")
-    End If
-    If InStr(val, "ae") Then
-        val = Replace(val, "ae", "ä")
-    End If
-    If InStr(val, "ue") Then
-        val = Replace(val, "ue", "ü")
-    End If
-    If InStr(val, "oe") Then
-        val = Replace(val, "oe", "ö")
-    End If
-
-
     Dim i As Integer
     For i = 1 To dd.ListCount
         If dd.List(i) = val Then dd.Value = i
@@ -891,19 +875,19 @@ End Sub
 ' @param rangeName String ByRef The range where the data is written
 ' @param schedNameRange String ByRef The range where the name is written
 Sub ImportSchedule(ByRef args As Scripting.Dictionary, ByRef scheduleName As String, ByRef rangeName As String, ByRef schedNameRange As String)
-    If args("is_custom_" & scheduleName) = "false" Then Exit Sub
+    If GetArgument(args, "is_custom_" & scheduleName) = "Nein" Then Exit Sub
 
     Dim values As Variant
     Dim bs As String: bs = IIf(scheduleName = "hvac", "Sched", "Schedule")
 
-    values = Split(Trim(args(scheduleName & bs & "Werktag")), ";")
+    values = Split(Trim(GetArgument(args, scheduleName & bs & "Werktag", True)), ";")
     Sheets("EIGENE NUTZUNGSPROFILE").Range(rangeName).Offset(0, 0) = Application.Transpose(values)
-    values = Split(Trim(args(scheduleName & bs & "Samstag")), ";")
+    values = Split(Trim(GetArgument(args, scheduleName & bs & "Samstag", True)), ";")
     Sheets("EIGENE NUTZUNGSPROFILE").Range(rangeName).Offset(0, 1) = Application.Transpose(values)
-    values = Split(Trim(args(scheduleName & bs & "Sonntag")), ";")
+    values = Split(Trim(GetArgument(args, scheduleName & bs & "Sonntag", True)), ";")
     Sheets("EIGENE NUTZUNGSPROFILE").Range(rangeName).Offset(0, 2) = Application.Transpose(values)
-    values = Split(Trim(args(scheduleName & bs & "Feiertag")), ";")
+    values = Split(Trim(GetArgument(args, scheduleName & bs & "Feiertag", True)), ";")
     Sheets("EIGENE NUTZUNGSPROFILE").Range(rangeName).Offset(0, 3) = Application.Transpose(values)
 
-    Sheets("EIGENE NUTZUNGSPROFILE").Range(schedNameRange) = args(scheduleName & "Schedule")
+    Sheets("EIGENE NUTZUNGSPROFILE").Range(schedNameRange) = GetArgument(args, scheduleName & "Schedule", True)
 End Sub
