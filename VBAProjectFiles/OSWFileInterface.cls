@@ -56,7 +56,7 @@ Sub ExportToOSW( _
     Set dd42 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_n")
     Dim dd43 As DropDown 'Adiabat Ost
     Set dd43 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_o")
-    Dim dd44 As DropDown 'Adiabat SÃ¼d
+    Dim dd44 As DropDown 'Adiabat Süd
     Set dd44 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_s")
     Dim dd45 As DropDown 'Adiabat West
     Set dd45 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_w")
@@ -181,12 +181,12 @@ Sub ExportToOSW( _
 
     'Geometrie
     If bGeneric Then
-        jFile.AddArgument "genGeom", 1      'Range("geometry_source")
+        jFile.AddArgument "genGeom", 1
     Else
         jFile.AddArgument "genGeom", 2
     End If
 
-    'Lüftung (neue Parameter "konditionierte Raumhöhe" und "Geschosshöhe Geometrieimport"
+    'Lüftung
     jFile.AddArgument "FloorHeight_kond", Range("FloorHeight_kond")
     jFile.AddArgument "FloorHeight_import", Range("FloorHeight_import")
     jFile.AddArgument "ACH_Input_Parameter", Range("ACH")
@@ -392,10 +392,6 @@ Sub ExportToOSW( _
     jFile.AddArgument "coolingTemp", dd86.List(dd86.Value)
     jFile.AddArgument "is_custom_heating", IIf(dd60.Value > 3, "true", "false")  ' da bisher nur drei feste Profile zur Auswahl stehen
     jFile.AddArgument "is_custom_cooling", IIf(dd86.Value > 3, "true", "false")
-    ' _  DEBUGGING
-    ' _  SCHED durch SCHEDULE ersetzt, da beim 'ImportSchedule' abgefragt wird: scheduleName = "hvac" und entsprechend SCHEDULE und nicht SCHED zurück gegeben wird...
-    ' jFile.AddSchedule "zoneHeatingTempSched", Range("HeatingWD")
-    ' jFile.AddSchedule "zoneCoolingTempSched", Range("CoolingWD")
     jFile.AddSchedule "zoneHeatingTempSchedule", Range("HeatingWD")
     jFile.AddSchedule "zoneCoolingTempSchedule", Range("CoolingWD")
     jFile.AddHolidays "Holidays", Range("Feiertage")
@@ -627,7 +623,6 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             Dim dd45 As DropDown: Set dd45 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_w")
             Dim dd46 As DropDown: Set dd46 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_d")
             Dim dd47 As DropDown: Set dd47 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_b")
-           ' Dim ddRatio1 As DropDown: Set ddRatio1 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF")         ' oben deklariert, sonst doppelt
 
             If args.Exists("number_of_stories") Then Range("NoFloors") = GetArgument(args, "number_of_stories")
             If args.Exists("floor_to_floor_height") Then Range("FloorHeight") = GetArgument(args, "floor_to_floor_height")
@@ -664,10 +659,9 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
                     For idx_name = 1 To UBound(names)
                         For idx_layer = 1 To nrOfLayers
                             For idx_attr = 1 To UBound(attrs)
-                                'And Not Abfrage ergänzt
-                                '       - Wenn kein Bauteil Name eingetragen ist, dann sollen die Nullen der folgenden 'attrs'
-                                '       (Thickness, Conductivity, Density, SpecificHeat)
-                                '       nicht geschrieben, sondern übersprungen werden ...
+                                ' Wenn kein Bauteil Name eingetragen ist, dann sollen die Nullen der folgenden 'attrs'
+                                ' (Thickness, Conductivity, Density, SpecificHeat)
+                                ' nicht geschrieben, sondern übersprungen werden ...
                                 If args.Exists(names(idx_name) & idx_layer & attrs(idx_attr)) _
                                     And Not GetArgument(args, names(idx_name) & idx_layer & attrs(1)) = "" _
                                 Then
@@ -706,7 +700,6 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             End If
 
             If args.Exists("is_imported") And args.Exists("is_custom_ratio") Then
-    '            Dim ddRatio1 As DropDown: Set ddRatio1 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF")            'auskommentiert, wegen doppelter Deklaration
                 Dim ddRatio2 As DropDown: Set ddRatio2 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF_Import")
 
                 If GetArgument(args, "is_imported") = "Ja" Then
@@ -747,11 +740,7 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             End If
 
         Case "AddingIdealAirLoads":
-            'Dim dd33 As DropDown: Set dd33 = Sheets("HAUPTSEITE").DropDowns("Dropdown33")
-            'Dim dd55 As DropDown: Set dd55 = Sheets("HAUPTSEITE").DropDowns("Dropdown55")
-
             If args.Exists("wrg") Then
-            '    Dim wrgVal As String
                 wrgVal = IIf(GetArgument(args, "wrg") = "None", "Keine", IIf(GetArgument(args, "wrg") = "Sensible", "Sensibel", "Latent"))
                 DDFindAndSetValue dd33, wrgVal
             End If
@@ -766,12 +755,8 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             If args.Exists("latent") Then Range("LATENT") = GetArgument(args, "latent")
             If args.Exists("sensible") Then Range("SENSIBLE") = GetArgument(args, "sensible")
 
-        Case "AddDetailedHVAC":                                                                 'Doppelpunkt hat gefehlt?!
-            'Dim dd33 As DropDown: Set dd33 = Sheets("HAUPTSEITE").DropDowns("Dropdown33")
-            'Dim dd55 As DropDown: Set dd55 = Sheets("HAUPTSEITE").DropDowns("Dropdown55")
-
+        Case "AddDetailedHVAC":
             If args.Exists("wrg") Then
-            '    Dim wrgVal As String
                 wrgVal = IIf(GetArgument(args, "wrg") = "None", "Keine", IIf(GetArgument(args, "wrg") = "Sensible", "Sensibel", "Latent"))
                 DDFindAndSetValue dd33, wrgVal
             End If
