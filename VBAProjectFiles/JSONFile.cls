@@ -251,8 +251,6 @@ Public Sub ParseOutputFile(sFilename As String)
             Range("LightingControl") = GetStepStatus(step)
         ElseIf step("measure_dir_name") = "AddingTemperatureSetpoints" Then
             Range("TempSetpoint") = GetStepStatus(step)
-        ElseIf step("measure_dir_name") = "AddingPhotovoltaic" Then
-            Range("Photovoltaic") = GetStepStatus(step)
         ElseIf step("measure_dir_name") = "InjectZoneVentilationIDF" Then
             Range("window_ventilation") = GetStepStatus(step)
         ElseIf step("measure_dir_name") = "InjectIdealLoadParametersIDF" Then
