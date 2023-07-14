@@ -1,23 +1,45 @@
 <measure>
   <schema_version>3.0</schema_version>
-  <error>superclass mismatch for class SetMeters</error>
-  <name>SetMeters</name>
+  <name>set_meters</name>
   <uid>f6530b2e-e6e0-4b16-888c-54226d297dd4</uid>
-  <version_id>feaf9ccb-6c3c-439f-9a87-c7637ce9a5fa</version_id>
-  <version_modified>20180817T083247Z</version_modified>
-  <xml_checksum>2AF3A68E</xml_checksum>
+  <version_id>44eda733-30fc-4733-92a3-7a44f598e85f</version_id>
+  <version_modified>20230714T085756Z</version_modified>
+  <xml_checksum>15DBE762</xml_checksum>
   <class_name>SetMeters</class_name>
   <display_name>SetMeters</display_name>
   <description></description>
   <modeler_description></modeler_description>
   <arguments>
     <argument>
-      <name>space_name</name>
-      <display_name>New space name</display_name>
-      <description>This name will be used as the name of the new space.</description>
+      <name>Timestep</name>
+      <display_name>Timestep</display_name>
+      <type>Integer</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>DayToStartSimulation</name>
+      <display_name>DayToStartSimulation</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
+      <default_value>UseWeatherFile</default_value>
+    </argument>
+    <argument>
+      <name>HeatingSizingFactor</name>
+      <display_name>HeatingSizingFactor</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+      <default_value>1.25</default_value>
+    </argument>
+    <argument>
+      <name>CoolingSizingFactor</name>
+      <display_name>CoolingSizingFactor</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+      <default_value>1.15</default_value>
     </argument>
   </arguments>
   <outputs/>
@@ -52,13 +74,19 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>CC28C021</checksum>
+      <checksum>393D0EE2</checksum>
     </file>
     <file>
-      <filename>set_meters_test.rb</filename>
+      <filename>example_model.idf</filename>
+      <filetype>idf</filetype>
+      <usage_type>test</usage_type>
+      <checksum>0AB453A0</checksum>
+    </file>
+    <file>
+      <filename>SetMeters_Test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>6AABD9D2</checksum>
+      <checksum>D4E67978</checksum>
     </file>
   </files>
 </measure>

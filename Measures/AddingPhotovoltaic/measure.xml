@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>adding_photovoltaic</name>
   <uid>4921c09e-e57b-4439-905f-9cff8189aa41</uid>
-  <version_id>638a58c9-2097-499a-a011-d4e15df10ff6</version_id>
-  <version_modified>20180727T085621Z</version_modified>
+  <version_id>4b54adc2-3def-4b1b-a444-12b426b3313f</version_id>
+  <version_modified>20230714T085611Z</version_modified>
   <xml_checksum>2AF3A68E</xml_checksum>
   <class_name>AddingPhotovoltaic</class_name>
   <display_name>AddingPhotovoltaic</display_name>
@@ -83,17 +83,6 @@
   </attributes>
   <files>
     <file>
-      <version>
-        <software_program>OpenStudio</software_program>
-        <identifier>2.5.0</identifier>
-        <min_compatible>2.5.0</min_compatible>
-      </version>
-      <filename>measure.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>script</usage_type>
-      <checksum>61BFB30D</checksum>
-    </file>
-    <file>
       <filename>os_lib_helper_methods.rb</filename>
       <filetype>rb</filetype>
       <usage_type>resource</usage_type>
@@ -104,6 +93,29 @@
       <filetype>rb</filetype>
       <usage_type>resource</usage_type>
       <checksum>C4185CAA</checksum>
+    </file>
+    <file>
+      <version>
+        <software_program>OpenStudio</software_program>
+        <identifier>2.5.0</identifier>
+        <min_compatible>2.5.0</min_compatible>
+      </version>
+      <filename>measure.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>script</usage_type>
+      <checksum>A111F226</checksum>
+    </file>
+    <file>
+      <filename>AddingPhotovoltaic_Test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>040F8A0F</checksum>
+    </file>
+    <file>
+      <filename>example_model.osm</filename>
+      <filetype>osm</filetype>
+      <usage_type>test</usage_type>
+      <checksum>B2E18E9A</checksum>
     </file>
   </files>
 </measure>

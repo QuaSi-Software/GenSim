@@ -2,15 +2,14 @@
   <schema_version>3.0</schema_version>
   <name>create_an_empty_model</name>
   <uid>8e312045-ffd8-4851-82b2-a62c7d5a2a41</uid>
-  <version_id>a74875b6-305d-4ea5-8d54-479d22711f37</version_id>
-  <version_modified>20180727T085621Z</version_modified>
+  <version_id>4bf92879-b478-4fc5-8b4a-0183594c5175</version_id>
+  <version_modified>20230714T085655Z</version_modified>
   <xml_checksum>2AF3A68E</xml_checksum>
   <class_name>CreateAnEmptyModel</class_name>
   <display_name>CreateAnEmptyModel</display_name>
   <description>This just creates an empty model</description>
   <modeler_description>This just creates an empty model</modeler_description>
-  <arguments>
-  </arguments>
+  <arguments/>
   <outputs/>
   <provenances/>
   <tags>
@@ -48,7 +47,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>A161A0CB</checksum>
+      <checksum>48DD111A</checksum>
+    </file>
+    <file>
+      <filename>CreateAnEmptyModel_Test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>4F964C2B</checksum>
     </file>
   </files>
 </measure>
