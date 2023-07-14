@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>custom_export_params</name>
   <uid>28949d7c-e721-4d6c-9784-0d9840672a49</uid>
-  <version_id>544e9b5b-bae9-4ff9-ace4-62df37bdda52</version_id>
-  <version_modified>20230714T085156Z</version_modified>
+  <version_id>8e9a135e-fa60-4f4a-a0eb-c00a8317a1fb</version_id>
+  <version_modified>20230714T122007Z</version_modified>
   <xml_checksum>2AF3A68E</xml_checksum>
   <class_name>CustomExportParams</class_name>
   <display_name>CustomExportParams</display_name>
@@ -12,23 +12,23 @@
   <arguments>
     <argument>
       <name>zoneDetails</name>
-      <display_name>Has zone details?</display_name>
+      <display_name>Has zone details</display_name>
       <type>Integer</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>detailedHVAC</name>
-      <display_name>With detailed HVAC?</display_name>
+      <display_name>With detailed HVAC</display_name>
       <type>Integer</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>ventilation_type</name>
       <display_name>Ventilation type</display_name>
       <type>Integer</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
@@ -36,7 +36,7 @@
       <display_name>Floor length</display_name>
       <type>Double</type>
       <units>m</units>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
@@ -44,77 +44,77 @@
       <display_name>Floor width</display_name>
       <type>Double</type>
       <units>m</units>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>ratio_NRF_BGF</name>
-      <display_name>Ratio of NRF over BGF (selection)</display_name>
+      <display_name>Ratio of NRF over BGF selection</display_name>
       <type>String</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>NRF_BGF</name>
       <display_name>Ratio of NRF over BGF</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>Holidays</name>
       <display_name>Definition of holidays</display_name>
       <type>String</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>vorlauf_Luft</name>
-      <display_name>Vorlauf Luft berechnen?</display_name>
+      <display_name>Vorlauf Luft berechnen</display_name>
       <type>Integer</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>nachlauf_Luft</name>
-      <display_name>Rücklauf Luft berechnen?</display_name>
+      <display_name>Rücklauf Luft berechnen</display_name>
       <type>Integer</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>Shadingcontrol</name>
-      <display_name>Sonnenschutz berechnen?</display_name>
+      <display_name>Sonnenschutz berechnen</display_name>
       <type>Integer</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>Infiltration</name>
-      <display_name>Infiltration berechnen?</display_name>
+      <display_name>Infiltration berechnen</display_name>
       <type>Integer</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>Lightingcontrol</name>
-      <display_name>Lichtsteuerung berechnen?</display_name>
+      <display_name>Lichtsteuerung berechnen</display_name>
       <type>Integer</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>Windowvent</name>
-      <display_name>Fensterlüftung berechnen?</display_name>
+      <display_name>Fensterlüftung berechnen</display_name>
       <type>Integer</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>genGeom</name>
-      <display_name>Generische Geometrie?</display_name>
+      <display_name>Generische Geometrie</display_name>
       <type>Integer</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
@@ -122,7 +122,7 @@
       <display_name>Konditionierte Raumhöhe</display_name>
       <type>Double</type>
       <units>m</units>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
@@ -130,15 +130,15 @@
       <display_name>Importierte Raumhöhe</display_name>
       <type>Double</type>
       <units>m</units>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>ACH_Input_Parameter</name>
       <display_name>Luftwechselrate</display_name>
       <type>Double</type>
-      <units>m^-1</units>
-      <required>true</required>
+      <units>h^-1</units>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
   </arguments>
@@ -179,7 +179,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>8E7E2FA3</checksum>
+      <checksum>E1AE1991</checksum>
+    </file>
+    <file>
+      <filename>CustomExportParams_Test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>DD78A3F1</checksum>
     </file>
   </files>
 </measure>
