@@ -2,14 +2,145 @@
   <schema_version>3.0</schema_version>
   <name>custom_export_params</name>
   <uid>28949d7c-e721-4d6c-9784-0d9840672a49</uid>
-  <version_id>b8058cec-0ea3-423a-89ab-4736afe77a9c</version_id>
-  <version_modified>20230710T083034Z</version_modified>
+  <version_id>544e9b5b-bae9-4ff9-ace4-62df37bdda52</version_id>
+  <version_modified>20230714T085156Z</version_modified>
   <xml_checksum>2AF3A68E</xml_checksum>
   <class_name>CustomExportParams</class_name>
   <display_name>CustomExportParams</display_name>
   <description>A dummy measure to contain custom parameters</description>
   <modeler_description>A dummy measure to contain custom parameters</modeler_description>
   <arguments>
+    <argument>
+      <name>zoneDetails</name>
+      <display_name>Has zone details?</display_name>
+      <type>Integer</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>detailedHVAC</name>
+      <display_name>With detailed HVAC?</display_name>
+      <type>Integer</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>ventilation_type</name>
+      <display_name>Ventilation type</display_name>
+      <type>Integer</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>floor_length</name>
+      <display_name>Floor length</display_name>
+      <type>Double</type>
+      <units>m</units>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>floor_width</name>
+      <display_name>Floor width</display_name>
+      <type>Double</type>
+      <units>m</units>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>ratio_NRF_BGF</name>
+      <display_name>Ratio of NRF over BGF (selection)</display_name>
+      <type>String</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>NRF_BGF</name>
+      <display_name>Ratio of NRF over BGF</display_name>
+      <type>Double</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>Holidays</name>
+      <display_name>Definition of holidays</display_name>
+      <type>String</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>vorlauf_Luft</name>
+      <display_name>Vorlauf Luft berechnen?</display_name>
+      <type>Integer</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>nachlauf_Luft</name>
+      <display_name>Rücklauf Luft berechnen?</display_name>
+      <type>Integer</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>Shadingcontrol</name>
+      <display_name>Sonnenschutz berechnen?</display_name>
+      <type>Integer</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>Infiltration</name>
+      <display_name>Infiltration berechnen?</display_name>
+      <type>Integer</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>Lightingcontrol</name>
+      <display_name>Lichtsteuerung berechnen?</display_name>
+      <type>Integer</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>Windowvent</name>
+      <display_name>Fensterlüftung berechnen?</display_name>
+      <type>Integer</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>genGeom</name>
+      <display_name>Generische Geometrie?</display_name>
+      <type>Integer</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>FloorHeight_kond</name>
+      <display_name>Konditionierte Raumhöhe</display_name>
+      <type>Double</type>
+      <units>m</units>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>FloorHeight_import</name>
+      <display_name>Importierte Raumhöhe</display_name>
+      <type>Double</type>
+      <units>m</units>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>ACH_Input_Parameter</name>
+      <display_name>Luftwechselrate</display_name>
+      <type>Double</type>
+      <units>m^-1</units>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
   </arguments>
   <outputs/>
   <provenances/>
@@ -48,7 +179,7 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum></checksum>
+      <checksum>8E7E2FA3</checksum>
     </file>
   </files>
 </measure>
