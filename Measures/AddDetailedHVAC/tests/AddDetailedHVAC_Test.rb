@@ -21,7 +21,7 @@ class AddDetailedHVAC_Test < MiniTest::Test
         # get arguments with a new instance of the measure
         arguments = GetArguments(AddDetailedHVAC.new, OpenStudio::Model::Model.new)
 
-        assert_equal(24, arguments.size)
+        assert_equal(26, arguments.size)
     end
 
     def test_bad_argument_values
@@ -45,6 +45,8 @@ class AddDetailedHVAC_Test < MiniTest::Test
         args_hash["latent"] = 1
         args_hash["sensible"] = 0.75
         args_hash["ach"] = 1.5
+        args_hash["hvacSchedule"] = "DIN 18599: Einzel-/Gruppen-/Großraumbüro"
+        args_hash["is_custom_hvac"] = true
         args_hash["hvacSchedWerktag"] = hvacSched
         args_hash["hvacSchedSamstag"] = hvacSched
         args_hash["hvacSchedSonntag"] = hvacSched
