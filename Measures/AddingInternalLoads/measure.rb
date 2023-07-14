@@ -45,19 +45,19 @@ class AddingInternalLoads < OpenStudio::Measure::ModelMeasure
 	args << OpenStudio::Measure::OSArgument.makeStringArgument("Holidays", false)
 
 	# custom parameters for loading from OSW
-	args << OpenStudio::Measure::OSArgument.makeDoubleArgument("area_bgf_import", true)
-	args << OpenStudio::Measure::OSArgument.makeDoubleArgument("NRF/BGF", true)
-	args << OpenStudio::Measure::OSArgument.makeStringArgument("selected_ratio", true)
-	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_ratio", true)
-	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_imported", true)
-	args << OpenStudio::Measure::OSArgument.makeStringArgument("ElectricEquipmentSchedule", true)
-	args << OpenStudio::Measure::OSArgument.makeStringArgument("LightSchedule", true)
-	args << OpenStudio::Measure::OSArgument.makeStringArgument("PeopleSchedule", true)
-	args << OpenStudio::Measure::OSArgument.makeStringArgument("PeopleActivitySchedule", true)
-	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_ElectricEquipment", true)
-	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_Light", true)
-	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_People", true)
-	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_PeopleActivity", true)
+	args << OpenStudio::Measure::OSArgument.makeDoubleArgument("area_bgf_import", false)
+	args << OpenStudio::Measure::OSArgument.makeDoubleArgument("NRF/BGF", false)
+	args << OpenStudio::Measure::OSArgument.makeStringArgument("selected_ratio", false)
+	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_ratio", false)
+	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_imported", false)
+	args << OpenStudio::Measure::OSArgument.makeStringArgument("ElectricEquipmentSchedule", false)
+	args << OpenStudio::Measure::OSArgument.makeStringArgument("LightSchedule", false)
+	args << OpenStudio::Measure::OSArgument.makeStringArgument("PeopleSchedule", false)
+	args << OpenStudio::Measure::OSArgument.makeStringArgument("PeopleActivitySchedule", false)
+	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_ElectricEquipment", false)
+	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_Light", false)
+	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_People", false)
+	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_PeopleActivity", false)
     
     return args
   end

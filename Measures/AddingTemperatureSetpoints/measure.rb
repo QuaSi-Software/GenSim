@@ -21,10 +21,10 @@ class AddingTemperatureSetpoints < OpenStudio::Measure::ModelMeasure
   # define the arguments that the user will input
   def arguments(model)
     args = OpenStudio::Measure::OSArgumentVector.new
-    args << OpenStudio::Measure::OSArgument.makeStringArgument("heatingTemp", true)
-    args << OpenStudio::Measure::OSArgument.makeStringArgument("coolingTemp", true)
-    args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_heating", true)
-    args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_cooling", true)
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("heatingTemp", false)
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("coolingTemp", false)
+    args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_heating", false)
+    args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_cooling", false)
     args << OpenStudio::Measure::OSArgument.makeStringArgument("zoneHeatingTempScheduleWerktag", true)
     args << OpenStudio::Measure::OSArgument.makeStringArgument("zoneHeatingTempScheduleSamstag", true)
     args << OpenStudio::Measure::OSArgument.makeStringArgument("zoneHeatingTempScheduleSonntag", true)
