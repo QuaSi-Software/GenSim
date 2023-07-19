@@ -1,0 +1,277 @@
+{
+	"KPIs": {
+		"Heizbedarf": {
+			"Value": 35.70072669599,
+			"Tolerance": "5%",
+			"Unit": "[kWh/m^2NRF*a]"
+		},
+		"Kuehlbedarf": {
+			"Value": 9.10475337904179,
+			"Tolerance": "5%",
+			"Unit": "[kWh/m^2NRF*a]"
+		},
+		"Nutzerstrom_Licht": {
+			"Value": 15.2445714285729,
+			"Tolerance": "5%",
+			"Unit": "[kWh/m^2NRF*a]"
+		},
+		"Nutzerstrom_Elektrische_Geraete": {
+			"Value": 15.3803366060952,
+			"Tolerance": "5%",
+			"Unit": "[kWh/m^2NRF*a]"
+		},
+		"Pumpenstrom": {
+			"Value": 0.120080664493901,
+			"Tolerance": "5%",
+			"Unit": "[kWh/m^2NRF*a]"
+		},
+		"Lueftungsstrom": {
+			"Value": 3.21750000000012,
+			"Tolerance": "5%",
+			"Unit": "[kWh/m^2NRF*a]"
+		},
+		"Solare_Gewinne": {
+			"Value": 21.2618359075458,
+			"Tolerance": "5%",
+			"Unit": "[kWh/m^2NRF*a]"
+		},
+		"Interne_Lasten": {
+			"Value": 45.1849080346696,
+			"Tolerance": "5%",
+			"Unit": "[kWh/m^2NRF*a]"
+		},
+		"Transmission_Verluste": {
+			"Value": -31.4769719344965,
+			"Tolerance": "5%",
+			"Unit": "[kWh/m^2NRF*a]"
+		},
+		"Transmission_Gewinne": {
+			"Value": 2.38507273823767,
+			"Tolerance": "5%",
+			"Unit": "[kWh/m^2NRF*a]"
+		},
+		"Infiltration": {
+			"Value": -9.03238800943372,
+			"Tolerance": "5%",
+			"Unit": "[kWh/m^2NRF*a]"
+		},
+		"Fensterlueftung": {
+			"Value": -2.22254279195423,
+			"Tolerance": "5%",
+			"Unit": "[kWh/m^2NRF*a]"
+		},
+		"Mechanische_Lueftung_Verluste": {
+			"Value": -47.7899526214676,
+			"Tolerance": "5%",
+			"Unit": "[kWh/m^2NRF*a]"
+		},
+		"Mechanische_Lueftung_Gewinne": {
+			"Value": 3.30445210389134,
+			"Tolerance": "5%",
+			"Unit": "[kWh/m^2NRF*a]"
+		},
+		"Unmet_Solltemperatur_Heizung": {
+			"Value": 0,
+			"Tolerance": "3",
+			"Unit": "[h/a]"
+		},
+		"Unmet_Solltemperatur_Kuehlung": {
+			"Value": 81.75,
+			"Tolerance": "3",
+			"Unit": "[h/a]"
+		},
+		"Photovoltaik_Ertrag ": {
+			"Value": 0,
+			"Tolerance": "5%",
+			"Unit": "[kWh/m^2PV*a]"
+		},
+		"Photovoltaik_Peakleistung": {
+			"Value": 0,
+			"Tolerance": "5%",
+			"Unit": "[kWh/kWp*a]"
+		},
+		"Heizung_Autosizing_EnergyPlus": {
+			"Value": 92.0480051192275,
+			"Tolerance": "5%",
+			"Unit": "[W/m^2NRF]"
+		},
+		"Heizung_Profil_Max_Wert": {
+			"Value": 61.4240487940203,
+			"Tolerance": "5%",
+			"Unit": "[W/m^2NRF]"
+		},
+		"Kuehlung_Autosizing_EnergyPlus": {
+			"Value": 23.9175660935114,
+			"Tolerance": "5%",
+			"Unit": "[W/m^2NRF]"
+		},
+		"Kuehlung_Profil_Max_Wert": {
+			"Value": 23.9175660925361,
+			"Tolerance": "5%",
+			"Unit": "[W/m^2NRF]"
+		}
+	},
+	"Profiles": {
+		"Heizenergie": {
+			"Sum_yearly": 35700.72669599,
+			"Max_yearly": 15.3560121985051,
+			"Min_yearly": 0,
+			"Mean_yearly": 1.01885635547917,
+			"Sum_monthly": {
+				"January": 8903.43831324301,
+				"February": 7226.27426221781,
+				"March": 3787.45948286743,
+				"April": 842.692226628609,
+				"May": 0,
+				"June": 0,
+				"July": 0,
+				"August": 0,
+				"September": 0.00971278127223079,
+				"October": 1381.09201533152,
+				"November": 5484.33349551435,
+				"December": 8075.42718740585,
+				"_note": "each month has 730 hours!"
+			},
+			"Tolerance": "5%",
+			"Unit": "[Wh/m^2NRF]"
+		},
+		"Kuehlenergie": {
+			"Sum_yearly": 9104.75337904195,
+			"Max_yearly": 5.97939152313402,
+			"Min_yearly": 0,
+			"Mean_yearly": 0.259838852141608,
+			"Sum_monthly": {
+				"January": 0,
+				"February": 0,
+				"March": 0,
+				"April": 0,
+				"May": 924.83539698072,
+				"June": 2039.02997226529,
+				"July": 2932.1371575236,
+				"August": 2755.79268797657,
+				"September": 452.958164295696,
+				"October": 0,
+				"November": 0,
+				"December": 0,
+				"_note": "each month has 730 hours!"
+			},
+			"Tolerance": "5%",
+			"Unit": "[Wh/m^2NRF]"
+		},
+		"Beleuchtung": {
+			"Sum_yearly": 15244.5714285694,
+			"Max_yearly": 1.39999999999999,
+			"Min_yearly": 0,
+			"Mean_yearly": 0.43506196999342,
+			"Sum_monthly": {
+				"January": 1292.11428571429,
+				"February": 1348,
+				"March": 1241.31428571428,
+				"April": 1279.42857142857,
+				"May": 1234.11428571428,
+				"June": 1145.88571428571,
+				"July": 1244.05714285714,
+				"August": 1296.8,
+				"September": 1236.57142857143,
+				"October": 1322.91428571429,
+				"November": 1356.40000000001,
+				"December": 1246.97142857143,
+				"_note": "each month has 730 hours!"
+			},
+			"Tolerance": "5%",
+			"Unit": "[Wh/m^2NRF]"
+		},
+		"Elektrische_Geraete": {
+			"Sum_yearly": 15380.3366060974,
+			"Max_yearly": 1.5,
+			"Min_yearly": 0.0808909730363422,
+			"Mean_yearly": 0.438936546977666,
+			"Sum_monthly": {
+				"January": 1263.91881594371,
+				"February": 1328.04953106681,
+				"March": 1253.00381008205,
+				"April": 1291.05905627197,
+				"May": 1301.38716295426,
+				"June": 1252.4951641266,
+				"July": 1296.30246189917,
+				"August": 1299.28531652988,
+				"September": 1249.61342321218,
+				"October": 1296.24135404453,
+				"November": 1328.86415592027,
+				"December": 1220.11635404453,
+				"_note": "each month has 730 hours!"
+			},
+			"Tolerance": "5%",
+			"Unit": "[Wh/m^2NRF]"
+		},
+		"Lueftungsstrom": {
+			"Sum_yearly": 3217.5,
+			"Max_yearly": 0.28125,
+			"Min_yearly": 0,
+			"Mean_yearly": 0.0918236301369863,
+			"Sum_monthly": {
+				"January": 263.25,
+				"February": 281.25,
+				"March": 259.875,
+				"April": 270,
+				"May": 274.5,
+				"June": 259.875,
+				"July": 272.25,
+				"August": 273.375,
+				"September": 258.75,
+				"October": 272.25,
+				"November": 280.125,
+				"December": 252,
+				"_note": "each month has 730 hours!"
+			},
+			"Tolerance": "5%",
+			"Unit": "[Wh/m^2NRF]"
+		},
+		"Pumpenstrom": {
+			"Sum_yearly": 120.080664493898,
+			"Max_yearly": 0.0727889084492883,
+			"Min_yearly": 0,
+			"Mean_yearly": 0.00342695960313635,
+			"Sum_monthly": {
+				"January": 9.52231926798206,
+				"February": 7.5846409107113,
+				"March": 3.83984378158452,
+				"April": 0.843875808737524,
+				"May": 8.24862110493434,
+				"June": 16.9280971254023,
+				"July": 28.2103470335925,
+				"August": 24.9225067226214,
+				"September": 4.6334708932967,
+				"October": 1.38976170239686,
+				"November": 5.55167698676569,
+				"December": 8.40550315587419,
+				"_note": "each month has 730 hours!"
+			},
+			"Tolerance": "5%",
+			"Unit": "[Wh/m^2NRF]"
+		},
+		"PV_Ertrag ": {
+			"Sum_yearly": 0,
+			"Max_yearly": 0,
+			"Min_yearly": 0,
+			"Mean_yearly": 0,
+			"Sum_monthly": {
+				"January": 0,
+				"February": 0,
+				"March": 0,
+				"April": 0,
+				"May": 0,
+				"June": 0,
+				"July": 0,
+				"August": 0,
+				"September": 0,
+				"October": 0,
+				"November": 0,
+				"December": 0,
+				"_note": "each month has 730 hours!"
+			},
+			"Tolerance": "5%",
+			"Unit": "[Wh/m^2PV]"
+		}
+	}
+}

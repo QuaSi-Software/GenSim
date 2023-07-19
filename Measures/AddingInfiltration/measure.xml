@@ -1,0 +1,62 @@
+<measure>
+  <schema_version>3.0</schema_version>
+  <name>adding_infiltration</name>
+  <uid>fc9a4e6a-409c-4788-aa87-76d3fee0088c</uid>
+  <version_id>90471b88-9f81-49e2-884e-a5d6cabd1498</version_id>
+  <version_modified>20180727T085621Z</version_modified>
+  <xml_checksum>19EEDBBB</xml_checksum>
+  <class_name>AddingInfiltration</class_name>
+  <display_name>AddingInfiltration</display_name>
+  <description></description>
+  <modeler_description></modeler_description>
+  <arguments>
+    <argument>
+      <name>AirChangesPerHour</name>
+      <display_name>Space Infiltration Air Changes Per Hour (1/h).</display_name>
+      <type>Double</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+      <default_value>0.1</default_value>
+    </argument>
+  </arguments>
+  <outputs/>
+  <provenances/>
+  <tags>
+    <tag>Envelope.Infiltration</tag>
+  </tags>
+  <attributes>
+    <attribute>
+      <name>Measure Type</name>
+      <value>ModelMeasure</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>Apply Measure Now</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>OpenStudio Application</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>Parametric Analysis Tool</value>
+      <datatype>string</datatype>
+    </attribute>
+  </attributes>
+  <files>
+    <file>
+      <version>
+        <software_program>OpenStudio</software_program>
+        <identifier>2.5.0</identifier>
+        <min_compatible>2.5.0</min_compatible>
+      </version>
+      <filename>measure.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>script</usage_type>
+      <checksum>17241653</checksum>
+    </file>
+  </files>
+</measure>

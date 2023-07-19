@@ -1,0 +1,3 @@
+Source: https://kunden.dwd.de/copyright.html
+
+Test reference year (TRY) weather data was provided by Deutscher Wetterdienst (DWD) and transformed to EnergyPlus Weather (EPW) files and Design Day (DDY) files. The original data is released under the "Verordnung zur Festlegung der Nutzungsbestimmungen für die Bereitstellung von Geodaten des Bundes" (GeoNutzV) (see https://www.gesetze-im-internet.de/geonutzv/BJNR054700013.html).

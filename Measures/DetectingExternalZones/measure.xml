@@ -1,0 +1,54 @@
+<measure>
+  <schema_version>3.0</schema_version>
+  <name>DetectingExternalZones</name>
+  <uid>ac34ac49-f21b-4c54-83e9-3615aa06acf2</uid>
+  <version_id>a93ebf3f-b844-42a1-b38a-8b292553227g</version_id>
+  <version_modified>20180727T085621Z</version_modified>
+  <xml_checksum>81C5D8E7</xml_checksum>
+  <class_name>DetectingExternalZones</class_name>
+  <display_name>DetectingExternalZones</display_name>
+  <description></description>
+  <modeler_description></modeler_description>
+  <arguments>
+  </arguments>
+  <outputs/>
+  <provenances/>
+  <tags>
+    <tag>DetectingExternalZones</tag>
+  </tags>
+  <attributes>
+    <attribute>
+      <name>Measure Type</name>
+      <value>ModelMeasure</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>Apply Measure Now</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>OpenStudio Application</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>Parametric Analysis Tool</value>
+      <datatype>string</datatype>
+    </attribute>
+  </attributes>
+  <files>
+    <file>
+      <version>
+        <software_program>OpenStudio</software_program>
+        <identifier>2.5.0</identifier>
+        <min_compatible>2.5.0</min_compatible>
+      </version>
+      <filename>measure.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>script</usage_type>
+      <checksum>B52116B0</checksum>
+    </file>
+  </files>
+</measure>

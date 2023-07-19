@@ -1,0 +1,225 @@
+ ! The following Location and Design Day data are produced as possible from the weather source data.
+ ! Wind Speeds follow the traditional values (6.7 m/s heating, 3.35 m/s cooling)
+ ! No special attempts at re-creating or determining missing data parts (e.g. Wind speed or direction)
+ ! are done.  Therefore, you should look at the data and fill in any incorrect values as you desire.
+ 
+ ! SizingPeriod:DesignDay and other objects are formatted to meet criteria of EnergyPlus V7.1 and later
+ 
+ ! Some users have indicated that they would like the actual day of week from the weather file to be
+ ! used as the start day of week for a RunPeriod even though this is relatively meaningless for
+ ! TMY data files as future months will not use their start days of week (simulations need to show
+ ! continuity in day of week presentation).
+ 
+ ! In an effort to accomodate, the following RunPeriod object is included:
+ ! Note JAN 1, 2005 is a Saturday
+ ! Due to User Input, this will be overridden by day= Monday
+ 
+ !RunPeriod,
+ !Weather Data,    ! Name
+ !  1,             ! Begin Month
+ !  1,             ! Begin Day of Month
+ !  12,            ! End Month
+  ! 31,            ! End Day of Month
+! Monday,      ! Day of Week for Start Day
+ !  No,            ! Use Weather File Holidays and Special Days
+ !  No,            ! Use Weather File Daylight Saving Period
+ ! Yes,            ! Apply Weekend Holiday Rule
+ ! Yes,            ! Use Weather File Rain Indicators
+  !Yes;            ! Use Weather File Snow Indicators
+ 
+ Site:Location,
+  Mannheim_BW_DEU Design_Conditions,     !- Location Name
+      49.49,     !- Latitude {N+ S-}
+       8.46,     !- Longitude {W- E+}
+       1.00,     !- Time Zone Relative to GMT {GMT+/-}
+      122.00;     !- Elevation {m}
+  
+ ! The following Sizing Period objects for Extreme and Typical conditions are calculated
+ ! from the extreme (if any) and typical conditions on the weather source data.
+ ! The actual weeks that will be used will exist on the weather file.
+  
+ SizingPeriod:WeatherFileConditionType,
+   Summer Extreme,
+   SummerExtreme,
+   SummerDesignDay,
+   Yes,                !- Use Weather File Daylight Saving Period
+   Yes;                !- Use Weather File Rain and Snow Indicators
+ SizingPeriod:WeatherFileConditionType,
+   Summer Typical,
+   SummerTypical,
+   Monday,
+   Yes,                !- Use Weather File Daylight Saving Period
+   Yes;                !- Use Weather File Rain and Snow Indicators
+ SizingPeriod:WeatherFileConditionType,
+   Winter Extreme,
+   WinterExtreme,
+   WinterDesignDay,
+   Yes,                !- Use Weather File Daylight Saving Period
+   Yes;                !- Use Weather File Rain and Snow Indicators
+ SizingPeriod:WeatherFileConditionType,
+   Winter Typical,
+   WinterTypical,
+   Monday,
+   Yes,                !- Use Weather File Daylight Saving Period
+   Yes;                !- Use Weather File Rain and Snow Indicators
+ SizingPeriod:WeatherFileConditionType,
+   Autumn Typical,
+   AutumnTypical,
+   Monday,
+   Yes,                !- Use Weather File Daylight Saving Period
+   Yes;                !- Use Weather File Rain and Snow Indicators
+ SizingPeriod:WeatherFileConditionType,
+   Spring Typical,
+   SpringTypical,
+   Monday,
+   Yes,                !- Use Weather File Daylight Saving Period
+   Yes;                !- Use Weather File Rain and Snow Indicators
+ 
+
+
+ ! Following definitions are created from weather source data
+ ! Mannheim_BW_DEU Annual Heating 99.6%, MaxDB=-8.6C
+ SizingPeriod:DesignDay,
+  Mannheim Ann Htg 99.6% Condns DB,     !- Name
+          1,      !- Month
+         21,      !- Day of Month
+  WinterDesignDay,!- Day Type
+       -8.6,      !- Maximum Dry-Bulb Temperature {C}
+        0.0,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
+    Wetbulb,      !- Humidity Condition Type
+       -8.6,      !- Wetbulb at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+    100177.,      !- Barometric Pressure {Pa}
+       6.71,!- [N/A] Wind Speed {m/s} traditional 6.71 m/s (15 mph)
+          0,   !- [N/A] Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+  ASHRAEClearSky, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+       0.00;      !- Clearness {0.0 to 1.1}
+ 
+ ! Mannheim_BW_DEU Annual Heating 99%, MaxDB=-7.3C
+ SizingPeriod:DesignDay,
+  Mannheim Ann Htg 99% Condns DB,     !- Name
+          1,      !- Month
+         21,      !- Day of Month
+  WinterDesignDay,!- Day Type
+       -7.3,      !- Maximum Dry-Bulb Temperature {C}
+        0.0,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
+    Wetbulb,      !- Humidity Condition Type
+       -7.3,      !- Wetbulb at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+    100177.,      !- Barometric Pressure {Pa}
+       6.71,!- [N/A] Wind Speed {m/s} traditional 6.71 m/s (15 mph)
+          0,   !- [N/A] Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+  ASHRAEClearSky, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+       0.00;      !- Clearness {0.0 to 1.1}
+ 
+ ! Mannheim_BW_DEU Annual Cooling (DP=>MDB) .4%, MDB=34.3C DP=19.7C
+ SizingPeriod:DesignDay,
+  Mannheim Ann Clg .4% Condns DP=>MDB,     !- Name
+          7,      !- Month
+         21,      !- Day of Month
+  SummerDesignDay,!- Day Type
+       34.3,      !- Maximum Dry-Bulb Temperature {C}
+       10.1,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
+    Dewpoint,     !- Humidity Condition Type
+       19.7,      !- Dewpoint at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+    100177.,      !- Barometric Pressure {Pa}
+       3.35,   !- [N/A] Wind Speed {m/s} traditional 3.35 m/s (7mph)
+          0,   !- [N/A] Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+  ASHRAEClearSky, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+       1.00;      !- Clearness {0.0 to 1.1}
+ 
+ ! Mannheim_BW_DEU Annual Cooling (DP=>MDB) 1%, MDB=32.0C DP=19.0C
+ SizingPeriod:DesignDay,
+  Mannheim Ann Clg 1% Condns DP=>MDB,     !- Name
+          7,      !- Month
+         21,      !- Day of Month
+  SummerDesignDay,!- Day Type
+       32.0,      !- Maximum Dry-Bulb Temperature {C}
+       10.1,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
+    Dewpoint,     !- Humidity Condition Type
+       19.0,      !- Dewpoint at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+    100177.,      !- Barometric Pressure {Pa}
+       3.35,   !- [N/A] Wind Speed {m/s} traditional 3.35 m/s (7mph)
+          0,   !- [N/A] Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+  ASHRAEClearSky, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+       1.00;      !- Clearness {0.0 to 1.1}
+ 
+ ! Mannheim_BW_DEU Annual Cooling (DP=>MDB) 2%, MDB=30.0C DP=18.4C
+ SizingPeriod:DesignDay,
+  Mannheim Ann Clg 2% Condns DP=>MDB,     !- Name
+          7,      !- Month
+         21,      !- Day of Month
+  SummerDesignDay,!- Day Type
+       30.0,      !- Maximum Dry-Bulb Temperature {C}
+       10.1,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
+    Dewpoint,     !- Humidity Condition Type
+       18.4,      !- Dewpoint at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+    100177.,      !- Barometric Pressure {Pa}
+       3.35,   !- [N/A] Wind Speed {m/s} traditional 3.35 m/s (7mph)
+          0,   !- [N/A] Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+  ASHRAEClearSky, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+       1.00;      !- Clearness {0.0 to 1.1}
+ 
