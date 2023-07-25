@@ -489,43 +489,6 @@ Sub ExportToOSW( _
     ByVal bCopyOSMFile As Boolean, _
     ByVal bDetailedHVAC As Boolean _
 )
-    Dim dd1 As DropDown 'Wetterdaten
-    Set dd1 = Sheets("HAUPTSEITE").DropDowns("DropDown1")
-    Dim dd2 As DropDown 'Orientierung
-    Set dd2 = Sheets("HAUPTSEITE").DropDowns("Dropdown2")
-    Dim dd21 As DropDown 'Gebäudestandard
-    Set dd21 = Sheets("HAUPTSEITE").DropDowns("Dropdown21")
-    Dim dd22 As DropDown 'innere Massen
-    Set dd22 = Sheets("HAUPTSEITE").DropDowns("Dropdown22")
-    Dim dd23 As DropDown 'Elektrische Geräte
-    Set dd23 = Sheets("HAUPTSEITE").DropDowns("Dropdown23")
-    Dim ddRatio1 As DropDown 'Verhältnis NRF/BGF
-    Set ddRatio1 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF")
-    Dim ddRatio2 As DropDown 'Verhältnis NRF/BGF Importiert
-    Set ddRatio2 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF_Import")
-    Dim dd42 As DropDown 'Adiabat Nord
-    Set dd42 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_n")
-    Dim dd43 As DropDown 'Adiabat Ost
-    Set dd43 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_o")
-    Dim dd44 As DropDown 'Adiabat Süd
-    Set dd44 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_s")
-    Dim dd45 As DropDown 'Adiabat West
-    Set dd45 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_w")
-    Dim dd46 As DropDown 'Adiabat Dach
-    Set dd46 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_d")
-    Dim dd47 As DropDown 'Adiabat Bodenplatte
-    Set dd47 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_b")
-    Dim dd49 As DropDown 'Beleuchtung
-    Set dd49 = Sheets("HAUPTSEITE").DropDowns("Dropdown49")
-    Dim dd50 As DropDown 'Personen Anwesenheit
-    Set dd50 = Sheets("HAUPTSEITE").DropDowns("Dropdown50")
-    Dim dd51 As DropDown 'Personen Aktivität
-    Set dd51 = Sheets("HAUPTSEITE").DropDowns("Dropdown51")
-    Dim dd55 As DropDown 'Betriebszeiten Lüftung
-    Set dd55 = Sheets("HAUPTSEITE").DropDowns("Dropdown55")
-    Dim dd_lueftung As DropDown 'Lüftungsanlage Typ
-    Set dd_lueftung = Sheets("HAUPTSEITE").DropDowns("dd_lueftung")
-
     Dim cb_windowvent As CheckBox
     Set cb_windowvent = Sheets("HAUPTSEITE").CheckBoxes("Checkbox_windowvent")
     Dim cb_inf As CheckBox
@@ -534,15 +497,6 @@ Sub ExportToOSW( _
     Set cb_lightingcontrol = Sheets("HAUPTSEITE").CheckBoxes("checkbox lightingcontrol")
     Dim cb_shadingcontrol As CheckBox
     Set cb_shadingcontrol = Sheets("HAUPTSEITE").CheckBoxes("checkbox_shadingcontrol")
-    Dim cb_zoneDetails As CheckBox
-    Set cb_zoneDetails = Sheets("Parameter").CheckBoxes("checkbox_ZoneDetails")
-    Dim cb_detailedHVAC As CheckBox
-    Set cb_detailedHVAC = Sheets("Parameter").CheckBoxes("checkbox_hvac")
-
-    Dim dd60 As DropDown 'Solltemp Heizung
-    Set dd60 = Sheets("HAUPTSEITE").DropDowns("Dropdown60")
-    Dim dd86 As DropDown 'Solltemp Kühlung
-    Set dd86 = Sheets("HAUPTSEITE").DropDowns("Dropdown86")
 
     Dim dd_timestep As DropDown
     Set dd_timestep = Sheets("Hauptseite").DropDowns("dropdown_timestep")
