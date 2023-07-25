@@ -280,6 +280,67 @@ Sub ExportAddingInternalLoads( _
     jFile.AddMeasure "AddingInternalLoads"
 End Sub
 
+' Export method for measure AddDetailedHVAC.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param nrf_bgf Double ByVal Ratio of NFA over GFA
+' @param FloorHeight_Ratio Double ByVal Ratio of conditioned over total floor height
+Sub ExportAddDetailedHVAC( _
+    ByRef jFile As JSONFile, _
+    ByVal nrf_bgf As Double, _
+    ByVal FloorHeight_Ratio As Double _
+)
+    Dim dd55 As DropDown 'schedule ventilation
+    Set dd55 = Sheets("HAUPTSEITE").DropDowns("Dropdown55")
+
+    jFile.AddArgument "wrg", Range("WRG")
+    jFile.AddArgument "latent", Range("LATENT")
+    jFile.AddArgument "sensible", Range("SENSIBLE")
+    jFile.AddArgument "ach", Range("ACH") * FloorHeight_Ratio * nrf_bgf
+    jFile.AddSchedule "hvacSched", Range("HVACWD")
+    jFile.AddHolidays "Holidays", Range("Feiertage")
+    jFile.AddArgument "hvacSchedule", dd55.List(dd55.Value)
+    jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
+
+    jFile.AddSchedule "zoneHeatingTempSched", Range("HeatingWD")
+    jFile.AddSchedule "zoneCoolingTempSched", Range("CoolingWD")
+    jFile.AddArgument "hotWaterTempSetpoint", 82
+    jFile.AddArgument "hotWaterDeltaT", 11
+    jFile.AddArgument "coldWaterTempSetpoint", 10
+    jFile.AddArgument "coldWaterDeltaT", 5
+    jFile.AddArgument "fanPressureRiseSupply", CStr(750) 'update 10.01.22 -> new standard DIN EN 16798-3 - SFP2
+    jFile.AddArgument "fanPressureRiseReturn", CStr(750)
+    jFile.AddArgument "system_type", Range("system_type")
+
+    jFile.AddMeasure "AddDetailedHVAC"
+End Sub
+
+' Export method for measure AddingIdealAirLoads.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param nrf_bgf Double ByVal Ratio of NFA over GFA
+' @param FloorHeight_Ratio Double ByVal Ratio of conditioned over total floor height
+Sub ExportAddingIdealAirLoads( _
+    ByRef jFile As JSONFile, _
+    ByVal nrf_bgf As Double, _
+    ByVal FloorHeight_Ratio As Double _
+)
+    Dim dd55 As DropDown 'schedule ventilation
+    Set dd55 = Sheets("HAUPTSEITE").DropDowns("Dropdown55")
+
+    jFile.AddArgument "wrg", Range("WRG")
+    jFile.AddArgument "latent", Range("LATENT")
+    jFile.AddArgument "sensible", Range("SENSIBLE")
+    jFile.AddArgument "ach", Range("ACH") * FloorHeight_Ratio * nrf_bgf
+    jFile.AddSchedule "hvacSched", Range("HVACWD")
+    jFile.AddHolidays "Holidays", Range("Feiertage")
+    jFile.AddArgument "hvacSchedule", dd55.List(dd55.Value)
+    jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
+
+    jFile.AddMeasure "AddingIdealAirLoads"
+End Sub
+
+
 ' This class is intended to provide an interface for writing parameters to an
 ' OSW file or reading them from one. The import/export is not a simple 1-to-1
 ' match of ranges and values, thus the macros might take some time and needs
@@ -380,6 +441,15 @@ Sub ExportToOSW( _
         nrf_bgf = Range("BGF_zu_NRF_import")
     End If
 
+    'correction factor of parameters specific to the conditioned volume as false ceilings
+    'are not considered conditioned
+    Dim FloorHeight_Ratio As Double
+    If Range("geometry_source") = 1 Then
+        FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight")
+    Else
+        FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight_import")
+    End If
+
     Dim jFile As New JSONFile
 
     If bGeneric Then
@@ -411,53 +481,12 @@ Sub ExportToOSW( _
     Range("LoadStatus") = "Definiert"
     DoEvents
 
-    '''''''''''''''' Calling Ideal loads measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
     Range("IdealLoads") = "Start ..."
-
-    ' Pressure Rise
-    If Range("WRG") = "None" Then
-        PressureRise_ReturnFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
-        PressureRise_SupplyFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
-    Else
-        PressureRise_ReturnFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
-        PressureRise_SupplyFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
-    End If
-
-    'Korrektur der zu hohen Luftwechselrate, weil das konditionierte Raumvolumen um die Zwischendecken-Dicke zu groß ist
-    If Range("geometry_source") = 1 Then
-        FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight")
-    Else
-        FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight_import")
-    End If
-
-    ' common arguments
-    jFile.AddArgument "wrg", Range("WRG")
-    jFile.AddArgument "latent", Range("LATENT")
-    jFile.AddArgument "sensible", Range("SENSIBLE")
-    jFile.AddArgument "ach", Range("ACH") * FloorHeight_Ratio * nrf_bgf 'Bugfix 01/22 : Korrektur kond. Raumhöhe sowie Korrektur NRF/BGF
-    jFile.AddSchedule "hvacSched", Range("HVACWD")
-    jFile.AddHolidays "Holidays", Range("Feiertage")
-    jFile.AddArgument "hvacSchedule", dd55.List(dd55.Value)
-    jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
-
     If bDetailedHVAC Then
-        jFile.AddSchedule "zoneHeatingTempSched", Range("HeatingWD")
-        jFile.AddSchedule "zoneCoolingTempSched", Range("CoolingWD")
-        jFile.AddArgument "hotWaterTempSetpoint", 82
-        jFile.AddArgument "hotWaterDeltaT", 11
-        jFile.AddArgument "coldWaterTempSetpoint", 10
-        jFile.AddArgument "coldWaterDeltaT", 5
-        jFile.AddArgument "fanPressureRiseSupply", CStr(PressureRise_SupplyFan)
-        jFile.AddArgument "fanPressureRiseReturn", CStr(PressureRise_ReturnFan)
-        jFile.AddArgument "system_type", Range("system_type")
-
-        jFile.AddMeasure "AddDetailedHVAC"
+        Call ExportAddDetailedHVAC(jFile, nrf_bgf, FloorHeight_Ratio)
     Else
-        jFile.AddMeasure "AddingIdealAirLoads"
+        Call ExportAddingIdealAirLoads(jFile, nrf_bgf, FloorHeight_Ratio)
     End If
-
     Range("IdealLoads") = "Definiert"
     DoEvents
 
