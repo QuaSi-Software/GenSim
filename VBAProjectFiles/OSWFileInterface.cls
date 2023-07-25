@@ -26,26 +26,22 @@ End Sub
 ' @param bCopyOSMFile Boolean ByVal If true makes a copy of the supplied geometry file.
 '   This is a necessary step only for the export before a simulation run, but is not
 '   not required for an export of parameters for other purposes.
+' @param NrOfTimesteps As Integer ByVal Number of timesteps per hour.
 Sub ExportSetWeatherAxisTimestep( _
     ByRef jFile As JSONFile, _
     ByVal bGeneric As Boolean, _
-    ByVal bCopyOSMFile As Boolean _
+    ByVal bCopyOSMFile As Boolean, _
+    ByVal NrOfTimesteps As Integer _
 )
     Dim dd1 As DropDown 'weather data
     Set dd1 = Sheets("HAUPTSEITE").DropDowns("DropDown1")
     Dim dd2 As DropDown 'orientation
     Set dd2 = Sheets("HAUPTSEITE").DropDowns("Dropdown2")
-    Dim dd_timestep As DropDown
-    Set dd_timestep = Sheets("Hauptseite").DropDowns("dropdown_timestep")
-    Dim Timestep As Double
-    Dim Timestep_s As String
-    Timestep = 60 / dd_timestep.List(dd_timestep.Value)
-    Timestep_s = Timestep
 
     If bGeneric Then
         jFile.AddArgument "WeatherFilePath", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
         jFile.AddArgument "NorthAxis", dd2.List(dd2.Value)
-        jFile.AddArgument "Timestep", Timestep_s
+        jFile.AddArgument "Timestep", CStr(NrOfTimesteps)
     Else
         Dim localOSMPath As String: localOSMPath = ""
 
@@ -69,7 +65,7 @@ Sub ExportSetWeatherAxisTimestep( _
 
         jFile.CreateFile localOSMPath, GetWeatherFolder() & "\" & dd1.List(dd1.Value)
         jFile.AddArgument "WeatherFilePath", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-        jFile.AddArgument "Timestep", Timestep_s
+        jFile.AddArgument "Timestep", CStr(NrOfTimesteps)
     End If
 
     jFile.AddMeasure "SetWeatherAxisTimestep"
@@ -447,6 +443,21 @@ Sub ExportInjectHolidays(ByRef jFile As JSONFile)
     End If
 End Sub
 
+' Export method for measure SetMeters.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param NrOfTimesteps As Integer ByVal Number of timesteps per hour.
+Sub ExportSetMeters( _
+    ByRef jFile As JSONFile, _
+    ByVal NrOfTimesteps As Integer _
+)
+    jFile.AddArgument "Timestep", CStr(NrOfTimesteps)
+    jFile.AddArgument "DayToStartSimulation", Range("DayToStartSimulation")
+    jFile.AddArgument "HeatingSizingFactor", Range("HeatingSizingFactor")
+    jFile.AddArgument "CoolingSizingFactor", Range("CoolingSizingFactor")
+    jFile.AddMeasure "SetMeters"
+End Sub
+
 ' This class is intended to provide an interface for writing parameters to an
 ' OSW file or reading them from one. The import/export is not a simple 1-to-1
 ' match of ranges and values, thus the macros might take some time and needs
@@ -536,9 +547,9 @@ Sub ExportToOSW( _
     Dim dd_timestep As DropDown
     Set dd_timestep = Sheets("Hauptseite").DropDowns("dropdown_timestep")
     Dim Timestep As Double
-    Dim Timestep_s As String
-    Timestep = 60 / dd_timestep.List(dd_timestep.Value)
-    Timestep_s = Timestep
+    Dim NrOfTimesteps As Integer
+    Timestep = dd_timestep.List(dd_timestep.Value)
+    NrOfTimesteps = 60 / Timestep
 
     Dim nrf_bgf As Double
     If bGeneric Then
@@ -562,7 +573,7 @@ Sub ExportToOSW( _
         Call ExportCreateAnEmptyModel(jFile)
     End If
 
-    Call ExportSetWeatherAxisTimestep(jFile, bGeneric, bCopyOSMFile)
+    Call ExportSetWeatherAxisTimestep(jFile, bGeneric, bCopyOSMFile, NrOfTimesteps)
     Call ExportCustomExportParams(jFile, bGeneric)
 
     Range("GeomStatus") = "Start ..."
@@ -649,17 +660,8 @@ Sub ExportToOSW( _
     End If
 
     Call ExportInjectHolidays(jFile)
+    Call ExportSetMeters(jFile, NrOfTimesteps)
 
-    '''''''''''''''' Calling IDF Set Meters Measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    jFile.AddArgument "Timestep", Timestep_s
-    jFile.AddArgument "DayToStartSimulation", Range("DayToStartSimulation")
-    jFile.AddArgument "HeatingSizingFactor", Range("HeatingSizingFactor")
-    jFile.AddArgument "CoolingSizingFactor", Range("CoolingSizingFactor")
-    jFile.AddMeasure "SetMeters"
-
-    ' save the JSON file
     jFile.Save sFilename
 End Sub
 
