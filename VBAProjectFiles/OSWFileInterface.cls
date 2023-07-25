@@ -370,6 +370,34 @@ Sub ExportAddingLightingControls(ByRef jFile As JSONFile)
     jFile.AddMeasure "AddingLightingControls"
 End Sub
 
+' Export method for measure AddingTemperatureSetpoints.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportAddingTemperatureSetpoints(ByRef jFile As JSONFile)
+    Dim dd60 As DropDown 'setpoints heating
+    Set dd60 = Sheets("HAUPTSEITE").DropDowns("Dropdown60")
+    Dim dd86 As DropDown 'setpoint cooling
+    Set dd86 = Sheets("HAUPTSEITE").DropDowns("Dropdown86")
+
+    jFile.AddArgument "heatingTemp", dd60.List(dd60.Value)
+    jFile.AddArgument "coolingTemp", dd86.List(dd86.Value)
+    jFile.AddArgument "is_custom_heating", IIf(dd60.Value > 3, "true", "false")
+    jFile.AddArgument "is_custom_cooling", IIf(dd86.Value > 3, "true", "false")
+    jFile.AddSchedule "zoneHeatingTempSchedule", Range("HeatingWD")
+    jFile.AddSchedule "zoneCoolingTempSchedule", Range("CoolingWD")
+    jFile.AddHolidays "Holidays", Range("Feiertage")
+    jFile.AddMeasure "AddingTemperatureSetpoints"
+End Sub
+
+' Export method for measure SaveModel.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportSaveModel(ByRef jFile As JSONFile)
+    jFile.AddArgument "pathtosave", GetOutputFolder()
+    jFile.AddArgument "FileName", Range("FileName")
+    jFile.AddMeasure "SaveModel"
+End Sub
+
 ' This class is intended to provide an interface for writing parameters to an
 ' OSW file or reading them from one. The import/export is not a simple 1-to-1
 ' match of ranges and values, thus the macros might take some time and needs
@@ -545,23 +573,11 @@ Sub ExportToOSW( _
         Range("LightingControl") = "Definiert"
     End If
 
-    '''''''''''''''' Calling Setpoint Measure loads measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    jFile.AddArgument "heatingTemp", dd60.List(dd60.Value)
-    jFile.AddArgument "coolingTemp", dd86.List(dd86.Value)
-    jFile.AddArgument "is_custom_heating", IIf(dd60.Value > 3, "true", "false")  ' da bisher nur drei feste Profile zur Auswahl stehen
-    jFile.AddArgument "is_custom_cooling", IIf(dd86.Value > 3, "true", "false")
-    jFile.AddSchedule "zoneHeatingTempSchedule", Range("HeatingWD")
-    jFile.AddSchedule "zoneCoolingTempSchedule", Range("CoolingWD")
-    jFile.AddHolidays "Holidays", Range("Feiertage")
-    jFile.AddMeasure "AddingTemperatureSetpoints"
+    Range("TempSetpoint") = "Start ..."
+    Call ExportAddingTemperatureSetpoints(jFile)
     Range("TempSetpoint") = "Definiert"
 
-    ' save in the resulting OSM for debugging with the SaveToModel measure
-    jFile.AddArgument "pathtosave", GetOutputFolder()
-    jFile.AddArgument "FileName", Range("FileName")
-    jFile.AddMeasure "SaveModel"
+    Call ExportSaveModel(jFile)
 
     '''''''''''''''' Calling IDF window ventilation measure
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
