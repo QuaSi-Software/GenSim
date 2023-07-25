@@ -207,6 +207,20 @@ Sub ExportAddingMaterialsAndConstructions(ByRef jFile As JSONFile)
     jFile.AddMeasure "AddingMaterialsAndConstructions"
 End Sub
 
+' Export method for measure AddThermalZones.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportAddThermalZones(ByRef jFile As JSONFile)
+    jFile.AddMeasure "AddThermalZones"
+End Sub
+
+' Export method for measure DetectingExternalZones.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportDetectingExternalZones(ByRef jFile As JSONFile)
+    jFile.AddMeasure "DetectingExternalZones"
+End Sub
+
 ' This class is intended to provide an interface for writing parameters to an
 ' OSW file or reading them from one. The import/export is not a simple 1-to-1
 ' match of ranges and values, thus the macros might take some time and needs
@@ -322,11 +336,8 @@ Sub ExportToOSW( _
     Range("UStatus") = "Definiert"
     DoEvents
 
-    ''''''''''''''''''''''''''''''' Adding Thermal Zones and Detecting External Zones
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    If Not bGeneric Then jFile.AddMeasure "AddThermalZones"
-    jFile.AddMeasure "DetectingExternalZones"
+    If Not bGeneric Then Call ExportAddThermalZones(jFile)
+    Call ExportDetectingExternalZones(jFile)
 
     ''''''''''''''''''''''''''''''' internal load measure (schedules)
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
