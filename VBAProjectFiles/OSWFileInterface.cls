@@ -398,6 +398,55 @@ Sub ExportSaveModel(ByRef jFile As JSONFile)
     jFile.AddMeasure "SaveModel"
 End Sub
 
+' Export method for measure InjectZoneVentilationIDF.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportInjectZoneVentilationIDF(ByRef jFile As JSONFile)
+    jFile.AddArgument "VentilationACH", Range("windowvent_ach")
+    jFile.AddArgument "MinIndoorTemperature", Range("windowvent_temp")
+    jFile.AddArgument "DeltaT", Range("windowvent_dt")
+    jFile.AddMeasure "InjectZoneVentilationIDF"
+End Sub
+
+' Export method for measure InjectIdealLoadParametersIDF.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param nrf_bgf Double ByVal Ratio of NFA over GFA
+' @param FloorHeight_Ratio Double ByVal Ratio of conditioned over total floor height
+Sub ExportInjectIdealLoadParametersIDF( _
+    ByRef jFile As JSONFile, _
+    ByVal nrf_bgf As Double, _
+    ByVal FloorHeight_Ratio As Double _
+)
+    jFile.AddArgument "HeatRecoveryType", Range("WRG")
+    jFile.AddArgument "SensibleEffectiveness", Range("SENSIBLE")
+    jFile.AddArgument "LatentEffectiveness", Range("LATENT")
+    jFile.AddArgument "ACH", Range("ACH") * FloorHeight_Ratio * nrf_bgf
+    jFile.AddMeasure "InjectIdealLoadParametersIDF"
+End Sub
+
+' Export method for measure InjectRadiantSurfacesIDF.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportInjectRadiantSurfacesIDF(ByRef jFile As JSONFile)
+    jFile.AddMeasure "InjectRadiantSurfacesIDF"
+End Sub
+
+' Export method for measure InjectHolidays.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportInjectHolidays(ByRef jFile As JSONFile)
+    feiertage_active = 0
+    For r = 1 To 5
+        feiertage_active = feiertage_active + Range("Feiertage").Offset(r - 1, 0) + Range("Feiertage").Offset(r - 1, 1)
+    Next
+
+    If feiertage_active > 0 Then
+        jFile.AddHolidays "Holidays", Range("Feiertage")
+        jFile.AddMeasure "InjectHolidays"
+    End If
+End Sub
+
 ' This class is intended to provide an interface for writing parameters to an
 ' OSW file or reading them from one. The import/export is not a simple 1-to-1
 ' match of ranges and values, thus the macros might take some time and needs
@@ -572,66 +621,34 @@ Sub ExportToOSW( _
         Call ExportAddingLightingControls(jFile)
         Range("LightingControl") = "Definiert"
     End If
+    DoEvents
 
     Range("TempSetpoint") = "Start ..."
     Call ExportAddingTemperatureSetpoints(jFile)
     Range("TempSetpoint") = "Definiert"
+    DoEvents
 
     Call ExportSaveModel(jFile)
-
-    '''''''''''''''' Calling IDF window ventilation measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
     If Not cb_windowvent.Value = 1 Then
         Range("window_ventilation") = "Deaktiviert"
     Else
         Range("window_ventilation") = "Start ..."
-        jFile.AddArgument "VentilationACH", Range("windowvent_ach")
-        jFile.AddArgument "MinIndoorTemperature", Range("windowvent_temp")
-        jFile.AddArgument "DeltaT", Range("windowvent_dt")
-        jFile.AddMeasure "InjectZoneVentilationIDF"
+        Call ExportInjectZoneVentilationIDF(jFile)
         Range("window_ventilation") = "Definiert"
     End If
-
-    '''''''''''''''' Calling IDF Ideal loads Measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    Range("IDFIdealLoads") = "Start ..."
-
-    jFile.AddArgument "HeatRecoveryType", Range("WRG")
-    jFile.AddArgument "SensibleEffectiveness", Range("SENSIBLE")
-    jFile.AddArgument "LatentEffectiveness", Range("LATENT")
-    jFile.AddArgument "ACH", Range("ACH") * FloorHeight_Ratio * nrf_bgf 'Bugfix 01/22 : Korrektur kond. Raumhöhe sowie Korrektur NRF/BGF
-    jFile.AddMeasure "InjectIdealLoadParametersIDF"
-    Range("IDFIdealLoads") = "Definiert"
-    ' update the progress messages
     DoEvents
 
-    '''''''''''''''' Calling IDF Radiant Surface Measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    Range("IDFIdealLoads") = "Start ..."
+    Call ExportInjectIdealLoadParametersIDF(jFile, nrf_bgf, FloorHeight_Ratio)
+    Range("IDFIdealLoads") = "Definiert"
+    DoEvents
 
     If bDetailedHVAC Then
-        'Range("IDFIdealLoads") = "Start ..."
-
-        jFile.AddMeasure "InjectRadiantSurfacesIDF"
-        'Range("IDFIdealLoads") = "Definiert"
-
-        ' update the progress messages
-        DoEvents
+        Call ExportInjectRadiantSurfacesIDF(jFile)
     End If
 
-    '''''''''''''''' Calling IDF InjectHolidays Measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    feiertage_active = 0
-    For r = 1 To 5
-        feiertage_active = feiertage_active + Range("Feiertage").Offset(r - 1, 0) + Range("Feiertage").Offset(r - 1, 1)
-    Next
-
-    If feiertage_active > 0 Then
-        jFile.AddHolidays "Holidays", Range("Feiertage")
-        jFile.AddMeasure "InjectHolidays"
-    End If
+    Call ExportInjectHolidays(jFile)
 
     '''''''''''''''' Calling IDF Set Meters Measure
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
