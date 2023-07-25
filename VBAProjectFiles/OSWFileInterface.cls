@@ -146,6 +146,44 @@ Sub ExportCustomExportParams( _
     jFile.AddMeasure "CustomExportParams"
 End Sub
 
+' Export method for measure BarAspectRatioStudy.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportBarAspectRatioStudy(ByRef jFile As JSONFile)
+    Dim dd42 As DropDown 'adiabatic north
+    Set dd42 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_n")
+    Dim dd43 As DropDown 'adiabatic east
+    Set dd43 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_o")
+    Dim dd44 As DropDown 'adiabatic south
+    Set dd44 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_s")
+    Dim dd45 As DropDown 'adiabatic west
+    Set dd45 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_w")
+    Dim dd46 As DropDown 'adiabatic roof
+    Set dd46 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_d")
+    Dim dd47 As DropDown 'adiabatic base plate
+    Set dd47 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_b")
+
+    jFile.AddArgument "floor_area", Range("BldgArea")
+    jFile.AddArgument "ns_to_ew_ratio", Range("NSEWRatio")
+    jFile.AddArgument "number_of_stories", Range("NoFloors")
+    jFile.AddArgument "floor_to_floor_height", Range("FloorHeight")
+    jFile.AddArgument "surface_matching", "true"
+    jFile.AddArgument "make_zones", "true"
+    jFile.AddArgument "window_to_wall_ratio_north", Range("WWRN")
+    jFile.AddArgument "window_to_wall_ratio_east", Range("WWRO")
+    jFile.AddArgument "window_to_wall_ratio_south", Range("WWRS")
+    jFile.AddArgument "window_to_wall_ratio_west", Range("WWRW")
+    jFile.AddArgument "AdiabaticNorth", dd42.List(dd42.Value)
+    jFile.AddArgument "AdiabaticEast", dd43.List(dd43.Value)
+    jFile.AddArgument "AdiabaticSouth", dd44.List(dd44.Value)
+    jFile.AddArgument "AdiabaticWest", dd45.List(dd45.Value)
+    jFile.AddArgument "AdiabaticRoof", dd46.List(dd46.Value)
+    jFile.AddArgument "AdiabaticFloor", dd47.List(dd47.Value)
+    jFile.AddArgument "perimeterdepth", Range("PerimeterDepth")
+
+    jFile.AddMeasure "BarAspectRatioStudy"
+End Sub
+
 ' This class is intended to provide an interface for writing parameters to an
 ' OSW file or reading them from one. The import/export is not a simple 1-to-1
 ' match of ranges and values, thus the macros might take some time and needs
@@ -247,38 +285,13 @@ Sub ExportToOSW( _
     Call ExportSetWeatherAxisTimestep(jFile, bGeneric, bCopyOSMFile)
     Call ExportCustomExportParams(jFile, bGeneric)
 
-    ''''''''''''''''''''''''''''''' Building Model
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
     Range("GeomStatus") = "Start ..."
-
-    ''''''''''''''''''''''''''''''' Geometry
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
     If bGeneric Then
-        jFile.AddArgument "floor_area", Range("BldgArea")
-        jFile.AddArgument "ns_to_ew_ratio", Range("NSEWRatio")
-        jFile.AddArgument "number_of_stories", Range("NoFloors")
-        jFile.AddArgument "floor_to_floor_height", Range("FloorHeight")
-        jFile.AddArgument "surface_matching", "true"
-        jFile.AddArgument "make_zones", "true"
-        jFile.AddArgument "window_to_wall_ratio_north", Range("WWRN")
-        jFile.AddArgument "window_to_wall_ratio_east", Range("WWRO")
-        jFile.AddArgument "window_to_wall_ratio_south", Range("WWRS")
-        jFile.AddArgument "window_to_wall_ratio_west", Range("WWRW")
-        jFile.AddArgument "AdiabaticNorth", dd42.List(dd42.Value)
-        jFile.AddArgument "AdiabaticEast", dd43.List(dd43.Value)
-        jFile.AddArgument "AdiabaticSouth", dd44.List(dd44.Value)
-        jFile.AddArgument "AdiabaticWest", dd45.List(dd45.Value)
-        jFile.AddArgument "AdiabaticRoof", dd46.List(dd46.Value)
-        jFile.AddArgument "AdiabaticFloor", dd47.List(dd47.Value)
-        jFile.AddArgument "perimeterdepth", Range("PerimeterDepth")
-
-        jFile.AddMeasure "BarAspectRatioStudy"
+        Call ExportBarAspectRatioStudy(jFile)
+        Range("GeomStatus") = "Definiert"
+    Else
+        Range("GeomStatus") = "Deaktiviert"
     End If
-
-    ' update status
-    Range("GeomStatus") = "Definiert"
     DoEvents
 
     ''''''''''''''''''''''''''''''' Assign Constructions
