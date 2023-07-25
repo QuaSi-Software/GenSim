@@ -75,6 +75,77 @@ Sub ExportSetWeatherAxisTimestep( _
     jFile.AddMeasure "SetWeatherAxisTimestep"
 End Sub
 
+' Export method for measure CustomExportParams.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param bGeneric Boolean ByVal If the geometry is generic (true) or imported (false)
+Sub ExportCustomExportParams( _
+    ByRef jFile As JSONFile, _
+    ByVal bGeneric As Boolean _
+)
+    Dim ddRatio1 As DropDown 'ratio NFA/GFA
+    Set ddRatio1 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF")
+    Dim dd_lueftung As DropDown 'type of ventilation
+    Set dd_lueftung = Sheets("HAUPTSEITE").DropDowns("dd_lueftung")
+    Dim cb_windowvent As CheckBox
+    Set cb_windowvent = Sheets("HAUPTSEITE").CheckBoxes("Checkbox_windowvent")
+    Dim cb_inf As CheckBox
+    Set cb_inf = Sheets("HAUPTSEITE").CheckBoxes("checkbox_inf")
+    Dim cb_lightingcontrol As CheckBox
+    Set cb_lightingcontrol = Sheets("HAUPTSEITE").CheckBoxes("checkbox lightingcontrol")
+    Dim cb_shadingcontrol As CheckBox
+    Set cb_shadingcontrol = Sheets("HAUPTSEITE").CheckBoxes("checkbox_shadingcontrol")
+    Dim cb_zoneDetails As CheckBox
+    Set cb_zoneDetails = Sheets("Parameter").CheckBoxes("checkbox_ZoneDetails")
+    Dim cb_detailedHVAC As CheckBox
+    Set cb_detailedHVAC = Sheets("Parameter").CheckBoxes("checkbox_hvac")
+
+    'parameters for the generic HVAC model
+    jFile.AddArgument "zoneDetails", IIf(cb_zoneDetails.Value = 1, 1, 0)
+    jFile.AddArgument "detailedHVAC", IIf(cb_detailedHVAC.Value = 1, 1, 0)
+    jFile.AddArgument "ventilation_type", dd_lueftung.Value
+
+    'parameters of the geometry which are not required in the measures
+    jFile.AddArgument "floor_length", Range("LAENGE")
+    jFile.AddArgument "floor_width", Range("BREITE")
+    jFile.AddArgument "ratio_NRF_BGF", ddRatio1.List(ddRatio1.Value)
+    jFile.AddArgument "NRF_BGF", Range("BGF_zu_NRF")
+
+    If bGeneric Then
+        jFile.AddArgument "genGeom", 1
+    Else
+        jFile.AddArgument "genGeom", 2
+    End If
+
+    'definition of holidays
+    Dim strArg As String
+    strArg = ""
+    Dim iEntry As Integer
+    iEntry = 0
+
+    Do While Not (IsEmpty(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 0)))
+        strArg = strArg + CStr(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 0))
+        strArg = strArg + ";" + CStr(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 1)) + ";"
+        iEntry = iEntry + 1
+    Loop
+    jFile.AddArgument "Holidays", strArg
+
+    'parameters of the ventilation system
+    jFile.AddArgument "vorlauf_Luft", Range("Vorlauf_Lüftung")
+    jFile.AddArgument "nachlauf_Luft", Range("Nachlauf_Lüftung")
+    jFile.AddArgument "FloorHeight_kond", Range("FloorHeight_kond")
+    jFile.AddArgument "FloorHeight_import", Range("FloorHeight_import")
+    jFile.AddArgument "ACH_Input_Parameter", Range("ACH")
+    jFile.AddArgument "Windowvent", IIf(cb_windowvent.Value = 1, 1, 0)
+    jFile.AddArgument "Infiltration", IIf(cb_inf.Value = 1, 1, 0)
+
+    'other parameters
+    jFile.AddArgument "Shadingcontrol", IIf(cb_shadingcontrol.Value = 1, 1, 0)
+    jFile.AddArgument "Lightingcontrol", IIf(cb_lightingcontrol.Value = 1, 1, 0)
+
+    jFile.AddMeasure "CustomExportParams"
+End Sub
+
 ' This class is intended to provide an interface for writing parameters to an
 ' OSW file or reading them from one. The import/export is not a simple 1-to-1
 ' match of ranges and values, thus the macros might take some time and needs
@@ -174,61 +245,7 @@ Sub ExportToOSW( _
     End If
 
     Call ExportSetWeatherAxisTimestep(jFile, bGeneric, bCopyOSMFile)
-
-    '--------Alle zusätzlichen Parameter für den 'CustomExport'
-
-    'Parameter Modell
-    jFile.AddArgument "zoneDetails", IIf(cb_zoneDetails.Value = 1, 1, 0)
-    jFile.AddArgument "detailedHVAC", IIf(cb_detailedHVAC.Value = 1, 1, 0)
-    jFile.AddArgument "ventilation_type", dd_lueftung.Value
-
-    'Parameter Geometrie, die nicht für Modellerzeugung benötigt werden
-    jFile.AddArgument "floor_length", Range("LAENGE")
-    jFile.AddArgument "floor_width", Range("BREITE")
-    jFile.AddArgument "ratio_NRF_BGF", ddRatio1.List(ddRatio1.Value)
-    jFile.AddArgument "NRF_BGF", Range("BGF_zu_NRF")
-
-    ' Arguments "selected_standard", "is_custom_standard", "selected_masses" are added in Measure "AddingMaterialsAndConstructions"
-    ' weitere Argumente are added in Measure "AddingInternalLoads"
-    ' Arguments "hvacSchedule", "is_custom_hvac" are added in "AddDetailedHVAC" bzw. "AddingIdealAirLoads" (je nach cb_hvac)
-
-    '  Nutzung - Feiertage
-    Dim strArg As String
-    strArg = ""
-    Dim iEntry As Integer
-    iEntry = 0
-
-    Do While Not (IsEmpty(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 0)))
-        strArg = strArg + CStr(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 0))
-        strArg = strArg + ";" + CStr(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 1)) + ";"
-        iEntry = iEntry + 1
-    Loop
-    jFile.AddArgument "Holidays", strArg
-
-
-    'Lüftungsanlage
-    jFile.AddArgument "vorlauf_Luft", Range("Vorlauf_Lüftung")
-    jFile.AddArgument "nachlauf_Luft", Range("Nachlauf_Lüftung")
-
-    'Weiteres
-    jFile.AddArgument "Shadingcontrol", IIf(cb_shadingcontrol.Value = 1, 1, 0)
-    jFile.AddArgument "Infiltration", IIf(cb_inf.Value = 1, 1, 0)
-    jFile.AddArgument "Lightingcontrol", IIf(cb_lightingcontrol.Value = 1, 1, 0)
-    jFile.AddArgument "Windowvent", IIf(cb_windowvent.Value = 1, 1, 0)
-
-    'Geometrie
-    If bGeneric Then
-        jFile.AddArgument "genGeom", 1
-    Else
-        jFile.AddArgument "genGeom", 2
-    End If
-
-    'Lüftung
-    jFile.AddArgument "FloorHeight_kond", Range("FloorHeight_kond")
-    jFile.AddArgument "FloorHeight_import", Range("FloorHeight_import")
-    jFile.AddArgument "ACH_Input_Parameter", Range("ACH")
-
-    jFile.AddMeasure "CustomExportParams"
+    Call ExportCustomExportParams(jFile, bGeneric)
 
     ''''''''''''''''''''''''''''''' Building Model
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
