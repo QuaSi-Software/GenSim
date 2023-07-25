@@ -340,6 +340,35 @@ Sub ExportAddingIdealAirLoads( _
     jFile.AddMeasure "AddingIdealAirLoads"
 End Sub
 
+' Export method for measure AddingShadingControls.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportAddingShadingControls(ByRef jFile As JSONFile)
+    jFile.AddArgument "SolarSetpoint", Range("SHCO_IRR")
+    jFile.AddMeasure "AddingShadingControls"
+End Sub
+
+' Export method for measure AddingInfiltration.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param nrf_bgf Double ByVal Ratio of NFA over GFA
+' @param FloorHeight_Ratio Double ByVal Ratio of conditioned over total floor height
+Sub ExportAddingInfiltration( _
+    ByRef jFile As JSONFile, _
+    ByVal nrf_bgf As Double, _
+    ByVal FloorHeight_Ratio As Double _
+)
+    jFile.AddArgument "AirChangesPerHour", Range("INFIL") * FloorHeight_Ratio * nrf_bgf
+    jFile.AddMeasure "AddingInfiltration"
+End Sub
+
+' Export method for measure AddingLightingControls.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportAddingLightingControls(ByRef jFile As JSONFile)
+    jFile.AddArgument "DaylightingSetpoint", Range("LC_LUX")
+    jFile.AddMeasure "AddingLightingControls"
+End Sub
 
 ' This class is intended to provide an interface for writing parameters to an
 ' OSW file or reading them from one. The import/export is not a simple 1-to-1
@@ -490,41 +519,29 @@ Sub ExportToOSW( _
     Range("IdealLoads") = "Definiert"
     DoEvents
 
-    '''''''''''''''' Calling Shading Control measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
     If Not cb_shadingcontrol.Value = 1 Then
         Range("ShadingControl") = "Deaktiviert"
     Else
         Range("ShadingControl") = "Start ..."
-        jFile.AddArgument "SolarSetpoint", Range("SHCO_IRR")
-        jFile.AddMeasure "AddingShadingControls"
+        Call ExportAddingShadingControls(jFile)
         Range("ShadingControl") = "Definiert"
     End If
     DoEvents
-
-    '''''''''''''''' Calling infiltration measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
     If Not cb_inf.Value = 1 Then
         Range("Infiltration") = "Deaktiviert"
     Else
         Range("Infiltration") = "Start ..."
-        jFile.AddArgument "AirChangesPerHour", Range("INFIL") * FloorHeight_Ratio * nrf_bgf
-        jFile.AddMeasure "AddingInfiltration"
+        Call ExportAddingInfiltration(jFile, nrf_bgf, FloorHeight_Ratio)
         Range("Infiltration") = "Definiert"
     End If
     DoEvents
-
-    '''''''''''''''' Calling lighting control measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
     If Not cb_lightingcontrol.Value = 1 Then
         Range("LightingControl") = "Deaktiviert"
     Else
         Range("LightingControl") = "Start ..."
-        jFile.AddArgument "DaylightingSetpoint", Range("LC_LUX")
-        jFile.AddMeasure "AddingLightingControls"
+        Call ExportAddingLightingControls(jFile)
         Range("LightingControl") = "Definiert"
     End If
 
