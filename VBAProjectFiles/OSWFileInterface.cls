@@ -7,6 +7,74 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+
+' Export method for measure CreateAnEmptyModel.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportCreateAnEmptyModel(ByRef jFile As JSONFile)
+    Dim dd1 As DropDown 'weather data
+    Set dd1 = Sheets("HAUPTSEITE").DropDowns("DropDown1")
+
+    jFile.CreateFile Range("FileName") + ".osm", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
+    jFile.AddMeasure "CreateAnEmptyModel"
+End Sub
+
+' Export method for measure SetWeatherAxisTimestep.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param bGeneric Boolean ByVal If the geometry is generic (true) or imported (false)
+' @param bCopyOSMFile Boolean ByVal If true makes a copy of the supplied geometry file.
+'   This is a necessary step only for the export before a simulation run, but is not
+'   not required for an export of parameters for other purposes.
+Sub ExportSetWeatherAxisTimestep( _
+    ByRef jFile As JSONFile, _
+    ByVal bGeneric As Boolean, _
+    ByVal bCopyOSMFile As Boolean _
+)
+    Dim dd1 As DropDown 'weather data
+    Set dd1 = Sheets("HAUPTSEITE").DropDowns("DropDown1")
+    Dim dd2 As DropDown 'orientation
+    Set dd2 = Sheets("HAUPTSEITE").DropDowns("Dropdown2")
+    Dim dd_timestep As DropDown
+    Set dd_timestep = Sheets("Hauptseite").DropDowns("dropdown_timestep")
+    Dim Timestep As Double
+    Dim Timestep_s As String
+    Timestep = 60 / dd_timestep.List(dd_timestep.Value)
+    Timestep_s = Timestep
+
+    If bGeneric Then
+        jFile.AddArgument "WeatherFilePath", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
+        jFile.AddArgument "NorthAxis", dd2.List(dd2.Value)
+        jFile.AddArgument "Timestep", Timestep_s
+    Else
+        Dim localOSMPath As String: localOSMPath = ""
+
+        If bCopyOSMFile Then
+            Dim fso As New FileSystemObject
+            Dim sOSMFileName As String
+            Dim sOSMPathName As String
+            sOSMPathName = Range("path_geometry_Import")
+            sOSMFileName = fso.GetFileName(sOSMPathName)
+            sOSMFileName = Replace(sOSMFileName, Chr(223), "ss")
+            sOSMFileName = Replace(sOSMFileName, Chr(228), "ae")
+            sOSMFileName = Replace(sOSMFileName, Chr(252), "ue")
+            sOSMFileName = Replace(sOSMFileName, Chr(246), "oe")
+            sOSMFileName = Replace(sOSMFileName, Chr(196), "Ae")
+            sOSMFileName = Replace(sOSMFileName, Chr(220), "Ue")
+            sOSMFileName = Replace(sOSMFileName, Chr(214), "Oe")
+
+            localOSMPath = GetOutputFolder() + "\" + sOSMFileName
+            FileCopy sOSMPathName, localOSMPath
+        End If
+
+        jFile.CreateFile localOSMPath, GetWeatherFolder() & "\" & dd1.List(dd1.Value)
+        jFile.AddArgument "WeatherFilePath", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
+        jFile.AddArgument "Timestep", Timestep_s
+    End If
+
+    jFile.AddMeasure "SetWeatherAxisTimestep"
+End Sub
+
 ' This class is intended to provide an interface for writing parameters to an
 ' OSW file or reading them from one. The import/export is not a simple 1-to-1
 ' match of ranges and values, thus the macros might take some time and needs
@@ -101,42 +169,11 @@ Sub ExportToOSW( _
 
     Dim jFile As New JSONFile
 
-    If Not bGeneric Then
-        Dim localOSMPath As String: localOSMPath = ""
-
-        If bCopyOSMFile Then
-            Dim fso As New FileSystemObject
-            Dim sOSMFileName As String
-            Dim sOSMPathName As String
-            sOSMPathName = Range("path_geometry_Import")
-            sOSMFileName = fso.GetFileName(sOSMPathName)
-            sOSMFileName = Replace(sOSMFileName, Chr(223), "ss")
-            sOSMFileName = Replace(sOSMFileName, Chr(228), "ae")
-            sOSMFileName = Replace(sOSMFileName, Chr(252), "ue")
-            sOSMFileName = Replace(sOSMFileName, Chr(246), "oe")
-            sOSMFileName = Replace(sOSMFileName, Chr(196), "Ae")
-            sOSMFileName = Replace(sOSMFileName, Chr(220), "Ue")
-            sOSMFileName = Replace(sOSMFileName, Chr(214), "Oe")
-
-            localOSMPath = GetOutputFolder() + "\" + sOSMFileName
-            FileCopy sOSMPathName, localOSMPath
-        End If
-
-        jFile.CreateFile localOSMPath, GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-
-        jFile.AddArgument "WeatherFilePath", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-        jFile.AddArgument "Timestep", Timestep_s
-        jFile.AddMeasure "SetWeatherAxisTimestep"
-    Else
-        jFile.CreateFile Range("FileName") + ".osm", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-        ' first we create an empty model with the empty model measure
-        jFile.AddMeasure "CreateAnEmptyModel"
-
-        jFile.AddArgument "WeatherFilePath", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-        jFile.AddArgument "NorthAxis", dd2.List(dd2.Value)
-        jFile.AddArgument "Timestep", Timestep_s
-        jFile.AddMeasure "SetWeatherAxisTimestep"
+    If bGeneric Then
+        Call ExportCreateAnEmptyModel(jFile)
     End If
+
+    Call ExportSetWeatherAxisTimestep(jFile, bGeneric, bCopyOSMFile)
 
     '--------Alle zusätzlichen Parameter für den 'CustomExport'
 
