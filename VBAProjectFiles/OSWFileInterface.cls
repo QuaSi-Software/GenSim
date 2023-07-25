@@ -184,6 +184,29 @@ Sub ExportBarAspectRatioStudy(ByRef jFile As JSONFile)
     jFile.AddMeasure "BarAspectRatioStudy"
 End Sub
 
+' Export method for measure AddingMaterialsAndConstructions.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportAddingMaterialsAndConstructions(ByRef jFile As JSONFile)
+    Dim dd21 As DropDown 'building standard
+    Set dd21 = Sheets("HAUPTSEITE").DropDowns("Dropdown21")
+    Dim dd22 As DropDown 'inner masses
+    Set dd22 = Sheets("HAUPTSEITE").DropDowns("Dropdown22")
+
+    jFile.AddConstruction "ExternalWallMat", Range("AWMat1"), 4
+    jFile.AddConstruction "RoofMat", Range("DMat1"), 4
+    jFile.AddConstruction "SlabMat", Range("BPMat1"), 4
+    jFile.AddConstruction "Massen", Range("Massen"), 3
+    jFile.AddConstruction "InteriorSlabs", Range("ZwischenDecke"), 4
+    jFile.AddInternalSourceConstructionHardcoded "ChilledCeiling", 2, 2, 2, 0.15, Range("ZwischenDecke"), 2
+    jFile.AddWindowConstruction "Windows", Range("WINDOWSSLS"), Range("WINDOWSSLS").Offset(0, -1), Range("WINDOWSSLS").Offset(0, 1)
+    jFile.AddArgument "selected_standard", dd21.List(dd21.Value)
+    jFile.AddArgument "is_custom_standard", IIf(dd21.Value > (dd21.ListCount - 4), "Ja", "Nein")
+    jFile.AddArgument "selected_masses", dd22.List(dd22.Value)
+
+    jFile.AddMeasure "AddingMaterialsAndConstructions"
+End Sub
+
 ' This class is intended to provide an interface for writing parameters to an
 ' OSW file or reading them from one. The import/export is not a simple 1-to-1
 ' match of ranges and values, thus the macros might take some time and needs
@@ -294,22 +317,8 @@ Sub ExportToOSW( _
     End If
     DoEvents
 
-    ''''''''''''''''''''''''''''''' Assign Constructions
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
     Range("UStatus") = "Start ..."
-    jFile.AddConstruction "ExternalWallMat", Range("AWMat1"), 4
-    jFile.AddConstruction "RoofMat", Range("DMat1"), 4
-    jFile.AddConstruction "SlabMat", Range("BPMat1"), 4
-    jFile.AddConstruction "Massen", Range("Massen"), 3
-    jFile.AddConstruction "InteriorSlabs", Range("ZwischenDecke"), 4
-    jFile.AddInternalSourceConstructionHardcoded "ChilledCeiling", 2, 2, 2, 0.15, Range("ZwischenDecke"), 2
-    jFile.AddWindowConstruction "Windows", Range("WINDOWSSLS"), Range("WINDOWSSLS").Offset(0, -1), Range("WINDOWSSLS").Offset(0, 1)
-    jFile.AddArgument "selected_standard", dd21.List(dd21.Value)
-    jFile.AddArgument "is_custom_standard", IIf(dd21.Value > (dd21.ListCount - 4), "Ja", "Nein")
-    jFile.AddArgument "selected_masses", dd22.List(dd22.Value)
-
-    jFile.AddMeasure "AddingMaterialsAndConstructions"
+    Call ExportAddingMaterialsAndConstructions(jFile)
     Range("UStatus") = "Definiert"
     DoEvents
 
