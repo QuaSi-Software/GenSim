@@ -221,6 +221,65 @@ Sub ExportDetectingExternalZones(ByRef jFile As JSONFile)
     jFile.AddMeasure "DetectingExternalZones"
 End Sub
 
+' Export method for measure AddingInternalLoads.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param bGeneric Boolean ByVal If the geometry is generic (true) or imported (false)
+' @param nrf_bgf Double ByVal Ratio of NFA over GFA
+Sub ExportAddingInternalLoads( _
+    ByRef jFile As JSONFile, _
+    ByVal bGeneric As Boolean, _
+    ByVal nrf_bgf As Double _
+)
+    Dim ddRatio1 As DropDown 'ratio NFA/GFA
+    Set ddRatio1 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF")
+    Dim ddRatio2 As DropDown 'ratio NFA/GFA imported
+    Set ddRatio2 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF_Import")
+    Dim dd23 As DropDown 'electric equipment
+    Set dd23 = Sheets("HAUPTSEITE").DropDowns("Dropdown23")
+    Dim dd49 As DropDown 'artificial lighting
+    Set dd49 = Sheets("HAUPTSEITE").DropDowns("Dropdown49")
+    Dim dd50 As DropDown 'presence of persons
+    Set dd50 = Sheets("HAUPTSEITE").DropDowns("Dropdown50")
+    Dim dd51 As DropDown 'activity of persons
+    Set dd51 = Sheets("HAUPTSEITE").DropDowns("Dropdown51")
+
+    Dim isCustom As Boolean
+    Dim selected As String
+
+    If bGeneric Then
+        isCustom = ddRatio1.Value = 1
+        selected = ddRatio1.List(ddRatio1.Value)
+    Else
+        isCustom = ddRatio2.Value = 1
+        selected = ddRatio2.List(ddRatio2.Value)
+    End If
+
+    jFile.AddArgument "ElectricEquipmentPowerPerFloorArea", Range("Electric") * nrf_bgf
+    jFile.AddArgument "LightingPowerPerFloorArea", Range("Lights") * nrf_bgf
+    jFile.AddArgument "PeoplePerFloorArea", 1 / Range("People") * nrf_bgf
+    jFile.AddSchedule "ElectricEquipmentSchedule", Range("ElectricWD")
+    jFile.AddSchedule "LightSchedule", Range("LightWD")
+    jFile.AddSchedule "PeopleSchedule", Range("PeopleWD")
+    jFile.AddSchedule "PeopleActivitySchedule", Range("PeopleActivityWD")
+    jFile.AddHolidays "Holidays", Range("Feiertage")
+    jFile.AddArgument "area_bgf_import", Range("BldgArea_import")
+    jFile.AddArgument "NRF/BGF", CStr(nrf_bgf)
+    jFile.AddArgument "selected_ratio", selected
+    jFile.AddArgument "is_custom_ratio", IIf(isCustom, "true", "false")
+    jFile.AddArgument "is_imported", IIf(bGeneric, "false", "true")
+    jFile.AddArgument "ElectricEquipmentSchedule", dd23.List(dd23.Value)
+    jFile.AddArgument "LightSchedule", dd49.List(dd49.Value)
+    jFile.AddArgument "PeopleSchedule", dd50.List(dd50.Value)
+    jFile.AddArgument "PeopleActivitySchedule", dd51.List(dd51.Value)
+    jFile.AddArgument "is_custom_ElectricEquipment", IIf(dd23.Value > (dd23.ListCount - 2), "true", "false")
+    jFile.AddArgument "is_custom_Light", IIf(dd49.Value > (dd49.ListCount - 2), "true", "false")
+    jFile.AddArgument "is_custom_People", IIf(dd50.Value > (dd50.ListCount - 2), "true", "false")
+    jFile.AddArgument "is_custom_PeopleActivity", IIf(dd51.Value > (dd51.ListCount - 2), "true", "false")
+
+    jFile.AddMeasure "AddingInternalLoads"
+End Sub
+
 ' This class is intended to provide an interface for writing parameters to an
 ' OSW file or reading them from one. The import/export is not a simple 1-to-1
 ' match of ranges and values, thus the macros might take some time and needs
@@ -306,12 +365,20 @@ Sub ExportToOSW( _
     Set dd60 = Sheets("HAUPTSEITE").DropDowns("Dropdown60")
     Dim dd86 As DropDown 'Solltemp Kühlung
     Set dd86 = Sheets("HAUPTSEITE").DropDowns("Dropdown86")
+
     Dim dd_timestep As DropDown
     Set dd_timestep = Sheets("Hauptseite").DropDowns("dropdown_timestep")
     Dim Timestep As Double
     Dim Timestep_s As String
     Timestep = 60 / dd_timestep.List(dd_timestep.Value)
     Timestep_s = Timestep
+
+    Dim nrf_bgf As Double
+    If bGeneric Then
+        nrf_bgf = Range("BGF_zu_NRF")
+    Else
+        nrf_bgf = Range("BGF_zu_NRF_import")
+    End If
 
     Dim jFile As New JSONFile
 
@@ -339,48 +406,8 @@ Sub ExportToOSW( _
     If Not bGeneric Then Call ExportAddThermalZones(jFile)
     Call ExportDetectingExternalZones(jFile)
 
-    ''''''''''''''''''''''''''''''' internal load measure (schedules)
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
     Range("LoadStatus") = "Start ..."
-
-    Dim nrf_bgf As Double
-    Dim isCustom As Boolean
-    Dim selected As String
-
-    If bGeneric Then
-        nrf_bgf = Range("BGF_zu_NRF")
-        isCustom = ddRatio1.Value = 1
-        selected = ddRatio1.List(ddRatio1.Value)
-    Else
-        nrf_bgf = Range("BGF_zu_NRF_import")
-        isCustom = ddRatio2.Value = 1
-        selected = ddRatio2.List(ddRatio2.Value)
-    End If
-
-    jFile.AddArgument "ElectricEquipmentPowerPerFloorArea", Range("Electric") * nrf_bgf
-    jFile.AddArgument "LightingPowerPerFloorArea", Range("Lights") * nrf_bgf
-    jFile.AddArgument "PeoplePerFloorArea", 1 / Range("People") * nrf_bgf
-    jFile.AddSchedule "ElectricEquipmentSchedule", Range("ElectricWD")
-    jFile.AddSchedule "LightSchedule", Range("LightWD")
-    jFile.AddSchedule "PeopleSchedule", Range("PeopleWD")
-    jFile.AddSchedule "PeopleActivitySchedule", Range("PeopleActivityWD")
-    jFile.AddHolidays "Holidays", Range("Feiertage")
-    jFile.AddArgument "area_bgf_import", Range("BldgArea_import")
-    jFile.AddArgument "NRF/BGF", CStr(nrf_bgf)
-    jFile.AddArgument "selected_ratio", selected
-    jFile.AddArgument "is_custom_ratio", IIf(isCustom, "true", "false")
-    jFile.AddArgument "is_imported", IIf(bGeneric, "false", "true")
-    jFile.AddArgument "ElectricEquipmentSchedule", dd23.List(dd23.Value)
-    jFile.AddArgument "LightSchedule", dd49.List(dd49.Value)
-    jFile.AddArgument "PeopleSchedule", dd50.List(dd50.Value)
-    jFile.AddArgument "PeopleActivitySchedule", dd51.List(dd51.Value)
-    jFile.AddArgument "is_custom_ElectricEquipment", IIf(dd23.Value > (dd23.ListCount - 2), "true", "false")
-    jFile.AddArgument "is_custom_Light", IIf(dd49.Value > (dd49.ListCount - 2), "true", "false")
-    jFile.AddArgument "is_custom_People", IIf(dd50.Value > (dd50.ListCount - 2), "true", "false")
-    jFile.AddArgument "is_custom_PeopleActivity", IIf(dd51.Value > (dd51.ListCount - 2), "true", "false")
-
-    jFile.AddMeasure "AddingInternalLoads"
+    Call ExportAddingInternalLoads(jFile, bGeneric, nrf_bgf)
     Range("LoadStatus") = "Definiert"
     DoEvents
 
