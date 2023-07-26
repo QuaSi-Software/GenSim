@@ -12,7 +12,7 @@ class BarAspectRatioStudy_Test < MiniTest::Test
     arguments = GetArguments(BarAspectRatioStudy.new, OpenStudio::Model::Model.new)
 
     # check if the number of arguments is correct
-    assert_equal(17, arguments.size)
+    assert_equal(18, arguments.size)
   end
 
   def test_bad_argument_values
@@ -28,7 +28,7 @@ end
   def test_good_argument_values
     # create hash of argument values
     args_hash = {}
-    args_hash["floor_area"] = 20
+    args_hash["floor_area"] = 400
 
     # create an empty model
     model = OpenStudio::Model::Model.new

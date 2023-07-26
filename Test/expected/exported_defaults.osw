@@ -44,7 +44,8 @@
       {
          "arguments": {
             "floor_area": "1875",
-            "ns_to_ew_ratio": "1",
+            "building_length": "25",
+            "building_width": "25",
             "number_of_stories": "3",
             "floor_to_floor_height": "3",
             "surface_matching": "true",

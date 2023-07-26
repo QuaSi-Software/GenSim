@@ -60,11 +60,17 @@ class BarAspectRatioStudy < OpenStudio::Ruleset::ModelUserScript
     floor_area.setUnits("m^2")
     args << floor_area
 
-    #make an argument for aspect ratio
-    ns_to_ew_ratio = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("ns_to_ew_ratio",true)
-    ns_to_ew_ratio.setDisplayName("Ratio of North/South Facade Length Relative to East/West Facade Length.")
-    ns_to_ew_ratio.setDefaultValue(2.0)
-    args << ns_to_ew_ratio
+    #make an argument for building length
+    building_length = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("building_length",true)
+    building_length.setDisplayName("Length of North/South Facade")
+    building_length.setDefaultValue(20.0)
+    args << building_length
+
+    #make an argument for building width
+    building_width = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("building_width",true)
+    building_width.setDisplayName("Width of East/West Facade")
+    building_width.setDefaultValue(10.0)
+    args << building_width
 
     #make an argument for number of floors
     number_of_stories = OpenStudio::Ruleset::OSArgument::makeIntegerArgument("number_of_stories",true)
@@ -171,7 +177,8 @@ class BarAspectRatioStudy < OpenStudio::Ruleset::ModelUserScript
 
     #assign the user inputs to variables
     floor_area = runner.getDoubleArgumentValue("floor_area",user_arguments)
-    ns_to_ew_ratio = runner.getDoubleArgumentValue("ns_to_ew_ratio",user_arguments)
+    building_length = runner.getDoubleArgumentValue("building_length",user_arguments)
+    building_width = runner.getDoubleArgumentValue("building_width",user_arguments)
     number_of_stories = runner.getIntegerArgumentValue("number_of_stories",user_arguments)
     floor_to_floor_height = runner.getDoubleArgumentValue("floor_to_floor_height",user_arguments)
     surface_matching = runner.getBoolArgumentValue("surface_matching",user_arguments)
@@ -192,8 +199,11 @@ class BarAspectRatioStudy < OpenStudio::Ruleset::ModelUserScript
     if not floor_area > 0
       runner.registerError("Enter a total building area greater than 0.")
     end
-    if not ns_to_ew_ratio > 0
-      runner.registerError("Enter ratio grater than 0.")
+    if not building_length > 0
+      runner.registerError("Enter a building length greater than 0.")
+    end
+    if not building_width > 0
+      runner.registerError("Enter a building width greater than 0.")
     end
     if not number_of_stories > 0
       runner.registerError("Enter a number of stories 1 or greater.")
@@ -218,16 +228,8 @@ class BarAspectRatioStudy < OpenStudio::Ruleset::ModelUserScript
       converted_number = OpenStudio::convert(OpenStudio::Quantity.new(number, OpenStudio::createUnit(from_unit_string).get), OpenStudio::createUnit(to_unit_string).get).get.value
     end
 
-    #calculate needed variables
-    footprint_si = floor_area/number_of_stories
-
-    #variables from original rectangle script not exposed in this measure
-    width = Math.sqrt(footprint_si/ns_to_ew_ratio)
-    length = footprint_si/width
-    plenum_height = 0 #this doesn't look like it is used anywhere
-
     #determine if core and perimeter zoning can be used
-    if length > 10 and width > 10
+    if building_length > 10 and building_width > 10
       perimeter_zone_depth = perimeterdepth #hard coded in meters
     else
       perimeter_zone_depth = 0 #if any size is to small then just model floor as single zone, issue warning
@@ -244,9 +246,9 @@ class BarAspectRatioStudy < OpenStudio::Ruleset::ModelUserScript
       story.setNominalFloortoFloorHeight(floor_to_floor_height)
       story.setName("Story #{floor+1}")
 
-      nw_point = OpenStudio::Point3d.new(0,width,z)
-      ne_point = OpenStudio::Point3d.new(length,width,z)
-      se_point = OpenStudio::Point3d.new(length,0,z)
+      nw_point = OpenStudio::Point3d.new(0,building_width,z)
+      ne_point = OpenStudio::Point3d.new(building_length,building_width,z)
+      se_point = OpenStudio::Point3d.new(building_length,0,z)
       sw_point = OpenStudio::Point3d.new(0,0,z)
 
       # Identity matrix for setting space origins

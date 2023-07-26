@@ -160,7 +160,8 @@ Sub ExportBarAspectRatioStudy(ByRef jFile As JSONFile)
     Set dd47 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_b")
 
     jFile.AddArgument "floor_area", Range("BldgArea")
-    jFile.AddArgument "ns_to_ew_ratio", Range("NSEWRatio")
+    jFile.AddArgument "building_length", Range("LAENGE")
+    jFile.AddArgument "building_width", Range("BREITE")
     jFile.AddArgument "number_of_stories", Range("NoFloors")
     jFile.AddArgument "floor_to_floor_height", Range("FloorHeight")
     jFile.AddArgument "surface_matching", "true"
