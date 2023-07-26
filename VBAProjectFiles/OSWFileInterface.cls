@@ -252,9 +252,9 @@ Sub ExportAddingInternalLoads( _
         selected = ddRatio2.List(ddRatio2.Value)
     End If
 
-    jFile.AddArgument "ElectricEquipmentPowerPerFloorArea", Range("Electric") * nrf_bgf
-    jFile.AddArgument "LightingPowerPerFloorArea", Range("Lights") * nrf_bgf
-    jFile.AddArgument "PeoplePerFloorArea", 1 / Range("People") * nrf_bgf
+    jFile.AddArgument "ElectricEquipmentPowerPerFloorArea", Range("Electric")
+    jFile.AddArgument "LightingPowerPerFloorArea", Range("Lights")
+    jFile.AddArgument "FloorAreaPerPerson", Range("People")
     jFile.AddSchedule "ElectricEquipmentSchedule", Range("ElectricWD")
     jFile.AddSchedule "LightSchedule", Range("LightWD")
     jFile.AddSchedule "PeopleSchedule", Range("PeopleWD")

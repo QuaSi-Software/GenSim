@@ -23,9 +23,10 @@ class AddingInternalLoads < OpenStudio::Measure::ModelMeasure
     args = OpenStudio::Measure::OSArgumentVector.new
 
     # the name of the space to add to the model
+	args << OpenStudio::Measure::OSArgument.makeDoubleArgument("NRF/BGF", true)
     args << OpenStudio::Measure::OSArgument.makeDoubleArgument("ElectricEquipmentPowerPerFloorArea", true)
     args << OpenStudio::Measure::OSArgument.makeDoubleArgument("LightingPowerPerFloorArea", true)
-    args << OpenStudio::Measure::OSArgument.makeDoubleArgument("PeoplePerFloorArea", true)
+    args << OpenStudio::Measure::OSArgument.makeDoubleArgument("FloorAreaPerPerson", true)
 	args << OpenStudio::Measure::OSArgument.makeStringArgument("ElectricEquipmentScheduleWerktag", true)
 	args << OpenStudio::Measure::OSArgument.makeStringArgument("ElectricEquipmentScheduleSamstag", true)
 	args << OpenStudio::Measure::OSArgument.makeStringArgument("ElectricEquipmentScheduleSonntag", true)
@@ -46,7 +47,6 @@ class AddingInternalLoads < OpenStudio::Measure::ModelMeasure
 
 	# custom parameters for loading from OSW
 	args << OpenStudio::Measure::OSArgument.makeDoubleArgument("area_bgf_import", false)
-	args << OpenStudio::Measure::OSArgument.makeDoubleArgument("NRF/BGF", false)
 	args << OpenStudio::Measure::OSArgument.makeStringArgument("selected_ratio", false)
 	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_ratio", false)
 	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_imported", false)
@@ -72,9 +72,10 @@ class AddingInternalLoads < OpenStudio::Measure::ModelMeasure
     end
 
     # assign the user inputs to variables
+    nfa_gfa_ratio = runner.getDoubleArgumentValue("NRF/BGF", user_arguments)
     electricEquipmentPowerPerFloorArea = runner.getDoubleArgumentValue("ElectricEquipmentPowerPerFloorArea", user_arguments)
 	lightingPowerPerFloorArea = runner.getDoubleArgumentValue("LightingPowerPerFloorArea", user_arguments)
-	peoplePerFloorArea = runner.getDoubleArgumentValue("PeoplePerFloorArea", user_arguments)
+	floorAreaPerPerson = runner.getDoubleArgumentValue("FloorAreaPerPerson", user_arguments)
 	electricEquipmentScheduleWerktag = runner.getStringArgumentValue("ElectricEquipmentScheduleWerktag", user_arguments)
 	electricEquipmentScheduleSamstag = runner.getStringArgumentValue("ElectricEquipmentScheduleSamstag", user_arguments)
 	electricEquipmentScheduleSonntag = runner.getStringArgumentValue("ElectricEquipmentScheduleSonntag", user_arguments)
@@ -92,6 +93,11 @@ class AddingInternalLoads < OpenStudio::Measure::ModelMeasure
 	peopleActivityScheduleSonntag = runner.getStringArgumentValue("PeopleActivityScheduleSonntag", user_arguments)
 	peopleActivityScheduleFeiertag = runner.getStringArgumentValue("PeopleActivityScheduleFeiertag", user_arguments)
 	holidays = runner.getStringArgumentValue("Holidays", user_arguments)
+
+	# set power densities relative to net floor area
+	electricEquipmentPowerPerFloorArea *= nfa_gfa_ratio
+	lightingPowerPerFloorArea *= nfa_gfa_ratio
+	peoplePerFloorArea = nfa_gfa_ratio / floorAreaPerPerson
 
     # report initial condition of model
     runner.registerInitialCondition("The building has #{model.getSpaces.size} spaces.")

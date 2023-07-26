@@ -44,7 +44,7 @@ class AddingInternalLoads_Test < MiniTest::Test
         # using defaults values from measure.rb for other arguments
         args_hash["ElectricEquipmentPowerPerFloorArea"] = 1
         args_hash["LightingPowerPerFloorArea"] = 2
-        args_hash["PeoplePerFloorArea"] = 3
+        args_hash["FloorAreaPerPerson"] = 3
         args_hash["ElectricEquipmentScheduleWerktag"] = defaultSched
         args_hash["ElectricEquipmentScheduleSamstag"] = defaultSched
         args_hash["ElectricEquipmentScheduleSonntag"] = defaultSched
