@@ -278,7 +278,9 @@
       },
       {
          "arguments": {
-            "AirChangesPerHour": "7.37533333333333E-02"
+            "AirChangesPerHour": "0.1",
+            "nfa_gfa_ratio": "0.851",
+            "floor_height_ratio": 0.866666666666667
          },
          "measure_dir_name": "AddingInfiltration"
       },

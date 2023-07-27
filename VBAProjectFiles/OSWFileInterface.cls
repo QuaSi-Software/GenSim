@@ -359,7 +359,9 @@ Sub ExportAddingInfiltration( _
     ByVal nrf_bgf As Double, _
     ByVal FloorHeight_Ratio As Double _
 )
-    jFile.AddArgument "AirChangesPerHour", Range("INFIL") * FloorHeight_Ratio * nrf_bgf
+    jFile.AddArgument "AirChangesPerHour", Range("INFIL")
+    jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
+    jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
     jFile.AddMeasure "AddingInfiltration"
 End Sub
 

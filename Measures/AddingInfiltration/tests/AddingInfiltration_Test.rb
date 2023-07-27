@@ -16,7 +16,7 @@ class AddingInfiltration_Test < MiniTest::Test
         # get arguments with a new instance of the measure
         arguments = GetArguments(AddingInfiltration.new, OpenStudio::Model::Model.new)
 
-        assert_equal(1, arguments.size)
+        assert_equal(3, arguments.size)
     end
 
     def test_bad_argument_values
@@ -34,6 +34,8 @@ class AddingInfiltration_Test < MiniTest::Test
         # If the argument has a default that you want to use, you don't need it in the hash
         args_hash = {}
         args_hash["AirChangesPerHour"] = 0.07
+        args_hash["nfa_gfa_ratio"] = 0.8
+        args_hash["floor_height_ratio"] = 0.8
 
         # load an existing model
         dir = File.expand_path(File.dirname(__FILE__))
