@@ -24,6 +24,14 @@ class InjectIdealLoadParametersIDF < OpenStudio::Measure::EnergyPlusMeasure
 	args << OpenStudio::Measure::OSArgument::makeDoubleArgument("SensibleEffectiveness",true)
 	args << OpenStudio::Measure::OSArgument::makeDoubleArgument("LatentEffectiveness",true)
 	args << OpenStudio::Measure::OSArgument::makeDoubleArgument("ACH",true)
+  nfa_gfa_ratio = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("nfa_gfa_ratio",true)
+  nfa_gfa_ratio.setDisplayName("Ratio of NFA over GFA")
+  nfa_gfa_ratio.setDefaultValue(1)
+  args << nfa_gfa_ratio
+  floor_height_ratio = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("floor_height_ratio",true)
+  floor_height_ratio.setDisplayName("Ratio of conditioned floor height over total floor height")
+  floor_height_ratio.setDefaultValue(1)
+  args << floor_height_ratio
 	
     return args
   end
@@ -42,7 +50,12 @@ class InjectIdealLoadParametersIDF < OpenStudio::Measure::EnergyPlusMeasure
 	sensibleEffectiveness = runner.getDoubleArgumentValue("SensibleEffectiveness", user_arguments)
 	latentEffectiveness = runner.getDoubleArgumentValue("LatentEffectiveness", user_arguments)
 	ach = runner.getDoubleArgumentValue("ACH", user_arguments)
+  nfa_gfa_ratio = runner.getDoubleArgumentValue("nfa_gfa_ratio",user_arguments)
+  floor_height_ratio = runner.getDoubleArgumentValue("floor_height_ratio",user_arguments)
 	
+    # rescale air change rate to conditioned volume and GFA
+    ach = ach * nfa_gfa_ratio * floor_height_ratio
+
     #get all IdealLoadsObjects in model
     idealLoadObjects = workspace.getObjectsByType("HVACTemplate:Zone:IdealLoadsAirSystem".to_IddObjectType)
 	

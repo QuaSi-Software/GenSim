@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>inject_ideal_load_parameters_idf</name>
   <uid>e3487a61-abd7-4f98-ae4f-c77301e48a4d</uid>
-  <version_id>48a08c7b-5722-4a9e-93aa-99f7e41bf5e1</version_id>
-  <version_modified>20230714T085728Z</version_modified>
+  <version_id>2fdeebcd-430b-4aad-9b18-e301267a0617</version_id>
+  <version_modified>20230728T084156Z</version_modified>
   <xml_checksum>7DF45990</xml_checksum>
   <class_name>InjectIdealLoadParametersIDF</class_name>
   <display_name>InjectIdealLoadParametersIDF</display_name>
@@ -38,6 +38,22 @@
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
+    <argument>
+      <name>nfa_gfa_ratio</name>
+      <display_name>Ratio of NFA over GFA</display_name>
+      <type>Double</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+      <default_value>1</default_value>
+    </argument>
+    <argument>
+      <name>floor_height_ratio</name>
+      <display_name>Ratio of conditioned floor height over total floor height</display_name>
+      <type>Double</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+      <default_value>1</default_value>
+    </argument>
   </arguments>
   <outputs/>
   <provenances/>
@@ -63,6 +79,12 @@
   </attributes>
   <files>
     <file>
+      <filename>example_model.idf</filename>
+      <filetype>idf</filetype>
+      <usage_type>test</usage_type>
+      <checksum>81319CFD</checksum>
+    </file>
+    <file>
       <version>
         <software_program>OpenStudio</software_program>
         <identifier>2.5.0</identifier>
@@ -71,19 +93,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>46F0C649</checksum>
-    </file>
-    <file>
-      <filename>example_model.idf</filename>
-      <filetype>idf</filetype>
-      <usage_type>test</usage_type>
-      <checksum>81319CFD</checksum>
+      <checksum>C265E307</checksum>
     </file>
     <file>
       <filename>InjectdealLoadParametersIdf_Test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>8A8F3054</checksum>
+      <checksum>BF388F09</checksum>
     </file>
   </files>
 </measure>

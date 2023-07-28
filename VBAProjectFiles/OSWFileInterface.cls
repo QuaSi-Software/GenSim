@@ -424,7 +424,9 @@ Sub ExportInjectIdealLoadParametersIDF( _
     jFile.AddArgument "HeatRecoveryType", Range("WRG")
     jFile.AddArgument "SensibleEffectiveness", Range("SENSIBLE")
     jFile.AddArgument "LatentEffectiveness", Range("LATENT")
-    jFile.AddArgument "ACH", Range("ACH") * FloorHeight_Ratio * nrf_bgf
+    jFile.AddArgument "ACH", Range("ACH")
+    jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
+    jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
     jFile.AddMeasure "InjectIdealLoadParametersIDF"
 End Sub
 

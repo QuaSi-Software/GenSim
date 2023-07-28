@@ -328,7 +328,9 @@
             "HeatRecoveryType": "Sensible",
             "SensibleEffectiveness": "0.75",
             "LatentEffectiveness": "1",
-            "ACH": 1.47506666666667
+            "ACH": "2",
+            "nfa_gfa_ratio": "0.851",
+            "floor_height_ratio": 0.866666666666667
          },
          "measure_dir_name": "InjectIdealLoadParametersIDF"
       },
