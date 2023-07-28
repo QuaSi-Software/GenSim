@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>bar_aspect_ratio_study</name>
   <uid>3dcac94d-8a2e-43b6-8698-a3a4e8f3903f</uid>
-  <version_id>edaf0a8a-2720-4850-8ad3-23bf0ce92689</version_id>
-  <version_modified>20230726T090056Z</version_modified>
+  <version_id>4937b8b0-b64e-4138-a4a0-e33897cfa244</version_id>
+  <version_modified>20230728T085014Z</version_modified>
   <xml_checksum>49BEF039</xml_checksum>
   <class_name>BarAspectRatioStudy</class_name>
   <display_name>Bar Aspect Ratio Study</display_name>
@@ -24,7 +24,7 @@
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
-      <default_value>25</default_value>
+      <default_value>20</default_value>
     </argument>
     <argument>
       <name>building_width</name>
@@ -32,7 +32,7 @@
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
-      <default_value>25</default_value>
+      <default_value>10</default_value>
     </argument>
     <argument>
       <name>number_of_stories</name>
@@ -265,16 +265,16 @@
   </attributes>
   <files>
     <file>
-      <filename>BarAspectRatioStudy_Test.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>test</usage_type>
-      <checksum>20C1D180</checksum>
-    </file>
-    <file>
       <filename>LICENSE.md</filename>
       <filetype>md</filetype>
       <usage_type>license</usage_type>
       <checksum>16F7B378</checksum>
+    </file>
+    <file>
+      <filename>BarAspectRatioStudy_Test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>ED24E69E</checksum>
     </file>
     <file>
       <version>
@@ -285,7 +285,7 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>E84EA9F5</checksum>
+      <checksum>5F4120A7</checksum>
     </file>
   </files>
 </measure>
