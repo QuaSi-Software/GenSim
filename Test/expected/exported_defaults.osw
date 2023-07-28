@@ -8,7 +8,7 @@
       {
          "arguments": {
          },
-         "measure_dir_name": "CreateAnEmptyModel"
+         "measure_dir_name": "create_empty_model"
       },
       {
          "arguments": {
@@ -16,7 +16,7 @@
             "NorthAxis": "0",
             "Timestep": "4"
          },
-         "measure_dir_name": "SetWeatherAxisTimestep"
+         "measure_dir_name": "set_weather_axis_timestep"
       },
       {
          "arguments": {
@@ -39,7 +39,7 @@
             "Shadingcontrol": "1",
             "Lightingcontrol": "1"
          },
-         "measure_dir_name": "CustomExportParams"
+         "measure_dir_name": "custom_export_params"
       },
       {
          "arguments": {
@@ -62,7 +62,7 @@
             "AdiabaticFloor": "false",
             "perimeterdepth": "0"
          },
-         "measure_dir_name": "BarAspectRatioStudy"
+         "measure_dir_name": "add_geometry"
       },
       {
          "arguments": {
@@ -192,12 +192,12 @@
             "is_custom_standard": "false",
             "selected_masses": "Mittel"
          },
-         "measure_dir_name": "AddingMaterialsAndConstructions"
+         "measure_dir_name": "add_materials_and_construction"
       },
       {
          "arguments": {
          },
-         "measure_dir_name": "DetectingExternalZones"
+         "measure_dir_name": "detect_external_zones"
       },
       {
          "arguments": {
@@ -235,7 +235,7 @@
             "is_custom_People": "false",
             "is_custom_PeopleActivity": "false"
          },
-         "measure_dir_name": "AddingInternalLoads"
+         "measure_dir_name": "add_internal_loads"
       },
       {
          "arguments": {
@@ -268,13 +268,13 @@
             "fanPressureRiseReturn": "750",
             "system_type": "2"
          },
-         "measure_dir_name": "AddDetailedHVAC"
+         "measure_dir_name": "add_detailed_hvac"
       },
       {
          "arguments": {
             "SolarSetpoint": "180"
          },
-         "measure_dir_name": "AddingShadingControls"
+         "measure_dir_name": "add_shading_controls"
       },
       {
          "arguments": {
@@ -282,13 +282,13 @@
             "nfa_gfa_ratio": "0.851",
             "floor_height_ratio": 0.866666666666667
          },
-         "measure_dir_name": "AddingInfiltration"
+         "measure_dir_name": "add_infiltration"
       },
       {
          "arguments": {
             "DaylightingSetpoint": "500"
          },
-         "measure_dir_name": "AddingLightingControls"
+         "measure_dir_name": "add_lighting_controls"
       },
       {
          "arguments": {
@@ -306,14 +306,14 @@
             "zoneCoolingTempScheduleFeiertag": " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25",
             "Holidays": "-"
          },
-         "measure_dir_name": "AddingTemperatureSetpoints"
+         "measure_dir_name": "add_temperature_setpoints"
       },
       {
          "arguments": {
             "pathtosave": "$GENSIM_PATH$\\Output",
             "FileName": "Model"
          },
-         "measure_dir_name": "SaveModel"
+         "measure_dir_name": "save_model"
       },
       {
          "arguments": {
@@ -321,7 +321,7 @@
             "MinIndoorTemperature": "24",
             "DeltaT": "0"
          },
-         "measure_dir_name": "InjectZoneVentilationIDF"
+         "measure_dir_name": "inject_zone_ventilation_idf"
       },
       {
          "arguments": {
@@ -332,12 +332,12 @@
             "nfa_gfa_ratio": "0.851",
             "floor_height_ratio": 0.866666666666667
          },
-         "measure_dir_name": "InjectIdealLoadParametersIDF"
+         "measure_dir_name": "inject_ideal_load_parameters_idf"
       },
       {
          "arguments": {
          },
-         "measure_dir_name": "InjectRadiantSurfacesIDF"
+         "measure_dir_name": "inject_radiant_surfaces_idf"
       },
       {
          "arguments": {
@@ -346,7 +346,7 @@
             "HeatingSizingFactor": "1.25",
             "CoolingSizingFactor": "1.15"
          },
-         "measure_dir_name": "SetMeters"
+         "measure_dir_name": "set_meters_idf"
       }
    ]
 }

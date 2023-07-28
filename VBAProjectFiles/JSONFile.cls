@@ -235,25 +235,25 @@ Public Sub ParseOutputFile(sFilename As String)
     Dim step As Dictionary
     For Each step In Parsed("steps")
         Dim result As Dictionary
-        If step("measure_dir_name") = "BarAspectRatioStudy" Then
+        If step("measure_dir_name") = "add_geometry" Then
             Range("GeomStatus") = GetStepStatus(step)
-        ElseIf step("measure_dir_name") = "AddingMaterialsAndConstructions" Then
+        ElseIf step("measure_dir_name") = "add_materials_and_construction" Then
             Range("UStatus") = GetStepStatus(step)
-        ElseIf step("measure_dir_name") = "AddingInternalLoads" Then
+        ElseIf step("measure_dir_name") = "add_internal_loads" Then
             Range("LoadStatus") = GetStepStatus(step)
-        ElseIf step("measure_dir_name") = "AddingIdealAirLoads" Then
+        ElseIf step("measure_dir_name") = "add_ideal_loads" Then
             Range("IdealLoads") = GetStepStatus(step)
-        ElseIf step("measure_dir_name") = "AddingShadingControls" Then
+        ElseIf step("measure_dir_name") = "add_shading_controls" Then
             Range("ShadingControl") = GetStepStatus(step)
-        ElseIf step("measure_dir_name") = "AddingInfiltration" Then
+        ElseIf step("measure_dir_name") = "add_infiltration" Then
             Range("Infiltration") = GetStepStatus(step)
-        ElseIf step("measure_dir_name") = "AddingLightingControls" Then
+        ElseIf step("measure_dir_name") = "add_lighting_controls" Then
             Range("LightingControl") = GetStepStatus(step)
-        ElseIf step("measure_dir_name") = "AddingTemperatureSetpoints" Then
+        ElseIf step("measure_dir_name") = "add_temperature_setpoints" Then
             Range("TempSetpoint") = GetStepStatus(step)
-        ElseIf step("measure_dir_name") = "InjectZoneVentilationIDF" Then
+        ElseIf step("measure_dir_name") = "inject_zone_ventilation_idf" Then
             Range("window_ventilation") = GetStepStatus(step)
-        ElseIf step("measure_dir_name") = "InjectIdealLoadParametersIDF" Then
+        ElseIf step("measure_dir_name") = "inject_ideal_load_parameters_idf" Then
             Range("IDFIdealLoads") = GetStepStatus(step)
         End If
     Next step

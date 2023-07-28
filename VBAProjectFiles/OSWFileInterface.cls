@@ -8,15 +8,15 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 
-' Export method for measure CreateAnEmptyModel.
+' Export method for measure CreateEmptyModel.
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
-Sub ExportCreateAnEmptyModel(ByRef jFile As JSONFile)
+Sub ExportCreateEmptyModel(ByRef jFile As JSONFile)
     Dim dd1 As DropDown 'weather data
     Set dd1 = Sheets("HAUPTSEITE").DropDowns("DropDown1")
 
     jFile.CreateFile Range("FileName") + ".osm", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-    jFile.AddMeasure "CreateAnEmptyModel"
+    jFile.AddMeasure "create_empty_model"
 End Sub
 
 ' Export method for measure SetWeatherAxisTimestep.
@@ -68,7 +68,7 @@ Sub ExportSetWeatherAxisTimestep( _
         jFile.AddArgument "Timestep", CStr(NrOfTimesteps)
     End If
 
-    jFile.AddMeasure "SetWeatherAxisTimestep"
+    jFile.AddMeasure "set_weather_axis_timestep"
 End Sub
 
 ' Export method for measure CustomExportParams.
@@ -139,13 +139,13 @@ Sub ExportCustomExportParams( _
     jFile.AddArgument "Shadingcontrol", IIf(cb_shadingcontrol.Value = 1, 1, 0)
     jFile.AddArgument "Lightingcontrol", IIf(cb_lightingcontrol.Value = 1, 1, 0)
 
-    jFile.AddMeasure "CustomExportParams"
+    jFile.AddMeasure "custom_export_params"
 End Sub
 
-' Export method for measure BarAspectRatioStudy.
+' Export method for measure AddGeometry.
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
-Sub ExportBarAspectRatioStudy(ByRef jFile As JSONFile)
+Sub ExportAddGeometry(ByRef jFile As JSONFile)
     Dim dd42 As DropDown 'adiabatic north
     Set dd42 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_n")
     Dim dd43 As DropDown 'adiabatic east
@@ -178,13 +178,13 @@ Sub ExportBarAspectRatioStudy(ByRef jFile As JSONFile)
     jFile.AddArgument "AdiabaticFloor", dd47.List(dd47.Value)
     jFile.AddArgument "perimeterdepth", Range("PerimeterDepth")
 
-    jFile.AddMeasure "BarAspectRatioStudy"
+    jFile.AddMeasure "add_geometry"
 End Sub
 
-' Export method for measure AddingMaterialsAndConstructions.
+' Export method for measure AddMaterialsAndConstruction.
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
-Sub ExportAddingMaterialsAndConstructions(ByRef jFile As JSONFile)
+Sub ExportAddMaterialsAndConstruction(ByRef jFile As JSONFile)
     Dim dd21 As DropDown 'building standard
     Set dd21 = Sheets("HAUPTSEITE").DropDowns("Dropdown21")
     Dim dd22 As DropDown 'inner masses
@@ -201,29 +201,29 @@ Sub ExportAddingMaterialsAndConstructions(ByRef jFile As JSONFile)
     jFile.AddArgument "is_custom_standard", IIf(dd21.Value > (dd21.ListCount - 4), "Ja", "Nein")
     jFile.AddArgument "selected_masses", dd22.List(dd22.Value)
 
-    jFile.AddMeasure "AddingMaterialsAndConstructions"
+    jFile.AddMeasure "add_materials_and_construction"
 End Sub
 
 ' Export method for measure AddThermalZones.
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
 Sub ExportAddThermalZones(ByRef jFile As JSONFile)
-    jFile.AddMeasure "AddThermalZones"
+    jFile.AddMeasure "add_thermal_zones"
 End Sub
 
-' Export method for measure DetectingExternalZones.
+' Export method for measure DetectExternalZones.
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
-Sub ExportDetectingExternalZones(ByRef jFile As JSONFile)
-    jFile.AddMeasure "DetectingExternalZones"
+Sub ExportDetectExternalZones(ByRef jFile As JSONFile)
+    jFile.AddMeasure "detect_external_zones"
 End Sub
 
-' Export method for measure AddingInternalLoads.
+' Export method for measure AddInternalLoads.
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
 ' @param bGeneric Boolean ByVal If the geometry is generic (true) or imported (false)
 ' @param nrf_bgf Double ByVal Ratio of NFA over GFA
-Sub ExportAddingInternalLoads( _
+Sub ExportAddInternalLoads( _
     ByRef jFile As JSONFile, _
     ByVal bGeneric As Boolean, _
     ByVal nrf_bgf As Double _
@@ -274,7 +274,7 @@ Sub ExportAddingInternalLoads( _
     jFile.AddArgument "is_custom_People", IIf(dd50.Value > (dd50.ListCount - 2), "true", "false")
     jFile.AddArgument "is_custom_PeopleActivity", IIf(dd51.Value > (dd51.ListCount - 2), "true", "false")
 
-    jFile.AddMeasure "AddingInternalLoads"
+    jFile.AddMeasure "add_internal_loads"
 End Sub
 
 ' Export method for measure AddDetailedHVAC.
@@ -311,15 +311,15 @@ Sub ExportAddDetailedHVAC( _
     jFile.AddArgument "fanPressureRiseReturn", CStr(750)
     jFile.AddArgument "system_type", Range("system_type")
 
-    jFile.AddMeasure "AddDetailedHVAC"
+    jFile.AddMeasure "add_detailed_hvac"
 End Sub
 
-' Export method for measure AddingIdealAirLoads.
+' Export method for measure AddIdealLoads.
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
 ' @param nrf_bgf Double ByVal Ratio of NFA over GFA
 ' @param FloorHeight_Ratio Double ByVal Ratio of conditioned over total floor height
-Sub ExportAddingIdealAirLoads( _
+Sub ExportAddIdealLoads( _
     ByRef jFile As JSONFile, _
     ByVal nrf_bgf As Double, _
     ByVal FloorHeight_Ratio As Double _
@@ -338,23 +338,23 @@ Sub ExportAddingIdealAirLoads( _
     jFile.AddArgument "hvacSchedule", dd55.List(dd55.Value)
     jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
 
-    jFile.AddMeasure "AddingIdealAirLoads"
+    jFile.AddMeasure "add_ideal_loads"
 End Sub
 
-' Export method for measure AddingShadingControls.
+' Export method for measure AddShadingControls.
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
-Sub ExportAddingShadingControls(ByRef jFile As JSONFile)
+Sub ExportAddShadingControls(ByRef jFile As JSONFile)
     jFile.AddArgument "SolarSetpoint", Range("SHCO_IRR")
-    jFile.AddMeasure "AddingShadingControls"
+    jFile.AddMeasure "add_shading_controls"
 End Sub
 
-' Export method for measure AddingInfiltration.
+' Export method for measure AddInfiltration.
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
 ' @param nrf_bgf Double ByVal Ratio of NFA over GFA
 ' @param FloorHeight_Ratio Double ByVal Ratio of conditioned over total floor height
-Sub ExportAddingInfiltration( _
+Sub ExportAddInfiltration( _
     ByRef jFile As JSONFile, _
     ByVal nrf_bgf As Double, _
     ByVal FloorHeight_Ratio As Double _
@@ -362,21 +362,21 @@ Sub ExportAddingInfiltration( _
     jFile.AddArgument "AirChangesPerHour", Range("INFIL")
     jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
     jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
-    jFile.AddMeasure "AddingInfiltration"
+    jFile.AddMeasure "add_infiltration"
 End Sub
 
-' Export method for measure AddingLightingControls.
+' Export method for measure AddLightingControls.
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
-Sub ExportAddingLightingControls(ByRef jFile As JSONFile)
+Sub ExportAddLightingControls(ByRef jFile As JSONFile)
     jFile.AddArgument "DaylightingSetpoint", Range("LC_LUX")
-    jFile.AddMeasure "AddingLightingControls"
+    jFile.AddMeasure "add_lighting_controls"
 End Sub
 
-' Export method for measure AddingTemperatureSetpoints.
+' Export method for measure AddTemperatureSetpoints.
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
-Sub ExportAddingTemperatureSetpoints(ByRef jFile As JSONFile)
+Sub ExportAddTemperatureSetpoints(ByRef jFile As JSONFile)
     Dim dd60 As DropDown 'setpoints heating
     Set dd60 = Sheets("HAUPTSEITE").DropDowns("Dropdown60")
     Dim dd86 As DropDown 'setpoint cooling
@@ -389,7 +389,7 @@ Sub ExportAddingTemperatureSetpoints(ByRef jFile As JSONFile)
     jFile.AddSchedule "zoneHeatingTempSchedule", Range("HeatingWD")
     jFile.AddSchedule "zoneCoolingTempSchedule", Range("CoolingWD")
     jFile.AddHolidays "Holidays", Range("Feiertage")
-    jFile.AddMeasure "AddingTemperatureSetpoints"
+    jFile.AddMeasure "add_temperature_setpoints"
 End Sub
 
 ' Export method for measure SaveModel.
@@ -398,7 +398,7 @@ End Sub
 Sub ExportSaveModel(ByRef jFile As JSONFile)
     jFile.AddArgument "pathtosave", GetOutputFolder()
     jFile.AddArgument "FileName", Range("FileName")
-    jFile.AddMeasure "SaveModel"
+    jFile.AddMeasure "save_model"
 End Sub
 
 ' Export method for measure InjectZoneVentilationIDF.
@@ -408,7 +408,7 @@ Sub ExportInjectZoneVentilationIDF(ByRef jFile As JSONFile)
     jFile.AddArgument "VentilationACH", Range("windowvent_ach")
     jFile.AddArgument "MinIndoorTemperature", Range("windowvent_temp")
     jFile.AddArgument "DeltaT", Range("windowvent_dt")
-    jFile.AddMeasure "InjectZoneVentilationIDF"
+    jFile.AddMeasure "inject_zone_ventilation_idf"
 End Sub
 
 ' Export method for measure InjectIdealLoadParametersIDF.
@@ -427,20 +427,20 @@ Sub ExportInjectIdealLoadParametersIDF( _
     jFile.AddArgument "ACH", Range("ACH")
     jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
     jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
-    jFile.AddMeasure "InjectIdealLoadParametersIDF"
+    jFile.AddMeasure "inject_ideal_load_parameters_idf"
 End Sub
 
 ' Export method for measure InjectRadiantSurfacesIDF.
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
 Sub ExportInjectRadiantSurfacesIDF(ByRef jFile As JSONFile)
-    jFile.AddMeasure "InjectRadiantSurfacesIDF"
+    jFile.AddMeasure "inject_radiant_surfaces_idf"
 End Sub
 
-' Export method for measure InjectHolidays.
+' Export method for measure InjectHolidaysIDF.
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
-Sub ExportInjectHolidays(ByRef jFile As JSONFile)
+Sub ExportInjectHolidaysIDF(ByRef jFile As JSONFile)
     feiertage_active = 0
     For r = 1 To 5
         feiertage_active = feiertage_active + Range("Feiertage").Offset(r - 1, 0) + Range("Feiertage").Offset(r - 1, 1)
@@ -448,15 +448,15 @@ Sub ExportInjectHolidays(ByRef jFile As JSONFile)
 
     If feiertage_active > 0 Then
         jFile.AddHolidays "Holidays", Range("Feiertage")
-        jFile.AddMeasure "InjectHolidays"
+        jFile.AddMeasure "inject_holidays_idf"
     End If
 End Sub
 
-' Export method for measure SetMeters.
+' Export method for measure SetMetersIDF.
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
 ' @param NrOfTimesteps As Integer ByVal Number of timesteps per hour.
-Sub ExportSetMeters( _
+Sub ExportSetMetersIDF( _
     ByRef jFile As JSONFile, _
     ByVal NrOfTimesteps As Integer _
 )
@@ -464,7 +464,7 @@ Sub ExportSetMeters( _
     jFile.AddArgument "DayToStartSimulation", Range("DayToStartSimulation")
     jFile.AddArgument "HeatingSizingFactor", Range("HeatingSizingFactor")
     jFile.AddArgument "CoolingSizingFactor", Range("CoolingSizingFactor")
-    jFile.AddMeasure "SetMeters"
+    jFile.AddMeasure "set_meters_idf"
 End Sub
 
 ' This class is intended to provide an interface for writing parameters to an
@@ -533,7 +533,7 @@ Sub ExportToOSW( _
     Dim jFile As New JSONFile
 
     If bGeneric Then
-        Call ExportCreateAnEmptyModel(jFile)
+        Call ExportCreateEmptyModel(jFile)
     End If
 
     Call ExportSetWeatherAxisTimestep(jFile, bGeneric, bCopyOSMFile, NrOfTimesteps)
@@ -541,7 +541,7 @@ Sub ExportToOSW( _
 
     Range("GeomStatus") = "Start ..."
     If bGeneric Then
-        Call ExportBarAspectRatioStudy(jFile)
+        Call ExportAddGeometry(jFile)
         Range("GeomStatus") = "Definiert"
     Else
         Range("GeomStatus") = "Deaktiviert"
@@ -549,15 +549,15 @@ Sub ExportToOSW( _
     DoEvents
 
     Range("UStatus") = "Start ..."
-    Call ExportAddingMaterialsAndConstructions(jFile)
+    Call ExportAddMaterialsAndConstruction(jFile)
     Range("UStatus") = "Definiert"
     DoEvents
 
     If Not bGeneric Then Call ExportAddThermalZones(jFile)
-    Call ExportDetectingExternalZones(jFile)
+    Call ExportDetectExternalZones(jFile)
 
     Range("LoadStatus") = "Start ..."
-    Call ExportAddingInternalLoads(jFile, bGeneric, nrf_bgf)
+    Call ExportAddInternalLoads(jFile, bGeneric, nrf_bgf)
     Range("LoadStatus") = "Definiert"
     DoEvents
 
@@ -565,7 +565,7 @@ Sub ExportToOSW( _
     If bDetailedHVAC Then
         Call ExportAddDetailedHVAC(jFile, nrf_bgf, FloorHeight_Ratio)
     Else
-        Call ExportAddingIdealAirLoads(jFile, nrf_bgf, FloorHeight_Ratio)
+        Call ExportAddIdealLoads(jFile, nrf_bgf, FloorHeight_Ratio)
     End If
     Range("IdealLoads") = "Definiert"
     DoEvents
@@ -574,7 +574,7 @@ Sub ExportToOSW( _
         Range("ShadingControl") = "Deaktiviert"
     Else
         Range("ShadingControl") = "Start ..."
-        Call ExportAddingShadingControls(jFile)
+        Call ExportAddShadingControls(jFile)
         Range("ShadingControl") = "Definiert"
     End If
     DoEvents
@@ -583,7 +583,7 @@ Sub ExportToOSW( _
         Range("Infiltration") = "Deaktiviert"
     Else
         Range("Infiltration") = "Start ..."
-        Call ExportAddingInfiltration(jFile, nrf_bgf, FloorHeight_Ratio)
+        Call ExportAddInfiltration(jFile, nrf_bgf, FloorHeight_Ratio)
         Range("Infiltration") = "Definiert"
     End If
     DoEvents
@@ -592,13 +592,13 @@ Sub ExportToOSW( _
         Range("LightingControl") = "Deaktiviert"
     Else
         Range("LightingControl") = "Start ..."
-        Call ExportAddingLightingControls(jFile)
+        Call ExportAddLightingControls(jFile)
         Range("LightingControl") = "Definiert"
     End If
     DoEvents
 
     Range("TempSetpoint") = "Start ..."
-    Call ExportAddingTemperatureSetpoints(jFile)
+    Call ExportAddTemperatureSetpoints(jFile)
     Range("TempSetpoint") = "Definiert"
     DoEvents
 
@@ -622,8 +622,8 @@ Sub ExportToOSW( _
         Call ExportInjectRadiantSurfacesIDF(jFile)
     End If
 
-    Call ExportInjectHolidays(jFile)
-    Call ExportSetMeters(jFile, NrOfTimesteps)
+    Call ExportInjectHolidaysIDF(jFile)
+    Call ExportSetMetersIDF(jFile, NrOfTimesteps)
 
     jFile.Save sFilename
 End Sub
@@ -688,7 +688,7 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
     Dim wrgVal As String
 
     Select Case item("measure_dir_name")
-        Case "CustomExportParams":
+        Case "custom_export_params":
             Dim cb_zoneDetails As CheckBox
             Set cb_zoneDetails = Sheets("Parameter").CheckBoxes("checkbox_ZoneDetails")
             Dim cb_detailedHVAC As CheckBox
@@ -754,7 +754,7 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
                 Loop
             End If
 
-        Case "SetWeatherAxisTimestep":
+        Case "set_weather_axis_timestep":
             If args.Exists("WeatherFilePath") Then
                 Dim parts() As String
                 parts = Split(args("WeatherFilePath"), "\")
@@ -774,7 +774,7 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
                 dd_timestep.Value = IIf(GetArgument(args, "Timestep") = 4, 1, 2)
             End If
 
-        Case "BarAspectRatioStudy":
+        Case "add_geometry":
             Dim dd42 As DropDown: Set dd42 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_n")
             Dim dd43 As DropDown: Set dd43 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_o")
             Dim dd44 As DropDown: Set dd44 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_s")
@@ -798,7 +798,7 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
 
             If args.Exists("perimeterdepth") Then Range("PerimeterDepth") = GetArgument(args, "perimeterdepth")
 
-        Case "AddingMaterialsAndConstructions":
+        Case "add_materials_and_construction":
             Dim dd21 As DropDown: Set dd21 = Sheets("HAUPTSEITE").DropDowns("Dropdown21")
             Dim dd22 As DropDown: Set dd22 = Sheets("HAUPTSEITE").DropDowns("Dropdown22")
 
@@ -844,7 +844,7 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             If args.Exists("selected_standard") Then DDFindAndSetValue dd21, GetArgument(args, "selected_standard")
             If args.Exists("selected_masses") Then DDFindAndSetValue dd22, GetArgument(args, "selected_masses")
 
-        Case "AddingInternalLoads":
+        Case "add_internal_loads":
             If args.Exists("NRF/BGF") And args.Exists("ElectricEquipmentPowerPerFloorArea") Then
                 Range("Electric") = val(GetArgument(args, "ElectricEquipmentPowerPerFloorArea")) _
                     / val(GetArgument(args, "NRF/BGF"))
@@ -897,7 +897,7 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
                 DDFindAndSetValue dd51, GetArgument(args, "PeopleActivitySchedule")
             End If
 
-        Case "AddingIdealAirLoads":
+        Case "add_ideal_loads":
             If args.Exists("wrg") Then
                 wrgVal = IIf(GetArgument(args, "wrg") = "None", "Keine", IIf(GetArgument(args, "wrg") = "Sensible", "Sensibel", "Latent"))
                 DDFindAndSetValue dd33, wrgVal
@@ -913,7 +913,7 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             If args.Exists("latent") Then Range("LATENT") = GetArgument(args, "latent")
             If args.Exists("sensible") Then Range("SENSIBLE") = GetArgument(args, "sensible")
 
-        Case "AddDetailedHVAC":
+        Case "add_detailed_hvac":
             If args.Exists("wrg") Then
                 wrgVal = IIf(GetArgument(args, "wrg") = "None", "Keine", IIf(GetArgument(args, "wrg") = "Sensible", "Sensibel", "Latent"))
                 DDFindAndSetValue dd33, wrgVal
@@ -929,16 +929,16 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             If args.Exists("latent") Then Range("LATENT") = GetArgument(args, "latent")
             If args.Exists("sensible") Then Range("SENSIBLE") = GetArgument(args, "sensible")
 
-        Case "AddingShadingControls":
+        Case "add_shading_controls":
             If args.Exists("SolarSetpoint") Then Range("SHCO_IRR") = GetArgument(args, "SolarSetpoint")
 
-        Case "AddingInfiltration":
+        Case "add_infiltration":
             If args.Exists("AirChangesPerHour") Then Range("INFIL") = GetArgument(args, "AirChangesPerHour")
 
-        Case "AddingLightingControls":
+        Case "add_lighting_controls":
             If args.Exists("DaylightingSetpoint") Then Range("LC_LUX") = GetArgument(args, "DaylightingSetpoint")
 
-        Case "AddingTemperatureSetpoints":
+        Case "add_temperature_setpoints":
             If args.Exists("heatingTemp") And args.Exists("is_custom_heating") Then _
                 ImportSchedule args, "zoneHeatingTemp", "AP10:AP105", "AP8"
             If args.Exists("coolingTemp") And args.Exists("is_custom_cooling") Then _
@@ -958,23 +958,23 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             If args.Exists("HeatingTemperatureSetpoint") Then Range("HeatingSetpTemp") = GetArgument(args, "HeatingTemperatureSetpoint") ' WOZU GEHÖRT DIESE RANGE ???
             If args.Exists("CoolingTemperatureSetpoint") Then Range("CoolingSetTemp") = GetArgument(args, "CoolingTemperatureSetpoint")
 
-        Case "SaveModel":
+        Case "save_model":
             If args.Exists("FileName") Then Range("FileName") = GetArgument(args, "FileName")
 
-        Case "InjectZoneVentilationIDF":
+        Case "inject_zone_ventilation_idf":
 
             If args.Exists("VentilationACH") Then Range("windowvent_ach") = GetArgument(args, "VentilationACH")
             If args.Exists("MinIndoorTemperature") Then Range("windowvent_temp") = GetArgument(args, "MinIndoorTemperature")
             If args.Exists("DeltaT") Then Range("windowvent_dt") = GetArgument(args, "DeltaT")
 
-        Case "InjectIdealLoadParametersIDF":
+        Case "inject_ideal_load_parameters_idf":
             'Already handled in AddingIdealAirLoads
 
-        Case "InjectHolidays":
+        Case "inject_holidays_idf":
             'Holidays igored for now
             '@TODO Add import when holiday functionality is implemented
 
-        Case "SetMeters":
+        Case "set_meters_idf":
             Dim dd80 As DropDown: Set dd80 = Sheets("HAUPTSEITE").DropDowns("Dropdown80")
             Dim translate As Scripting.Dictionary: Set translate = New Scripting.Dictionary
             translate.Add "Monday", "Montag"
