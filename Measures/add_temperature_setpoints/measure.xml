@@ -1,12 +1,12 @@
 <measure>
   <schema_version>3.0</schema_version>
-  <name>adding_temperature_setpoints</name>
+  <name>add_temperature_setpoints</name>
   <uid>3936e6f6-9ddd-4843-a654-c1c5de244216</uid>
-  <version_id>35ab59e1-878c-4c93-9a2e-fa1473b3f794</version_id>
-  <version_modified>20230714T085627Z</version_modified>
+  <version_id>5588d56a-b10e-4839-8c0f-f2c8ce1c1278</version_id>
+  <version_modified>20230728T142110Z</version_modified>
   <xml_checksum>356BE47F</xml_checksum>
-  <class_name>AddingTemperatureSetpoints</class_name>
-  <display_name>AddingTemperatureSetpoints</display_name>
+  <class_name>AddTemperatureSetpoints</class_name>
+  <display_name>AddTemperatureSetpoints</display_name>
   <description></description>
   <modeler_description></modeler_description>
   <arguments>
@@ -151,6 +151,12 @@
   </attributes>
   <files>
     <file>
+      <filename>example_model.osm</filename>
+      <filetype>osm</filetype>
+      <usage_type>test</usage_type>
+      <checksum>554D0F7D</checksum>
+    </file>
+    <file>
       <version>
         <software_program>OpenStudio</software_program>
         <identifier>2.5.0</identifier>
@@ -159,19 +165,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>336A4A6E</checksum>
+      <checksum>C51D0F14</checksum>
     </file>
     <file>
-      <filename>AddingTemperatureSetpoints_Test.rb</filename>
+      <filename>add_temperature_setpoints_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>1E1DFCCB</checksum>
-    </file>
-    <file>
-      <filename>example_model.osm</filename>
-      <filetype>osm</filetype>
-      <usage_type>test</usage_type>
-      <checksum>554D0F7D</checksum>
+      <checksum>1034BF9B</checksum>
     </file>
   </files>
 </measure>

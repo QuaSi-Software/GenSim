@@ -2,11 +2,11 @@
   <schema_version>3.0</schema_version>
   <name>inject_radiant_surfaces_idf</name>
   <uid>e3487a61-abd7-4f98-ae4f-c77301e48a5d</uid>
-  <version_id>441f1506-0152-4dc4-a162-bd10a455ed9e</version_id>
-  <version_modified>20230714T085738Z</version_modified>
+  <version_id>790ffbed-0635-4702-b103-9ba23a0aa2a5</version_id>
+  <version_modified>20230728T142229Z</version_modified>
   <xml_checksum>7DF45990</xml_checksum>
   <class_name>InjectRadiantSurfacesIDF</class_name>
-  <display_name>InjectRadiantSurfaces</display_name>
+  <display_name>InjectRadiantSurfacesIDF</display_name>
   <description></description>
   <modeler_description></modeler_description>
   <arguments/>
@@ -34,6 +34,12 @@
   </attributes>
   <files>
     <file>
+      <filename>example_model.idf</filename>
+      <filetype>idf</filetype>
+      <usage_type>test</usage_type>
+      <checksum>88083A66</checksum>
+    </file>
+    <file>
       <version>
         <software_program>OpenStudio</software_program>
         <identifier>2.5.0</identifier>
@@ -42,19 +48,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>CA5956DC</checksum>
+      <checksum>865B2C97</checksum>
     </file>
     <file>
-      <filename>example_model.idf</filename>
-      <filetype>idf</filetype>
-      <usage_type>test</usage_type>
-      <checksum>88083A66</checksum>
-    </file>
-    <file>
-      <filename>InjectRadiantSurfacesIdf_Test.rb</filename>
+      <filename>inject_radiant_surfaces_idf_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>834C6307</checksum>
+      <checksum>CD02FC0A</checksum>
     </file>
   </files>
 </measure>

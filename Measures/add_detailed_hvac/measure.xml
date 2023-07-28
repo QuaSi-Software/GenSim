@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>add_detailed_hvac</name>
   <uid>75c17475-d6d2-4074-a097-0c2202206dab</uid>
-  <version_id>a131117d-e2e7-45c9-a924-dda78815b343</version_id>
-  <version_modified>20230727T144107Z</version_modified>
+  <version_id>0d14f304-dd75-4ebf-acd6-07ee1abc90e7</version_id>
+  <version_modified>20230728T141917Z</version_modified>
   <xml_checksum>C49A7DAB</xml_checksum>
   <class_name>AddDetailedHVAC</class_name>
   <display_name>AddDetailedHVAC</display_name>
@@ -276,7 +276,7 @@
       <checksum>023DC766</checksum>
     </file>
     <file>
-      <filename>AddDetailedHVAC_Test.rb</filename>
+      <filename>add_detailed_hvac_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
       <checksum>773A0EDE</checksum>

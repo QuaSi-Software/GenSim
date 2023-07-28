@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>custom_export_params</name>
   <uid>28949d7c-e721-4d6c-9784-0d9840672a49</uid>
-  <version_id>8e9a135e-fa60-4f4a-a0eb-c00a8317a1fb</version_id>
-  <version_modified>20230714T122007Z</version_modified>
+  <version_id>1e7b6d9e-c724-4c4c-92d0-7b6c640f4473</version_id>
+  <version_modified>20230728T142145Z</version_modified>
   <xml_checksum>2AF3A68E</xml_checksum>
   <class_name>CustomExportParams</class_name>
   <display_name>CustomExportParams</display_name>
@@ -182,10 +182,10 @@
       <checksum>E1AE1991</checksum>
     </file>
     <file>
-      <filename>CustomExportParams_Test.rb</filename>
+      <filename>custom_export_params_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>DD78A3F1</checksum>
+      <checksum>550CA45C</checksum>
     </file>
   </files>
 </measure>

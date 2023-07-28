@@ -1,12 +1,12 @@
 <measure>
   <schema_version>3.0</schema_version>
-  <name>adding_materials_and_constructions</name>
+  <name>add_materials_and_construction</name>
   <uid>1ecb30ce-d614-4b9c-8a87-ae7d9a114685</uid>
-  <version_id>2a642c42-38a9-4827-bfeb-7734d1d6f6a5</version_id>
-  <version_modified>20230714T085559Z</version_modified>
+  <version_id>2f2d645f-3235-4b88-a0dc-83ca447f212e</version_id>
+  <version_modified>20230728T142055Z</version_modified>
   <xml_checksum>0985D264</xml_checksum>
-  <class_name>AddingMaterialsAndConstructions</class_name>
-  <display_name>AddingMaterialsAndConstructions</display_name>
+  <class_name>AddMaterialsAndConstruction</class_name>
+  <display_name>AddMaterialsAndConstruction</display_name>
   <description>Inject materials and constructions into the model</description>
   <modeler_description>Inject materials and constructions into the model</modeler_description>
   <arguments>
@@ -929,13 +929,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>0D5B0A9A</checksum>
+      <checksum>EEF2642F</checksum>
     </file>
     <file>
-      <filename>AddingMaterialsAndConstructions_Test.rb</filename>
+      <filename>add_materials_and_construction_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>A371E221</checksum>
+      <checksum>A0830401</checksum>
     </file>
   </files>
 </measure>

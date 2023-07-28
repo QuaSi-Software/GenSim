@@ -1,12 +1,12 @@
 <measure>
   <schema_version>3.0</schema_version>
-  <name>bar_aspect_ratio_study</name>
+  <name>add_geometry</name>
   <uid>3dcac94d-8a2e-43b6-8698-a3a4e8f3903f</uid>
-  <version_id>4937b8b0-b64e-4138-a4a0-e33897cfa244</version_id>
-  <version_modified>20230728T085014Z</version_modified>
+  <version_id>3a7c4dbd-c551-4250-bc89-804542083da0</version_id>
+  <version_modified>20230728T141937Z</version_modified>
   <xml_checksum>49BEF039</xml_checksum>
-  <class_name>BarAspectRatioStudy</class_name>
-  <display_name>Bar Aspect Ratio Study</display_name>
+  <class_name>AddGeometry</class_name>
+  <display_name>AddGeometry</display_name>
   <description>This measure will create a building envelope based on a target floor area, aspect ratio, and floor to floor height.</description>
   <modeler_description>This is based on the SketchUp Plugin user script to create a rectangular building, but just uses different inputs. The resulting building will have a core and perimeter zoning, unless it is too small, in which case eac floor will have a single zone.</modeler_description>
   <arguments>
@@ -271,12 +271,6 @@
       <checksum>16F7B378</checksum>
     </file>
     <file>
-      <filename>BarAspectRatioStudy_Test.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>test</usage_type>
-      <checksum>ED24E69E</checksum>
-    </file>
-    <file>
       <version>
         <software_program>OpenStudio</software_program>
         <identifier>1.0.4</identifier>
@@ -285,7 +279,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>5F4120A7</checksum>
+      <checksum>E2796AB5</checksum>
+    </file>
+    <file>
+      <filename>add_geometry_test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>52238327</checksum>
     </file>
   </files>
 </measure>

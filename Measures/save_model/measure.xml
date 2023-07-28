@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>save_model</name>
   <uid>82c89850-4b47-4ab2-bd7d-78b6c80e2b96</uid>
-  <version_id>e1594c1c-88b8-4826-aca4-cf553222e40e</version_id>
-  <version_modified>20230714T085748Z</version_modified>
+  <version_id>e5bd7763-3749-486e-8199-d32dee6ed309</version_id>
+  <version_modified>20230728T142246Z</version_modified>
   <xml_checksum>2AF3A68E</xml_checksum>
   <class_name>SaveModel</class_name>
   <display_name>SaveModel</display_name>
@@ -71,16 +71,16 @@
       <checksum>31115A0D</checksum>
     </file>
     <file>
-      <filename>SaveModel_Test.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>test</usage_type>
-      <checksum>CD78402B</checksum>
-    </file>
-    <file>
       <filename>Test.osm</filename>
       <filetype>osm</filetype>
       <usage_type>test</usage_type>
       <checksum>31115A0D</checksum>
+    </file>
+    <file>
+      <filename>save_model_test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>CBFA65B6</checksum>
     </file>
   </files>
 </measure>

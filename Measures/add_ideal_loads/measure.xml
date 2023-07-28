@@ -1,12 +1,12 @@
 <measure>
   <schema_version>3.0</schema_version>
-  <name>adding_ideal_air_loads</name>
+  <name>add_ideal_loads</name>
   <uid>bad408fa-2a4e-46a2-84a4-eca24a8c4096</uid>
-  <version_id>02965d3d-a507-4ec7-9cf2-00bcb0189f24</version_id>
-  <version_modified>20230727T145724Z</version_modified>
+  <version_id>de30f108-4427-4ef6-959a-218067c71a2f</version_id>
+  <version_modified>20230728T141948Z</version_modified>
   <xml_checksum>C49A7DAB</xml_checksum>
-  <class_name>AddingIdealAirLoads</class_name>
-  <display_name>AddingIdealAirLoads</display_name>
+  <class_name>AddIdealLoads</class_name>
+  <display_name>AddIdealLoads</display_name>
   <description></description>
   <modeler_description></modeler_description>
   <arguments>
@@ -137,13 +137,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>4D5D9D3A</checksum>
+      <checksum>B8B06C11</checksum>
     </file>
     <file>
-      <filename>AdddingIdealAirLoads_Test.rb</filename>
+      <filename>add_ideal_loads_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>AFA5CCB0</checksum>
+      <checksum>6C8DFE94</checksum>
     </file>
   </files>
 </measure>

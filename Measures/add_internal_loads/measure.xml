@@ -1,12 +1,12 @@
 <measure>
   <schema_version>3.0</schema_version>
-  <name>adding_internal_loads</name>
+  <name>add_internal_loads</name>
   <uid>9db02274-2ce9-48e3-810d-ab9088f09c62</uid>
-  <version_id>77ae8506-e133-464b-9846-044f46c19a6c</version_id>
-  <version_modified>20230728T085026Z</version_modified>
+  <version_id>a049785c-05aa-44d0-ba0c-c20bfe93a27f</version_id>
+  <version_modified>20230728T142034Z</version_modified>
   <xml_checksum>57232789</xml_checksum>
-  <class_name>AddingInternalLoads</class_name>
-  <display_name>AddingInternalLoads</display_name>
+  <class_name>AddInternalLoads</class_name>
+  <display_name>AddInternalLoads</display_name>
   <description></description>
   <modeler_description></modeler_description>
   <arguments>
@@ -337,12 +337,6 @@
       <checksum>4B0919CA</checksum>
     </file>
     <file>
-      <filename>AddingInternalLoads_Test.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>test</usage_type>
-      <checksum>1023C3E0</checksum>
-    </file>
-    <file>
       <version>
         <software_program>OpenStudio</software_program>
         <identifier>2.5.0</identifier>
@@ -351,7 +345,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>8AAE3AE4</checksum>
+      <checksum>6F4042E7</checksum>
+    </file>
+    <file>
+      <filename>add_internal_loads_test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>CC830072</checksum>
     </file>
   </files>
 </measure>

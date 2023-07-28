@@ -1,12 +1,12 @@
 <measure>
   <schema_version>3.0</schema_version>
-  <name>adding_lighting_controls</name>
+  <name>add_lighting_controls</name>
   <uid>ac34ac49-f21b-4c54-83e9-3615aa06acf1</uid>
-  <version_id>06dfaf7b-c9cc-4aa8-be0c-63c4ba0d7db7</version_id>
-  <version_modified>20230714T085547Z</version_modified>
+  <version_id>7cfa3d54-8ace-4727-b20c-27799a4d860f</version_id>
+  <version_modified>20230728T142044Z</version_modified>
   <xml_checksum>81C5D8E7</xml_checksum>
-  <class_name>AddingLightingControls</class_name>
-  <display_name>AddingLightingControls</display_name>
+  <class_name>AddLightingControls</class_name>
+  <display_name>AddLightingControls</display_name>
   <description></description>
   <modeler_description></modeler_description>
   <arguments>
@@ -48,23 +48,6 @@
   </attributes>
   <files>
     <file>
-      <version>
-        <software_program>OpenStudio</software_program>
-        <identifier>2.5.0</identifier>
-        <min_compatible>2.5.0</min_compatible>
-      </version>
-      <filename>measure.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>script</usage_type>
-      <checksum>11D18056</checksum>
-    </file>
-    <file>
-      <filename>AddingLightingControls_Test.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>test</usage_type>
-      <checksum>20A9B3EC</checksum>
-    </file>
-    <file>
       <filename>example_model.osm</filename>
       <filetype>osm</filetype>
       <usage_type>test</usage_type>
@@ -75,6 +58,23 @@
       <filetype>md</filetype>
       <usage_type>license</usage_type>
       <checksum>A54B5736</checksum>
+    </file>
+    <file>
+      <version>
+        <software_program>OpenStudio</software_program>
+        <identifier>2.5.0</identifier>
+        <min_compatible>2.5.0</min_compatible>
+      </version>
+      <filename>measure.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>script</usage_type>
+      <checksum>C7F7145E</checksum>
+    </file>
+    <file>
+      <filename>add_lighting_controls_test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>10728F69</checksum>
     </file>
   </files>
 </measure>

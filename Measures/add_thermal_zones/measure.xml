@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>add_thermal_zones</name>
   <uid>ac34ac49-f21b-4c54-83e9-3615aa06acf2</uid>
-  <version_id>77ef20b4-c1c1-4022-b3b3-2177b91dd965</version_id>
-  <version_modified>20230714T085636Z</version_modified>
+  <version_id>2969550a-0a7d-4d4d-a33f-20e808e7ed2f</version_id>
+  <version_modified>20230728T142118Z</version_modified>
   <xml_checksum>89ABF456</xml_checksum>
   <class_name>AddThermalZones</class_name>
   <display_name>AddThermalZones</display_name>
@@ -50,16 +50,16 @@
       <checksum>3FDF5AEE</checksum>
     </file>
     <file>
-      <filename>AddThermalZones_Test.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>test</usage_type>
-      <checksum>A44AD455</checksum>
-    </file>
-    <file>
       <filename>example_model.osm</filename>
       <filetype>osm</filetype>
       <usage_type>test</usage_type>
       <checksum>B99DC402</checksum>
+    </file>
+    <file>
+      <filename>add_thermal_zones_test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>1985702B</checksum>
     </file>
   </files>
 </measure>
