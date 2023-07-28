@@ -1,11 +1,11 @@
 require_relative "../NewHelper"
 
 # start the measure
-class AddingInternalLoads < OpenStudio::Measure::ModelMeasure
+class AddInternalLoads < OpenStudio::Measure::ModelMeasure
 
   # human readable name
   def name
-    return "AddingInternalLoads"
+    return "AddInternalLoads"
   end
 
   # human readable description
@@ -132,4 +132,4 @@ class AddingInternalLoads < OpenStudio::Measure::ModelMeasure
 end
 
 # register the measure to be used by the application
-AddingInternalLoads.new.registerWithApplication
+AddInternalLoads.new.registerWithApplication

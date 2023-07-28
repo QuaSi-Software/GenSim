@@ -5,7 +5,7 @@ require_relative '../measure.rb'
 require_relative '../../TestHelper.rb'
 require 'fileutils'
 
-class AddingMaterialsAndConstructions_Test < MiniTest::Unit::TestCase
+class AddMaterialsAndConstructionTest < MiniTest::Unit::TestCase
 
   # def setup
   # end
@@ -15,7 +15,7 @@ class AddingMaterialsAndConstructions_Test < MiniTest::Unit::TestCase
 
   def test_number_of_arguments_and_argument_names
     # get arguments with a new instance of the measure
-    arguments = GetArguments(AddingMaterialsAndConstructions.new, OpenStudio::Model::Model.new)
+    arguments = GetArguments(AddMaterialsAndConstruction.new, OpenStudio::Model::Model.new)
 
     assert_equal(125, arguments.size)
     assert_equal("ExternalWallMat1Name", arguments[0].name)
@@ -26,7 +26,7 @@ class AddingMaterialsAndConstructions_Test < MiniTest::Unit::TestCase
     args_hash = {}
     args_hash["space_name"] = ""
 
-    result = TestArguments(AddingMaterialsAndConstructions.new, OpenStudio::Model::Model.new, args_hash)
+    result = TestArguments(AddMaterialsAndConstruction.new, OpenStudio::Model::Model.new, args_hash)
 
     # assert that it ran correctly
     assert_equal("Fail", result.value.valueName)
@@ -69,7 +69,7 @@ class AddingMaterialsAndConstructions_Test < MiniTest::Unit::TestCase
     # store the number of spaces in the seed model
     num_spaces_seed = model.getSpaces.size
 
-    result = TestArguments(AddingMaterialsAndConstructions.new, model, args_hash)
+    result = TestArguments(AddMaterialsAndConstruction.new, model, args_hash)
 
     # assert that it ran correctly
     assert_equal("Success", result.value.valueName)

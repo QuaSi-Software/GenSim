@@ -11,7 +11,7 @@ require_relative '../measure.rb'
 require_relative '../../TestHelper.rb'
 require 'minitest/autorun'
 
-class SaveModel_Test < MiniTest::Test
+class SaveModelTest < MiniTest::Test
     def test_number_of_arguments_and_argument_names
         # get arguments with a new instance of the measure
         arguments = GetArguments(SaveModel.new, OpenStudio::Model::Model.new)

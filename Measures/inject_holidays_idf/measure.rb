@@ -1,11 +1,11 @@
 require 'date'
 
 # start the measure
-class InjectHolidays < OpenStudio::Measure::EnergyPlusMeasure
+class InjectHolidaysIDF < OpenStudio::Measure::EnergyPlusMeasure
 
   # human readable name
   def name
-    return "InjectHolidays"
+    return "InjectHolidaysIDF"
   end
 
   # human readable description
@@ -84,4 +84,4 @@ class InjectHolidays < OpenStudio::Measure::EnergyPlusMeasure
 end
 
 # register the measure to be used by the application
-InjectHolidays.new.registerWithApplication
+InjectHolidaysIDF.new.registerWithApplication

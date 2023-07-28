@@ -6,7 +6,7 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
 
     # human readable name
     def name
-      return "InjectRadiantSurfaces"
+      return "InjectRadiantSurfacesIDF"
     end
   
     # human readable description

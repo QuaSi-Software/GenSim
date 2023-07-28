@@ -1,11 +1,11 @@
 require_relative '../NewHelper.rb'
 
 # start the measure
-class AddingTemperatureSetpoints < OpenStudio::Measure::ModelMeasure
+class AddTemperatureSetpoints < OpenStudio::Measure::ModelMeasure
 
   # human readable name
   def name
-    return "AddingTemperatureSetpoints"
+    return "AddTemperatureSetpoints"
   end
 
   # human readable description
@@ -119,4 +119,4 @@ class AddingTemperatureSetpoints < OpenStudio::Measure::ModelMeasure
 end
 
 # register the measure to be used by the application
-AddingTemperatureSetpoints.new.registerWithApplication
+AddTemperatureSetpoints.new.registerWithApplication

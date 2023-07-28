@@ -36,11 +36,11 @@
 # *******************************************************************************
 
 # start the measure
-class AddingLightingControls < OpenStudio::Measure::ModelMeasure
+class AddLightingControls < OpenStudio::Measure::ModelMeasure
 
   # human readable name
   def name
-    return "AddingLightingControls"
+    return "AddLightingControls"
   end
 
   # human readable description
@@ -237,4 +237,4 @@ class AddingLightingControls < OpenStudio::Measure::ModelMeasure
 end
 
 # register the measure to be used by the application
-AddingLightingControls.new.registerWithApplication
+AddLightingControls.new.registerWithApplication

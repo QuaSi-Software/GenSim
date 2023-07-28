@@ -3,11 +3,11 @@
 ########################################################
 
 # start the measure
-class CreateAnEmptyModel < OpenStudio::Measure::ModelMeasure
+class CreateEmptyModel < OpenStudio::Measure::ModelMeasure
 
   # human readable name
   def name
-    return "CreateAnEmptyModel"
+    return "CreateEmptyModel"
   end
 
   # human readable description
@@ -46,4 +46,4 @@ class CreateAnEmptyModel < OpenStudio::Measure::ModelMeasure
 end
 
 # register the measure to be used by the application
-CreateAnEmptyModel.new.registerWithApplication
+CreateEmptyModel.new.registerWithApplication

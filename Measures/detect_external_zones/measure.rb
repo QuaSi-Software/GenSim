@@ -3,11 +3,11 @@
 ########################################################
 
 # start the measure
-class DetectingExternalZones < OpenStudio::Measure::ModelMeasure
+class DetectExternalZones < OpenStudio::Measure::ModelMeasure
 
   # human readable name
   def name
-    return "DetectingExternalZones"
+    return "DetectExternalZones"
   end
 
   # human readable description
@@ -76,4 +76,4 @@ class DetectingExternalZones < OpenStudio::Measure::ModelMeasure
 end
 
 # register the measure to be used by the application
-DetectingExternalZones.new.registerWithApplication
+DetectExternalZones.new.registerWithApplication

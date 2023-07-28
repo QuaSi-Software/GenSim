@@ -11,7 +11,7 @@ require_relative '../measure.rb'
 require_relative '../../TestHelper.rb'
 require 'minitest/autorun'
 
-class DetectingExternalZones_Test < MiniTest::Test
+class DetectExternalZonesTest < MiniTest::Test
 
     #def setup
         # there is no need for any setup
@@ -19,7 +19,7 @@ class DetectingExternalZones_Test < MiniTest::Test
 
     def test_number_of_arguments_and_argument_names
         # get arguments with a new instance of the measure
-        arguments = GetArguments(DetectingExternalZones.new, OpenStudio::Model::Model.new)
+        arguments = GetArguments(DetectExternalZones.new, OpenStudio::Model::Model.new)
 
         assert_equal(0, arguments.size)
     end
@@ -29,7 +29,7 @@ class DetectingExternalZones_Test < MiniTest::Test
         args_hash = {}
         args_hash["space_name"] = ""
 
-        result = TestArguments(DetectingExternalZones.new, OpenStudio::Model::Model.new, args_hash)
+        result = TestArguments(DetectExternalZones.new, OpenStudio::Model::Model.new, args_hash)
 
         # assert that it ran correctly
         assert_equal("Success", result.value.valueName)
@@ -42,7 +42,7 @@ class DetectingExternalZones_Test < MiniTest::Test
         # load an existing model
         dir = File.expand_path(File.dirname(__FILE__))
         model = OpenModel(dir)
-        result = TestArguments(DetectingExternalZones.new, model, args_hash)
+        result = TestArguments(DetectExternalZones.new, model, args_hash)
 
         # assert that it ran correctly
         assert_equal("Success", result.value.valueName)

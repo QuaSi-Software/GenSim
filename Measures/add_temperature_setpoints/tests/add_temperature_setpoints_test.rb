@@ -11,10 +11,10 @@ require_relative '../measure.rb'
 require_relative '../../TestHelper.rb'
 require 'minitest/autorun'
 
-class AddingTemperatureSetpoints_Test < MiniTest::Test
+class AddTemperatureSetpointsTest < MiniTest::Test
     def test_number_of_arguments_and_argument_names
         # get arguments with a new instance of the measure
-        arguments = GetArguments(AddingTemperatureSetpoints.new, OpenStudio::Model::Model.new)
+        arguments = GetArguments(AddTemperatureSetpoints.new, OpenStudio::Model::Model.new)
 
         assert_equal(13, arguments.size)
     end
@@ -24,7 +24,7 @@ class AddingTemperatureSetpoints_Test < MiniTest::Test
         args_hash = {}
         args_hash["space_name"] = ""
  
-        result = TestArguments(AddingTemperatureSetpoints.new, OpenStudio::Model::Model.new, args_hash)
+        result = TestArguments(AddTemperatureSetpoints.new, OpenStudio::Model::Model.new, args_hash)
  
         # assert that it ran correctly
         assert_equal("Fail", result.value.valueName)
@@ -53,7 +53,7 @@ class AddingTemperatureSetpoints_Test < MiniTest::Test
          # load an existing model
         dir = File.expand_path(File.dirname(__FILE__))
         model = OpenModel(dir)
-        result = TestArguments(AddingTemperatureSetpoints.new, model, args_hash)
+        result = TestArguments(AddTemperatureSetpoints.new, model, args_hash)
 
         # store the number of spaces in the seed model
         num_spaces_seed = model.getSpaces.size

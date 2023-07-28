@@ -11,7 +11,7 @@ require_relative '../measure.rb'
 require_relative '../../TestHelper.rb'
 require 'minitest/autorun'
 
-class CreateAnEmptyModel_Test < MiniTest::Test
+class CreateEmptyModelTest < MiniTest::Test
 
     #def setup
         # there is no need for any setup
@@ -19,7 +19,7 @@ class CreateAnEmptyModel_Test < MiniTest::Test
 
     def test_number_of_arguments_and_argument_names
         # get arguments with a new instance of the measure
-        arguments = GetArguments(CreateAnEmptyModel.new, OpenStudio::Model::Model.new)
+        arguments = GetArguments(CreateEmptyModel.new, OpenStudio::Model::Model.new)
 
         # check if the number of arguments is correct
         assert_equal(0, arguments.size)
@@ -29,7 +29,7 @@ class CreateAnEmptyModel_Test < MiniTest::Test
         # create hash of argument values, no arguments defined so there are no bad arguments
         args_hash = {}
         
-        result = TestArguments(CreateAnEmptyModel.new, OpenStudio::Model::Model.new, args_hash)
+        result = TestArguments(CreateEmptyModel.new, OpenStudio::Model::Model.new, args_hash)
 
         # assert that it ran correctly
         assert_equal("Success", result.value.valueName)
@@ -41,7 +41,7 @@ class CreateAnEmptyModel_Test < MiniTest::Test
         
         # create an empty model
         model = OpenStudio::Model::Model.new
-        result = TestArguments(CreateAnEmptyModel.new, model, args_hash)
+        result = TestArguments(CreateEmptyModel.new, model, args_hash)
 
         # assert that it ran correctly
         assert_equal("Success", result.value.valueName)

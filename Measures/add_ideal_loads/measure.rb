@@ -1,11 +1,11 @@
 require_relative "../NewHelper"
 
 # start the measure
-class AddingIdealAirLoads < OpenStudio::Measure::ModelMeasure
+class AddIdealLoads < OpenStudio::Measure::ModelMeasure
 
   # human readable name
   def name
-    return "AddingIdealAirLoads"
+    return "AddIdealLoads"
   end
 
   # human readable description
@@ -128,4 +128,4 @@ class AddingIdealAirLoads < OpenStudio::Measure::ModelMeasure
 end
 
 # register the measure to be used by the application
-AddingIdealAirLoads.new.registerWithApplication
+AddIdealLoads.new.registerWithApplication

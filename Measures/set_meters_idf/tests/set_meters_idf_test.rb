@@ -11,11 +11,11 @@ require_relative '../measure.rb'
 require_relative '../../TestHelper.rb'
 require 'minitest/autorun'
 
-class SetMeters_Test < MiniTest::Test
+class SetMetersIDFTest < MiniTest::Test
 
     def test_number_of_arguments_and_argument_names
         # get arguments with a new instance of the measure
-        arguments = GetArguments(SetMeters.new, OpenStudio::Model::Model.new)
+        arguments = GetArguments(SetMetersIDF.new, OpenStudio::Model::Model.new)
 
         assert_equal(4, arguments.size)
     end
@@ -24,7 +24,7 @@ class SetMeters_Test < MiniTest::Test
         # create hash of argument values, no arguments defined so there are no bad arguments
         args_hash = {}
                 
-        result = TestArguments(SetMeters.new, OpenStudio::Model::Model.new, args_hash)
+        result = TestArguments(SetMetersIDF.new, OpenStudio::Model::Model.new, args_hash)
         
         # assert that it ran correctly
         assert_equal("Fail", result.value.valueName)
@@ -38,7 +38,7 @@ class SetMeters_Test < MiniTest::Test
         # load an existing model
         dir = File.expand_path(File.dirname(__FILE__))
         workspace = OpenIDFModel(dir)
-        result = TestArguments(SetMeters.new, workspace, args_hash)
+        result = TestArguments(SetMetersIDF.new, workspace, args_hash)
 
         # assert that it ran correctly
         assert_equal("Success", result.value.valueName)

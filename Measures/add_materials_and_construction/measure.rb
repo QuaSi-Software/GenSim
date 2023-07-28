@@ -25,11 +25,11 @@
 end
 
 # start the measure
-class AddingMaterialsAndConstructions < OpenStudio::Measure::ModelMeasure
+class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
 
   # human readable name
   def name
-    return "AddingMaterialsAndConstructions"
+    return "AddMaterialsAndConstruction"
   end
 
   # human readable description
@@ -280,4 +280,4 @@ class AddingMaterialsAndConstructions < OpenStudio::Measure::ModelMeasure
 end
 
 # register the measure to be used by the application
-AddingMaterialsAndConstructions.new.registerWithApplication
+AddMaterialsAndConstruction.new.registerWithApplication

@@ -11,10 +11,10 @@ require_relative '../measure.rb'
 require_relative '../../TestHelper.rb'
 require 'minitest/autorun'
 
-class AddingInfiltration_Test < MiniTest::Test
+class AddInfiltrationTest < MiniTest::Test
     def test_number_of_arguments_and_argument_names
         # get arguments with a new instance of the measure
-        arguments = GetArguments(AddingInfiltration.new, OpenStudio::Model::Model.new)
+        arguments = GetArguments(AddInfiltration.new, OpenStudio::Model::Model.new)
 
         assert_equal(3, arguments.size)
     end
@@ -24,7 +24,7 @@ class AddingInfiltration_Test < MiniTest::Test
         args_hash = {}
         args_hash["space_name"] = ""
  
-        result = TestArguments(AddingInfiltration.new, OpenStudio::Model::Model.new, args_hash)
+        result = TestArguments(AddInfiltration.new, OpenStudio::Model::Model.new, args_hash)
  
         # assert that it ran correctly
         assert_equal("Success", result.value.valueName)
@@ -40,7 +40,7 @@ class AddingInfiltration_Test < MiniTest::Test
         # load an existing model
         dir = File.expand_path(File.dirname(__FILE__))
         model = OpenModel(dir)
-        result = TestArguments(AddingInfiltration.new, model, args_hash)
+        result = TestArguments(AddInfiltration.new, model, args_hash)
  
         # store the number of spaces in the seed model
         num_spaces_seed = model.getSpaces.size

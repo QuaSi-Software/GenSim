@@ -11,7 +11,7 @@ require_relative '../measure.rb'
 require_relative '../../TestHelper.rb'
 require 'minitest/autorun'
 
-class AddThermalZones_Test < MiniTest::Test
+class AddThermalZonesTest < MiniTest::Test
 
     #def setup
         # there is no need for any setup

@@ -42,12 +42,12 @@
 # http://openstudio.nrel.gov/sites/openstudio.nrel.gov/files/nv_data/cpp_documentation_it/model/html/namespaces.html
 
 #start the measure
-class BarAspectRatioStudy < OpenStudio::Ruleset::ModelUserScript
+class AddGeometry < OpenStudio::Ruleset::ModelUserScript
   
   #define the name that a user will see, this method may be deprecated as
   #the display name in PAT comes from the name field in measure.xml
   def name
-    return "Bar Aspect Ratio Study"
+    return "AddGeometry"
   end
 
   #define the arguments that the user will input
@@ -446,4 +446,4 @@ class BarAspectRatioStudy < OpenStudio::Ruleset::ModelUserScript
 end #end the measure
 
 #this allows the measure to be use by the application
-BarAspectRatioStudy.new.registerWithApplication
+AddGeometry.new.registerWithApplication

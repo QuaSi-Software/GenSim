@@ -6,7 +6,7 @@ require_relative '../measure.rb'
 require_relative '../../TestHelper.rb'
 require 'minitest/autorun'
 
-class CustomExportParams_Test < MiniTest::Test
+class CustomExportParamsTest < MiniTest::Test
     def test_number_of_arguments_and_argument_names
         arguments = GetArguments(CustomExportParams.new, OpenStudio::Model::Model.new)
 

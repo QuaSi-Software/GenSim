@@ -10,7 +10,7 @@ require_relative '../measure.rb'
 require_relative '../../TestHelper.rb'
 require 'minitest/autorun'
 
-class InjectRadiantSurfacesIDF_Test < MiniTest::Test
+class InjectRadiantSurfacesIDFTest < MiniTest::Test
     def test_number_of_arguments_and_argument_names
         # get arguments with a new instance of the measure
         arguments = GetArguments(InjectRadiantSurfacesIDF.new, OpenStudio::Model::Model.new)

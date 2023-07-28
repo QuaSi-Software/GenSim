@@ -1,9 +1,9 @@
 # start the measure
-class AddingShadingControls < OpenStudio::Measure::ModelMeasure
+class AddShadingControls < OpenStudio::Measure::ModelMeasure
 
   # human readable name
   def name
-    return "AddingShadingControls"
+    return "AddShadingControls"
   end
 
   # human readable description
@@ -86,4 +86,4 @@ class AddingShadingControls < OpenStudio::Measure::ModelMeasure
 end
 
 # register the measure to be used by the application
-AddingShadingControls.new.registerWithApplication
+AddShadingControls.new.registerWithApplication

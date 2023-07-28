@@ -1,11 +1,11 @@
 require_relative "../NewHelper"
 
 # start the measure
-class AddingInfiltration < OpenStudio::Measure::ModelMeasure
+class AddInfiltration < OpenStudio::Measure::ModelMeasure
 
   # human readable name
   def name
-    return "AddingInfiltration"
+    return "AddInfiltration"
   end
 
   # human readable description
@@ -88,4 +88,4 @@ class AddingInfiltration < OpenStudio::Measure::ModelMeasure
 end
 
 # register the measure to be used by the application
-AddingInfiltration.new.registerWithApplication
+AddInfiltration.new.registerWithApplication

@@ -11,11 +11,11 @@ require_relative '../measure.rb'
 require_relative '../../TestHelper.rb'
 require 'minitest/autorun'
 
-class AddingShadingControls_Test < MiniTest::Test
+class AddShadingControlsTest < MiniTest::Test
 
     def test_number_of_arguments_and_argument_names
         # get arguments with a new instance of the measure
-        arguments = GetArguments(AddingShadingControls.new, OpenStudio::Model::Model.new)
+        arguments = GetArguments(AddShadingControls.new, OpenStudio::Model::Model.new)
 
         assert_equal(1, arguments.size)
     end
@@ -25,7 +25,7 @@ class AddingShadingControls_Test < MiniTest::Test
         args_hash = {}
         args_hash["space_name"] = ""
          
-        result = TestArguments(AddingShadingControls.new, OpenStudio::Model::Model.new, args_hash)
+        result = TestArguments(AddShadingControls.new, OpenStudio::Model::Model.new, args_hash)
     end
 
     def test_good_argument_values
@@ -35,7 +35,7 @@ class AddingShadingControls_Test < MiniTest::Test
         # load an existing model
         dir = File.expand_path(File.dirname(__FILE__))
         model = OpenModel(dir)
-        result = TestArguments(AddingShadingControls.new, model, args_hash)
+        result = TestArguments(AddShadingControls.new, model, args_hash)
  
         # store the number of spaces in the seed model
         num_spaces_seed = model.getSpaces.size

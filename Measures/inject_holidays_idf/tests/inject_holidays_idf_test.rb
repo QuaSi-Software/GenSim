@@ -11,10 +11,10 @@ require_relative '../measure.rb'
 require_relative '../../TestHelper.rb'
 require 'minitest/autorun'
 
-class InjectHolidays_Test < MiniTest::Test
+class InjectHolidaysIDFTest < MiniTest::Test
     def test_number_of_arguments_and_argument_names
        # get arguments with a new instance of the measure
-       arguments = GetArguments(InjectHolidays.new, OpenStudio::Model::Model.new)
+       arguments = GetArguments(InjectHolidaysIDF.new, OpenStudio::Model::Model.new)
 
        assert_equal(1, arguments.size)
     end
@@ -24,7 +24,7 @@ class InjectHolidays_Test < MiniTest::Test
         args_hash = {}
         args_hash["space_name"] = ""
                 
-        result = TestArguments(InjectHolidays.new, OpenStudio::Model::Model.new, args_hash)
+        result = TestArguments(InjectHolidaysIDF.new, OpenStudio::Model::Model.new, args_hash)
         
         # assert that it ran correctly
         assert_equal("Fail", result.value.valueName)
@@ -38,7 +38,7 @@ class InjectHolidays_Test < MiniTest::Test
         # load an existing model
         dir = File.expand_path(File.dirname(__FILE__))
         workspace = OpenIDFModel(dir)
-        result = TestArguments(InjectHolidays.new, workspace, args_hash)
+        result = TestArguments(InjectHolidaysIDF.new, workspace, args_hash)
 
         # assert that it ran correctly
         assert_equal("Success", result.value.valueName)

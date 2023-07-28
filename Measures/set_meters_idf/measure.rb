@@ -1,9 +1,9 @@
 # start the measure
-class SetMeters < OpenStudio::Measure::EnergyPlusMeasure
+class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
 
   # human readable name
   def name
-    return "SetMeters"
+    return "SetMetersIDF"
   end
 
   # human readable description
@@ -436,4 +436,4 @@ class SetMeters < OpenStudio::Measure::EnergyPlusMeasure
 end
 
 # register the measure to be used by the application
-SetMeters.new.registerWithApplication
+SetMetersIDF.new.registerWithApplication
