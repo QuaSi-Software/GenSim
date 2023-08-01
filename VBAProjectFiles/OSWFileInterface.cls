@@ -290,25 +290,24 @@ Sub ExportAddDetailedHVAC( _
     Dim dd55 As DropDown 'schedule ventilation
     Set dd55 = Sheets("HAUPTSEITE").DropDowns("Dropdown55")
 
-    jFile.AddArgument "wrg", Range("WRG")
-    jFile.AddArgument "latent", Range("LATENT")
-    jFile.AddArgument "sensible", Range("SENSIBLE")
-    jFile.AddArgument "ach", Range("ACH")
+    jFile.AddArgument "heat_recovery_method", Range("WRG")
+    jFile.AddArgument "latent_efficiency", Range("LATENT")
+    jFile.AddArgument "sensible_efficiency", Range("SENSIBLE")
+    jFile.AddArgument "ach_per_hour", Range("ACH")
     jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
     jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
-    jFile.AddSchedule "hvacSched", Range("HVACWD")
-    jFile.AddHolidays "Holidays", Range("Feiertage")
-    jFile.AddArgument "hvacSchedule", dd55.List(dd55.Value)
+    jFile.AddSchedule "hvac_sched", Range("HVACWD")
+    jFile.AddHolidays "holidays", Range("Feiertage")
+    jFile.AddArgument "hvac_schedule", dd55.List(dd55.Value)
     jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
-
-    jFile.AddSchedule "zoneHeatingTempSched", Range("HeatingWD")
-    jFile.AddSchedule "zoneCoolingTempSched", Range("CoolingWD")
-    jFile.AddArgument "hotWaterTempSetpoint", 82
-    jFile.AddArgument "hotWaterDeltaT", 11
-    jFile.AddArgument "coldWaterTempSetpoint", 10
-    jFile.AddArgument "coldWaterDeltaT", 5
-    jFile.AddArgument "fanPressureRiseSupply", CStr(750) 'update 10.01.22 -> new standard DIN EN 16798-3 - SFP2
-    jFile.AddArgument "fanPressureRiseReturn", CStr(750)
+    jFile.AddSchedule "zone_heating_temp_sched", Range("HeatingWD")
+    jFile.AddSchedule "zone_cooling_temp_sched", Range("CoolingWD")
+    jFile.AddArgument "hot_water_temp_setpoint", 82
+    jFile.AddArgument "hot_water_temp_diff", 11
+    jFile.AddArgument "cold_water_temp_setpoint", 10
+    jFile.AddArgument "cold_water_temp_diff", 5
+    jFile.AddArgument "supply_fan_pressure_rise", CStr(750) 'update 10.01.22 -> new standard DIN EN 16798-3 - SFP2
+    jFile.AddArgument "return_fan_pressure_rise", CStr(750)
     jFile.AddArgument "system_type", Range("system_type")
 
     jFile.AddMeasure "add_detailed_hvac"
