@@ -163,13 +163,13 @@ Public Sub AddWindowConstruction(sMatPrefix As String, name As String, uValue As
 End Sub
 
 Public Sub AddSchedule(sArgName As String, r As Range)
-    AddOneSchedule sArgName + "Werktag", r
-    AddOneSchedule sArgName + "Samstag", r.Offset(0, 1)
-    AddOneSchedule sArgName + "Sonntag", r.Offset(0, 2)
+    AddOneSchedule sArgName + "_weekday", r
+    AddOneSchedule sArgName + "_saturday", r.Offset(0, 1)
+    AddOneSchedule sArgName + "_sunday", r.Offset(0, 2)
     If IsEmpty(r.Offset(0, 3)) Then
-        AddOneSchedule sArgName + "Feiertag", r.Offset(0, 2)
+        AddOneSchedule sArgName + "_holiday", r.Offset(0, 2)
     Else
-        AddOneSchedule sArgName + "Feiertag", r.Offset(0, 3)
+        AddOneSchedule sArgName + "_holiday", r.Offset(0, 3)
     End If
 End Sub
 
