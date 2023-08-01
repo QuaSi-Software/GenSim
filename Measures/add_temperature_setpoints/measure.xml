@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>add_temperature_setpoints</name>
   <uid>3936e6f6-9ddd-4843-a654-c1c5de244216</uid>
-  <version_id>5588d56a-b10e-4839-8c0f-f2c8ce1c1278</version_id>
-  <version_modified>20230728T142110Z</version_modified>
+  <version_id>028c8f6c-b1b9-40e9-a287-e248555edd5d</version_id>
+  <version_modified>20230802T093558Z</version_modified>
   <xml_checksum>356BE47F</xml_checksum>
   <class_name>AddTemperatureSetpoints</class_name>
   <display_name>AddTemperatureSetpoints</display_name>
@@ -11,15 +11,15 @@
   <modeler_description></modeler_description>
   <arguments>
     <argument>
-      <name>heatingTemp</name>
-      <display_name>heatingTemp</display_name>
+      <name>heating_temp_selection</name>
+      <display_name>heating_temp_selection</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>coolingTemp</name>
-      <display_name>coolingTemp</display_name>
+      <name>cooling_temp_selection</name>
+      <display_name>cooling_temp_selection</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
@@ -59,64 +59,64 @@
       </choices>
     </argument>
     <argument>
-      <name>zoneHeatingTempScheduleWerktag</name>
-      <display_name>zoneHeatingTempScheduleWerktag</display_name>
+      <name>zone_heating_temp_sched_weekday</name>
+      <display_name>zone_heating_temp_sched_weekday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>zoneHeatingTempScheduleSamstag</name>
-      <display_name>zoneHeatingTempScheduleSamstag</display_name>
+      <name>zone_heating_temp_sched_saturday</name>
+      <display_name>zone_heating_temp_sched_saturday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>zoneHeatingTempScheduleSonntag</name>
-      <display_name>zoneHeatingTempScheduleSonntag</display_name>
+      <name>zone_heating_temp_sched_sunday</name>
+      <display_name>zone_heating_temp_sched_sunday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>zoneHeatingTempScheduleFeiertag</name>
-      <display_name>zoneHeatingTempScheduleFeiertag</display_name>
+      <name>zone_heating_temp_sched_holiday</name>
+      <display_name>zone_heating_temp_sched_holiday</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>zoneCoolingTempScheduleWerktag</name>
-      <display_name>zoneCoolingTempScheduleWerktag</display_name>
+      <name>zone_cooling_temp_sched_weekday</name>
+      <display_name>zone_cooling_temp_sched_weekday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>zoneCoolingTempScheduleSamstag</name>
-      <display_name>zoneCoolingTempScheduleSamstag</display_name>
+      <name>zone_cooling_temp_sched_saturday</name>
+      <display_name>zone_cooling_temp_sched_saturday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>zoneCoolingTempScheduleSonntag</name>
-      <display_name>zoneCoolingTempScheduleSonntag</display_name>
+      <name>zone_cooling_temp_sched_sunday</name>
+      <display_name>zone_cooling_temp_sched_sunday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>zoneCoolingTempScheduleFeiertag</name>
-      <display_name>zoneCoolingTempScheduleFeiertag</display_name>
+      <name>zone_cooling_temp_sched_holiday</name>
+      <display_name>zone_cooling_temp_sched_holiday</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>Holidays</name>
-      <display_name>Holidays</display_name>
+      <name>holidays</name>
+      <display_name>holidays</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
@@ -157,6 +157,12 @@
       <checksum>554D0F7D</checksum>
     </file>
     <file>
+      <filename>add_temperature_setpoints_test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>6D3D3AE0</checksum>
+    </file>
+    <file>
       <version>
         <software_program>OpenStudio</software_program>
         <identifier>2.5.0</identifier>
@@ -165,13 +171,7 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>C51D0F14</checksum>
-    </file>
-    <file>
-      <filename>add_temperature_setpoints_test.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>test</usage_type>
-      <checksum>1034BF9B</checksum>
+      <checksum>06D2789A</checksum>
     </file>
   </files>
 </measure>

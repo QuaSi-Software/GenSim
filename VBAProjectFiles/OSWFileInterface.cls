@@ -381,13 +381,13 @@ Sub ExportAddTemperatureSetpoints(ByRef jFile As JSONFile)
     Dim dd86 As DropDown 'setpoint cooling
     Set dd86 = Sheets("HAUPTSEITE").DropDowns("Dropdown86")
 
-    jFile.AddArgument "heatingTemp", dd60.List(dd60.Value)
-    jFile.AddArgument "coolingTemp", dd86.List(dd86.Value)
+    jFile.AddArgument "heating_temp_selection", dd60.List(dd60.Value)
+    jFile.AddArgument "cooling_temp_selection", dd86.List(dd86.Value)
     jFile.AddArgument "is_custom_heating", IIf(dd60.Value > 3, "true", "false")
     jFile.AddArgument "is_custom_cooling", IIf(dd86.Value > 3, "true", "false")
-    jFile.AddSchedule "zoneHeatingTempSchedule", Range("HeatingWD")
-    jFile.AddSchedule "zoneCoolingTempSchedule", Range("CoolingWD")
-    jFile.AddHolidays "Holidays", Range("Feiertage")
+    jFile.AddSchedule "zone_heating_temp_sched", Range("HeatingWD")
+    jFile.AddSchedule "zone_cooling_temp_sched", Range("CoolingWD")
+    jFile.AddHolidays "holidays", Range("Feiertage")
     jFile.AddMeasure "add_temperature_setpoints"
 End Sub
 
