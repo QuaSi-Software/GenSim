@@ -18,7 +18,7 @@ class AddMaterialsAndConstructionTest < MiniTest::Unit::TestCase
     arguments = GetArguments(AddMaterialsAndConstruction.new, OpenStudio::Model::Model.new)
 
     assert_equal(125, arguments.size)
-    assert_equal("ExternalWallMat1Name", arguments[0].name)
+    assert_equal("external_wall_1_name", arguments[0].name)
   end
 
   def test_bad_argument_values
@@ -38,30 +38,30 @@ class AddMaterialsAndConstructionTest < MiniTest::Unit::TestCase
     # create hash of argument values.
     # If the argument has a default that you want to use, you don't need it in the hash
     args_hash = {}
-    ["ExternalWallMat", "RoofMat",  "SlabMat", "Massen", "InteriorSlabs", "ChilledCeiling"].each do |s|
-      if s == "ChilledCeiling"
-        args_hash[s + "SourceLayer"] = 1
-        args_hash[s + "TempCalcLayer"] = 2
-        args_hash[s + "DimCTF"] = 3
-        args_hash[s +  "TubeSpacing"] = 0.1
+    ["external_wall_", "roof_",  "base_plate_", "inner_masses_", "interior_slab_", "chilled_ceiling_"].each do |s|
+      if s == "chilled_ceiling_"
+        args_hash[s + "source_layer"] = 1
+        args_hash[s + "temp_calc_layer"] = 2
+        args_hash[s + "dim_ctf"] = 3
+        args_hash[s + "tube_spacing"] = 0.1
       end
       for i in 1..4
-        args_hash[s + i.to_s + "Name"] = s + i.to_s + "Name"
-        args_hash[s + i.to_s + "Thickness"] = 1.0
-        args_hash[s + i.to_s + "Conductivity"] = 2.0
-        args_hash[s + i.to_s + "Density"] = 3.0
-        args_hash[s + i.to_s + "SpecificHeat"] = 4.0
+        args_hash[s + i.to_s + "_name"] = s + i.to_s + "_name"
+        args_hash[s + i.to_s + "_thickness"] = 1.0
+        args_hash[s + i.to_s + "_conductivity"] = 2.0
+        args_hash[s + i.to_s + "_density"] = 3.0
+        args_hash[s + i.to_s + "_heat_capacity"] = 4.0
       end
     end
 		
-    s = "Windows"
-    args_hash[s + "Name"] = s + "Name"
-    args_hash[s + "UValue"] = 2
-    args_hash[s + "SHGC"] = 1
+    s = "windows_"
+    args_hash[s + "name"] = s + "name"
+    args_hash[s + "u_value"] = 2
+    args_hash[s + "shgc"] = 1
 
     args_hash["is_custom_standard"] = false
-    args_hash["selected_standard"] = "Neubau: EH 55"
-    args_hash["selected_masses"] = "Mittel"
+    args_hash["construction_standard_selection"] = "Neubau: EH 55"
+    args_hash["inner_masses_selection"] = "Mittel"
 
     # load an existing model
     dir = File.expand_path(File.dirname(__FILE__))

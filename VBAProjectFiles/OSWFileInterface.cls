@@ -190,16 +190,16 @@ Sub ExportAddMaterialsAndConstruction(ByRef jFile As JSONFile)
     Dim dd22 As DropDown 'inner masses
     Set dd22 = Sheets("HAUPTSEITE").DropDowns("Dropdown22")
 
-    jFile.AddConstruction "ExternalWallMat", Range("AWMat1"), 4
-    jFile.AddConstruction "RoofMat", Range("DMat1"), 4
-    jFile.AddConstruction "SlabMat", Range("BPMat1"), 4
-    jFile.AddConstruction "Massen", Range("Massen"), 3
-    jFile.AddConstruction "InteriorSlabs", Range("ZwischenDecke"), 4
-    jFile.AddInternalSourceConstructionHardcoded "ChilledCeiling", 2, 2, 2, 0.15, Range("ZwischenDecke"), 2
-    jFile.AddWindowConstruction "Windows", Range("WINDOWSSLS"), Range("WINDOWSSLS").Offset(0, -1), Range("WINDOWSSLS").Offset(0, 1)
-    jFile.AddArgument "selected_standard", dd21.List(dd21.Value)
+    jFile.AddConstruction "external_wall", Range("AWMat1"), 4
+    jFile.AddConstruction "roof", Range("DMat1"), 4
+    jFile.AddConstruction "base_plate", Range("BPMat1"), 4
+    jFile.AddConstruction "inner_masses", Range("Massen"), 3
+    jFile.AddConstruction "interior_slab", Range("ZwischenDecke"), 4
+    jFile.AddInternalSourceConstructionHardcoded "chilled_ceiling", 2, 2, 2, 0.15, Range("ZwischenDecke"), 2
+    jFile.AddWindowConstruction "windows", Range("WINDOWSSLS"), Range("WINDOWSSLS").Offset(0, -1), Range("WINDOWSSLS").Offset(0, 1)
+    jFile.AddArgument "construction_standard_selection", dd21.List(dd21.Value)
     jFile.AddArgument "is_custom_standard", IIf(dd21.Value > (dd21.ListCount - 4), "Ja", "Nein")
-    jFile.AddArgument "selected_masses", dd22.List(dd22.Value)
+    jFile.AddArgument "inner_masses_selection", dd22.List(dd22.Value)
 
     jFile.AddMeasure "add_materials_and_construction"
 End Sub

@@ -102,82 +102,82 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
     args = OpenStudio::Measure::OSArgumentVector.new
 
     # External Wall Construction
-	argumentName = "ExternalWallMat"
+	argumentName = "external_wall_"
 	for i in 1..4
-		args << OpenStudio::Measure::OSArgument.makeStringArgument(argumentName + i.to_s + "Name", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "Thickness", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "Conductivity", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "Density", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "SpecificHeat", true)
+		args << OpenStudio::Measure::OSArgument.makeStringArgument(argumentName + i.to_s + "_name", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_thickness", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_conductivity", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_density", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_heat_capacity", true)
 	end
 	
 	# RoofMat
-	argumentName = "RoofMat"
+	argumentName = "roof_"
 	for i in 1..4
-		args << OpenStudio::Measure::OSArgument.makeStringArgument(argumentName + i.to_s + "Name", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "Thickness", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "Conductivity", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "Density", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "SpecificHeat", true)
+		args << OpenStudio::Measure::OSArgument.makeStringArgument(argumentName + i.to_s + "_name", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_thickness", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_conductivity", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_density", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_heat_capacity", true)
 	end
 	
 	# SlabMat
-	argumentName = "SlabMat"
+	argumentName = "base_plate_"
 	for i in 1..4
-		args << OpenStudio::Measure::OSArgument.makeStringArgument(argumentName + i.to_s + "Name", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "Thickness", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "Conductivity", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "Density", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "SpecificHeat", true)
+		args << OpenStudio::Measure::OSArgument.makeStringArgument(argumentName + i.to_s + "_name", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_thickness", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_conductivity", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_density", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_heat_capacity", true)
 	end
 	
 	# Massen
-	argumentName = "Massen"
+	argumentName = "inner_masses_"
 	for i in 1..3
-		args << OpenStudio::Measure::OSArgument.makeStringArgument(argumentName + i.to_s + "Name", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "Thickness", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "Conductivity", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "Density", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "SpecificHeat", true)
+		args << OpenStudio::Measure::OSArgument.makeStringArgument(argumentName + i.to_s + "_name", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_thickness", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_conductivity", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_density", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_heat_capacity", true)
 	end
 	
 	# Massen
-	argumentName = "InteriorSlabs"
+	argumentName = "interior_slab_"
 	for i in 1..4
-		args << OpenStudio::Measure::OSArgument.makeStringArgument(argumentName + i.to_s + "Name", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "Thickness", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "Conductivity", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "Density", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "SpecificHeat", true)
+		args << OpenStudio::Measure::OSArgument.makeStringArgument(argumentName + i.to_s + "_name", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_thickness", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_conductivity", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_density", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_heat_capacity", true)
 	end
 	
 	# Internal chilled ceiling
-	argumentName = "ChilledCeiling"
-    args << OpenStudio::Measure::OSArgument.makeIntegerArgument(argumentName + "SourceLayer", true)
-	args << OpenStudio::Measure::OSArgument.makeIntegerArgument(argumentName + "TempCalcLayer", true)
-	args << OpenStudio::Measure::OSArgument.makeIntegerArgument(argumentName + "DimCTF", true)
-	args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName +  "TubeSpacing", true)
+	argumentName = "chilled_ceiling_"
+    args << OpenStudio::Measure::OSArgument.makeIntegerArgument(argumentName + "source_layer", true)
+	args << OpenStudio::Measure::OSArgument.makeIntegerArgument(argumentName + "temp_calc_layer", true)
+	args << OpenStudio::Measure::OSArgument.makeIntegerArgument(argumentName + "dim_ctf", true)
+	args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName +  "tube_spacing", true)
 	for i in 1..4
-		args << OpenStudio::Measure::OSArgument.makeStringArgument(argumentName + i.to_s + "Name", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "Thickness", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "Conductivity", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "Density", true)
-		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "SpecificHeat", true)
+		args << OpenStudio::Measure::OSArgument.makeStringArgument(argumentName + i.to_s + "_name", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_thickness", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_conductivity", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_density", true)
+		args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_heat_capacity", true)
 	end
 		
-	argumentName = "Windows"
-	args << OpenStudio::Measure::OSArgument.makeStringArgument(argumentName + "Name", true)
-	args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + "UValue", true)
-	args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + "SHGC", true)
+	argumentName = "windows_"
+	args << OpenStudio::Measure::OSArgument.makeStringArgument(argumentName + "name", true)
+	args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + "u_value", true)
+	args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + "shgc", true)
 
 	# checkbox value for custom standard
 	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_standard", false)
 
 	# selection value for building standard
-	args << OpenStudio::Measure::OSArgument.makeStringArgument("selected_standard", false)
+	args << OpenStudio::Measure::OSArgument.makeStringArgument("construction_standard_selection", false)
 
 	# selection value for inner masses
-	args << OpenStudio::Measure::OSArgument.makeStringArgument("selected_masses", false)
+	args << OpenStudio::Measure::OSArgument.makeStringArgument("inner_masses_selection", false)
 
     return args
   end
@@ -192,10 +192,16 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
     end
 	
 	mats = Array.new
-	argumentName = "ExternalWallMat"
+	argumentName = "external_wall_"
 	# assign the user inputs to variables
 	for i in 1..4
-		mats << Material.new(runner.getStringArgumentValue(argumentName + i.to_s + "Name", user_arguments), runner.getDoubleArgumentValue(argumentName + i.to_s + "Thickness", user_arguments),  runner.getDoubleArgumentValue(argumentName + i.to_s + "Conductivity", user_arguments), runner.getDoubleArgumentValue(argumentName + i.to_s + "Density", user_arguments), runner.getDoubleArgumentValue(argumentName + i.to_s + "SpecificHeat", user_arguments))
+		mats << Material.new(
+			runner.getStringArgumentValue(argumentName + i.to_s + "_name", user_arguments),
+			runner.getDoubleArgumentValue(argumentName + i.to_s + "_thickness", user_arguments),
+			runner.getDoubleArgumentValue(argumentName + i.to_s + "_conductivity", user_arguments),
+			runner.getDoubleArgumentValue(argumentName + i.to_s + "_density", user_arguments),
+			runner.getDoubleArgumentValue(argumentName + i.to_s + "_heat_capacity", user_arguments)
+		)
 	end
 	#external wall
 	constrExtWall = CreateConstruction(model, "ExternalWallConstruction", mats)
@@ -203,10 +209,16 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
 	runner.registerInfo("Construction #{constrExtWall.name} was added.")
 	
 	mats = Array.new
-	argumentName = "RoofMat"
+	argumentName = "roof_"
 	# assign the user inputs to variables
 	for i in 1..4
-		mats << Material.new(runner.getStringArgumentValue(argumentName + i.to_s + "Name", user_arguments), runner.getDoubleArgumentValue(argumentName + i.to_s + "Thickness", user_arguments),  runner.getDoubleArgumentValue(argumentName + i.to_s + "Conductivity", user_arguments), runner.getDoubleArgumentValue(argumentName + i.to_s + "Density", user_arguments), runner.getDoubleArgumentValue(argumentName + i.to_s + "SpecificHeat", user_arguments))
+		mats << Material.new(
+			runner.getStringArgumentValue(argumentName + i.to_s + "_name", user_arguments),
+			runner.getDoubleArgumentValue(argumentName + i.to_s + "_thickness", user_arguments),
+			runner.getDoubleArgumentValue(argumentName + i.to_s + "_conductivity", user_arguments),
+			runner.getDoubleArgumentValue(argumentName + i.to_s + "_density", user_arguments),
+			runner.getDoubleArgumentValue(argumentName + i.to_s + "_heat_capacity", user_arguments)
+		)
 	end
 	#external wall
 	constrRoof = CreateConstruction(model, "RoofConstruction", mats)
@@ -214,10 +226,16 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
 	runner.registerInfo("Construction #{constrRoof.name} was added.")
 	
 	mats = Array.new
-	argumentName = "SlabMat"
+	argumentName = "base_plate_"
 	# assign the user inputs to variables
 	for i in 1..4
-		mats << Material.new(runner.getStringArgumentValue(argumentName + i.to_s + "Name", user_arguments), runner.getDoubleArgumentValue(argumentName + i.to_s + "Thickness", user_arguments),  runner.getDoubleArgumentValue(argumentName + i.to_s + "Conductivity", user_arguments), runner.getDoubleArgumentValue(argumentName + i.to_s + "Density", user_arguments), runner.getDoubleArgumentValue(argumentName + i.to_s + "SpecificHeat", user_arguments))
+		mats << Material.new(
+			runner.getStringArgumentValue(argumentName + i.to_s + "_name", user_arguments),
+			runner.getDoubleArgumentValue(argumentName + i.to_s + "_thickness", user_arguments),
+			runner.getDoubleArgumentValue(argumentName + i.to_s + "_conductivity", user_arguments),
+			runner.getDoubleArgumentValue(argumentName + i.to_s + "_density", user_arguments),
+			runner.getDoubleArgumentValue(argumentName + i.to_s + "_heat_capacity", user_arguments)
+		)
 	end
 	#external wall
 	constrSlab = CreateConstruction(model, "SlabConstruction", mats)
@@ -225,10 +243,16 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
 	runner.registerInfo("Construction #{constrSlab.name} was added.")
 	
 	mats = Array.new
-	argumentName = "Massen"
+	argumentName = "inner_masses_"
 	# assign the user inputs to variables
 	for i in 1..3
-		mats << Material.new(runner.getStringArgumentValue(argumentName + i.to_s + "Name", user_arguments), runner.getDoubleArgumentValue(argumentName + i.to_s + "Thickness", user_arguments),  runner.getDoubleArgumentValue(argumentName + i.to_s + "Conductivity", user_arguments), runner.getDoubleArgumentValue(argumentName + i.to_s + "Density", user_arguments), runner.getDoubleArgumentValue(argumentName + i.to_s + "SpecificHeat", user_arguments))
+		mats << Material.new(
+			runner.getStringArgumentValue(argumentName + i.to_s + "_name", user_arguments),
+			runner.getDoubleArgumentValue(argumentName + i.to_s + "_thickness", user_arguments),
+			runner.getDoubleArgumentValue(argumentName + i.to_s + "_conductivity", user_arguments),
+			runner.getDoubleArgumentValue(argumentName + i.to_s + "_density", user_arguments),
+			runner.getDoubleArgumentValue(argumentName + i.to_s + "_heat_capacity", user_arguments)
+		)
 	end
 	#external wall
 	constrInternal = CreateConstruction(model, "InteriorConstruction", mats)
@@ -236,18 +260,30 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
 	runner.registerInfo("Construction #{constrInternal.name} was added.")
 	
 	mats = Array.new
-	argumentName = "InteriorSlabs"
+	argumentName = "interior_slab_"
 	# assign the user inputs to variables
 	for i in 1..4
-		mats << Material.new(runner.getStringArgumentValue(argumentName + i.to_s + "Name", user_arguments), runner.getDoubleArgumentValue(argumentName + i.to_s + "Thickness", user_arguments),  runner.getDoubleArgumentValue(argumentName + i.to_s + "Conductivity", user_arguments), runner.getDoubleArgumentValue(argumentName + i.to_s + "Density", user_arguments), runner.getDoubleArgumentValue(argumentName + i.to_s + "SpecificHeat", user_arguments))
+		mats << Material.new(
+			runner.getStringArgumentValue(argumentName + i.to_s + "_name", user_arguments),
+			runner.getDoubleArgumentValue(argumentName + i.to_s + "_thickness", user_arguments),
+			runner.getDoubleArgumentValue(argumentName + i.to_s + "_conductivity", user_arguments),
+			runner.getDoubleArgumentValue(argumentName + i.to_s + "_density", user_arguments),
+			runner.getDoubleArgumentValue(argumentName + i.to_s + "_heat_capacity", user_arguments)
+		)
 	end
 	#external wall
 	interiorConstrSlab = CreateConstruction(model, "InteriorSlabConstruction", mats)
 	 # echo back to the user
 	runner.registerInfo("Construction #{interiorConstrSlab.name} was added.")
 	
-	argumentName = "Windows"
-	constrWindow = CreateWindowConstruction(model, "WindowsConstruction", runner.getStringArgumentValue(argumentName + "Name", user_arguments), runner.getDoubleArgumentValue(argumentName + "UValue", user_arguments), runner.getDoubleArgumentValue(argumentName + "SHGC", user_arguments))
+	argumentName = "windows_"
+	constrWindow = CreateWindowConstruction(
+		model,
+		"WindowsConstruction",
+		runner.getStringArgumentValue(argumentName + "name", user_arguments),
+		runner.getDoubleArgumentValue(argumentName + "u_value", user_arguments),
+		runner.getDoubleArgumentValue(argumentName + "shgc", user_arguments)
+	)
 	 # echo back to the user
 	runner.registerInfo("Construction #{constrWindow.name} was added.")
 	
