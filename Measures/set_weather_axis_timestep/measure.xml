@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>set_weather_axis_timestep</name>
   <uid>1fd78114-23ef-4ee1-80f4-d1695976a55b</uid>
-  <version_id>3bbd99f7-1975-4937-97be-6ecb0bb6da2f</version_id>
-  <version_modified>20230728T142302Z</version_modified>
+  <version_id>8df05576-11d9-42f7-b6da-31c844873320</version_id>
+  <version_modified>20230809T075229Z</version_modified>
   <xml_checksum>74C70850</xml_checksum>
   <class_name>SetWeatherAxisTimestep</class_name>
   <display_name>SetWeatherAxisTimestep</display_name>
@@ -11,22 +11,22 @@
   <modeler_description></modeler_description>
   <arguments>
     <argument>
-      <name>WeatherFilePath</name>
-      <display_name>WeatherFilePath</display_name>
+      <name>weather_file_path</name>
+      <display_name>weather_file_path</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>Timestep</name>
-      <display_name>Timestep</display_name>
+      <name>time_step</name>
+      <display_name>time_step</display_name>
       <type>Integer</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>NorthAxis</name>
-      <display_name>NorthAxis</display_name>
+      <name>north_axis</name>
+      <display_name>north_axis</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
@@ -52,6 +52,12 @@
   </attributes>
   <files>
     <file>
+      <filename>example_model.osm</filename>
+      <filetype>osm</filetype>
+      <usage_type>test</usage_type>
+      <checksum>31115A0D</checksum>
+    </file>
+    <file>
       <version>
         <software_program>OpenStudio</software_program>
         <identifier>2.5.0</identifier>
@@ -60,19 +66,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>6D6E09A8</checksum>
-    </file>
-    <file>
-      <filename>example_model.osm</filename>
-      <filetype>osm</filetype>
-      <usage_type>test</usage_type>
-      <checksum>31115A0D</checksum>
+      <checksum>DF8B45AA</checksum>
     </file>
     <file>
       <filename>set_weather_axis_timestep_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>A100D44F</checksum>
+      <checksum>41A389BF</checksum>
     </file>
   </files>
 </measure>

@@ -20,9 +20,9 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
   def arguments(model)
     args = OpenStudio::Measure::OSArgumentVector.new
 
-    args << OpenStudio::Measure::OSArgument.makeStringArgument("WeatherFilePath", true)
-		args << OpenStudio::Measure::OSArgument.makeIntegerArgument("Timestep", true)
-		northaxis = OpenStudio::Measure::OSArgument.makeDoubleArgument("NorthAxis", true)
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("weather_file_path", true)
+		args << OpenStudio::Measure::OSArgument.makeIntegerArgument("time_step", true)
+		northaxis = OpenStudio::Measure::OSArgument.makeDoubleArgument("north_axis", true)
 		northaxis.setDefaultValue(-9999)
 		args << northaxis
     return args
@@ -37,9 +37,9 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
       return false
     end
 
-	weatherFilePath = runner.getStringArgumentValue("WeatherFilePath",user_arguments)
-	northAxis = runner.getDoubleArgumentValue("NorthAxis",user_arguments)
-	timestep = runner.getIntegerArgumentValue("Timestep",user_arguments)
+	weatherFilePath = runner.getStringArgumentValue("weather_file_path",user_arguments)
+	northAxis = runner.getDoubleArgumentValue("north_axis",user_arguments)
+	timestep = runner.getIntegerArgumentValue("time_step",user_arguments)
     
 	#Add Weather File
     if File.exists?(weatherFilePath) and weatherFilePath.downcase.include? ".epw"

@@ -39,9 +39,9 @@ Sub ExportSetWeatherAxisTimestep( _
     Set dd2 = Sheets("HAUPTSEITE").DropDowns("Dropdown2")
 
     If bGeneric Then
-        jFile.AddArgument "WeatherFilePath", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-        jFile.AddArgument "NorthAxis", dd2.List(dd2.Value)
-        jFile.AddArgument "Timestep", CStr(NrOfTimesteps)
+        jFile.AddArgument "weather_file_path", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
+        jFile.AddArgument "north_axis", dd2.List(dd2.Value)
+        jFile.AddArgument "time_step", CStr(NrOfTimesteps)
     Else
         Dim localOSMPath As String: localOSMPath = ""
 
@@ -64,8 +64,8 @@ Sub ExportSetWeatherAxisTimestep( _
         End If
 
         jFile.CreateFile localOSMPath, GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-        jFile.AddArgument "WeatherFilePath", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-        jFile.AddArgument "Timestep", CStr(NrOfTimesteps)
+        jFile.AddArgument "weather_file_path", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
+        jFile.AddArgument "time_step", CStr(NrOfTimesteps)
     End If
 
     jFile.AddMeasure "set_weather_axis_timestep"
@@ -97,20 +97,20 @@ Sub ExportCustomExportParams( _
     Set cb_detailedHVAC = Sheets("Parameter").CheckBoxes("checkbox_hvac")
 
     'parameters for the generic HVAC model
-    jFile.AddArgument "zoneDetails", IIf(cb_zoneDetails.Value = 1, 1, 0)
-    jFile.AddArgument "detailedHVAC", IIf(cb_detailedHVAC.Value = 1, 1, 0)
+    jFile.AddArgument "include_zone_details", IIf(cb_zoneDetails.Value = 1, 1, 0)
+    jFile.AddArgument "include_detailed_hvac", IIf(cb_detailedHVAC.Value = 1, 1, 0)
     jFile.AddArgument "ventilation_type", dd_lueftung.Value
 
     'parameters of the geometry which are not required in the measures
     jFile.AddArgument "floor_length", Range("LAENGE")
     jFile.AddArgument "floor_width", Range("BREITE")
-    jFile.AddArgument "ratio_NRF_BGF", ddRatio1.List(ddRatio1.Value)
-    jFile.AddArgument "NRF_BGF", Range("BGF_zu_NRF")
+    jFile.AddArgument "nfa_gfa_ratio_selection", ddRatio1.List(ddRatio1.Value)
+    jFile.AddArgument "nfa_gfa_ratio", Range("BGF_zu_NRF")
 
     If bGeneric Then
-        jFile.AddArgument "genGeom", 1
+        jFile.AddArgument "generate_geometry_selection", 1
     Else
-        jFile.AddArgument "genGeom", 2
+        jFile.AddArgument "generate_geometry_selection", 2
     End If
 
     'definition of holidays
@@ -124,20 +124,20 @@ Sub ExportCustomExportParams( _
         strArg = strArg + ";" + CStr(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 1)) + ";"
         iEntry = iEntry + 1
     Loop
-    jFile.AddArgument "Holidays", strArg
+    jFile.AddArgument "holidays", strArg
 
     'parameters of the ventilation system
-    jFile.AddArgument "vorlauf_Luft", Range("Vorlauf_Lüftung")
-    jFile.AddArgument "nachlauf_Luft", Range("Nachlauf_Lüftung")
-    jFile.AddArgument "FloorHeight_kond", Range("FloorHeight_kond")
-    jFile.AddArgument "FloorHeight_import", Range("FloorHeight_import")
-    jFile.AddArgument "ACH_Input_Parameter", Range("ACH")
-    jFile.AddArgument "Windowvent", IIf(cb_windowvent.Value = 1, 1, 0)
-    jFile.AddArgument "Infiltration", IIf(cb_inf.Value = 1, 1, 0)
+    jFile.AddArgument "ventilation_lead_time", Range("Vorlauf_Lüftung")
+    jFile.AddArgument "ventilation_follow_up_time", Range("Nachlauf_Lüftung")
+    jFile.AddArgument "conditioned_floor_height", Range("FloorHeight_kond")
+    jFile.AddArgument "imported_floor_height", Range("FloorHeight_import")
+    jFile.AddArgument "air_changes_input", Range("ACH")
+    jFile.AddArgument "include_window_ventilation", IIf(cb_windowvent.Value = 1, 1, 0)
+    jFile.AddArgument "include_infiltration", IIf(cb_inf.Value = 1, 1, 0)
 
     'other parameters
-    jFile.AddArgument "Shadingcontrol", IIf(cb_shadingcontrol.Value = 1, 1, 0)
-    jFile.AddArgument "Lightingcontrol", IIf(cb_lightingcontrol.Value = 1, 1, 0)
+    jFile.AddArgument "include_shading_control", IIf(cb_shadingcontrol.Value = 1, 1, 0)
+    jFile.AddArgument "include_lighting_control", IIf(cb_lightingcontrol.Value = 1, 1, 0)
 
     jFile.AddMeasure "custom_export_params"
 End Sub
@@ -170,13 +170,13 @@ Sub ExportAddGeometry(ByRef jFile As JSONFile)
     jFile.AddArgument "window_to_wall_ratio_east", Range("WWRO")
     jFile.AddArgument "window_to_wall_ratio_south", Range("WWRS")
     jFile.AddArgument "window_to_wall_ratio_west", Range("WWRW")
-    jFile.AddArgument "AdiabaticNorth", dd42.List(dd42.Value)
-    jFile.AddArgument "AdiabaticEast", dd43.List(dd43.Value)
-    jFile.AddArgument "AdiabaticSouth", dd44.List(dd44.Value)
-    jFile.AddArgument "AdiabaticWest", dd45.List(dd45.Value)
-    jFile.AddArgument "AdiabaticRoof", dd46.List(dd46.Value)
-    jFile.AddArgument "AdiabaticFloor", dd47.List(dd47.Value)
-    jFile.AddArgument "perimeterdepth", Range("PerimeterDepth")
+    jFile.AddArgument "adiabatic_north", dd42.List(dd42.Value)
+    jFile.AddArgument "adiabatic_east", dd43.List(dd43.Value)
+    jFile.AddArgument "adiabatic_south", dd44.List(dd44.Value)
+    jFile.AddArgument "adiabatic_west", dd45.List(dd45.Value)
+    jFile.AddArgument "adiabatic_roof", dd46.List(dd46.Value)
+    jFile.AddArgument "adiabatic_floor", dd47.List(dd47.Value)
+    jFile.AddArgument "perimeter_depth", Range("PerimeterDepth")
 
     jFile.AddMeasure "add_geometry"
 End Sub

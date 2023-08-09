@@ -12,32 +12,32 @@
       },
       {
          "arguments": {
-            "WeatherFilePath": "$GENSIM_PATH$\\Wetter\\TRY2015_Stuttgart_Jahr.epw",
-            "NorthAxis": "0",
-            "Timestep": "4"
+            "weather_file_path": "$GENSIM_PATH$\\Wetter\\TRY2015_Stuttgart_Jahr.epw",
+            "north_axis": "0",
+            "time_step": "4"
          },
          "measure_dir_name": "set_weather_axis_timestep"
       },
       {
          "arguments": {
-            "zoneDetails": "0",
-            "detailedHVAC": "0",
+            "include_zone_details": "0",
+            "include_detailed_hvac": "0",
             "ventilation_type": "2",
             "floor_length": "25",
             "floor_width": "25",
-            "ratio_NRF_BGF": "BKI 2015 - B$ue$rogeb$ae$ude ",
-            "NRF_BGF": "0.851",
-            "genGeom": "1",
-            "Holidays": "",
-            "vorlauf_Luft": "1",
-            "nachlauf_Luft": "1",
-            "FloorHeight_kond": "2.6",
-            "FloorHeight_import": "3",
-            "ACH_Input_Parameter": "2",
-            "Windowvent": "1",
-            "Infiltration": "1",
-            "Shadingcontrol": "1",
-            "Lightingcontrol": "1"
+            "nfa_gfa_ratio_selection": "BKI 2015 - B$ue$rogeb$ae$ude ",
+            "nfa_gfa_ratio": "0.851",
+            "generate_geometry_selection": "1",
+            "holidays": "",
+            "ventilation_lead_time": "1",
+            "ventilation_follow_up_time": "1",
+            "conditioned_floor_height": "2.6",
+            "imported_floor_height": "3",
+            "air_changes_input": "2",
+            "include_window_ventilation": "1",
+            "include_infiltration": "1",
+            "include_shading_control": "1",
+            "include_lighting_control": "1"
          },
          "measure_dir_name": "custom_export_params"
       },
@@ -54,13 +54,13 @@
             "window_to_wall_ratio_east": "0.5",
             "window_to_wall_ratio_south": "0.5",
             "window_to_wall_ratio_west": "0.5",
-            "AdiabaticNorth": "false",
-            "AdiabaticEast": "false",
-            "AdiabaticSouth": "false",
-            "AdiabaticWest": "false",
-            "AdiabaticRoof": "false",
-            "AdiabaticFloor": "false",
-            "perimeterdepth": "0"
+            "adiabatic_north": "false",
+            "adiabatic_east": "false",
+            "adiabatic_south": "false",
+            "adiabatic_west": "false",
+            "adiabatic_roof": "false",
+            "adiabatic_floor": "false",
+            "perimeter_depth": "0"
          },
          "measure_dir_name": "add_geometry"
       },

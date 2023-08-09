@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>custom_export_params</name>
   <uid>28949d7c-e721-4d6c-9784-0d9840672a49</uid>
-  <version_id>1e7b6d9e-c724-4c4c-92d0-7b6c640f4473</version_id>
-  <version_modified>20230728T142145Z</version_modified>
+  <version_id>5803ca0a-a4ca-48a0-842f-7a8b688fe109</version_id>
+  <version_modified>20230809T075222Z</version_modified>
   <xml_checksum>2AF3A68E</xml_checksum>
   <class_name>CustomExportParams</class_name>
   <display_name>CustomExportParams</display_name>
@@ -11,14 +11,14 @@
   <modeler_description>A dummy measure to contain custom parameters</modeler_description>
   <arguments>
     <argument>
-      <name>zoneDetails</name>
+      <name>include_zone_details</name>
       <display_name>Has zone details</display_name>
       <type>Integer</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>detailedHVAC</name>
+      <name>include_detailed_hvac</name>
       <display_name>With detailed HVAC</display_name>
       <type>Integer</type>
       <required>false</required>
@@ -48,94 +48,94 @@
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>ratio_NRF_BGF</name>
-      <display_name>Ratio of NRF over BGF selection</display_name>
+      <name>nfa_gfa_ratio_selection</name>
+      <display_name>Selection value of ratio of NFA over GFA</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>NRF_BGF</name>
-      <display_name>Ratio of NRF over BGF</display_name>
+      <name>nfa_gfa_ratio</name>
+      <display_name>Ratio of NFA over GFA</display_name>
       <type>Double</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>Holidays</name>
+      <name>holidays</name>
       <display_name>Definition of holidays</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>vorlauf_Luft</name>
-      <display_name>Vorlauf Luft berechnen</display_name>
+      <name>ventilation_lead_time</name>
+      <display_name>Lead time of ventilation</display_name>
       <type>Integer</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>nachlauf_Luft</name>
-      <display_name>Rücklauf Luft berechnen</display_name>
+      <name>ventilation_follow_up_time</name>
+      <display_name>Follow-up time of ventilation</display_name>
       <type>Integer</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>Shadingcontrol</name>
-      <display_name>Sonnenschutz berechnen</display_name>
+      <name>include_shading_control</name>
+      <display_name>Calculate shading</display_name>
       <type>Integer</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>Infiltration</name>
-      <display_name>Infiltration berechnen</display_name>
+      <name>include_infiltration</name>
+      <display_name>Calculate infiltration</display_name>
       <type>Integer</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>Lightingcontrol</name>
-      <display_name>Lichtsteuerung berechnen</display_name>
+      <name>include_lighting_control</name>
+      <display_name>Calculate lighting</display_name>
       <type>Integer</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>Windowvent</name>
-      <display_name>Fensterlüftung berechnen</display_name>
+      <name>include_window_ventilation</name>
+      <display_name>Calculate window ventilation</display_name>
       <type>Integer</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>genGeom</name>
-      <display_name>Generische Geometrie</display_name>
+      <name>generate_geometry_selection</name>
+      <display_name>Generic geometry selection value</display_name>
       <type>Integer</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>FloorHeight_kond</name>
-      <display_name>Konditionierte Raumhöhe</display_name>
+      <name>conditioned_floor_height</name>
+      <display_name>Conditioned floor height</display_name>
       <type>Double</type>
       <units>m</units>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>FloorHeight_import</name>
-      <display_name>Importierte Raumhöhe</display_name>
+      <name>imported_floor_height</name>
+      <display_name>Imported floor height</display_name>
       <type>Double</type>
       <units>m</units>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>ACH_Input_Parameter</name>
-      <display_name>Luftwechselrate</display_name>
+      <name>air_changes_input</name>
+      <display_name>Air changes input parameter</display_name>
       <type>Double</type>
       <units>h^-1</units>
       <required>false</required>
@@ -171,6 +171,12 @@
   </attributes>
   <files>
     <file>
+      <filename>custom_export_params_test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>550CA45C</checksum>
+    </file>
+    <file>
       <version>
         <software_program>OpenStudio</software_program>
         <identifier>2.7.0</identifier>
@@ -179,13 +185,7 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>E1AE1991</checksum>
-    </file>
-    <file>
-      <filename>custom_export_params_test.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>test</usage_type>
-      <checksum>550CA45C</checksum>
+      <checksum>CA47662C</checksum>
     </file>
   </files>
 </measure>

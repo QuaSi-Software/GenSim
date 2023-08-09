@@ -122,43 +122,43 @@ class AddGeometry < OpenStudio::Ruleset::ModelUserScript
     args << window_to_wall_ratio_west
     
     #make an argument to create zones from spaces
-    adiabaticN = OpenStudio::Ruleset::OSArgument::makeBoolArgument("AdiabaticNorth",false)
+    adiabaticN = OpenStudio::Ruleset::OSArgument::makeBoolArgument("adiabatic_north",false)
     adiabaticN.setDisplayName("Adiabatic north facade?")
     adiabaticN.setDefaultValue(false)
     args << adiabaticN
     
     #make an argument to create zones from spaces
-    adiabaticE = OpenStudio::Ruleset::OSArgument::makeBoolArgument("AdiabaticEast",false)
+    adiabaticE = OpenStudio::Ruleset::OSArgument::makeBoolArgument("adiabatic_east",false)
     adiabaticE.setDisplayName("Adiabatic east facade?")
     adiabaticE.setDefaultValue(false)
     args << adiabaticE
     
     #make an argument to create zones from spaces
-    adiabaticS = OpenStudio::Ruleset::OSArgument::makeBoolArgument("AdiabaticSouth",false)
+    adiabaticS = OpenStudio::Ruleset::OSArgument::makeBoolArgument("adiabatic_south",false)
     adiabaticS.setDisplayName("Adiabatic south facade?")
     adiabaticS.setDefaultValue(false)
     args << adiabaticS
     
     #make an argument to create zones from spaces
-    adiabaticW = OpenStudio::Ruleset::OSArgument::makeBoolArgument("AdiabaticWest",false)
+    adiabaticW = OpenStudio::Ruleset::OSArgument::makeBoolArgument("adiabatic_west",false)
     adiabaticW.setDisplayName("Adiabatic west facade?")
     adiabaticW.setDefaultValue(false)
     args << adiabaticW
     
     #make an argument to create zones from spaces
-    adiabaticR = OpenStudio::Ruleset::OSArgument::makeBoolArgument("AdiabaticRoof",false)
+    adiabaticR = OpenStudio::Ruleset::OSArgument::makeBoolArgument("adiabatic_roof",false)
     adiabaticR.setDisplayName("Adiabatic roof?")
     adiabaticR.setDefaultValue(false)
     args << adiabaticR
     
     #make an argument to create zones from spaces
-    adiabaticF = OpenStudio::Ruleset::OSArgument::makeBoolArgument("AdiabaticFloor",false)
+    adiabaticF = OpenStudio::Ruleset::OSArgument::makeBoolArgument("adiabatic_floor",false)
     adiabaticF.setDisplayName("Adiabatic floor?")
     adiabaticF.setDefaultValue(false)
     args << adiabaticF
 
     #make an argument for depth of perimeter zone
-    perimeterdepth = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("perimeterdepth",false)
+    perimeterdepth = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("perimeter_depth",false)
     perimeterdepth.setDisplayName("Perimeter Depth")
     perimeterdepth.setDefaultValue(6)
     args << perimeterdepth
@@ -187,13 +187,13 @@ class AddGeometry < OpenStudio::Ruleset::ModelUserScript
     window_to_wall_ratio_east = runner.getDoubleArgumentValue("window_to_wall_ratio_east",user_arguments)
     window_to_wall_ratio_south = runner.getDoubleArgumentValue("window_to_wall_ratio_south",user_arguments)
     window_to_wall_ratio_west = runner.getDoubleArgumentValue("window_to_wall_ratio_west",user_arguments)
-    adiabaticNorth = runner.getBoolArgumentValue("AdiabaticNorth",user_arguments)
-    adiabaticEast = runner.getBoolArgumentValue("AdiabaticEast",user_arguments)
-    adiabaticSouth = runner.getBoolArgumentValue("AdiabaticSouth",user_arguments)
-    adiabaticWest = runner.getBoolArgumentValue("AdiabaticWest",user_arguments)
-    adiabaticRoof = runner.getBoolArgumentValue("AdiabaticRoof",user_arguments)
-    adiabaticFloor = runner.getBoolArgumentValue("AdiabaticFloor",user_arguments)
-    perimeterdepth = runner.getDoubleArgumentValue("perimeterdepth",user_arguments)
+    adiabaticNorth = runner.getBoolArgumentValue("adiabatic_north",user_arguments)
+    adiabaticEast = runner.getBoolArgumentValue("adiabatic_east",user_arguments)
+    adiabaticSouth = runner.getBoolArgumentValue("adiabatic_south",user_arguments)
+    adiabaticWest = runner.getBoolArgumentValue("adiabatic_west",user_arguments)
+    adiabaticRoof = runner.getBoolArgumentValue("adiabatic_roof",user_arguments)
+    adiabaticFloor = runner.getBoolArgumentValue("adiabatic_floor",user_arguments)
+    perimeterdepth = runner.getDoubleArgumentValue("perimeter_depth",user_arguments)
 
     #test for positive inputs
     if not floor_area > 0
