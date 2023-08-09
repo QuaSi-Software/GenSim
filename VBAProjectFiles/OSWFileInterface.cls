@@ -326,15 +326,15 @@ Sub ExportAddIdealLoads( _
     Dim dd55 As DropDown 'schedule ventilation
     Set dd55 = Sheets("HAUPTSEITE").DropDowns("Dropdown55")
 
-    jFile.AddArgument "wrg", Range("WRG")
-    jFile.AddArgument "latent", Range("LATENT")
-    jFile.AddArgument "sensible", Range("SENSIBLE")
-    jFile.AddArgument "ach", Range("ACH")
+    jFile.AddArgument "heat_recovery_method", Range("WRG")
+    jFile.AddArgument "latent_efficiency", Range("LATENT")
+    jFile.AddArgument "sensible_efficiency", Range("SENSIBLE")
+    jFile.AddArgument "ach_per_hour", Range("ACH")
     jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
     jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
-    jFile.AddSchedule "hvacSched", Range("HVACWD")
-    jFile.AddHolidays "Holidays", Range("Feiertage")
-    jFile.AddArgument "hvacSchedule", dd55.List(dd55.Value)
+    jFile.AddSchedule "hvac_sched", Range("HVACWD")
+    jFile.AddHolidays "holidays", Range("Feiertage")
+    jFile.AddArgument "hvac_schedule", dd55.List(dd55.Value)
     jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
 
     jFile.AddMeasure "add_ideal_loads"

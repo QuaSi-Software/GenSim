@@ -40,11 +40,11 @@ class AddIdealLoadsTest < MiniTest::Test
         defaultSched = " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20"
         # If the argument has a default that you want to use, you don't need it in the hash
         args_hash = {}
-        args_hash["hvacSchedWerktag"] = defaultSched
-        args_hash["hvacSchedSamstag"] = defaultSched
-        args_hash["hvacSchedSonntag"] = defaultSched
-        args_hash["hvacSchedFeiertag"] = defaultSched
-        args_hash["Holidays"] = defaultSched
+        args_hash["hvac_sched_weekday"] = defaultSched
+        args_hash["hvac_sched_saturday"] = defaultSched
+        args_hash["hvac_sched_sunday"] = defaultSched
+        args_hash["hvac_sched_holiday"] = defaultSched
+        args_hash["holidays"] = defaultSched
 
         # load an existing model
         dir = File.expand_path(File.dirname(__FILE__))
