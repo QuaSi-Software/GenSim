@@ -272,13 +272,13 @@
       },
       {
          "arguments": {
-            "SolarSetpoint": "180"
+            "solar_setpoint": "180"
          },
          "measure_dir_name": "add_shading_controls"
       },
       {
          "arguments": {
-            "AirChangesPerHour": "0.1",
+            "air_changes": "0.1",
             "nfa_gfa_ratio": "0.851",
             "floor_height_ratio": 0.866666666666667
          },
@@ -286,7 +286,7 @@
       },
       {
          "arguments": {
-            "DaylightingSetpoint": "500"
+            "daylighting_setpoint": "500"
          },
          "measure_dir_name": "add_lighting_controls"
       },
@@ -310,8 +310,8 @@
       },
       {
          "arguments": {
-            "pathtosave": "$GENSIM_PATH$\\Output",
-            "FileName": "Model"
+            "output_path": "$GENSIM_PATH$\\Output",
+            "file_name": "Model"
          },
          "measure_dir_name": "save_model"
       },

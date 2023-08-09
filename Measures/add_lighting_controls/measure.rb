@@ -58,7 +58,7 @@ class AddLightingControls < OpenStudio::Measure::ModelMeasure
     args = OpenStudio::Measure::OSArgumentVector.new
 
      #make an argument for setpoint
-    setpoint = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("DaylightingSetpoint",true)
+    setpoint = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("daylighting_setpoint",true)
     setpoint.setDisplayName("Daylighting Setpoint (lux)")
     setpoint.setDefaultValue(500)
     args << setpoint
@@ -76,7 +76,7 @@ class AddLightingControls < OpenStudio::Measure::ModelMeasure
     end
 
     # ===== assign the user inputs to variables
-    setpoint = runner.getDoubleArgumentValue("DaylightingSetpoint",user_arguments)
+    setpoint = runner.getDoubleArgumentValue("daylighting_setpoint",user_arguments)
 
     # ===== check the setpoint for reasonableness
     if setpoint < 0 or setpoint > 9999 

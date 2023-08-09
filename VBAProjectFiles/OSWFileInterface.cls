@@ -344,7 +344,7 @@ End Sub
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
 Sub ExportAddShadingControls(ByRef jFile As JSONFile)
-    jFile.AddArgument "SolarSetpoint", Range("SHCO_IRR")
+    jFile.AddArgument "solar_setpoint", Range("SHCO_IRR")
     jFile.AddMeasure "add_shading_controls"
 End Sub
 
@@ -358,7 +358,7 @@ Sub ExportAddInfiltration( _
     ByVal nrf_bgf As Double, _
     ByVal FloorHeight_Ratio As Double _
 )
-    jFile.AddArgument "AirChangesPerHour", Range("INFIL")
+    jFile.AddArgument "air_changes", Range("INFIL")
     jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
     jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
     jFile.AddMeasure "add_infiltration"
@@ -368,7 +368,7 @@ End Sub
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
 Sub ExportAddLightingControls(ByRef jFile As JSONFile)
-    jFile.AddArgument "DaylightingSetpoint", Range("LC_LUX")
+    jFile.AddArgument "daylighting_setpoint", Range("LC_LUX")
     jFile.AddMeasure "add_lighting_controls"
 End Sub
 
@@ -395,8 +395,8 @@ End Sub
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
 Sub ExportSaveModel(ByRef jFile As JSONFile)
-    jFile.AddArgument "pathtosave", GetOutputFolder()
-    jFile.AddArgument "FileName", Range("FileName")
+    jFile.AddArgument "output_path", GetOutputFolder()
+    jFile.AddArgument "file_name", Range("FileName")
     jFile.AddMeasure "save_model"
 End Sub
 

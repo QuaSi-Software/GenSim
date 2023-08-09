@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>add_lighting_controls</name>
   <uid>ac34ac49-f21b-4c54-83e9-3615aa06acf1</uid>
-  <version_id>7cfa3d54-8ace-4727-b20c-27799a4d860f</version_id>
-  <version_modified>20230728T142044Z</version_modified>
+  <version_id>2b632110-725c-4be2-baab-4f41c56f35f8</version_id>
+  <version_modified>20230809T092458Z</version_modified>
   <xml_checksum>81C5D8E7</xml_checksum>
   <class_name>AddLightingControls</class_name>
   <display_name>AddLightingControls</display_name>
@@ -11,7 +11,7 @@
   <modeler_description></modeler_description>
   <arguments>
     <argument>
-      <name>DaylightingSetpoint</name>
+      <name>daylighting_setpoint</name>
       <display_name>Daylighting Setpoint (lux)</display_name>
       <type>Double</type>
       <required>true</required>
@@ -68,13 +68,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>C7F7145E</checksum>
+      <checksum>44CE940D</checksum>
     </file>
     <file>
       <filename>add_lighting_controls_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>10728F69</checksum>
+      <checksum>938FF842</checksum>
     </file>
   </files>
 </measure>

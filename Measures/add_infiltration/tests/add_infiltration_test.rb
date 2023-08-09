@@ -33,7 +33,7 @@ class AddInfiltrationTest < MiniTest::Test
     def test_good_argument_values
         # If the argument has a default that you want to use, you don't need it in the hash
         args_hash = {}
-        args_hash["AirChangesPerHour"] = 0.07
+        args_hash["air_changes"] = 0.07
         args_hash["nfa_gfa_ratio"] = 0.8
         args_hash["floor_height_ratio"] = 0.8
 

@@ -23,7 +23,7 @@ class AddInfiltration < OpenStudio::Measure::ModelMeasure
     args = OpenStudio::Measure::OSArgumentVector.new
 
     #make an argument for infiltration
-    infiltration_ach = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("AirChangesPerHour",true)
+    infiltration_ach = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("air_changes",true)
     infiltration_ach.setDisplayName("Space Infiltration Air Changes Per Hour (1/h).")
     infiltration_ach.setDefaultValue(0.1)
     args << infiltration_ach
@@ -50,7 +50,7 @@ class AddInfiltration < OpenStudio::Measure::ModelMeasure
     end
 
     #assign the user inputs to variables
-    infiltration_ach = runner.getDoubleArgumentValue("AirChangesPerHour",user_arguments)
+    infiltration_ach = runner.getDoubleArgumentValue("air_changes",user_arguments)
     nfa_gfa_ratio = runner.getDoubleArgumentValue("nfa_gfa_ratio",user_arguments)
     floor_height_ratio = runner.getDoubleArgumentValue("floor_height_ratio",user_arguments)
 
