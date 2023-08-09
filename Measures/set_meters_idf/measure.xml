@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>set_meters_idf</name>
   <uid>f6530b2e-e6e0-4b16-888c-54226d297dd4</uid>
-  <version_id>f328f313-26a9-43db-b11c-c35652893e3c</version_id>
-  <version_modified>20230728T142254Z</version_modified>
+  <version_id>1c96cf1b-2d3a-42e2-87ee-1f9348af77c5</version_id>
+  <version_modified>20230809T094752Z</version_modified>
   <xml_checksum>15DBE762</xml_checksum>
   <class_name>SetMetersIDF</class_name>
   <display_name>SetMetersIDF</display_name>
@@ -11,31 +11,31 @@
   <modeler_description></modeler_description>
   <arguments>
     <argument>
-      <name>Timestep</name>
-      <display_name>Timestep</display_name>
+      <name>time_step</name>
+      <display_name>time_step</display_name>
       <type>Integer</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>DayToStartSimulation</name>
-      <display_name>DayToStartSimulation</display_name>
+      <name>day_to_start_simulation</name>
+      <display_name>day_to_start_simulation</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
       <default_value>UseWeatherFile</default_value>
     </argument>
     <argument>
-      <name>HeatingSizingFactor</name>
-      <display_name>HeatingSizingFactor</display_name>
+      <name>heating_sizing_factor</name>
+      <display_name>heating_sizing_factor</display_name>
       <type>Double</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
       <default_value>1.25</default_value>
     </argument>
     <argument>
-      <name>CoolingSizingFactor</name>
-      <display_name>CoolingSizingFactor</display_name>
+      <name>cooling_sizing_factor</name>
+      <display_name>cooling_sizing_factor</display_name>
       <type>Double</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
@@ -72,6 +72,12 @@
       <checksum>0AB453A0</checksum>
     </file>
     <file>
+      <filename>set_meters_idf_test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>48DDADCE</checksum>
+    </file>
+    <file>
       <version>
         <software_program>OpenStudio</software_program>
         <identifier>2.5.0</identifier>
@@ -80,13 +86,7 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>578BCF17</checksum>
-    </file>
-    <file>
-      <filename>set_meters_idf_test.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>test</usage_type>
-      <checksum>48DDADCE</checksum>
+      <checksum>53034C86</checksum>
     </file>
   </files>
 </measure>

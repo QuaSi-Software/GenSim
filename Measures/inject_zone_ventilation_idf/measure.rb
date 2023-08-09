@@ -20,9 +20,9 @@ class InjectZoneVentilationIDF < OpenStudio::Measure::EnergyPlusMeasure
   def arguments(workspace)
     args = OpenStudio::Measure::OSArgumentVector.new
 
-    args <<  OpenStudio::Measure::OSArgument.makeDoubleArgument("VentilationACH", true)
-	args <<  OpenStudio::Measure::OSArgument.makeDoubleArgument("MinIndoorTemperature", true)
-	args <<  OpenStudio::Measure::OSArgument.makeDoubleArgument("DeltaT", true)
+    args <<  OpenStudio::Measure::OSArgument.makeDoubleArgument("air_changes", true)
+	args <<  OpenStudio::Measure::OSArgument.makeDoubleArgument("min_indoor_temperature", true)
+	args <<  OpenStudio::Measure::OSArgument.makeDoubleArgument("temperature_difference", true)
 
     return args
   end
@@ -37,9 +37,9 @@ class InjectZoneVentilationIDF < OpenStudio::Measure::EnergyPlusMeasure
     end
 
     # assign the user inputs to variables
-    ventilationACH = runner.getDoubleArgumentValue("VentilationACH", user_arguments)
-	minIndoorTemperature = runner.getDoubleArgumentValue("MinIndoorTemperature", user_arguments)
-	deltaT = runner.getDoubleArgumentValue("DeltaT", user_arguments)
+    ventilationACH = runner.getDoubleArgumentValue("air_changes", user_arguments)
+	minIndoorTemperature = runner.getDoubleArgumentValue("min_indoor_temperature", user_arguments)
+	deltaT = runner.getDoubleArgumentValue("temperature_difference", user_arguments)
 
     # get all thermal zones in the starting model
     zones = workspace.getObjectsByType("Zone".to_IddObjectType)

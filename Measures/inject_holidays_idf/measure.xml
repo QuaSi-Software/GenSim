@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>inject_holidays_idf</name>
   <uid>3bdd4f5d-02e7-43ad-b151-9f781ef887b3</uid>
-  <version_id>98f9014c-72d0-4103-851c-7e08370a84eb</version_id>
-  <version_modified>20230728T142200Z</version_modified>
+  <version_id>bbe825a7-d7c0-46b9-b004-fa6890693515</version_id>
+  <version_modified>20230809T094726Z</version_modified>
   <xml_checksum>0B6DEAE1</xml_checksum>
   <class_name>InjectHolidaysIDF</class_name>
   <display_name>InjectHolidaysIDF</display_name>
@@ -11,8 +11,8 @@
   <modeler_description>Replace this text with an explanation for the energy modeler specifically.  It should explain how the measure is modeled, including any requirements about how the baseline model must be set up, major assumptions, citations of references to applicable modeling resources, etc.  The energy modeler should be able to read this description and understand what changes the measure is making to the model and why these changes are being made.  Because the Modeler Description is written for an expert audience, using common abbreviations for brevity is good practice.</modeler_description>
   <arguments>
     <argument>
-      <name>Holidays</name>
-      <display_name>Holidays</display_name>
+      <name>holidays</name>
+      <display_name>holidays</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
@@ -56,13 +56,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>016DF7D9</checksum>
+      <checksum>BF0F6CCB</checksum>
     </file>
     <file>
       <filename>inject_holidays_idf_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>EB7B873C</checksum>
+      <checksum>EB9767E4</checksum>
     </file>
   </files>
 </measure>

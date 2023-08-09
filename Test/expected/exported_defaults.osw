@@ -317,18 +317,18 @@
       },
       {
          "arguments": {
-            "VentilationACH": "2",
-            "MinIndoorTemperature": "24",
-            "DeltaT": "0"
+            "air_changes": "2",
+            "min_indoor_temperature": "24",
+            "temperature_difference": "0"
          },
          "measure_dir_name": "inject_zone_ventilation_idf"
       },
       {
          "arguments": {
-            "HeatRecoveryType": "Sensible",
-            "SensibleEffectiveness": "0.75",
-            "LatentEffectiveness": "1",
-            "ACH": "2",
+            "heat_recovery_type": "Sensible",
+            "sensible_efficiency": "0.75",
+            "latent_efficiency": "1",
+            "air_changes": "2",
             "nfa_gfa_ratio": "0.851",
             "floor_height_ratio": 0.866666666666667
          },
@@ -341,10 +341,10 @@
       },
       {
          "arguments": {
-            "Timestep": "4",
-            "DayToStartSimulation": "Sunday",
-            "HeatingSizingFactor": "1.25",
-            "CoolingSizingFactor": "1.15"
+            "time_step": "4",
+            "day_to_start_simulation": "Sunday",
+            "heating_sizing_factor": "1.25",
+            "cooling_sizing_factor": "1.15"
          },
          "measure_dir_name": "set_meters_idf"
       }

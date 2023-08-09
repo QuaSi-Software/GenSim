@@ -404,9 +404,9 @@ End Sub
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
 Sub ExportInjectZoneVentilationIDF(ByRef jFile As JSONFile)
-    jFile.AddArgument "VentilationACH", Range("windowvent_ach")
-    jFile.AddArgument "MinIndoorTemperature", Range("windowvent_temp")
-    jFile.AddArgument "DeltaT", Range("windowvent_dt")
+    jFile.AddArgument "air_changes", Range("windowvent_ach")
+    jFile.AddArgument "min_indoor_temperature", Range("windowvent_temp")
+    jFile.AddArgument "temperature_difference", Range("windowvent_dt")
     jFile.AddMeasure "inject_zone_ventilation_idf"
 End Sub
 
@@ -420,10 +420,10 @@ Sub ExportInjectIdealLoadParametersIDF( _
     ByVal nrf_bgf As Double, _
     ByVal FloorHeight_Ratio As Double _
 )
-    jFile.AddArgument "HeatRecoveryType", Range("WRG")
-    jFile.AddArgument "SensibleEffectiveness", Range("SENSIBLE")
-    jFile.AddArgument "LatentEffectiveness", Range("LATENT")
-    jFile.AddArgument "ACH", Range("ACH")
+    jFile.AddArgument "heat_recovery_type", Range("WRG")
+    jFile.AddArgument "sensible_efficiency", Range("SENSIBLE")
+    jFile.AddArgument "latent_efficiency", Range("LATENT")
+    jFile.AddArgument "air_changes", Range("ACH")
     jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
     jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
     jFile.AddMeasure "inject_ideal_load_parameters_idf"
@@ -446,7 +446,7 @@ Sub ExportInjectHolidaysIDF(ByRef jFile As JSONFile)
     Next
 
     If feiertage_active > 0 Then
-        jFile.AddHolidays "Holidays", Range("Feiertage")
+        jFile.AddHolidays "holidays", Range("Feiertage")
         jFile.AddMeasure "inject_holidays_idf"
     End If
 End Sub
@@ -459,10 +459,10 @@ Sub ExportSetMetersIDF( _
     ByRef jFile As JSONFile, _
     ByVal NrOfTimesteps As Integer _
 )
-    jFile.AddArgument "Timestep", CStr(NrOfTimesteps)
-    jFile.AddArgument "DayToStartSimulation", Range("DayToStartSimulation")
-    jFile.AddArgument "HeatingSizingFactor", Range("HeatingSizingFactor")
-    jFile.AddArgument "CoolingSizingFactor", Range("CoolingSizingFactor")
+    jFile.AddArgument "time_step", CStr(NrOfTimesteps)
+    jFile.AddArgument "day_to_start_simulation", Range("DayToStartSimulation")
+    jFile.AddArgument "heating_sizing_factor", Range("HeatingSizingFactor")
+    jFile.AddArgument "cooling_sizing_factor", Range("CoolingSizingFactor")
     jFile.AddMeasure "set_meters_idf"
 End Sub
 

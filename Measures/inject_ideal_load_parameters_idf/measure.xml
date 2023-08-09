@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>inject_ideal_load_parameters_idf</name>
   <uid>e3487a61-abd7-4f98-ae4f-c77301e48a4d</uid>
-  <version_id>bc80d473-437f-469e-9a6f-3a845688e4e7</version_id>
-  <version_modified>20230728T142220Z</version_modified>
+  <version_id>5ef6386f-cc34-480a-86a4-bea2f14d9bca</version_id>
+  <version_modified>20230809T094737Z</version_modified>
   <xml_checksum>7DF45990</xml_checksum>
   <class_name>InjectIdealLoadParametersIDF</class_name>
   <display_name>InjectIdealLoadParametersIDF</display_name>
@@ -11,29 +11,29 @@
   <modeler_description></modeler_description>
   <arguments>
     <argument>
-      <name>HeatRecoveryType</name>
-      <display_name>HeatRecoveryType</display_name>
+      <name>heat_recovery_type</name>
+      <display_name>heat_recovery_type</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>SensibleEffectiveness</name>
-      <display_name>SensibleEffectiveness</display_name>
+      <name>sensible_efficiency</name>
+      <display_name>sensible_efficiency</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>LatentEffectiveness</name>
-      <display_name>LatentEffectiveness</display_name>
+      <name>latent_efficiency</name>
+      <display_name>latent_efficiency</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>ACH</name>
-      <display_name>ACH</display_name>
+      <name>air_changes</name>
+      <display_name>air_changes</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
@@ -93,13 +93,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>C265E307</checksum>
+      <checksum>7B55DA6B</checksum>
     </file>
     <file>
       <filename>inject_ideal_loads_parameters_idf_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>4A668112</checksum>
+      <checksum>81BCE065</checksum>
     </file>
   </files>
 </measure>

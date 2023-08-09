@@ -33,9 +33,9 @@ class InjectZoneVentilationIDFTest < MiniTest::Test
     def test_good_argument_values
         # If the argument has a default that you want to use, you don't need it in the hash
         args_hash = {}
-        args_hash["VentilationACH"] = "2"
-        args_hash["MinIndoorTemperature"] = "15"
-        args_hash["DeltaT"] = "3"
+        args_hash["air_changes"] = "2"
+        args_hash["min_indoor_temperature"] = "15"
+        args_hash["temperature_difference"] = "3"
 
         # load an existing model
         dir = File.expand_path(File.dirname(__FILE__))

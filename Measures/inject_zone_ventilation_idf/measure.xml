@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>inject_zone_ventilation_idf</name>
   <uid>3bdd4f5d-02e7-43ad-b151-9f781ef887b3</uid>
-  <version_id>928d4722-9540-47ad-bcd6-a4b7b5a48f66</version_id>
-  <version_modified>20230728T142238Z</version_modified>
+  <version_id>dbb880c3-9ec5-425a-ac03-1642d9fb510a</version_id>
+  <version_modified>20230809T094744Z</version_modified>
   <xml_checksum>0B6DEAE1</xml_checksum>
   <class_name>InjectZoneVentilationIDF</class_name>
   <display_name>InjectZoneVentilationIDF</display_name>
@@ -11,22 +11,22 @@
   <modeler_description>Replace this text with an explanation for the energy modeler specifically.  It should explain how the measure is modeled, including any requirements about how the baseline model must be set up, major assumptions, citations of references to applicable modeling resources, etc.  The energy modeler should be able to read this description and understand what changes the measure is making to the model and why these changes are being made.  Because the Modeler Description is written for an expert audience, using common abbreviations for brevity is good practice.</modeler_description>
   <arguments>
     <argument>
-      <name>VentilationACH</name>
-      <display_name>VentilationACH</display_name>
+      <name>air_changes</name>
+      <display_name>air_changes</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>MinIndoorTemperature</name>
-      <display_name>MinIndoorTemperature</display_name>
+      <name>min_indoor_temperature</name>
+      <display_name>min_indoor_temperature</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>DeltaT</name>
-      <display_name>DeltaT</display_name>
+      <name>temperature_difference</name>
+      <display_name>temperature_difference</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
@@ -56,6 +56,12 @@
   </attributes>
   <files>
     <file>
+      <filename>example_model.idf</filename>
+      <filetype>idf</filetype>
+      <usage_type>test</usage_type>
+      <checksum>533DFCEC</checksum>
+    </file>
+    <file>
       <version>
         <software_program>OpenStudio</software_program>
         <identifier>2.5.0</identifier>
@@ -64,19 +70,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>F669C286</checksum>
-    </file>
-    <file>
-      <filename>example_model.idf</filename>
-      <filetype>idf</filetype>
-      <usage_type>test</usage_type>
-      <checksum>533DFCEC</checksum>
+      <checksum>6C00A41F</checksum>
     </file>
     <file>
       <filename>inject_zone_ventilation_idf_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>28E2C8F4</checksum>
+      <checksum>E569824F</checksum>
     </file>
   </files>
 </measure>
