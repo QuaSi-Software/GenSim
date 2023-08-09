@@ -37,8 +37,8 @@ class SaveModelTest < MiniTest::Test
 
         # If the argument has a default that you want to use, you don't need it in the hash
         args_hash = {}
-        args_hash["pathtosave"] = dir
-        args_hash["FileName"] = "Test"
+        args_hash["output_path"] = dir
+        args_hash["file_name"] = "Test"
 
         result = TestArguments(SaveModel.new, model, args_hash)
 
@@ -52,7 +52,7 @@ class SaveModelTest < MiniTest::Test
         assert(result.errors.size == 0)
         assert(result.initialCondition.is_initialized())
         assert(result.finalCondition.is_initialized())
-        assert_equal("OSM file saved successfully to: #{args_hash["pathtosave"]}/#{args_hash["FileName"]}.osm", result.finalCondition.get().logMessage())
+        assert_equal("OSM file saved successfully to: #{args_hash["output_path"]}/#{args_hash["file_name"]}.osm", result.finalCondition.get().logMessage())
         # save the model to test output directory
         SaveModel(model, dir)
     end
