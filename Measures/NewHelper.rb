@@ -1,5 +1,5 @@
 def ConvertToDouble(argument)
-  double_arg = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("double_arg", true)
+  double_arg = OpenStudio::Measure::OSArgument::makeDoubleArgument("double_arg", true)
   double_arg.setValue(argument)
   return double_arg.valueAsDouble
 end

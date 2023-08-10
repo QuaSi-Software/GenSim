@@ -55,110 +55,110 @@ class AddGeometry < OpenStudio::Ruleset::ModelUserScript
     args = OpenStudio::Measure::OSArgumentVector.new
 
     #make an argument for total floor area
-    floor_area = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("floor_area", true)
+    floor_area = OpenStudio::Measure::OSArgument::makeDoubleArgument("floor_area", true)
     floor_area.setDisplayName("Total Building Floor Area")
     floor_area.setUnits("m^2")
     args << floor_area
 
     #make an argument for building length
-    building_length = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("building_length", true)
+    building_length = OpenStudio::Measure::OSArgument::makeDoubleArgument("building_length", true)
     building_length.setDisplayName("Length of North/South Facade")
     building_length.setDefaultValue(20.0)
     args << building_length
 
     #make an argument for building width
-    building_width = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("building_width", true)
+    building_width = OpenStudio::Measure::OSArgument::makeDoubleArgument("building_width", true)
     building_width.setDisplayName("Width of East/West Facade")
     building_width.setDefaultValue(10.0)
     args << building_width
 
     #make an argument for number of floors
-    number_of_stories = OpenStudio::Ruleset::OSArgument::makeIntegerArgument("number_of_stories", true)
+    number_of_stories = OpenStudio::Measure::OSArgument::makeIntegerArgument("number_of_stories", true)
     number_of_stories.setDisplayName("Number of Floors.")
     number_of_stories.setDefaultValue(2)
     args << number_of_stories
 
     #make an argument for floor height
-    floor_to_floor_height = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("floor_to_floor_height", true)
+    floor_to_floor_height = OpenStudio::Measure::OSArgument::makeDoubleArgument("floor_to_floor_height", true)
     floor_to_floor_height.setDisplayName("Floor to Floor Height")
     floor_to_floor_height.setUnits("m")
     floor_to_floor_height.setDefaultValue(3.3)
     args << floor_to_floor_height
 
     #make an argument to surface match
-    surface_matching = OpenStudio::Ruleset::OSArgument::makeBoolArgument("surface_matching", true)
+    surface_matching = OpenStudio::Measure::OSArgument::makeBoolArgument("surface_matching", true)
     surface_matching.setDisplayName("Surface Matching?")
     surface_matching.setDefaultValue(true)
     args << surface_matching
 
     #make an argument to create zones from spaces
-    make_zones = OpenStudio::Ruleset::OSArgument::makeBoolArgument("make_zones", true)
+    make_zones = OpenStudio::Measure::OSArgument::makeBoolArgument("make_zones", true)
     make_zones.setDisplayName("Make Thermal Zones from Spaces?")
     make_zones.setDefaultValue(true)
     args << make_zones
 
     #make an argument for wwr
-    window_to_wall_ratio_north = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("window_to_wall_ratio_north", true)
+    window_to_wall_ratio_north = OpenStudio::Measure::OSArgument::makeDoubleArgument("window_to_wall_ratio_north", true)
     window_to_wall_ratio_north.setDisplayName("Window to Wall Ratio North")
     window_to_wall_ratio_north.setDefaultValue(0.3)
     args << window_to_wall_ratio_north
 
     #make an argument for wwr
-    window_to_wall_ratio_east = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("window_to_wall_ratio_east", true)
+    window_to_wall_ratio_east = OpenStudio::Measure::OSArgument::makeDoubleArgument("window_to_wall_ratio_east", true)
     window_to_wall_ratio_east.setDisplayName("Window to Wall Ratio East")
     window_to_wall_ratio_east.setDefaultValue(0.3)
     args << window_to_wall_ratio_east
 
     #make an argument for wwr
-    window_to_wall_ratio_south = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("window_to_wall_ratio_south", true)
+    window_to_wall_ratio_south = OpenStudio::Measure::OSArgument::makeDoubleArgument("window_to_wall_ratio_south", true)
     window_to_wall_ratio_south.setDisplayName("Window to Wall Ratio South")
     window_to_wall_ratio_south.setDefaultValue(0.3)
     args << window_to_wall_ratio_south
 
     #make an argument for wwr
-    window_to_wall_ratio_west = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("window_to_wall_ratio_west", true)
+    window_to_wall_ratio_west = OpenStudio::Measure::OSArgument::makeDoubleArgument("window_to_wall_ratio_west", true)
     window_to_wall_ratio_west.setDisplayName("Window to Wall Ratio West")
     window_to_wall_ratio_west.setDefaultValue(0.3)
     args << window_to_wall_ratio_west
 
     #make an argument to create zones from spaces
-    adiabaticN = OpenStudio::Ruleset::OSArgument::makeBoolArgument("adiabatic_north", false)
+    adiabaticN = OpenStudio::Measure::OSArgument::makeBoolArgument("adiabatic_north", false)
     adiabaticN.setDisplayName("Adiabatic north facade?")
     adiabaticN.setDefaultValue(false)
     args << adiabaticN
 
     #make an argument to create zones from spaces
-    adiabaticE = OpenStudio::Ruleset::OSArgument::makeBoolArgument("adiabatic_east", false)
+    adiabaticE = OpenStudio::Measure::OSArgument::makeBoolArgument("adiabatic_east", false)
     adiabaticE.setDisplayName("Adiabatic east facade?")
     adiabaticE.setDefaultValue(false)
     args << adiabaticE
 
     #make an argument to create zones from spaces
-    adiabaticS = OpenStudio::Ruleset::OSArgument::makeBoolArgument("adiabatic_south", false)
+    adiabaticS = OpenStudio::Measure::OSArgument::makeBoolArgument("adiabatic_south", false)
     adiabaticS.setDisplayName("Adiabatic south facade?")
     adiabaticS.setDefaultValue(false)
     args << adiabaticS
 
     #make an argument to create zones from spaces
-    adiabaticW = OpenStudio::Ruleset::OSArgument::makeBoolArgument("adiabatic_west", false)
+    adiabaticW = OpenStudio::Measure::OSArgument::makeBoolArgument("adiabatic_west", false)
     adiabaticW.setDisplayName("Adiabatic west facade?")
     adiabaticW.setDefaultValue(false)
     args << adiabaticW
 
     #make an argument to create zones from spaces
-    adiabaticR = OpenStudio::Ruleset::OSArgument::makeBoolArgument("adiabatic_roof", false)
+    adiabaticR = OpenStudio::Measure::OSArgument::makeBoolArgument("adiabatic_roof", false)
     adiabaticR.setDisplayName("Adiabatic roof?")
     adiabaticR.setDefaultValue(false)
     args << adiabaticR
 
     #make an argument to create zones from spaces
-    adiabaticF = OpenStudio::Ruleset::OSArgument::makeBoolArgument("adiabatic_floor", false)
+    adiabaticF = OpenStudio::Measure::OSArgument::makeBoolArgument("adiabatic_floor", false)
     adiabaticF.setDisplayName("Adiabatic floor?")
     adiabaticF.setDefaultValue(false)
     args << adiabaticF
 
     #make an argument for depth of perimeter zone
-    perimeterdepth = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("perimeter_depth", false)
+    perimeterdepth = OpenStudio::Measure::OSArgument::makeDoubleArgument("perimeter_depth", false)
     perimeterdepth.setDisplayName("Perimeter Depth")
     perimeterdepth.setDefaultValue(6)
     args << perimeterdepth

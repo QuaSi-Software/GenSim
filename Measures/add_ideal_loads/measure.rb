@@ -22,27 +22,27 @@ class AddIdealLoads < OpenStudio::Measure::ModelMeasure
   def arguments(model)
     args = OpenStudio::Measure::OSArgumentVector.new
 
-    wrg = OpenStudio::Ruleset::OSArgument::makeStringArgument("heat_recovery_method", true)
+    wrg = OpenStudio::Measure::OSArgument::makeStringArgument("heat_recovery_method", true)
     wrg.setDisplayName("Heat Recocovery Method")
     wrg.setDefaultValue("none")
     args << wrg
-    latent = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("latent_efficiency", true)
+    latent = OpenStudio::Measure::OSArgument::makeDoubleArgument("latent_efficiency", true)
     latent.setDisplayName("Latent efficiency")
     latent.setDefaultValue(0.65)
     args << latent
-    sensible = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("sensible_efficiency", true)
+    sensible = OpenStudio::Measure::OSArgument::makeDoubleArgument("sensible_efficiency", true)
     sensible.setDisplayName("sensible efficiency")
     sensible.setDefaultValue(0.7)
     args << sensible
-    ach = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("ach_per_hour", true)
+    ach = OpenStudio::Measure::OSArgument::makeDoubleArgument("ach_per_hour", true)
     ach.setDisplayName("Air changes per hours")
     ach.setDefaultValue(1)
     args << ach
-    nfa_gfa_ratio = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("nfa_gfa_ratio", true)
+    nfa_gfa_ratio = OpenStudio::Measure::OSArgument::makeDoubleArgument("nfa_gfa_ratio", true)
     nfa_gfa_ratio.setDisplayName("Ratio of NFA over GFA")
     nfa_gfa_ratio.setDefaultValue(1)
     args << nfa_gfa_ratio
-    floor_height_ratio = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("floor_height_ratio", true)
+    floor_height_ratio = OpenStudio::Measure::OSArgument::makeDoubleArgument("floor_height_ratio", true)
     floor_height_ratio.setDisplayName("Ratio of conditioned floor height over total floor height")
     floor_height_ratio.setDefaultValue(1)
     args << floor_height_ratio

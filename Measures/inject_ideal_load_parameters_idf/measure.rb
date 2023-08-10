@@ -24,11 +24,11 @@ class InjectIdealLoadParametersIDF < OpenStudio::Measure::EnergyPlusMeasure
     args << OpenStudio::Measure::OSArgument::makeDoubleArgument("sensible_efficiency", true)
     args << OpenStudio::Measure::OSArgument::makeDoubleArgument("latent_efficiency", true)
     args << OpenStudio::Measure::OSArgument::makeDoubleArgument("air_changes", true)
-    nfa_gfa_ratio = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("nfa_gfa_ratio", true)
+    nfa_gfa_ratio = OpenStudio::Measure::OSArgument::makeDoubleArgument("nfa_gfa_ratio", true)
     nfa_gfa_ratio.setDisplayName("Ratio of NFA over GFA")
     nfa_gfa_ratio.setDefaultValue(1)
     args << nfa_gfa_ratio
-    floor_height_ratio = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("floor_height_ratio", true)
+    floor_height_ratio = OpenStudio::Measure::OSArgument::makeDoubleArgument("floor_height_ratio", true)
     floor_height_ratio.setDisplayName("Ratio of conditioned floor height over total floor height")
     floor_height_ratio.setDefaultValue(1)
     args << floor_height_ratio

@@ -21,27 +21,27 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
   # define the arguments that the user will input
   def arguments(model)
     args = OpenStudio::Measure::OSArgumentVector.new
-    heat_recovery_method = OpenStudio::Ruleset::OSArgument::makeStringArgument("heat_recovery_method", true)
+    heat_recovery_method = OpenStudio::Measure::OSArgument::makeStringArgument("heat_recovery_method", true)
     heat_recovery_method.setDisplayName("Heat recovery method")
     heat_recovery_method.setDefaultValue("none")
     args << heat_recovery_method
-    latent_efficiency = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("latent_efficiency", true)
+    latent_efficiency = OpenStudio::Measure::OSArgument::makeDoubleArgument("latent_efficiency", true)
     latent_efficiency.setDisplayName("Latent efficiency")
     latent_efficiency.setDefaultValue(0.65)
     args << latent_efficiency
-    sensible_efficiency = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("sensible_efficiency", true)
+    sensible_efficiency = OpenStudio::Measure::OSArgument::makeDoubleArgument("sensible_efficiency", true)
     sensible_efficiency.setDisplayName("Sensible efficiency")
     sensible_efficiency.setDefaultValue(0.7)
     args << sensible_efficiency
-    ach_per_hour = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("ach_per_hour", true)
+    ach_per_hour = OpenStudio::Measure::OSArgument::makeDoubleArgument("ach_per_hour", true)
     ach_per_hour.setDisplayName("Air changes per hour")
     ach_per_hour.setDefaultValue(1)
     args << ach_per_hour
-    nfa_gfa_ratio = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("nfa_gfa_ratio", true)
+    nfa_gfa_ratio = OpenStudio::Measure::OSArgument::makeDoubleArgument("nfa_gfa_ratio", true)
     nfa_gfa_ratio.setDisplayName("Ratio of NFA over GFA")
     nfa_gfa_ratio.setDefaultValue(1)
     args << nfa_gfa_ratio
-    floor_height_ratio = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("floor_height_ratio", true)
+    floor_height_ratio = OpenStudio::Measure::OSArgument::makeDoubleArgument("floor_height_ratio", true)
     floor_height_ratio.setDisplayName("Ratio of conditioned floor height over total floor height")
     floor_height_ratio.setDefaultValue(1)
     args << floor_height_ratio
@@ -61,31 +61,31 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
     args << OpenStudio::Measure::OSArgument.makeStringArgument("zone_cooling_temp_sched_saturday", true)
     args << OpenStudio::Measure::OSArgument.makeStringArgument("zone_cooling_temp_sched_sunday", true)
     args << OpenStudio::Measure::OSArgument.makeStringArgument("zone_cooling_temp_sched_holiday", false)
-    hot_water_temp_setpoint = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("hot_water_temp_setpoint", true)
+    hot_water_temp_setpoint = OpenStudio::Measure::OSArgument::makeDoubleArgument("hot_water_temp_setpoint", true)
     hot_water_temp_setpoint.setDisplayName("Hot water temperature setpoint")
     hot_water_temp_setpoint.setDefaultValue(50)
     args << hot_water_temp_setpoint
-    hot_water_temp_diff = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("hot_water_temp_diff", true)
+    hot_water_temp_diff = OpenStudio::Measure::OSArgument::makeDoubleArgument("hot_water_temp_diff", true)
     hot_water_temp_diff.setDisplayName("Hot water temperature difference")
     hot_water_temp_diff.setDefaultValue(5)
     args << hot_water_temp_diff
-    cold_water_temp_setpoint = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("cold_water_temp_setpoint", true)
+    cold_water_temp_setpoint = OpenStudio::Measure::OSArgument::makeDoubleArgument("cold_water_temp_setpoint", true)
     cold_water_temp_setpoint.setDisplayName("Cold water temperature setpoint")
     cold_water_temp_setpoint.setDefaultValue(15)
     args << cold_water_temp_setpoint
-    cold_water_temp_diff = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("cold_water_temp_diff", true)
+    cold_water_temp_diff = OpenStudio::Measure::OSArgument::makeDoubleArgument("cold_water_temp_diff", true)
     cold_water_temp_diff.setDisplayName("Cold water temperature difference")
     cold_water_temp_diff.setDefaultValue(5)
     args << cold_water_temp_diff
-    supply_fan_pressure_rise = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("supply_fan_pressure_rise", true)
+    supply_fan_pressure_rise = OpenStudio::Measure::OSArgument::makeDoubleArgument("supply_fan_pressure_rise", true)
     supply_fan_pressure_rise.setDisplayName("Supply fan pressure rise")
     supply_fan_pressure_rise.setDefaultValue(250)
     args << supply_fan_pressure_rise
-    return_fan_pressure_rise = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("return_fan_pressure_rise", true)
+    return_fan_pressure_rise = OpenStudio::Measure::OSArgument::makeDoubleArgument("return_fan_pressure_rise", true)
     return_fan_pressure_rise.setDisplayName("Return fan pressure rise")
     return_fan_pressure_rise.setDefaultValue(250)
     args << return_fan_pressure_rise
-    system_type = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("system_type", true)
+    system_type = OpenStudio::Measure::OSArgument::makeDoubleArgument("system_type", true)
     system_type.setDisplayName("Type of ventilation system")
     system_type.setDefaultValue(1)
     args << system_type
