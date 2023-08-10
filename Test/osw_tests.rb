@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test/unit"
 require "json"
 
@@ -10,7 +12,7 @@ require "json"
 # @param raw (String) The string to prepare
 # @return (String) The prepared string
 def prepare_path(raw)
-  prepared = raw.gsub("\\", "/")
+  prepared = raw.tr("\\", "/")
   prepared = prepared.gsub("$GENSIM_PATH$/", File.join(__dir__, ".."))
   prepared = prepared.gsub("Test/..", "")
   return prepared
@@ -32,10 +34,10 @@ def check_measure(expected, exported)
   expected["arguments"].each do |key, value|
     assert(
       exported["arguments"].key?(key),
-      "Missing parameter key #{key} in measure #{expected["measure_dir_name"]}"
+      "Missing parameter key #{key} in measure #{expected['measure_dir_name']}"
     )
 
-    err_msg = "Value mismatch in measure #{expected["measure_dir_name"]}::#{key}"
+    err_msg = "Value mismatch in measure #{expected['measure_dir_name']}::#{key}"
     if key.include?("Path") || key.include?("path")
       assert_equal(prepare_path(value), prepare_path(exported["arguments"][key]), err_msg)
     else
@@ -46,7 +48,6 @@ end
 
 # Tests for the export of parameters to an OSW file
 class TestExportToOSW < Test::Unit::TestCase
-
   # check the export of default parameter valuess when nothing has been changed in the GUI
   def test_exported_defaults
     file_content = File.read("./expected/exported_defaults.osw")
@@ -75,7 +76,7 @@ class TestExportToOSW < Test::Unit::TestCase
     assert(exported.key?("steps"), "Missing key steps\n")
     expected["steps"].each_with_index do |element, index|
       if index >= exported["steps"].length
-        assert(false, ("Wanted to check measure at pos #{index} but could not find it\n"))
+        assert(false, "Wanted to check measure at pos #{index} but could not find it\n")
       else
         check_measure(element, exported["steps"][index])
       end

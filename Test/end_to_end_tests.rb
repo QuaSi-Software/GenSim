@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test/unit"
 require "json"
 
@@ -14,11 +16,11 @@ require "json"
 #   from given inputs
 def absolute_tolerance(str_tolerance, expected_value = 0.0)
   if str_tolerance[-1] == "%"
-    tolerance = str_tolerance[0..-2].to_f() * 0.01
+    tolerance = str_tolerance[0..-2].to_f * 0.01
     return (tolerance * expected_value).abs
   else
-    tolerance = str_tolerance.to_f()
-    return (tolerance).abs
+    tolerance = str_tolerance.to_f
+    return tolerance.abs
   end
 end
 
@@ -33,15 +35,12 @@ end
 # @return (Bool) True if the actual value is within the expected range
 def check_approximates(expected, actual, tolerance, message = nil, messages = nil)
   evaluated = (expected - tolerance <= actual) & (expected + tolerance >= actual)
-  if (!evaluated & !message.nil? & !messages.nil?)
-    messages.append(message)
-  end
+  messages.append(message) if !evaluated & !message.nil? & !messages.nil?
   return evaluated
 end
 
 # Tests on the file handling functionality and the KPI data file format.
 class TestKPIFile < Test::Unit::TestCase
-
   # Test if JSON files can be read. This test is fairly superfluous given that
   # the json module has its own tests, however can be useful to test if the
   # json module is installed as the test will fail if it is not.
@@ -50,7 +49,7 @@ class TestKPIFile < Test::Unit::TestCase
     kpis = JSON.parse(file_content)
     expected = {
       "foo" => "bar",
-      "bar" => "baz",
+      "bar" => "baz"
     }
     assert_equal expected, kpis
   end
@@ -65,7 +64,7 @@ class TestKPIFile < Test::Unit::TestCase
 
     assert_equal 56.2189371637002, kpis["KPIs"]["Heizbedarf"]["Value"]
     assert_equal "[kWh/m^2NRF*a]", kpis["KPIs"]["Nutzerstrom_Elektrische_Geraete"]["Unit"]
-    assert_equal 16611.5315739942, kpis["Profiles"]["Kuehlenergie"]["Sum_yearly"]
+    assert_equal 16_611.5315739942, kpis["Profiles"]["Kuehlenergie"]["Sum_yearly"]
     assert_equal 24.3153397310774, kpis["Profiles"]["Kuehlenergie"]["Sum_monthly"]["March"]
   end
 
@@ -147,7 +146,7 @@ def compare_monthly_sum(expected, run_results, str_tolerance, messages)
         "Month " + month + " does not match expectations\n",
         messages
       )
-      accumulator = accumulator & result
+      accumulator &= result
     end
   end
 
@@ -169,7 +168,7 @@ def compare_result_files(expected, run_results)
     assert(run_results["KPIs"].key?(name), "Missing KPI " + name + "\n")
 
     tolerance = absolute_tolerance(entries["Tolerance"], entries["Value"])
-    accumulator = accumulator & check_approximates(
+    accumulator &= check_approximates(
       entries["Value"],
       run_results["KPIs"][name]["Value"],
       tolerance,
@@ -193,7 +192,7 @@ def compare_result_files(expected, run_results)
     )
 
     tolerance = absolute_tolerance(entries["Tolerance"], entries["Sum_yearly"])
-    accumulator = accumulator & check_approximates(
+    accumulator &= check_approximates(
       entries["Sum_yearly"],
       run_results["Profiles"][profile_name]["Sum_yearly"],
       tolerance,
@@ -202,7 +201,7 @@ def compare_result_files(expected, run_results)
     )
 
     tolerance = absolute_tolerance(entries["Tolerance"], entries["Max_yearly"])
-    accumulator = accumulator & check_approximates(
+    accumulator &= check_approximates(
       entries["Max_yearly"],
       run_results["Profiles"][profile_name]["Max_yearly"],
       tolerance,
@@ -211,7 +210,7 @@ def compare_result_files(expected, run_results)
     )
 
     tolerance = absolute_tolerance(entries["Tolerance"], entries["Min_yearly"])
-    accumulator = accumulator & check_approximates(
+    accumulator &= check_approximates(
       entries["Min_yearly"],
       run_results["Profiles"][profile_name]["Min_yearly"],
       tolerance,
@@ -220,7 +219,7 @@ def compare_result_files(expected, run_results)
     )
 
     tolerance = absolute_tolerance(entries["Tolerance"], entries["Mean_yearly"])
-    accumulator = accumulator & check_approximates(
+    accumulator &= check_approximates(
       entries["Mean_yearly"],
       run_results["Profiles"][profile_name]["Mean_yearly"],
       tolerance,
@@ -234,7 +233,7 @@ def compare_result_files(expected, run_results)
       "Unit of profile" + profile_name + " does not match\n"
     )
 
-    accumulator = accumulator & compare_monthly_sum(
+    accumulator &= compare_monthly_sum(
       entries["Sum_monthly"],
       run_results["Profiles"][profile_name]["Sum_monthly"],
       entries["Tolerance"],
@@ -242,7 +241,7 @@ def compare_result_files(expected, run_results)
     )
   end
 
-  if !accumulator
+  unless accumulator
     messages.each do |message|
       print(message)
     end
@@ -255,37 +254,24 @@ end
 # running the tests they are only numbered in this code. Check the documentation
 # for details on each test.
 class TestEndToEnd < Test::Unit::TestCase
-
   # Test case 1: MFH Bestand saniert
   def test_case_01
-    run_results = JSON.parse(File.read(
-      "../Output/end2end/test_01.json"
-    ))
-    expected = JSON.parse(File.read(
-      "./expected/end2end/test_01.json"
-    ))
+    run_results = JSON.parse(File.read("../Output/end2end/test_01.json"))
+    expected = JSON.parse(File.read("./expected/end2end/test_01.json"))
     compare_result_files(expected, run_results)
   end
 
   # Test case 2: Büro EH55
   def test_case_02
-    run_results = JSON.parse(File.read(
-      "../Output/end2end/test_02.json"
-    ))
-    expected = JSON.parse(File.read(
-      "./expected/end2end/test_02.json"
-    ))
+    run_results = JSON.parse(File.read("../Output/end2end/test_02.json"))
+    expected = JSON.parse(File.read("./expected/end2end/test_02.json"))
     compare_result_files(expected, run_results)
   end
 
   # Test case 3: Schule EH55
   def test_case_03
-    run_results = JSON.parse(File.read(
-      "../Output/end2end/test_03.json"
-    ))
-    expected = JSON.parse(File.read(
-      "./expected/end2end/test_03.json"
-    ))
+    run_results = JSON.parse(File.read("../Output/end2end/test_03.json"))
+    expected = JSON.parse(File.read("./expected/end2end/test_03.json"))
     compare_result_files(expected, run_results)
   end
 end
