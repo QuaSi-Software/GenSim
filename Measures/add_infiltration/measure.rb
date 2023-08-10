@@ -23,19 +23,18 @@ class AddInfiltration < OpenStudio::Measure::ModelMeasure
     args = OpenStudio::Measure::OSArgumentVector.new
 
     #make an argument for infiltration
-    infiltration_ach = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("air_changes",true)
+    infiltration_ach = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("air_changes", true)
     infiltration_ach.setDisplayName("Space Infiltration Air Changes Per Hour (1/h).")
     infiltration_ach.setDefaultValue(0.1)
     args << infiltration_ach
-    nfa_gfa_ratio = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("nfa_gfa_ratio",true)
+    nfa_gfa_ratio = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("nfa_gfa_ratio", true)
     nfa_gfa_ratio.setDisplayName("Ratio of NFA over GFA")
     nfa_gfa_ratio.setDefaultValue(1)
     args << nfa_gfa_ratio
-    floor_height_ratio = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("floor_height_ratio",true)
+    floor_height_ratio = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("floor_height_ratio", true)
     floor_height_ratio.setDisplayName("Ratio of conditioned floor height over total floor height")
     floor_height_ratio.setDefaultValue(1)
     args << floor_height_ratio
-
 
     return args
   end
@@ -50,9 +49,9 @@ class AddInfiltration < OpenStudio::Measure::ModelMeasure
     end
 
     #assign the user inputs to variables
-    infiltration_ach = runner.getDoubleArgumentValue("air_changes",user_arguments)
-    nfa_gfa_ratio = runner.getDoubleArgumentValue("nfa_gfa_ratio",user_arguments)
-    floor_height_ratio = runner.getDoubleArgumentValue("floor_height_ratio",user_arguments)
+    infiltration_ach = runner.getDoubleArgumentValue("air_changes", user_arguments)
+    nfa_gfa_ratio = runner.getDoubleArgumentValue("nfa_gfa_ratio", user_arguments)
+    floor_height_ratio = runner.getDoubleArgumentValue("floor_height_ratio", user_arguments)
 
     # rescale air change rate to conditioned volume and GFA
     infiltration_ach = infiltration_ach * nfa_gfa_ratio * floor_height_ratio
@@ -61,12 +60,12 @@ class AddInfiltration < OpenStudio::Measure::ModelMeasure
     if infiltration_ach < 0
       runner.registerError("The requested space infiltration Air Changes Per Hour #{infiltration_ach} 1/h was below the measure limit. Choose a positive number.")
       return false
-    elsif infiltration_ach > 10.0 
+    elsif infiltration_ach > 10.0
       runner.registerWarning("The requested space infiltration Air Changes Per Hour  #{infiltration_ach} 1/h seems abnormally high.")
     end
-	
-	constSchedule = CreateConstSchedule(model, "AlwaysOnInfitration", 1)
-		 
+
+    constSchedule = CreateConstSchedule(model, "AlwaysOnInfitration", 1)
+
     #loop through spaces used in the model adding space infiltration objects
     spaces = model.getSpaces
     spaces.each do |space|
@@ -74,7 +73,7 @@ class AddInfiltration < OpenStudio::Measure::ModelMeasure
         new_space_type_infil = OpenStudio::Model::SpaceInfiltrationDesignFlowRate.new(model)
         new_space_type_infil.setAirChangesperHour(infiltration_ach)
         new_space_type_infil.setSpace(space)
-		new_space_type_infil.setSchedule(constSchedule)
+        new_space_type_infil.setSchedule(constSchedule)
       end
     end # end .each do
 
@@ -82,9 +81,7 @@ class AddInfiltration < OpenStudio::Measure::ModelMeasure
     runner.registerFinalCondition("Infiltration added to #{model.getSpaces.size} spaces.")
 
     return true
-
   end
-
 end
 
 # register the measure to be used by the application

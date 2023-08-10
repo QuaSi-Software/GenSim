@@ -1,4 +1,4 @@
-require 'openstudio_measure_tester'
+require "openstudio_measure_tester"
 measures_dir = Dir.pwd
 # all measures (recursively) from measures_dir will be tested
 

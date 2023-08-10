@@ -24,8 +24,8 @@ class SaveModel < OpenStudio::Measure::ModelMeasure
     space_name = OpenStudio::Measure::OSArgument.makeStringArgument("output_path", true)
     space_name.setDisplayName("Path to Save")
     args << space_name
-	
-	# the name of the space to add to the model
+
+    # the name of the space to add to the model
     file_name = OpenStudio::Measure::OSArgument.makeStringArgument("file_name", true)
     file_name.setDisplayName("File Name")
     args << file_name
@@ -44,16 +44,16 @@ class SaveModel < OpenStudio::Measure::ModelMeasure
 
     # assign the user inputs to variables
     pathtosave = runner.getStringArgumentValue("output_path", user_arguments)
-	file_name = runner.getStringArgumentValue("file_name", user_arguments)
+    file_name = runner.getStringArgumentValue("file_name", user_arguments)
 
     # report initial condition of model
     runner.registerInitialCondition("Starting to save OSM")
-  
-	runner.registerInfo("Saving the osm file in the following output dir\n " + pathtosave); 
-        
+
+    runner.registerInfo("Saving the osm file in the following output dir\n " + pathtosave)
+
     FileUtils.mkdir pathtosave unless Dir.exist? pathtosave
     model.save("#{pathtosave}/#{file_name}.osm", true)
-    
+
     # report final condition of model
     runner.registerFinalCondition("OSM file saved successfully to: #{pathtosave}/#{file_name}.osm")
 

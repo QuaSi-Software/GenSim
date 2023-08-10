@@ -2,7 +2,7 @@
 # OpenStudio(R), Copyright (c) 2008-2020, Alliance for Sustainable Energy, LLC.
 # With modifications by: Matthias Stickel
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -57,8 +57,8 @@ class AddLightingControls < OpenStudio::Measure::ModelMeasure
   def arguments(model)
     args = OpenStudio::Measure::OSArgumentVector.new
 
-     #make an argument for setpoint
-    setpoint = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("daylighting_setpoint",true)
+    #make an argument for setpoint
+    setpoint = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("daylighting_setpoint", true)
     setpoint.setDisplayName("Daylighting Setpoint (lux)")
     setpoint.setDefaultValue(500)
     args << setpoint
@@ -76,34 +76,34 @@ class AddLightingControls < OpenStudio::Measure::ModelMeasure
     end
 
     # ===== assign the user inputs to variables
-    setpoint = runner.getDoubleArgumentValue("daylighting_setpoint",user_arguments)
+    setpoint = runner.getDoubleArgumentValue("daylighting_setpoint", user_arguments)
 
     # ===== check the setpoint for reasonableness
-    if setpoint < 0 or setpoint > 9999 
+    if setpoint < 0 or setpoint > 9999
       runner.registerError("A setpoint of #{setpoint} lux is outside the measure limit.")
       return false
     elsif setpoint > 2000
-      runner.registerWarning("A setpoint of #{setpoint} lux is abnormally high.") 
+      runner.registerWarning("A setpoint of #{setpoint} lux is abnormally high.")
     end
 
-	  # ===== variables for logging    
+    # ===== variables for logging
     area = 0 #variable to tally the area to which the overall measure is applied
-    sensor_count = 0 #variable to aggregate the number of sensors installed 
+    sensor_count = 0 #variable to aggregate the number of sensors installed
     sensor_area = 0 #variable to aggregate the area affected of new sensors
-	
+
     affected_zones = []
     affected_zone_names = []
     #hash to hold sensor objects
     new_sensor_objects = {}
 
     # ===== reporting initial condition of model
-	  spaces = model.getSpaces
+    spaces = model.getSpaces
     runner.registerInitialCondition("#{spaces.size} spaces without lighting control")
 
     # ===== loop through all spaces and add a daylighting sensor with dimming to each
-    spaces.each do |space|	
+    spaces.each do |space|
       area += space.floorArea
-	  #-----
+      #-----
       #ELIMINATE spaces that don't have exterior natural lighting
       has_ext_nat_light = false
       space.surfaces.each do |surface|
@@ -116,7 +116,7 @@ class AddLightingControls < OpenStudio::Measure::ModelMeasure
       end
       if has_ext_nat_light == false
         runner.registerWarning("Space '#{space.name}' has no exterior natural lighting. No sensor will be added.")
-       next
+        next
       end
       #FIND floors
       floors = []
@@ -144,36 +144,35 @@ class AddLightingControls < OpenStudio::Measure::ModelMeasure
       sensor.setPosition(new_point)
       sensor.setIlluminanceSetpoint(setpoint)
       sensor.setLightingControlType("Stepped")
-	  sensor.setNumberofSteppedControlSteps(1)
+      sensor.setNumberofSteppedControlSteps(1)
       sensor.setSpace(space)
-      puts sensor 
-	  
-	  #-----
-	  #PUSH unique zones to array for use later in measure
+      puts sensor
+
+      #-----
+      #PUSH unique zones to array for use later in measure
       temp_zone = space.thermalZone.get
       if affected_zone_names.include?(temp_zone.name.to_s) == false
         affected_zones << temp_zone
         affected_zone_names << temp_zone.name.to_s
       end
 
-	  #PUSH sensor object into hash with space name
-      new_sensor_objects[space.name.to_s] = sensor	  
+      #PUSH sensor object into hash with space name
+      new_sensor_objects[space.name.to_s] = sensor
 
       #ADD floor area to the daylighting area tally
       sensor_area += space.floorArea
       #ADD to sensor count for reporting
       sensor_count += 1
-
     end #end spaces.each do
-	
-    if sensor_count == 0 
+
+    if sensor_count == 0
       runner.registerAsNotApplicable("No spaces became new lighting sensors.")
       return true
-    end  
-	
-	##########
-	#loop through THERMAL ZONES for spaces with daylighting controls added
-	
+    end
+
+    ##########
+    #loop through THERMAL ZONES for spaces with daylighting controls added
+
     affected_zones.each do |zone|
       zone_spaces = zone.spaces
       zone_spaces_with_new_sensors = []
@@ -204,35 +203,32 @@ class AddLightingControls < OpenStudio::Measure::ModelMeasure
             #setup flag to warn user that more than 2 sensors can't be added to a space
             three_or_more_sensors = true
           end
-
         end
 
         if primary_space
           #setup primary sensor
           sensor_primary = new_sensor_objects[primary_space.name.to_s]
           zone.setPrimaryDaylightingControl(sensor_primary)
-          zone.setFractionofZoneControlledbyPrimaryDaylightingControl(primary_area/(primary_area + secondary_area))
+          zone.setFractionofZoneControlledbyPrimaryDaylightingControl(primary_area / (primary_area + secondary_area))
         end
 
         if secondary_space
           #setup secondary sensor
           sensor_secondary = new_sensor_objects[secondary_space.name.to_s]
           zone.setSecondaryDaylightingControl(sensor_secondary)
-          zone.setFractionofZoneControlledbySecondaryDaylightingControl(secondary_area/(primary_area + secondary_area))
+          zone.setFractionofZoneControlledbySecondaryDaylightingControl(secondary_area / (primary_area + secondary_area))
         end
 
         #warn that additional sensors were not used
         if three_or_more_sensors == true
           runner.registerWarning("Thermal zone '#{zone.name}' had more than two spaces with sensors. Only two sensors were associated with the thermal zone.")
         end
-
       end #end if not zone_spaces.empty?
-
     end #end affected_zones.each do
-	
-	  runner.registerInfo("#{area} square meters total area to which the overall daylighting control measure is applied")
-	  runner.registerFinalCondition("#{sensor_count} sensors added on a total effected sensor area of #{sensor_area} square meters")
-	  return true
+
+    runner.registerInfo("#{area} square meters total area to which the overall daylighting control measure is applied")
+    runner.registerFinalCondition("#{sensor_count} sensors added on a total effected sensor area of #{sensor_area} square meters")
+    return true
   end
 end
 

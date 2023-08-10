@@ -1,4 +1,4 @@
-require_relative '../NewHelper.rb'
+require_relative "../NewHelper.rb"
 
 # start the measure
 class AddTemperatureSetpoints < OpenStudio::Measure::ModelMeasure
@@ -63,7 +63,6 @@ class AddTemperatureSetpoints < OpenStudio::Measure::ModelMeasure
     total_cost = 0
     if zoneHeatingTempSched or zoneCoolingTempSched
       model.getThermalZones.each do |zone|
-
         thermostatSetpointDualSetpoint = zone.thermostatSetpointDualSetpoint
         if thermostatSetpointDualSetpoint.empty?
           runner.registerInfo("Creating thermostat for thermal zone '#{zone.name}'.")
@@ -72,12 +71,12 @@ class AddTemperatureSetpoints < OpenStudio::Measure::ModelMeasure
           zone.setThermostatSetpointDualSetpoint(thermostatSetpointDualSetpoint)
         else
           thermostatSetpointDualSetpoint = thermostatSetpointDualSetpoint.get
-          
+
           # make sure this thermostat is unique to this zone
           if thermostatSetpointDualSetpoint.getSources("OS_ThermalZone".to_IddObjectType).size > 1
             # if not create a new copy
             runner.registerInfo("Copying thermostat for thermal zone '#{zone.name}'.")
-            
+
             oldThermostat = thermostatSetpointDualSetpoint
             thermostatSetpointDualSetpoint = OpenStudio::Model::ThermostatSetpointDualSetpoint.new(model)
             if not oldThermostat.heatingSetpointTemperatureSchedule.empty?
@@ -89,31 +88,31 @@ class AddTemperatureSetpoints < OpenStudio::Measure::ModelMeasure
             zone.setThermostatSetpointDualSetpoint(thermostatSetpointDualSetpoint)
           end
         end
-        
+
         if zoneHeatingTempSched
           if not thermostatSetpointDualSetpoint.setHeatingSetpointTemperatureSchedule(zoneHeatingTempSched)
             runner.registerError("Script Error - cannot set heating schedule for thermal zone '#{zone.name}'.")
             return false
           end
         end
-        
+
         if zoneCoolingTempSched
           if not thermostatSetpointDualSetpoint.setCoolingSetpointTemperatureSchedule(zoneCoolingTempSched)
             runner.registerError("Script Error - cannot set cooling schedule for thermal zone '#{zone.name}'.")
             return false
           end
         end
-        
+
         number_zones_modified += 1
       end
     end
-    
-    runner.registerFinalCondition("Replaced thermostats for #{number_zones_modified} thermal zones")                   
+
+    runner.registerFinalCondition("Replaced thermostats for #{number_zones_modified} thermal zones")
 
     if number_zones_modified == 0
       runner.registerAsNotApplicable("No thermostats altered")
     end
-    
+
     return true
   end
 end

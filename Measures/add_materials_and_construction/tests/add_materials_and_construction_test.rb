@@ -1,9 +1,9 @@
-require 'openstudio'
-require 'openstudio/measure/ShowRunnerOutput'
-require 'minitest/autorun'
-require_relative '../measure.rb'
-require_relative '../../TestHelper.rb'
-require 'fileutils'
+require "openstudio"
+require "openstudio/measure/ShowRunnerOutput"
+require "minitest/autorun"
+require_relative "../measure.rb"
+require_relative "../../TestHelper.rb"
+require "fileutils"
 
 class AddMaterialsAndConstructionTest < MiniTest::Unit::TestCase
 
@@ -38,7 +38,7 @@ class AddMaterialsAndConstructionTest < MiniTest::Unit::TestCase
     # create hash of argument values.
     # If the argument has a default that you want to use, you don't need it in the hash
     args_hash = {}
-    ["external_wall_", "roof_",  "base_plate_", "inner_masses_", "interior_slab_", "chilled_ceiling_"].each do |s|
+    ["external_wall_", "roof_", "base_plate_", "inner_masses_", "interior_slab_", "chilled_ceiling_"].each do |s|
       if s == "chilled_ceiling_"
         args_hash[s + "source_layer"] = 1
         args_hash[s + "temp_calc_layer"] = 2
@@ -53,7 +53,7 @@ class AddMaterialsAndConstructionTest < MiniTest::Unit::TestCase
         args_hash[s + i.to_s + "_heat_capacity"] = 4.0
       end
     end
-		
+
     s = "windows_"
     args_hash[s + "name"] = s + "name"
     args_hash[s + "u_value"] = 2
@@ -84,5 +84,4 @@ class AddMaterialsAndConstructionTest < MiniTest::Unit::TestCase
 
     SaveModel(model, dir)
   end
-
 end

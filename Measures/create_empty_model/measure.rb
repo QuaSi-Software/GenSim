@@ -31,11 +31,11 @@ class CreateEmptyModel < OpenStudio::Measure::ModelMeasure
   def run(model, runner, user_arguments)
     super(model, runner, user_arguments)
 
-	# use the built-in error checking
+    # use the built-in error checking
     if !runner.validateUserArguments(arguments(model), user_arguments)
       return false
     end
-	
+
     model = OpenStudio::Model::Model.new
 
     # report final condition of model

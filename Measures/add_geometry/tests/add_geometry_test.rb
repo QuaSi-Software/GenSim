@@ -1,12 +1,11 @@
-require 'openstudio'
-require 'openstudio/ruleset/ShowRunnerOutput'
+require "openstudio"
+require "openstudio/ruleset/ShowRunnerOutput"
 
-require_relative '../measure.rb'
-require_relative '../../TestHelper.rb'
-require 'minitest/autorun'
+require_relative "../measure.rb"
+require_relative "../../TestHelper.rb"
+require "minitest/autorun"
 
 class AddGeometryTest < MiniTest::Test
-
   def test_number_of_arguments_and_argument_names
     # get arguments with a new instance of the measure
     arguments = GetArguments(AddGeometry.new, OpenStudio::Model::Model.new)
@@ -18,12 +17,12 @@ class AddGeometryTest < MiniTest::Test
   def test_bad_argument_values
     # create hash of argument values, no arguments defined so there are no bad arguments
     args_hash = {}
-        
+
     result = TestArguments(AddGeometry.new, OpenStudio::Model::Model.new, args_hash)
 
     # assert that it ran correctly
     assert_equal("Fail", result.value.valueName)
-end
+  end
 
   def test_good_argument_values
     # create hash of argument values
@@ -48,6 +47,6 @@ end
   end
 
   def teardown
-      # nothing to do here for such a simple measure
+    # nothing to do here for such a simple measure
   end
 end
