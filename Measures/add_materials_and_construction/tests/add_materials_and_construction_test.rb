@@ -7,7 +7,7 @@ require_relative "../measure.rb"
 require_relative "../../TestHelper.rb"
 require "fileutils"
 
-class AddMaterialsAndConstructionTest < MiniTest::Unit::TestCase
+class AddMaterialsAndConstructionTest < MiniTest::Test
   # def setup
   # end
 
