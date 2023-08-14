@@ -60,7 +60,8 @@ class AddLightingControls < OpenStudio::Measure::ModelMeasure
 
     # make an argument for setpoint
     setpoint = OpenStudio::Measure::OSArgument.makeDoubleArgument("daylighting_setpoint", true)
-    setpoint.setDisplayName("Daylighting Setpoint (lux)")
+    setpoint.setDisplayName("Daylighting Setpoint")
+    setpoint.setUnits("lux")
     setpoint.setDefaultValue(500)
     args << setpoint
 
