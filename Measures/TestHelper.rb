@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # function to get arguments of a measure
 def GetArguments(measure, model)
   # get arguments and return
@@ -16,9 +18,7 @@ def GetArgumentMap(arguments, args_hash)
   # populate argument with specified hash value if specified
   arguments.each do |arg|
     temp_arg_var = arg.clone
-    if args_hash[arg.name]
-      assert(temp_arg_var.setValue(args_hash[arg.name]))
-    end
+    assert(temp_arg_var.setValue(args_hash[arg.name])) if args_hash[arg.name]
     argument_map[arg.name] = temp_arg_var
   end
   return argument_map
@@ -93,7 +93,7 @@ def OpenModel(dir)
   puts(path)
   print path
   model = translator.loadModel(path)
-  assert((not model.empty?))
+  assert(!model.empty?)
   return model.get
 end
 
@@ -102,6 +102,6 @@ def OpenIDFModel(dir)
   puts "IDF Path to load"
   puts(path)
   workspace = OpenStudio::Workspace.load(path)
-  assert((not workspace.empty?))
+  assert(!workspace.empty?)
   return workspace.get
 end
