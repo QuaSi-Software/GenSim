@@ -7,14 +7,14 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
     return "SetWeatherAxisTimestep"
   end
 
-  # human readable description
+  # general description of measure
   def description
-    return ""
+    return "Set axis of building and time step of simulation."
   end
 
-  # human readable description of modeling approach
+  # description for users of what the measure does and how it works
   def modeler_description
-    return ""
+    return "Set axis of building and time step of simulation."
   end
 
   # define the arguments that the user will input

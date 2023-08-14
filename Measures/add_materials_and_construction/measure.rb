@@ -37,12 +37,12 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
     return "AddMaterialsAndConstruction"
   end
 
-  # human readable description
+  # general description of measure
   def description
     return "Inject materials and constructions into the model"
   end
 
-  # human readable description of modeling approach
+  # description for users of what the measure does and how it works
   def modeler_description
     return "Inject materials and constructions into the model"
   end

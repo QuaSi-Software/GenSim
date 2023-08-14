@@ -11,14 +11,14 @@ class DetectExternalZones < OpenStudio::Measure::ModelMeasure
     return "DetectExternalZones"
   end
 
-  # human readable description
+  # general description of measure
   def description
-    return ""
+    return "Detect external zones."
   end
 
-  # human readable description of modeling approach
+  # description for users of what the measure does and how it works
   def modeler_description
-    return ""
+    return "Detect external zones."
   end
 
   # define the arguments that the user will input

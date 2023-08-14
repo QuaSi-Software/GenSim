@@ -51,6 +51,16 @@ class AddGeometry < OpenStudio::Ruleset::ModelUserScript
     return "AddGeometry"
   end
 
+  # general description of measure
+  def description
+    return "Add geometry from simple inputs."
+  end
+
+  # description for users of what the measure does and how it works
+  def modeler_description
+    return "Add geometry from simple inputs."
+  end
+
   # define the arguments that the user will input
   def arguments(_model)
     args = OpenStudio::Measure::OSArgumentVector.new

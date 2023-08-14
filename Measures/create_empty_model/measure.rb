@@ -11,12 +11,12 @@ class CreateEmptyModel < OpenStudio::Measure::ModelMeasure
     return "CreateEmptyModel"
   end
 
-  # human readable description
+  # general description of measure
   def description
     return "This just creates an empty model"
   end
 
-  # human readable description of modeling approach
+  # description for users of what the measure does and how it works
   def modeler_description
     return "This just creates an empty model"
   end

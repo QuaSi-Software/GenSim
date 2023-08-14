@@ -11,12 +11,12 @@ class CustomExportParams < OpenStudio::Measure::ModelMeasure
     return "CustomExportParams"
   end
 
-  # human readable description
+  # general description of measure
   def description
     return "A dummy measure to contain custom parameters"
   end
 
-  # human readable description of modeling approach
+  # description for users of what the measure does and how it works
   def modeler_description
     return "A dummy measure to contain custom parameters"
   end

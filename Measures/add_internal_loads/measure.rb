@@ -9,14 +9,14 @@ class AddInternalLoads < OpenStudio::Measure::ModelMeasure
     return "AddInternalLoads"
   end
 
-  # human readable description
+  # general description of measure
   def description
-    return ""
+    return "Add internal loads."
   end
 
-  # human readable description of modeling approach
+  # description for users of what the measure does and how it works
   def modeler_description
-    return ""
+    return "Add internal loads."
   end
 
   # define the arguments that the user will input

@@ -7,14 +7,14 @@ class SaveModel < OpenStudio::Measure::ModelMeasure
     return "SaveModel"
   end
 
-  # human readable description
+  # general description of measure
   def description
-    return "Just saving the model to an OSM file"
+    return "Saves the model as an OSM file."
   end
 
-  # human readable description of modeling approach
+  # description for users of what the measure does and how it works
   def modeler_description
-    return ""
+    return "Saves the model as an OSM file."
   end
 
   # define the arguments that the user will input

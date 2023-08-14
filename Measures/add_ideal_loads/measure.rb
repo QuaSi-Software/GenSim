@@ -9,15 +9,16 @@ class AddIdealLoads < OpenStudio::Measure::ModelMeasure
     return "AddIdealLoads"
   end
 
-  # human readable description
+  # general description of measure
   def description
-    return ""
+    return "Add ideal loads."
   end
 
-  # human readable description of modeling approach
+  # description for users of what the measure does and how it works
   def modeler_description
-    return ""
+    return "Add ideal loads."
   end
+
 
   # define the arguments that the user will input
   def arguments(_model)

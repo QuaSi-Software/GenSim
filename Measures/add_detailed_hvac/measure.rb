@@ -10,14 +10,14 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
     return "AddDetailedHVAC"
   end
 
-  # human readable description
+  # general description of measure
   def description
     return "This measure adds a DOAS air loop and a radiant ceiling heating and cooling component that connects to a hot and chilled water loop with district heating and cooling."
   end
 
-  # human readable description of modeling approach
+  # description for users of what the measure does and how it works
   def modeler_description
-    return ""
+    return "Add geometry from simple inputs."
   end
 
   # define the arguments that the user will input

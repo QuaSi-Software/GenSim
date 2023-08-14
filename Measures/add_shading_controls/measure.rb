@@ -7,14 +7,14 @@ class AddShadingControls < OpenStudio::Measure::ModelMeasure
     return "AddShadingControls"
   end
 
-  # human readable description
+  # general description of measure
   def description
-    return ""
+    return "Add shading controls."
   end
 
-  # human readable description of modeling approach
+  # description for users of what the measure does and how it works
   def modeler_description
-    return ""
+    return "Add shading controls."
   end
 
   # define the arguments that the user will input

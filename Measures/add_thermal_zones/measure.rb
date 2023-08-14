@@ -7,14 +7,14 @@ class AddThermalZones < OpenStudio::Measure::ModelMeasure
     return "AddThermalZones"
   end
 
-  # human readable description
+  # general description of measure
   def description
-    return ""
+    return "Add thermal zones."
   end
 
-  # human readable description of modeling approach
+  # description for users of what the measure does and how it works
   def modeler_description
-    return ""
+    return "Add thermal zones."
   end
 
   # define the arguments that the user will input
