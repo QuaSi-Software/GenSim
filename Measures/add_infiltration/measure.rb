@@ -25,7 +25,8 @@ class AddInfiltration < OpenStudio::Measure::ModelMeasure
 
     # make an argument for infiltration
     infiltration_ach = OpenStudio::Measure::OSArgument.makeDoubleArgument("air_changes", true)
-    infiltration_ach.setDisplayName("Space Infiltration Air Changes Per Hour (1/h).")
+    infiltration_ach.setDisplayName("Space Infiltration Air Changes")
+    infiltration_ach.setUnits("1/h")
     infiltration_ach.setDefaultValue(0.1)
     args << infiltration_ach
     nfa_gfa_ratio = OpenStudio::Measure::OSArgument.makeDoubleArgument("nfa_gfa_ratio", true)

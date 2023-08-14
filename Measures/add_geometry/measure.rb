@@ -85,7 +85,7 @@ class AddGeometry < OpenStudio::Measure::ModelMeasure
 
     # make an argument for number of floors
     number_of_stories = OpenStudio::Measure::OSArgument.makeIntegerArgument("number_of_stories", true)
-    number_of_stories.setDisplayName("Number of Floors.")
+    number_of_stories.setDisplayName("Number of Floors")
     number_of_stories.setDefaultValue(2)
     args << number_of_stories
 
@@ -98,13 +98,13 @@ class AddGeometry < OpenStudio::Measure::ModelMeasure
 
     # make an argument to surface match
     surface_matching = OpenStudio::Measure::OSArgument.makeBoolArgument("surface_matching", true)
-    surface_matching.setDisplayName("Surface Matching?")
+    surface_matching.setDisplayName("Surface Matching")
     surface_matching.setDefaultValue(true)
     args << surface_matching
 
     # make an argument to create zones from spaces
     make_zones = OpenStudio::Measure::OSArgument.makeBoolArgument("make_zones", true)
-    make_zones.setDisplayName("Make Thermal Zones from Spaces?")
+    make_zones.setDisplayName("Make Thermal Zones from Spaces")
     make_zones.setDefaultValue(true)
     args << make_zones
 
@@ -134,37 +134,37 @@ class AddGeometry < OpenStudio::Measure::ModelMeasure
 
     # make an argument to create zones from spaces
     adiabaticN = OpenStudio::Measure::OSArgument.makeBoolArgument("adiabatic_north", false)
-    adiabaticN.setDisplayName("Adiabatic north facade?")
+    adiabaticN.setDisplayName("Adiabatic north facade")
     adiabaticN.setDefaultValue(false)
     args << adiabaticN
 
     # make an argument to create zones from spaces
     adiabaticE = OpenStudio::Measure::OSArgument.makeBoolArgument("adiabatic_east", false)
-    adiabaticE.setDisplayName("Adiabatic east facade?")
+    adiabaticE.setDisplayName("Adiabatic east facade")
     adiabaticE.setDefaultValue(false)
     args << adiabaticE
 
     # make an argument to create zones from spaces
     adiabaticS = OpenStudio::Measure::OSArgument.makeBoolArgument("adiabatic_south", false)
-    adiabaticS.setDisplayName("Adiabatic south facade?")
+    adiabaticS.setDisplayName("Adiabatic south facade")
     adiabaticS.setDefaultValue(false)
     args << adiabaticS
 
     # make an argument to create zones from spaces
     adiabaticW = OpenStudio::Measure::OSArgument.makeBoolArgument("adiabatic_west", false)
-    adiabaticW.setDisplayName("Adiabatic west facade?")
+    adiabaticW.setDisplayName("Adiabatic west facade")
     adiabaticW.setDefaultValue(false)
     args << adiabaticW
 
     # make an argument to create zones from spaces
     adiabaticR = OpenStudio::Measure::OSArgument.makeBoolArgument("adiabatic_roof", false)
-    adiabaticR.setDisplayName("Adiabatic roof?")
+    adiabaticR.setDisplayName("Adiabatic roof")
     adiabaticR.setDefaultValue(false)
     args << adiabaticR
 
     # make an argument to create zones from spaces
     adiabaticF = OpenStudio::Measure::OSArgument.makeBoolArgument("adiabatic_floor", false)
-    adiabaticF.setDisplayName("Adiabatic floor?")
+    adiabaticF.setDisplayName("Adiabatic floor")
     adiabaticF.setDefaultValue(false)
     args << adiabaticF
 
