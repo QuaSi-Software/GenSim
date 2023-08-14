@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # author: Tobias Maile <tobias@maileconsulting.de>
 ########################################################
 # This is the test for the measure "AddingShadingControls"
@@ -32,7 +34,7 @@ class AddShadingControlsTest < MiniTest::Test
     args_hash = {}
 
     # load an existing model
-    dir = File.expand_path(File.dirname(__FILE__))
+    dir = __dir__
     model = OpenModel(dir)
     result = TestArguments(AddShadingControls.new, model, args_hash)
 
@@ -42,11 +44,11 @@ class AddShadingControlsTest < MiniTest::Test
     # assert that it ran correctly
     assert_equal("Success", result.value.valueName)
     assert(result.info.size == 8)
-    assert(result.warnings.size == 0)
-    assert(result.errors.size == 0)
-    assert(result.initialCondition.is_initialized())
-    assert(result.finalCondition.is_initialized())
-    assert_equal("8 shading controls added to windows in total", result.finalCondition.get().logMessage())
+    assert(result.warnings.empty?)
+    assert(result.errors.empty?)
+    assert(result.initialCondition.is_initialized)
+    assert(result.finalCondition.is_initialized)
+    assert_equal("8 shading controls added to windows in total", result.finalCondition.get.logMessage)
     # save the model to test output directory
     SaveModel(model, dir)
   end

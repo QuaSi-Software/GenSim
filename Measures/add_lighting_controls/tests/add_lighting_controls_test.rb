@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # author: Tobias Maile <tobias@maileconsulting.de>
 ########################################################
 # This is the test for the measure "AddingLightingControls"
@@ -36,7 +38,7 @@ class AddLightingControlsTest < MiniTest::Test
     args_hash["daylighting_setpoint"] = 500
 
     # load an existing model
-    dir = File.expand_path(File.dirname(__FILE__))
+    dir = __dir__
     model = OpenModel(dir)
     result = TestArguments(AddLightingControls.new, model, args_hash)
 
@@ -46,11 +48,11 @@ class AddLightingControlsTest < MiniTest::Test
     # assert that it ran correctly
     assert_equal("Success", result.value.valueName)
     assert(result.info.size == 1)
-    assert(result.warnings.size == 0)
-    assert(result.errors.size == 0)
-    assert(result.initialCondition.is_initialized())
-    assert(result.finalCondition.is_initialized())
-    assert_equal("4 sensors added on a total effected sensor area of 37.161216 square meters", result.finalCondition.get().logMessage())
+    assert(result.warnings.empty?)
+    assert(result.errors.empty?)
+    assert(result.initialCondition.is_initialized)
+    assert(result.finalCondition.is_initialized)
+    assert_equal("4 sensors added on a total effected sensor area of 37.161216 square meters", result.finalCondition.get.logMessage)
     # save the model to test output directory
     SaveModel(model, dir)
   end

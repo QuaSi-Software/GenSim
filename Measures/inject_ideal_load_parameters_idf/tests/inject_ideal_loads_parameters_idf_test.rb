@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # author: Tobias Maile <tobias@maileconsulting.de>
 ########################################################
 # This is the test for the measure "CreateAnEmptyModel"
@@ -41,18 +43,18 @@ class InjectIdealLoadParametersIDFTest < MiniTest::Test
     args_hash["floor_height_ratio"] = "0.8"
 
     # load an existing model
-    dir = File.expand_path(File.dirname(__FILE__))
+    dir = __dir__
     workspace = OpenIDFModel(dir)
     result = TestArguments(InjectIdealLoadParametersIDF.new, workspace, args_hash)
 
     # assert that it ran correctly
     assert_equal("Success", result.value.valueName)
-    assert(result.info.size == 0)
-    assert(result.warnings.size == 0)
-    assert(result.errors.size == 0)
-    assert(result.initialCondition.is_initialized())
-    assert(result.finalCondition.is_initialized())
-    assert_equal("The building finished with 0 IdealLoads objects.", result.finalCondition.get().logMessage())
+    assert(result.info.empty?)
+    assert(result.warnings.empty?)
+    assert(result.errors.empty?)
+    assert(result.initialCondition.is_initialized)
+    assert(result.finalCondition.is_initialized)
+    assert_equal("The building finished with 0 IdealLoads objects.", result.finalCondition.get.logMessage)
     # save the model to test output directory
     SaveIDFModel(workspace, dir)
   end

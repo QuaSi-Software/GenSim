@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "openstudio"
 require "openstudio/ruleset/ShowRunnerOutput"
 
@@ -35,13 +37,13 @@ class AddGeometryTest < MiniTest::Test
 
     # assert that it ran correctly
     assert_equal("Success", result.value.valueName)
-    assert(result.info.size == 0)
+    assert(result.info.empty?)
     assert(result.warnings.size == 1)
-    assert(result.errors.size == 0)
-    refute(result.initialCondition.is_initialized())
-    assert(result.finalCondition.is_initialized())
-    print(result.finalCondition.get().logMessage())
-    assert_equal("The building finished with 2 spaces.", result.finalCondition.get().logMessage())
+    assert(result.errors.empty?)
+    refute(result.initialCondition.is_initialized)
+    assert(result.finalCondition.is_initialized)
+    print(result.finalCondition.get.logMessage)
+    assert_equal("The building finished with 2 spaces.", result.finalCondition.get.logMessage)
 
     SaveModel(model, File.dirname(__FILE__) + "/output/test_output.osm")
   end

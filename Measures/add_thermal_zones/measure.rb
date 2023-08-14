@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 # start the measure
 class AddThermalZones < OpenStudio::Measure::ModelMeasure
-
   # human readable name
   def name
     return "AddThermalZones"
@@ -17,7 +18,7 @@ class AddThermalZones < OpenStudio::Measure::ModelMeasure
   end
 
   # define the arguments that the user will input
-  def arguments(model)
+  def arguments(_model)
     args = OpenStudio::Measure::OSArgumentVector.new
     return args
   end
@@ -27,9 +28,7 @@ class AddThermalZones < OpenStudio::Measure::ModelMeasure
     super(model, runner, user_arguments)
 
     # use the built-in error checking
-    if !runner.validateUserArguments(arguments(model), user_arguments)
-      return false
-    end
+    return false unless runner.validateUserArguments(arguments(model), user_arguments)
 
     # ===== reporting initial condition of model
     spaces = model.getSpaces
@@ -38,13 +37,12 @@ class AddThermalZones < OpenStudio::Measure::ModelMeasure
 
     # loop through spaces
     spaces.each do |space|
-      if space.thermalZone.empty?
-        newthermalzone = OpenStudio::Model::ThermalZone.new(model)
-        space.setThermalZone(newthermalzone)
-        runner.registerInfo("Created " + newthermalzone.briefDescription + " and assigned " + space.briefDescription + " to it.")
-        numberOfZonesAdded += 1
-      end
-    end #loop
+      next unless space.thermalZone.empty?
+      newthermalzone = OpenStudio::Model::ThermalZone.new(model)
+      space.setThermalZone(newthermalzone)
+      runner.registerInfo("Created " + newthermalzone.briefDescription + " and assigned " + space.briefDescription + " to it.")
+      numberOfZonesAdded += 1
+    end # loop
 
     # remove other stuff that may be in the OSM file but we don't need or want!!
     modelObjects = model.getModelObjects
@@ -92,16 +90,15 @@ class AddThermalZones < OpenStudio::Measure::ModelMeasure
         runner.registerInfo("#{modelObject.iddObjectType.valueName} Model Object Type found.")
         numberOfObjectsRemaining += 1
       end
-    end #loop
+    end # loop
 
     modelObjects = model.getModelObjects
     modelObjects.each do |modelObject|
-      if modelObject.iddObjectType == "OS:SpaceInfiltration:DesignFlowRate".to_IddObjectType
-        modelObject.remove
-        numberOfObjectsRemoved += 1
-        numberOfObjectsRemaining -= 1
-      end
-    end #loop
+      next unless modelObject.iddObjectType == "OS:SpaceInfiltration:DesignFlowRate".to_IddObjectType
+      modelObject.remove
+      numberOfObjectsRemoved += 1
+      numberOfObjectsRemaining -= 1
+    end # loop
 
     runner.registerFinalCondition(" Added #{numberOfZonesAdded} ThermalZones, removed #{numberOfObjectsRemoved} objects, so #{numberOfObjectsRemaining} objects remain")
     return true

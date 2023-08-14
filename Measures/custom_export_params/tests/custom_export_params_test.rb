@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "openstudio"
 require "openstudio/measure/ShowRunnerOutput"
 require "fileutils"

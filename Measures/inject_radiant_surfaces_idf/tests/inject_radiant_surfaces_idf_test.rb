@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ########################################################
 # This is the test for the measure "CreateAnEmptyModel"
 ########################################################
@@ -34,18 +36,18 @@ class InjectRadiantSurfacesIDFTest < MiniTest::Test
     args_hash = {}
 
     # load an existing model
-    dir = File.expand_path(File.dirname(__FILE__))
+    dir = __dir__
     workspace = OpenIDFModel(dir)
     result = TestArguments(InjectRadiantSurfacesIDF.new, workspace, args_hash)
 
     # assert that it ran correctly
     assert_equal("Success", result.value.valueName)
     assert(result.info.size == 36)
-    assert(result.warnings.size == 0)
-    assert(result.errors.size == 0)
-    assert(result.initialCondition.is_initialized())
-    assert(result.finalCondition.is_initialized())
-    assert_equal("The building finished with 4/4 updated low temperature rediant objects objects.", result.finalCondition.get().logMessage())
+    assert(result.warnings.empty?)
+    assert(result.errors.empty?)
+    assert(result.initialCondition.is_initialized)
+    assert(result.finalCondition.is_initialized)
+    assert_equal("The building finished with 4/4 updated low temperature rediant objects objects.", result.finalCondition.get.logMessage)
     # save the model to test output directory
     SaveIDFModel(workspace, dir)
   end

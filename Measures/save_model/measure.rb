@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 # start the measure
 class SaveModel < OpenStudio::Measure::ModelMeasure
-
   # human readable name
   def name
     return "SaveModel"
@@ -17,7 +18,7 @@ class SaveModel < OpenStudio::Measure::ModelMeasure
   end
 
   # define the arguments that the user will input
-  def arguments(model)
+  def arguments(_model)
     args = OpenStudio::Measure::OSArgumentVector.new
 
     # the name of the space to add to the model
@@ -38,9 +39,7 @@ class SaveModel < OpenStudio::Measure::ModelMeasure
     super(model, runner, user_arguments)
 
     # use the built-in error checking
-    if !runner.validateUserArguments(arguments(model), user_arguments)
-      return false
-    end
+    return false unless runner.validateUserArguments(arguments(model), user_arguments)
 
     # assign the user inputs to variables
     pathtosave = runner.getStringArgumentValue("output_path", user_arguments)

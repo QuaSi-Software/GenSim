@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require "date"
 
 # start the measure
 class InjectHolidaysIDF < OpenStudio::Measure::EnergyPlusMeasure
-
   # human readable name
   def name
     return "InjectHolidaysIDF"
@@ -19,7 +20,7 @@ class InjectHolidaysIDF < OpenStudio::Measure::EnergyPlusMeasure
   end
 
   # define the arguments that the user will input
-  def arguments(workspace)
+  def arguments(_workspace)
     args = OpenStudio::Measure::OSArgumentVector.new
 
     args << OpenStudio::Measure::OSArgument.makeStringArgument("holidays", true)
@@ -32,9 +33,7 @@ class InjectHolidaysIDF < OpenStudio::Measure::EnergyPlusMeasure
     super(workspace, runner, user_arguments)
 
     # use the built-in error checking
-    if !runner.validateUserArguments(arguments(workspace), user_arguments)
-      return false
-    end
+    return false unless runner.validateUserArguments(arguments(workspace), user_arguments)
 
     # assign the user inputs to variables
     holidays = runner.getStringArgumentValue("holidays", user_arguments)
@@ -46,7 +45,7 @@ class InjectHolidaysIDF < OpenStudio::Measure::EnergyPlusMeasure
     number = 1
     # split the timeframes into single timeframes of format 1.1.-2.1.
     holidays.split(";").each do |timeframe|
-      #Holiday
+      # Holiday
       startdate = timeframe.split("-").first
       enddate = timeframe.split("-").last
       startday = startdate.split(".").first
@@ -72,7 +71,7 @@ class InjectHolidaysIDF < OpenStudio::Measure::EnergyPlusMeasure
       idfHoliday.setString(3, "Holiday")
       workspace.addObject(idfHoliday)
 
-      number = number + 1
+      number += 1
     end
 
     # report final condition of model

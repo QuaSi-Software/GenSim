@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # author: Tobias Maile <tobias@maileconsulting.de>
 ########################################################
 # This is the test for the measure "AddDetailedHVAC"
@@ -12,10 +14,9 @@ require_relative "../../TestHelper.rb"
 require "minitest/autorun"
 
 class AddDetailedHVAC_Test < MiniTest::Test
-
-  #def setup
+  # def setup
   # there is no need for any setup
-  #end
+  # end
 
   def test_number_of_arguments_and_argument_names
     # get arguments with a new instance of the measure
@@ -71,7 +72,7 @@ class AddDetailedHVAC_Test < MiniTest::Test
     args_hash["system_type"] = 2
 
     # load an existing model
-    dir = File.expand_path(File.dirname(__FILE__))
+    dir = __dir__
     model = OpenModel(dir)
     result = TestArguments(AddDetailedHVAC.new, model, args_hash)
 
@@ -81,11 +82,11 @@ class AddDetailedHVAC_Test < MiniTest::Test
     # assert that it ran correctly
     assert_equal("Success", result.value.valueName)
     assert(result.info.size == 12)
-    assert(result.warnings.size == 0)
-    assert(result.errors.size == 0)
-    refute(result.initialCondition.is_initialized())
-    assert(result.finalCondition.is_initialized())
-    assert_equal("In the final model 4 zones are connected to the DOAS air loop.", result.finalCondition.get().logMessage())
+    assert(result.warnings.empty?)
+    assert(result.errors.empty?)
+    refute(result.initialCondition.is_initialized)
+    assert(result.finalCondition.is_initialized)
+    assert_equal("In the final model 4 zones are connected to the DOAS air loop.", result.finalCondition.get.logMessage)
     # save the model to test output directory
     SaveModel(model, dir)
   end

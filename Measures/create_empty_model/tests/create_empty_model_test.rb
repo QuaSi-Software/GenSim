@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # author: Tobias Maile <tobias@maileconsulting.de>
 ########################################################
 # This is the test for the measure "CreateAnEmptyModel"
@@ -12,10 +14,9 @@ require_relative "../../TestHelper.rb"
 require "minitest/autorun"
 
 class CreateEmptyModelTest < MiniTest::Test
-
-  #def setup
+  # def setup
   # there is no need for any setup
-  #end
+  # end
 
   def test_number_of_arguments_and_argument_names
     # get arguments with a new instance of the measure
@@ -45,12 +46,12 @@ class CreateEmptyModelTest < MiniTest::Test
 
     # assert that it ran correctly
     assert_equal("Success", result.value.valueName)
-    assert(result.info.size == 0)
-    assert(result.warnings.size == 0)
-    assert(result.errors.size == 0)
-    refute(result.initialCondition.is_initialized())
-    assert(result.finalCondition.is_initialized())
-    assert_equal("The Model was created.", result.finalCondition.get().logMessage())
+    assert(result.info.empty?)
+    assert(result.warnings.empty?)
+    assert(result.errors.empty?)
+    refute(result.initialCondition.is_initialized)
+    assert(result.finalCondition.is_initialized)
+    assert_equal("The Model was created.", result.finalCondition.get.logMessage)
 
     SaveModel(model, File.dirname(__FILE__) + "/output/test_output.osm")
   end

@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 ########################################################
 # This is a measure to detect external zones by looping through space surfaces and finding window subsurfaces
 ########################################################
 
 # start the measure
 class DetectExternalZones < OpenStudio::Measure::ModelMeasure
-
   # human readable name
   def name
     return "DetectExternalZones"
@@ -21,7 +22,7 @@ class DetectExternalZones < OpenStudio::Measure::ModelMeasure
   end
 
   # define the arguments that the user will input
-  def arguments(model)
+  def arguments(_model)
     args = OpenStudio::Measure::OSArgumentVector.new
     return args
   end
@@ -31,9 +32,7 @@ class DetectExternalZones < OpenStudio::Measure::ModelMeasure
     super(model, runner, user_arguments)
 
     # use the built-in error checking
-    if !runner.validateUserArguments(arguments(model), user_arguments)
-      return false
-    end
+    return false unless runner.validateUserArguments(arguments(model), user_arguments)
 
     # check if the mode is null
     if model.nil?
@@ -52,7 +51,7 @@ class DetectExternalZones < OpenStudio::Measure::ModelMeasure
     spaces.each do |space|
       has_ext_nat_light = false
       space.surfaces.each do |surface|
-        next if not surface.outsideBoundaryCondition == "Outdoors"
+        next if surface.outsideBoundaryCondition != "Outdoors"
         surface.subSurfaces.each do |sub_surface|
           next if sub_surface.subSurfaceType == "Door"
           next if sub_surface.subSurfaceType == "OverheadDoor"
@@ -68,7 +67,7 @@ class DetectExternalZones < OpenStudio::Measure::ModelMeasure
         externalSpaces << space
         externalZones << temp_zone
       end
-    end #end spaces.each de_sensors == true
+    end # end spaces.each de_sensors == true
 
     runner.registerFinalCondition("'#{externalSpaces.size}' external spaces and '#{externalZones.size}' external zones found.")
     return true

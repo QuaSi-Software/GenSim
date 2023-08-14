@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require_relative "../NewHelper"
 
 # start the measure
 class AddIdealLoads < OpenStudio::Measure::ModelMeasure
-
   # human readable name
   def name
     return "AddIdealLoads"
@@ -19,30 +20,30 @@ class AddIdealLoads < OpenStudio::Measure::ModelMeasure
   end
 
   # define the arguments that the user will input
-  def arguments(model)
+  def arguments(_model)
     args = OpenStudio::Measure::OSArgumentVector.new
 
-    wrg = OpenStudio::Measure::OSArgument::makeStringArgument("heat_recovery_method", true)
+    wrg = OpenStudio::Measure::OSArgument.makeStringArgument("heat_recovery_method", true)
     wrg.setDisplayName("Heat Recocovery Method")
     wrg.setDefaultValue("none")
     args << wrg
-    latent = OpenStudio::Measure::OSArgument::makeDoubleArgument("latent_efficiency", true)
+    latent = OpenStudio::Measure::OSArgument.makeDoubleArgument("latent_efficiency", true)
     latent.setDisplayName("Latent efficiency")
     latent.setDefaultValue(0.65)
     args << latent
-    sensible = OpenStudio::Measure::OSArgument::makeDoubleArgument("sensible_efficiency", true)
+    sensible = OpenStudio::Measure::OSArgument.makeDoubleArgument("sensible_efficiency", true)
     sensible.setDisplayName("sensible efficiency")
     sensible.setDefaultValue(0.7)
     args << sensible
-    ach = OpenStudio::Measure::OSArgument::makeDoubleArgument("ach_per_hour", true)
+    ach = OpenStudio::Measure::OSArgument.makeDoubleArgument("ach_per_hour", true)
     ach.setDisplayName("Air changes per hours")
     ach.setDefaultValue(1)
     args << ach
-    nfa_gfa_ratio = OpenStudio::Measure::OSArgument::makeDoubleArgument("nfa_gfa_ratio", true)
+    nfa_gfa_ratio = OpenStudio::Measure::OSArgument.makeDoubleArgument("nfa_gfa_ratio", true)
     nfa_gfa_ratio.setDisplayName("Ratio of NFA over GFA")
     nfa_gfa_ratio.setDefaultValue(1)
     args << nfa_gfa_ratio
-    floor_height_ratio = OpenStudio::Measure::OSArgument::makeDoubleArgument("floor_height_ratio", true)
+    floor_height_ratio = OpenStudio::Measure::OSArgument.makeDoubleArgument("floor_height_ratio", true)
     floor_height_ratio.setDisplayName("Ratio of conditioned floor height over total floor height")
     floor_height_ratio.setDefaultValue(1)
     args << floor_height_ratio
@@ -62,11 +63,9 @@ class AddIdealLoads < OpenStudio::Measure::ModelMeasure
     super(model, runner, user_arguments)
 
     # use the built-in error checking
-    if !runner.validateUserArguments(arguments(model), user_arguments)
-      return false
-    end
+    return false unless runner.validateUserArguments(arguments(model), user_arguments)
 
-    ##Abruf der Variablen
+    # #Abruf der Variablen
     heat_recovery_method = runner.getStringArgumentValue("heat_recovery_method", user_arguments)
     latent_efficiency = runner.getDoubleArgumentValue("latent_efficiency", user_arguments)
     sensible_efficiency = runner.getDoubleArgumentValue("sensible_efficiency", user_arguments)
@@ -96,28 +95,26 @@ class AddIdealLoads < OpenStudio::Measure::ModelMeasure
         runner.registerInfo("Setting Ideal loads for zone: #{zone.name}")
         zone.equipment.each do |equipment|
           runner.registerInfo("Equipment type: " + equipment.iddObjectType)
-          if not equipment.setAttribute("Heat Recovery Type", heat_recovery_method)
+          unless equipment.setAttribute("Heat Recovery Type", heat_recovery_method)
             runner.registerError("Heat Revocery Type was not set.")
           end
-          if not equipment.setAttribute("Sensible Heat Recovery Effectiveness", sensible_efficiency)
+          unless equipment.setAttribute("Sensible Heat Recovery Effectiveness", sensible_efficiency)
             runner.registerError("Sensible Heat Recovery Effectiveness.")
           end
-          if not equipment.setAttribute("Latent Heat Recovery Effectiveness", latent_efficiency)
+          unless equipment.setAttribute("Latent Heat Recovery Effectiveness", latent_efficiency)
             runner.registerError("Latent Heat Recovery Effectiveness.")
           end
         end
       end
     end
 
-    #reporting initial condition of model
+    # reporting initial condition of model
     runner.registerInitialCondition("In the initial model #{startingIdealAir.size} zones use ideal air loads.")
 
-    #reporting final condition of model
+    # reporting final condition of model
     finalIdealAir = []
     thermalZones.each do |zone|
-      if zone.useIdealAirLoads
-        finalIdealAir << zone
-      end
+      finalIdealAir << zone if zone.useIdealAirLoads
     end
     runner.registerFinalCondition("In the final model #{finalIdealAir.size} zones use ideal air loads.")
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Material
   def initialize(name, thickness, conductivity, density, specificHeat)
     @cust_name = name
@@ -30,7 +32,6 @@ end
 
 # start the measure
 class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
-
   # human readable name
   def name
     return "AddMaterialsAndConstruction"
@@ -47,7 +48,7 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
   end
 
   def createMaterial(model, mat)
-    #creates a OSMaterial"
+    # creates a OSMaterial"
 
     if mat.Name.empty?
       return nil
@@ -56,7 +57,7 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
       osMat.setName(mat.Name)
       osMat.setRoughness("Rough")
       # set argument values
-      osMat.setThickness(OpenStudio::Quantity.new(mat.Thickness, OpenStudio::createUnit("m").get))
+      osMat.setThickness(OpenStudio::Quantity.new(mat.Thickness, OpenStudio.createUnit("m").get))
       osMat.setThermalResistance(mat.Conductivity)
 
       return osMat
@@ -65,7 +66,7 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
       osMat.setName(mat.Name)
       osMat.setRoughness("Rough")
       # set argument values
-      #osMat.setThickness( OpenStudio::Quantity.new(mat.Thickness, OpenStudio::createUnit("m").get))
+      # osMat.setThickness( OpenStudio::Quantity.new(mat.Thickness, OpenStudio::createUnit("m").get))
       osMat.setThickness(mat.Thickness)
       osMat.setConductivity(mat.Conductivity)
       osMat.setDensity(mat.Density)
@@ -80,15 +81,13 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
     constr.setName(name)
 
     mats.each do |mat|
-      if !mat.Name.empty?
-        constr.insertLayer(constr.numLayers, createMaterial(model, mat))
-      end
+      constr.insertLayer(constr.numLayers, createMaterial(model, mat)) unless mat.Name.empty?
     end
 
     return constr
   end
 
-  def CreateWindowConstruction(model, name, matname, uvalue, shgc)
+  def CreateWindowConstruction(model, name, _matname, uvalue, shgc)
     mat = OpenStudio::Model::SimpleGlazing.new(model)
     # set material properties
     mat.setUFactor(uvalue)
@@ -102,7 +101,7 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
   end
 
   # define the arguments that the user will input
-  def arguments(model)
+  def arguments(_model)
     args = OpenStudio::Measure::OSArgumentVector.new
 
     # External Wall Construction
@@ -191,11 +190,9 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
     super(model, runner, user_arguments)
 
     # use the built-in error checking
-    if !runner.validateUserArguments(arguments(model), user_arguments)
-      return false
-    end
+    return false unless runner.validateUserArguments(arguments(model), user_arguments)
 
-    mats = Array.new
+    mats = []
     argumentName = "external_wall_"
     # assign the user inputs to variables
     for i in 1..4
@@ -207,12 +204,12 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
         runner.getDoubleArgumentValue(argumentName + i.to_s + "_heat_capacity", user_arguments)
       )
     end
-    #external wall
+    # external wall
     constrExtWall = CreateConstruction(model, "ExternalWallConstruction", mats)
     # echo back to the user
     runner.registerInfo("Construction #{constrExtWall.name} was added.")
 
-    mats = Array.new
+    mats = []
     argumentName = "roof_"
     # assign the user inputs to variables
     for i in 1..4
@@ -224,12 +221,12 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
         runner.getDoubleArgumentValue(argumentName + i.to_s + "_heat_capacity", user_arguments)
       )
     end
-    #external wall
+    # external wall
     constrRoof = CreateConstruction(model, "RoofConstruction", mats)
     # echo back to the user
     runner.registerInfo("Construction #{constrRoof.name} was added.")
 
-    mats = Array.new
+    mats = []
     argumentName = "base_plate_"
     # assign the user inputs to variables
     for i in 1..4
@@ -241,12 +238,12 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
         runner.getDoubleArgumentValue(argumentName + i.to_s + "_heat_capacity", user_arguments)
       )
     end
-    #external wall
+    # external wall
     constrSlab = CreateConstruction(model, "SlabConstruction", mats)
     # echo back to the user
     runner.registerInfo("Construction #{constrSlab.name} was added.")
 
-    mats = Array.new
+    mats = []
     argumentName = "inner_masses_"
     # assign the user inputs to variables
     for i in 1..3
@@ -258,12 +255,12 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
         runner.getDoubleArgumentValue(argumentName + i.to_s + "_heat_capacity", user_arguments)
       )
     end
-    #external wall
+    # external wall
     constrInternal = CreateConstruction(model, "InteriorConstruction", mats)
     # echo back to the user
     runner.registerInfo("Construction #{constrInternal.name} was added.")
 
-    mats = Array.new
+    mats = []
     argumentName = "interior_slab_"
     # assign the user inputs to variables
     for i in 1..4
@@ -275,7 +272,7 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
         runner.getDoubleArgumentValue(argumentName + i.to_s + "_heat_capacity", user_arguments)
       )
     end
-    #external wall
+    # external wall
     interiorConstrSlab = CreateConstruction(model, "InteriorSlabConstruction", mats)
     # echo back to the user
     runner.registerInfo("Construction #{interiorConstrSlab.name} was added.")
@@ -293,11 +290,11 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
 
     model.getSurfaces.each do |surface|
       surfaceType = surface.surfaceType.upcase
-      if surface.outsideBoundaryCondition == "Ground" and surfaceType == "FLOOR"
+      if (surface.outsideBoundaryCondition == "Ground") && (surfaceType == "FLOOR")
         surface.setConstruction(constrSlab)
-      elsif surface.outsideBoundaryCondition == "Outdoors" and surfaceType == "WALL"
+      elsif (surface.outsideBoundaryCondition == "Outdoors") && (surfaceType == "WALL")
         surface.setConstruction(constrExtWall)
-      elsif surface.outsideBoundaryCondition == "Outdoors" and surfaceType == "ROOFCEILING"
+      elsif (surface.outsideBoundaryCondition == "Outdoors") && (surfaceType == "ROOFCEILING")
         surface.setConstruction(constrRoof)
       elsif surfaceType == "FLOOR"
         surface.setConstruction(interiorConstrSlab)

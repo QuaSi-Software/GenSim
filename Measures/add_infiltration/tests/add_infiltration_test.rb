@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # author: Tobias Maile <tobias@maileconsulting.de>
 ########################################################
 # This is the test for the measure "AddingInfiltration"
@@ -38,7 +40,7 @@ class AddInfiltrationTest < MiniTest::Test
     args_hash["floor_height_ratio"] = 0.8
 
     # load an existing model
-    dir = File.expand_path(File.dirname(__FILE__))
+    dir = __dir__
     model = OpenModel(dir)
     result = TestArguments(AddInfiltration.new, model, args_hash)
 
@@ -47,12 +49,12 @@ class AddInfiltrationTest < MiniTest::Test
 
     # assert that it ran correctly
     assert_equal("Success", result.value.valueName)
-    assert(result.info.size == 0)
-    assert(result.warnings.size == 0)
-    assert(result.errors.size == 0)
-    refute(result.initialCondition.is_initialized())
-    assert(result.finalCondition.is_initialized())
-    assert_equal("Infiltration added to 4 spaces.", result.finalCondition.get().logMessage())
+    assert(result.info.empty?)
+    assert(result.warnings.empty?)
+    assert(result.errors.empty?)
+    refute(result.initialCondition.is_initialized)
+    assert(result.finalCondition.is_initialized)
+    assert_equal("Infiltration added to 4 spaces.", result.finalCondition.get.logMessage)
     # save the model to test output directory
     SaveModel(model, dir)
   end

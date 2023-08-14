@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 # start the measure
 class AddShadingControls < OpenStudio::Measure::ModelMeasure
-
   # human readable name
   def name
     return "AddShadingControls"
@@ -17,11 +18,11 @@ class AddShadingControls < OpenStudio::Measure::ModelMeasure
   end
 
   # define the arguments that the user will input
-  def arguments(model)
+  def arguments(_model)
     args = OpenStudio::Measure::OSArgumentVector.new
 
-    #make an argument for infiltration
-    setpoint = OpenStudio::Measure::OSArgument::makeDoubleArgument("solar_setpoint", true)
+    # make an argument for infiltration
+    setpoint = OpenStudio::Measure::OSArgument.makeDoubleArgument("solar_setpoint", true)
     setpoint.setDisplayName("Solar Irradiation [W/m²] on window above which the ShadingControl is activated")
     setpoint.setDefaultValue(180)
     args << setpoint
@@ -34,14 +35,12 @@ class AddShadingControls < OpenStudio::Measure::ModelMeasure
     super(model, runner, user_arguments)
 
     # use the built-in error checking
-    if !runner.validateUserArguments(arguments(model), user_arguments)
-      return false
-    end
+    return false unless runner.validateUserArguments(arguments(model), user_arguments)
 
-    #assign the user inputs to variables
+    # assign the user inputs to variables
     setpoint = runner.getDoubleArgumentValue("solar_setpoint", user_arguments)
 
-    #check infiltration for reasonableness
+    # check infiltration for reasonableness
     if setpoint < 0
       runner.registerError("The requested Solar Irradiation of #{setpoint} W/m² was below the measure limit. Choose a positive number.")
       return false
@@ -52,7 +51,7 @@ class AddShadingControls < OpenStudio::Measure::ModelMeasure
     # Add Window Material Blind for ShadingControl
     new_shading_material = OpenStudio::Model::Blind.new(model)
 
-    #loop through subsurfaces in the model adding ShadingControl objects to all windows
+    # loop through subsurfaces in the model adding ShadingControl objects to all windows
     sub_surfaces = model.getSubSurfaces
     window_count = 0
 
@@ -60,9 +59,8 @@ class AddShadingControls < OpenStudio::Measure::ModelMeasure
     runner.registerInitialCondition("Adding shading controls to potentially #{model.getSubSurfaces.size} windows wiht a setpoint of: #{setpoint}")
 
     sub_surfaces.each do |sub_surface|
-
-      #If Subsurface is not a window "next"
-      next if not sub_surface.subSurfaceType == "FixedWindow"
+      # If Subsurface is not a window "next"
+      next if sub_surface.subSurfaceType != "FixedWindow"
 
       window_count += 1
       runner.registerInfo("ShadingControl added for window #{sub_surface.name}")

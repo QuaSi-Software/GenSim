@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 # start the measure
 class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
-
   # human readable name
   def name
     return "SetMetersIDF"
@@ -17,17 +18,17 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
   end
 
   # define the arguments that the user will input
-  def arguments(workspace)
+  def arguments(_workspace)
     args = OpenStudio::Measure::OSArgumentVector.new
 
-    args << OpenStudio::Measure::OSArgument::makeIntegerArgument("time_step", true)
-    dtsS = OpenStudio::Measure::OSArgument::makeStringArgument("day_to_start_simulation", false)
+    args << OpenStudio::Measure::OSArgument.makeIntegerArgument("time_step", true)
+    dtsS = OpenStudio::Measure::OSArgument.makeStringArgument("day_to_start_simulation", false)
     dtsS.setDefaultValue("UseWeatherFile")
     args << dtsS
-    sizingHeatingFactor = OpenStudio::Measure::OSArgument::makeDoubleArgument("heating_sizing_factor", false)
+    sizingHeatingFactor = OpenStudio::Measure::OSArgument.makeDoubleArgument("heating_sizing_factor", false)
     sizingHeatingFactor.setDefaultValue("1.25")
     args << sizingHeatingFactor
-    sizingCoolingFactor = OpenStudio::Measure::OSArgument::makeDoubleArgument("cooling_sizing_factor", false)
+    sizingCoolingFactor = OpenStudio::Measure::OSArgument.makeDoubleArgument("cooling_sizing_factor", false)
     sizingCoolingFactor.setDefaultValue("1.15")
     args << sizingCoolingFactor
     return args
@@ -38,9 +39,7 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     super(workspace, runner, user_arguments)
 
     # use the built-in error checking
-    if !runner.validateUserArguments(arguments(workspace), user_arguments)
-      return false
-    end
+    return false unless runner.validateUserArguments(arguments(workspace), user_arguments)
 
     # assign the user inputs to variables
     timestep = runner.getIntegerArgumentValue("time_step", user_arguments)
@@ -49,7 +48,7 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     dayToStartSimulation = runner.getStringArgumentValue("day_to_start_simulation", user_arguments)
 
     customMeters = workspace.getObjectsByType("Meter:Custom".to_IddObjectType)
-    runner.registerInitialCondition("The building started with #{customMeters.size} Custom Meters with version #{workspace.version().str()}.")
+    runner.registerInitialCondition("The building started with #{customMeters.size} Custom Meters with version #{workspace.version.str}.")
 
     sizingParams = workspace.getObjectsByType("Sizing:Parameters".to_IddObjectType)
     sizingParams.each do |sizingParam|
@@ -57,35 +56,31 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
       sizingParam.setDouble(1, coolingSizingFactor)
     end
 
-    #fix the schedule bug!!!
+    # fix the schedule bug!!!
     schedules = workspace.getObjectsByType("Schedule:Year".to_IddObjectType)
     schedules.each do |schedule|
-      runner.registerInfo("Procesing schedule #{schedule.name.to_s}")
-      if (schedule.name.to_s != "SAT Year Schedule")
-        if (schedule.numFields() > 7)
-          runner.registerInfo("  Replacing week schedule #{schedule.getString(3).to_s} with  #{schedule.getString(7).to_s}")
-          schedule.setString(2, schedule.getString(7).to_s) # Correct schedule ref
-          runner.registerInfo("Procesing schedule #{schedule.name}")
-          workspace.insertObject(schedule)
-        end
-      end
+      runner.registerInfo("Procesing schedule #{schedule.name}")
+      next unless schedule.name.to_s != "SAT Year Schedule"
+      next unless schedule.numFields > 7
+      runner.registerInfo("  Replacing week schedule #{schedule.getString(3)} with  #{schedule.getString(7)}")
+      schedule.setString(2, schedule.getString(7).to_s) # Correct schedule ref
+      runner.registerInfo("Procesing schedule #{schedule.name}")
+      workspace.insertObject(schedule)
     end
 
     #----------custom meters
     #-------------------------------------------------------
 
     reportingInterval = "Hourly"
-    if timestep < 60
-      reportingInterval = "Timestep"
-    end
+    reportingInterval = "Timestep" if timestep < 60
 
     runner.registerInfo("Trying to remove variables")
     # delete the output:variables we do not need them and did not ask for them!!!
     outputvariables = workspace.getObjectsByType("Output:Variable".to_IddObjectType)
     outputvariables.each do |outputvariable|
       runner.registerInfo("The following variable was removed: " + outputvariable.getString(0).to_s)
-      workspace.removeObject(outputvariable.idfObject().handle())
-      outputvariable.remove()
+      workspace.removeObject(outputvariable.idfObject.handle)
+      outputvariable.remove
     end
     #-----conduction exterial walls (Total)
     customMeterConductionExtSurf = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
@@ -99,27 +94,27 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     meterConductionExtSurf.setString(1, reportingInterval)
     workspace.insertObject(meterConductionExtSurf)
 
-    #customMeterConductionExtSurfGainRATE = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
-    #customMeterConductionExtSurfGainRATE.setString(0, "Meter Surface Average Face Conduction Heat Gain Rate")
-    #customMeterConductionExtSurfGainRATE.setString(1, "Generic")
-    #customMeterConductionExtSurfGainRATE.setString(2, "*")
-    #customMeterConductionExtSurfGainRATE.setString(3, "Surface Average Face Conduction Heat Gain Rate")
-    #workspace.insertObject(customMeterConductionExtSurfGainRATE)
-    #meterConductionExtSurfGainRATE = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
-    #meterConductionExtSurfGainRATE.setString(0, "Meter Surface Average Face Conduction Heat Gain Rate")
-    #meterConductionExtSurfGainRATE.setString(1, reportingInterval)
-    #workspace.insertObject(meterConductionExtSurfGainRATE)
+    # customMeterConductionExtSurfGainRATE = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
+    # customMeterConductionExtSurfGainRATE.setString(0, "Meter Surface Average Face Conduction Heat Gain Rate")
+    # customMeterConductionExtSurfGainRATE.setString(1, "Generic")
+    # customMeterConductionExtSurfGainRATE.setString(2, "*")
+    # customMeterConductionExtSurfGainRATE.setString(3, "Surface Average Face Conduction Heat Gain Rate")
+    # workspace.insertObject(customMeterConductionExtSurfGainRATE)
+    # meterConductionExtSurfGainRATE = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
+    # meterConductionExtSurfGainRATE.setString(0, "Meter Surface Average Face Conduction Heat Gain Rate")
+    # meterConductionExtSurfGainRATE.setString(1, reportingInterval)
+    # workspace.insertObject(meterConductionExtSurfGainRATE)
 
-    #customMeterConductionExtSurfLOSSRATE = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
-    #customMeterConductionExtSurfLOSSRATE.setString(0, "Meter Surface Average Face Conduction Heat Loss Rate")
-    #customMeterConductionExtSurfLOSSRATE.setString(1, "Generic")
-    #customMeterConductionExtSurfLOSSRATE.setString(2, "*")
-    #customMeterConductionExtSurfLOSSRATE.setString(3, "Surface Average Face Conduction Heat Loss Rate")
-    #workspace.insertObject(customMeterConductionExtSurfLOSSRATE)
-    #meterConductionExtSurfLOSSRATE = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
-    #meterConductionExtSurfLOSSRATE.setString(0, "Meter Surface Average Face Conduction Heat Loss Rate")
-    #meterConductionExtSurfLOSSRATE.setString(1, reportingInterval)
-    #workspace.insertObject(meterConductionExtSurfLOSSRATE)
+    # customMeterConductionExtSurfLOSSRATE = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
+    # customMeterConductionExtSurfLOSSRATE.setString(0, "Meter Surface Average Face Conduction Heat Loss Rate")
+    # customMeterConductionExtSurfLOSSRATE.setString(1, "Generic")
+    # customMeterConductionExtSurfLOSSRATE.setString(2, "*")
+    # customMeterConductionExtSurfLOSSRATE.setString(3, "Surface Average Face Conduction Heat Loss Rate")
+    # workspace.insertObject(customMeterConductionExtSurfLOSSRATE)
+    # meterConductionExtSurfLOSSRATE = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
+    # meterConductionExtSurfLOSSRATE.setString(0, "Meter Surface Average Face Conduction Heat Loss Rate")
+    # meterConductionExtSurfLOSSRATE.setString(1, reportingInterval)
+    # workspace.insertObject(meterConductionExtSurfLOSSRATE)
 
     #-----conduction windows (losses)
     # Const METER_TRANSMISSION_HEAT_LOSS = "SURFACE WINDOW HEAT LOSS ENERGY"
@@ -287,14 +282,14 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     meterMechVentLoss.setString(1, reportingInterval)
     workspace.insertObject(meterMechVentLoss)
 
-    #make new string
+    # make new string
     new_diagnostic_string = "
       Output:Diagnostics,
         DisplayAllWarnings;    !- Key 1
         "
 
-    #adding here the meters again, not sure why this is not working from the CreateEmptyModel Measure
-    meters = Array.new
+    # adding here the meters again, not sure why this is not working from the CreateEmptyModel Measure
+    meters = []
     meters << "DistrictHeating:Facility"
     meters << "DistrictCooling:Facility"
     meters << "InteriorLights:Electricity"
@@ -304,7 +299,7 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     meters << "Photovoltaic:ElectricityProduced"
     meters << "Fans:Electricity"
     meters << "Pumps:Electricity"
-    #add meters
+    # add meters
     meters.each do |meter|
       newMeter = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
       newMeter.setString(0, meter)
@@ -376,43 +371,43 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     workspace.insertObject(varZoneMeanAirTemp)
 
     newTimesteps = workspace.getObjectsByType("Timestep".to_IddObjectType)
-    #edit ideal loads objects
+    # edit ideal loads objects
     newTimesteps.each do |newTimestep|
       newTimestep.setInt(0, timestep)
       workspace.insertObject(newTimestep)
     end
 
-    #sizingParams = workspace.getObjectsByType("Sizing:Parameters".to_IddObjectType)
-    #sizingParams.each do |sizingParam|
-    #	sizingParam.setDouble(0,2)
-    #	workspace.insertObject(sizingParam)
-    #end
+    # sizingParams = workspace.getObjectsByType("Sizing:Parameters".to_IddObjectType)
+    # sizingParams.each do |sizingParam|
+    #  sizingParam.setDouble(0,2)
+    #  workspace.insertObject(sizingParam)
+    # end
 
     sizingZones = workspace.getObjectsByType("Sizing:Zone".to_IddObjectType)
     sizingZones.each do |sizingZone|
-      #sizingZone.setDouble(11, 2) # Zone Cooling Sizing Factor
-      sizingZone.setString(23, "Yes") #A ccount for Dedicated Outdoor Air System
-      sizingZone.setString(24, "NeutralSupplyAir")  # Dedicated Outdoor Air System Control Strategy
+      # sizingZone.setDouble(11, 2) # Zone Cooling Sizing Factor
+      sizingZone.setString(23, "Yes") # A ccount for Dedicated Outdoor Air System
+      sizingZone.setString(24, "NeutralSupplyAir") # Dedicated Outdoor Air System Control Strategy
       sizingZone.setDouble(25, -12.7) # Dedicated Outdoor Air Low Setpoint Temperature for Design {C}
       sizingZone.setDouble(26, 30) # Dedicated Outdoor Air High Setpoint Temperature for Design {C}
       workspace.insertObject(sizingZone)
     end
 
-    #make new string
+    # make new string
     new_reporting_string = "
     	OutputControl:ReportingTolerances,
       	1,
 				1;"
 
-    #make new object from string
-    idfObject = OpenStudio::IdfObject::load(new_reporting_string)
+    # make new object from string
+    idfObject = OpenStudio::IdfObject.load(new_reporting_string)
     object = idfObject.get
     wsObject = workspace.addObject(object)
 
     newRunPeriods = workspace.getObjectsByType("RunPeriod".to_IddObjectType)
-    #edit ideal loads objects
+    # edit ideal loads objects
     newRunPeriods.each do |newRunPeriod|
-      if workspace.version() >= OpenStudio::VersionString.new(9, 0, 0)
+      if workspace.version >= OpenStudio::VersionString.new(9, 0, 0)
         newRunPeriod.setString(7, dayToStartSimulation)
         newRunPeriod.setString(3, "")
         newRunPeriod.setString(6, "")
@@ -422,14 +417,14 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
       workspace.insertObject(newRunPeriod)
     end
 
-    #make new object from string
-    idfObject = OpenStudio::IdfObject::load(new_diagnostic_string)
+    # make new object from string
+    idfObject = OpenStudio::IdfObject.load(new_diagnostic_string)
     object = idfObject.get
     wsObject = workspace.addObject(object)
 
     idealloads = workspace.getObjectsByType("HVACTemplate:Zone:IdealLoadsAirSystem".to_IddObjectType)
     customMeters = workspace.getObjectsByType("Meter:Custom".to_IddObjectType)
-    runner.registerFinalCondition("The building finished with #{customMeters.size} Custom Meters with version #{workspace.version().str()}.")
+    runner.registerFinalCondition("The building finished with #{customMeters.size} Custom Meters with version #{workspace.version.str}.")
 
     return true
   end

@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 # start the measure
 class InjectZoneVentilationIDF < OpenStudio::Measure::EnergyPlusMeasure
-
   # human readable name
   def name
     return "InjectZoneVentilationIDF"
@@ -17,7 +18,7 @@ class InjectZoneVentilationIDF < OpenStudio::Measure::EnergyPlusMeasure
   end
 
   # define the arguments that the user will input
-  def arguments(workspace)
+  def arguments(_workspace)
     args = OpenStudio::Measure::OSArgumentVector.new
 
     args << OpenStudio::Measure::OSArgument.makeDoubleArgument("air_changes", true)
@@ -32,9 +33,7 @@ class InjectZoneVentilationIDF < OpenStudio::Measure::EnergyPlusMeasure
     super(workspace, runner, user_arguments)
 
     # use the built-in error checking
-    if !runner.validateUserArguments(arguments(workspace), user_arguments)
-      return false
-    end
+    return false unless runner.validateUserArguments(arguments(workspace), user_arguments)
 
     # assign the user inputs to variables
     ventilationACH = runner.getDoubleArgumentValue("air_changes", user_arguments)
@@ -48,7 +47,7 @@ class InjectZoneVentilationIDF < OpenStudio::Measure::EnergyPlusMeasure
     runner.registerInitialCondition("The building started with #{zones.size} zones.")
 
     # first we built a list of perimeter zones
-    perimeterZones = Array.new
+    perimeterZones = []
     bPerimeterZonesFound = false
     zones.each do |zone|
       if zone.name.to_s.include? "Perimeter"
@@ -57,7 +56,7 @@ class InjectZoneVentilationIDF < OpenStudio::Measure::EnergyPlusMeasure
       end
     end
 
-    if !bPerimeterZonesFound
+    unless bPerimeterZonesFound
       zones.each do |zone|
         if zone.name.to_s.include? "EXT-"
           perimeterZones << zone
@@ -67,7 +66,7 @@ class InjectZoneVentilationIDF < OpenStudio::Measure::EnergyPlusMeasure
     end
 
     runner.registerInfo("We found #{perimeterZones.size} perimeter zones")
-    if !bPerimeterZonesFound
+    unless bPerimeterZonesFound
       perimeterZones = zones
       runner.registerInfo("Using all zones since we did not find any perimeter zones.")
     end

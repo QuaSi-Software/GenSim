@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 # see the URL below for information on how to write OpenStudio measures
 # http://nrel.github.io/OpenStudio-user-documentation/reference/measure_writing_guide/
 
 # start the measure
 class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
-
   # human readable name
   def name
     return "InjectRadiantSurfacesIDF"
@@ -20,7 +21,7 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
   end
 
   # define the arguments that the user will input
-  def arguments(workspace)
+  def arguments(_workspace)
     args = OpenStudio::Measure::OSArgumentVector.new
     return args
   end
@@ -30,9 +31,7 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
     super(workspace, runner, user_arguments)
 
     # use the built-in error checking
-    if !runner.validateUserArguments(arguments(workspace), user_arguments)
-      return false
-    end
+    return false unless runner.validateUserArguments(arguments(workspace), user_arguments)
 
     # get all low temp radiant equipment in model
     lowTempRadiants = workspace.getObjectsByType("ZoneHVAC:LowTemperatureRadiant:VariableFlow".to_IddObjectType)
@@ -48,18 +47,15 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
       internalMasses.each do |internalMass|
         runner.registerInfo("InternalMass ZoneName: #{internalMass.getString(2)}")
         runner.registerInfo("are equal? #{internalMass.getString(2).to_s == lowTempRadiant.getString(2).to_s}")
-        if internalMass.getString(2).to_s == lowTempRadiant.getString(2).to_s
-          lowTempRadiant.setString(3, internalMass.getString(0).to_s)
-          counter = counter + 1
-          workspace.insertObject(lowTempRadiant)
-        end
+        next unless internalMass.getString(2).to_s == lowTempRadiant.getString(2).to_s
+        lowTempRadiant.setString(3, internalMass.getString(0).to_s)
+        counter += 1
+        workspace.insertObject(lowTempRadiant)
       end
     end
 
     lowTempRadSurfaceGroups = workspace.getObjectsByType("ZoneHVAC:LowTemperatureRadiant:SurfaceGroup".to_IddObjectType)
-    lowTempRadSurfaceGroups.each do |surfGroup|
-      surfGroup.remove()
-    end
+    lowTempRadSurfaceGroups.each(&:remove)
 
     runner.registerFinalCondition("The building finished with #{counter}/#{lowTempRadiants.size} updated low temperature rediant objects objects.")
 

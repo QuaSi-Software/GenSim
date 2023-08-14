@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 # start the measure
 class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
-
   # human readable name
   def name
     return "SetWeatherAxisTimestep"
@@ -17,7 +18,7 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
   end
 
   # define the arguments that the user will input
-  def arguments(model)
+  def arguments(_model)
     args = OpenStudio::Measure::OSArgumentVector.new
 
     args << OpenStudio::Measure::OSArgument.makeStringArgument("weather_file_path", true)
@@ -33,16 +34,14 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
     super(model, runner, user_arguments)
 
     # use the built-in error checking
-    if !runner.validateUserArguments(arguments(model), user_arguments)
-      return false
-    end
+    return false unless runner.validateUserArguments(arguments(model), user_arguments)
 
     weatherFilePath = runner.getStringArgumentValue("weather_file_path", user_arguments)
     northAxis = runner.getDoubleArgumentValue("north_axis", user_arguments)
     timestep = runner.getIntegerArgumentValue("time_step", user_arguments)
 
-    #Add Weather File
-    if File.exists?(weatherFilePath) and weatherFilePath.downcase.include? ".epw"
+    # Add Weather File
+    if File.exist?(weatherFilePath) && weatherFilePath.downcase.include?(".epw")
       epw_file = OpenStudio::EpwFile.new(weatherFilePath)
 
       weather_name = "#{epw_file.city}_#{epw_file.stateProvinceRegion}_#{epw_file.country}"
@@ -62,7 +61,7 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
       runner.registerInfo("Setting site data.")
 
       # find the ddy files
-      ddy_file = "#{File.join(File.dirname(epw_file.path.to_s), File.basename(epw_file.path.to_s, ".*"))}.ddy"
+      ddy_file = "#{File.join(File.dirname(epw_file.path.to_s), File.basename(epw_file.path.to_s, '.*'))}.ddy"
       runner.registerInfo("Looking for ddy file. #{ddy_file}")
       unless File.exist? ddy_file
         ddy_files = Dir["#{File.dirname(epw_file.path.to_s)}/*.ddy"]
@@ -87,13 +86,12 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
       ddy_model.getObjectsByType("OS:SizingPeriod:DesignDay".to_IddObjectType).each do |d|
         # grab only the ones that matter
         ddy_list = /(Htg 99.6)|(Clg .4)/
-        if d.name.get =~ ddy_list
-          runner.registerInfo("Adding object #{d.name}")
+        next unless d.name.get.match?(ddy_list)
+        runner.registerInfo("Adding object #{d.name}")
 
-          # add the object to the existing model
-          model.addObject(d.clone)
-          runner.registerInfo("Adding design day #{d.name}.")
-        end
+        # add the object to the existing model
+        model.addObject(d.clone)
+        runner.registerInfo("Adding design day #{d.name}.")
       end
     else
       runner.registerInfo("'#{weatherFilePath}' does not exist or is not an .epw file.")
@@ -104,13 +102,13 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
       building.setNorthAxis(northAxis)
     end
     repfrequency = "Hourly"
-    if (timestep >= 60)
-      repfrequency = "Hourly"
-    else
-      repfrequency = "Timestep"
-    end
+    repfrequency = if timestep >= 60
+                     "Hourly"
+                   else
+                     "Timestep"
+                   end
 
-    meters = Array.new
+    meters = []
     meters << "DistrictHeating:Facility"
     meters << "DistrictCooling:Facility"
     meters << "InteriorLights:Electricity"
@@ -118,7 +116,7 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
     meters << "ElectricityProduced:Plant"
     meters << "Electricity:Facility"
     meters << "Photovoltaic:ElectricityProduced"
-    #add meters
+    # add meters
     meters.each do |meter|
       newMeter = OpenStudio::Model::OutputMeter.new(model)
       newMeter.setName(meter)
@@ -138,13 +136,12 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
 
     # ===== loop through all spaces and add a daylighting sensor with dimming to each
     spaces.each do |space|
-      if space.thermalZone.empty?
-        #create zones
-        new_zone = OpenStudio::Model::ThermalZone.new(model)
-        space.setThermalZone(new_zone)
-        zone_name = space.name.get.gsub("Space", "Zone")
-        new_zone.setName(zone_name)
-      end
+      next unless space.thermalZone.empty?
+      # create zones
+      new_zone = OpenStudio::Model::ThermalZone.new(model)
+      space.setThermalZone(new_zone)
+      zone_name = space.name.get.gsub("Space", "Zone")
+      new_zone.setName(zone_name)
     end
 
     # report final condition of model

@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require_relative "../NewHelper"
 
 # start the measure
 class AddInternalLoads < OpenStudio::Measure::ModelMeasure
-
   # human readable name
   def name
     return "AddInternalLoads"
@@ -19,7 +20,7 @@ class AddInternalLoads < OpenStudio::Measure::ModelMeasure
   end
 
   # define the arguments that the user will input
-  def arguments(model)
+  def arguments(_model)
     args = OpenStudio::Measure::OSArgumentVector.new
 
     # the name of the space to add to the model
@@ -67,9 +68,7 @@ class AddInternalLoads < OpenStudio::Measure::ModelMeasure
     super(model, runner, user_arguments)
 
     # use the built-in error checking
-    if !runner.validateUserArguments(arguments(model), user_arguments)
-      return false
-    end
+    return false unless runner.validateUserArguments(arguments(model), user_arguments)
 
     # assign the user inputs to variables
     nfa_gfa_ratio = runner.getDoubleArgumentValue("nfa_gfa_ratio", user_arguments)
