@@ -2,13 +2,13 @@
   <schema_version>3.0</schema_version>
   <name>save_model</name>
   <uid>82c89850-4b47-4ab2-bd7d-78b6c80e2b96</uid>
-  <version_id>18b17f8f-eab1-4547-a40e-76b25c3b94ed</version_id>
-  <version_modified>20230809T092514Z</version_modified>
+  <version_id>36bff30e-39ba-4485-b9d8-914897e18e6a</version_id>
+  <version_modified>20230814T140608Z</version_modified>
   <xml_checksum>2AF3A68E</xml_checksum>
   <class_name>SaveModel</class_name>
   <display_name>SaveModel</display_name>
-  <description>Just saving the model to an OSM file</description>
-  <modeler_description></modeler_description>
+  <description>Saves the model as an OSM file.</description>
+  <modeler_description>Saves the model as an OSM file.</modeler_description>
   <arguments>
     <argument>
       <name>output_path</name>
@@ -69,7 +69,7 @@
       <filename>save_model_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>CBFA65B6</checksum>
+      <checksum>EA37DED3</checksum>
     </file>
     <file>
       <version>
@@ -80,7 +80,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>C4FB4109</checksum>
+      <checksum>9341EF59</checksum>
+    </file>
+    <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
     </file>
   </files>
 </measure>

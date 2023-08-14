@@ -2,13 +2,13 @@
   <schema_version>3.0</schema_version>
   <name>add_internal_loads</name>
   <uid>9db02274-2ce9-48e3-810d-ab9088f09c62</uid>
-  <version_id>299bd0fd-442f-4499-91a6-fe8e369b2d52</version_id>
-  <version_modified>20230802T093647Z</version_modified>
+  <version_id>cb7062b3-3089-4750-96de-478beef75d1e</version_id>
+  <version_modified>20230814T134109Z</version_modified>
   <xml_checksum>57232789</xml_checksum>
   <class_name>AddInternalLoads</class_name>
   <display_name>AddInternalLoads</display_name>
-  <description></description>
-  <modeler_description></modeler_description>
+  <description>Add internal loads.</description>
+  <modeler_description>Add internal loads.</modeler_description>
   <arguments>
     <argument>
       <name>nfa_gfa_ratio</name>
@@ -345,13 +345,19 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>79D7A2D6</checksum>
+      <checksum>1ACB6D6D</checksum>
     </file>
     <file>
       <filename>add_internal_loads_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>4CF57E05</checksum>
+      <checksum>ACDA07C6</checksum>
+    </file>
+    <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
     </file>
   </files>
 </measure>

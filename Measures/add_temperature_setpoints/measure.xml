@@ -2,13 +2,13 @@
   <schema_version>3.0</schema_version>
   <name>add_temperature_setpoints</name>
   <uid>3936e6f6-9ddd-4843-a654-c1c5de244216</uid>
-  <version_id>028c8f6c-b1b9-40e9-a287-e248555edd5d</version_id>
-  <version_modified>20230802T093558Z</version_modified>
+  <version_id>ea1d79c4-ff5d-4507-8949-cf5e6f69c131</version_id>
+  <version_modified>20230814T140547Z</version_modified>
   <xml_checksum>356BE47F</xml_checksum>
   <class_name>AddTemperatureSetpoints</class_name>
   <display_name>AddTemperatureSetpoints</display_name>
-  <description></description>
-  <modeler_description></modeler_description>
+  <description>Add temperature setpoints.</description>
+  <modeler_description>Add temperature setpoints.</modeler_description>
   <arguments>
     <argument>
       <name>heating_temp_selection</name>
@@ -160,7 +160,7 @@
       <filename>add_temperature_setpoints_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>6D3D3AE0</checksum>
+      <checksum>C885517B</checksum>
     </file>
     <file>
       <version>
@@ -171,7 +171,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>06D2789A</checksum>
+      <checksum>7CCD10D0</checksum>
+    </file>
+    <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
     </file>
   </files>
 </measure>

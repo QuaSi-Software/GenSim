@@ -2,13 +2,13 @@
   <schema_version>3.0</schema_version>
   <name>inject_holidays_idf</name>
   <uid>3bdd4f5d-02e7-43ad-b151-9f781ef887b3</uid>
-  <version_id>bbe825a7-d7c0-46b9-b004-fa6890693515</version_id>
-  <version_modified>20230809T094726Z</version_modified>
+  <version_id>cb8fdf2b-b1c8-4f38-96d7-ed9c85a6add3</version_id>
+  <version_modified>20230814T140559Z</version_modified>
   <xml_checksum>0B6DEAE1</xml_checksum>
   <class_name>InjectHolidaysIDF</class_name>
   <display_name>InjectHolidaysIDF</display_name>
-  <description>Replace this text with an explanation of what the measure does in terms that can be understood by a general building professional audience (building owners, architects, engineers, contractors, etc.).  This description will be used to create reports aimed at convincing the owner and/or design team to implement the measure in the actual building design.  For this reason, the description may include details about how the measure would be implemented, along with explanations of qualitative benefits associated with the measure.  It is good practice to include citations in the measure if the description is taken from a known source or if specific benefits are listed.</description>
-  <modeler_description>Replace this text with an explanation for the energy modeler specifically.  It should explain how the measure is modeled, including any requirements about how the baseline model must be set up, major assumptions, citations of references to applicable modeling resources, etc.  The energy modeler should be able to read this description and understand what changes the measure is making to the model and why these changes are being made.  Because the Modeler Description is written for an expert audience, using common abbreviations for brevity is good practice.</modeler_description>
+  <description>Inject holidays.</description>
+  <modeler_description>Inject holidays.</modeler_description>
   <arguments>
     <argument>
       <name>holidays</name>
@@ -56,13 +56,19 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>BF0F6CCB</checksum>
+      <checksum>DA152DC3</checksum>
     </file>
     <file>
       <filename>inject_holidays_idf_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>EB9767E4</checksum>
+      <checksum>3F848663</checksum>
+    </file>
+    <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
     </file>
   </files>
 </measure>

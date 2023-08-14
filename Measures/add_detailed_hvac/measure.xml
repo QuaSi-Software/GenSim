@@ -2,13 +2,13 @@
   <schema_version>3.0</schema_version>
   <name>add_detailed_hvac</name>
   <uid>75c17475-d6d2-4074-a097-0c2202206dab</uid>
-  <version_id>17ec22e6-c449-4aa1-81cb-95a8bb158211</version_id>
-  <version_modified>20230801T092416Z</version_modified>
+  <version_id>36461124-3767-4307-8991-39809bc275fe</version_id>
+  <version_modified>20230814T134027Z</version_modified>
   <xml_checksum>C49A7DAB</xml_checksum>
   <class_name>AddDetailedHVAC</class_name>
   <display_name>AddDetailedHVAC</display_name>
   <description>This measure adds a DOAS air loop and a radiant ceiling heating and cooling component that connects to a hot and chilled water loop with district heating and cooling.</description>
-  <modeler_description></modeler_description>
+  <modeler_description>Add geometry from simple inputs.</modeler_description>
   <arguments>
     <argument>
       <name>heat_recovery_method</name>
@@ -273,13 +273,19 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>1587BA67</checksum>
+      <checksum>03F65CBA</checksum>
     </file>
     <file>
       <filename>add_detailed_hvac_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>784E41FD</checksum>
+      <checksum>3ECF48D9</checksum>
+    </file>
+    <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
     </file>
   </files>
 </measure>

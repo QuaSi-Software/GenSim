@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>custom_export_params</name>
   <uid>28949d7c-e721-4d6c-9784-0d9840672a49</uid>
-  <version_id>5803ca0a-a4ca-48a0-842f-7a8b688fe109</version_id>
-  <version_modified>20230809T075222Z</version_modified>
+  <version_id>c9a73ca6-047a-49ef-a828-dabbd803febd</version_id>
+  <version_modified>20230814T140554Z</version_modified>
   <xml_checksum>2AF3A68E</xml_checksum>
   <class_name>CustomExportParams</class_name>
   <display_name>CustomExportParams</display_name>
@@ -174,7 +174,7 @@
       <filename>custom_export_params_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>550CA45C</checksum>
+      <checksum>9688294F</checksum>
     </file>
     <file>
       <version>
@@ -185,7 +185,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>CA47662C</checksum>
+      <checksum>3E5ECBF6</checksum>
+    </file>
+    <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
     </file>
   </files>
 </measure>
