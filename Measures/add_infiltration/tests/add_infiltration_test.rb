@@ -44,9 +44,6 @@ class AddInfiltrationTest < MiniTest::Test
     model = OpenModel(dir)
     result = TestArguments(AddInfiltration.new, model, args_hash)
 
-    # store the number of spaces in the seed model
-    num_spaces_seed = model.getSpaces.size
-
     # assert that it ran correctly
     assert_equal("Success", result.value.valueName)
     assert(result.info.empty?)

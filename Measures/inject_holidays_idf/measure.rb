@@ -53,7 +53,6 @@ class InjectHolidaysIDF < OpenStudio::Measure::EnergyPlusMeasure
       endday = enddate.split(".").first
       endmonth = enddate.split(".").last
 
-      iDuration = 1
       fullstartdate = "#{startday}/#{startmonth}/2018"
       runner.registerInfo("Startdate: #{fullstartdate} ")
       fullenddate = "#{endday}/#{endmonth}/2018"

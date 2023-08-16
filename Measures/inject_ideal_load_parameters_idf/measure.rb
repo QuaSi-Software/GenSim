@@ -70,7 +70,6 @@ class InjectIdealLoadParametersIDF < OpenStudio::Measure::EnergyPlusMeasure
 
     # edit ideal loads objects
     idealLoadObjects.each do |idealLoadObject|
-      idealLoadObject_name = idealLoadObject.getString(0) # Name
       idealLoadObject.setString(27, heatRecoveryType) # Heat Recovery Type
       idealLoadObject.setDouble(28, sensibleEffectiveness) # Sensible Heat Recovery Effectiveness
       idealLoadObject.setDouble(29, latentEffectiveness) # Latent Heat Recovery Effectiveness

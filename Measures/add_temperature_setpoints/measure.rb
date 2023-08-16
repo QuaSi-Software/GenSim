@@ -59,7 +59,6 @@ class AddTemperatureSetpoints < OpenStudio::Measure::ModelMeasure
     zoneCoolingTempSched = CreateSchedule(model, "ZoneCoolingTempSched", zone_cooling_temp_sched_weekday, zone_cooling_temp_sched_saturday, zone_cooling_temp_sched_sunday, zone_cooling_temp_sched_holiday, holidays)
 
     number_zones_modified = 0
-    total_cost = 0
     if zoneHeatingTempSched || zoneCoolingTempSched
       model.getThermalZones.each do |zone|
         thermostatSetpointDualSetpoint = zone.thermostatSetpointDualSetpoint

@@ -35,8 +35,6 @@ class CreateEmptyModel < OpenStudio::Measure::ModelMeasure
     # use the built-in error checking
     return false unless runner.validateUserArguments(arguments(model), user_arguments)
 
-    model = OpenStudio::Model::Model.new
-
     # report final condition of model
     runner.registerFinalCondition("The Model was created.")
 

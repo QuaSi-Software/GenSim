@@ -19,7 +19,6 @@ class AddIdealLoads < OpenStudio::Measure::ModelMeasure
     return "Add ideal loads."
   end
 
-
   # define the arguments that the user will input
   def arguments(_model)
     args = OpenStudio::Measure::OSArgumentVector.new
@@ -54,7 +53,6 @@ class AddIdealLoads < OpenStudio::Measure::ModelMeasure
     args << OpenStudio::Measure::OSArgument.makeStringArgument("hvac_sched_sunday", true)
     args << OpenStudio::Measure::OSArgument.makeStringArgument("hvac_sched_holiday", false)
     args << OpenStudio::Measure::OSArgument.makeStringArgument("holidays", false)
-    return args
 
     return args
   end
@@ -70,19 +68,17 @@ class AddIdealLoads < OpenStudio::Measure::ModelMeasure
     heat_recovery_method = runner.getStringArgumentValue("heat_recovery_method", user_arguments)
     latent_efficiency = runner.getDoubleArgumentValue("latent_efficiency", user_arguments)
     sensible_efficiency = runner.getDoubleArgumentValue("sensible_efficiency", user_arguments)
-    ach = runner.getDoubleArgumentValue("ach_per_hour", user_arguments)
-    nfa_gfa_ratio = runner.getDoubleArgumentValue("nfa_gfa_ratio", user_arguments)
-    floor_height_ratio = runner.getDoubleArgumentValue("floor_height_ratio", user_arguments)
     hvac_sched_weekday = runner.getStringArgumentValue("hvac_sched_weekday", user_arguments)
     hvac_sched_saturday = runner.getStringArgumentValue("hvac_sched_saturday", user_arguments)
     hvac_sched_sunday = runner.getStringArgumentValue("hvac_sched_sunday", user_arguments)
     hvac_sched_holiday = runner.getStringArgumentValue("hvac_sched_holiday", user_arguments)
     holidays = runner.getStringArgumentValue("holidays", user_arguments)
 
-    hvacSched = CreateSchedule(model, "HVACSched", hvac_sched_weekday, hvac_sched_saturday, hvac_sched_sunday, hvac_sched_holiday, holidays)
-
-    # rescale air change rate to conditioned volume and GFA
-    ach = ach * nfa_gfa_ratio * floor_height_ratio
+    CreateSchedule(
+      model, "HVACSched",
+      hvac_sched_weekday, hvac_sched_saturday,
+      hvac_sched_sunday, hvac_sched_holiday, holidays
+    )
 
     # array of zones initially using ideal air loads
     startingIdealAir = []

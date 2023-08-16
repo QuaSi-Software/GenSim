@@ -34,7 +34,6 @@ class AddTemperatureSetpointsTest < MiniTest::Test
 
   def test_good_argument_values
     # If the argument has a default that you want to use, you don't need it in the hash
-    args_hash = {}
     defaultSched = " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20"
     # create hash of argument values
     args_hash = {}
@@ -56,9 +55,6 @@ class AddTemperatureSetpointsTest < MiniTest::Test
     dir = __dir__
     model = OpenModel(dir)
     result = TestArguments(AddTemperatureSetpoints.new, model, args_hash)
-
-    # store the number of spaces in the seed model
-    num_spaces_seed = model.getSpaces.size
 
     # assert that it ran correctly
     assert_equal("Success", result.value.valueName)

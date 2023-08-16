@@ -213,22 +213,6 @@ class AddGeometry < OpenStudio::Measure::ModelMeasure
     end
     runner.registerError("Enter a positive floor height.") if floor_to_floor_height <= 0
 
-    # helper to make numbers pretty (converts 4125001.25641 to 4,125,001.26 or 4,125,001). The definition be called through this measure.
-    def neat_numbers(number, roundto = 2) # round to 0 or 2)
-      number = if roundto == 2
-                 format "%.2f", number
-               else
-                 number.round
-               end
-      # regex to add commas
-      number.to_s.reverse.gsub(/([0-9]{3}(?=([0-9])))/, "\\1,").reverse
-    end # end def neat_numbers
-
-    # helper to make it easier to do unit conversions on the fly.  The definition be called through this measure.
-    def unit_helper(number, from_unit_string, to_unit_string)
-      converted_number = OpenStudio.convert(OpenStudio::Quantity.new(number, OpenStudio.createUnit(from_unit_string).get), OpenStudio.createUnit(to_unit_string).get).get.value
-    end
-
     # determine if core and perimeter zoning can be used
     if (building_length > 10) && (building_width > 10)
       perimeter_zone_depth = perimeterdepth # hard coded in meters

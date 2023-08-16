@@ -402,7 +402,7 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     # make new object from string
     idfObject = OpenStudio::IdfObject.load(new_reporting_string)
     object = idfObject.get
-    wsObject = workspace.addObject(object)
+    workspace.addObject(object)
 
     newRunPeriods = workspace.getObjectsByType("RunPeriod".to_IddObjectType)
     # edit ideal loads objects
@@ -420,9 +420,9 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     # make new object from string
     idfObject = OpenStudio::IdfObject.load(new_diagnostic_string)
     object = idfObject.get
-    wsObject = workspace.addObject(object)
+    workspace.addObject(object)
 
-    idealloads = workspace.getObjectsByType("HVACTemplate:Zone:IdealLoadsAirSystem".to_IddObjectType)
+    # idealloads = workspace.getObjectsByType("HVACTemplate:Zone:IdealLoadsAirSystem".to_IddObjectType)
     customMeters = workspace.getObjectsByType("Meter:Custom".to_IddObjectType)
     runner.registerFinalCondition("The building finished with #{customMeters.size} Custom Meters with version #{workspace.version.str}.")
 
