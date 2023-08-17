@@ -86,12 +86,13 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
       ddy_model.getObjectsByType("OS:SizingPeriod:DesignDay".to_IddObjectType).each do |d|
         # grab only the ones that matter
         ddy_list = /(Htg 99.6)|(Clg .4)/
-        next unless d.name.get.match?(ddy_list)
-        runner.registerInfo("Adding object #{d.name}")
+        if d.name.get =~ ddy_list
+          runner.registerInfo("Adding object #{d.name}")
 
-        # add the object to the existing model
-        model.addObject(d.clone)
-        runner.registerInfo("Adding design day #{d.name}.")
+          # add the object to the existing model
+          model.addObject(d.clone)
+          runner.registerInfo("Adding design day #{d.name}.")
+        end
       end
     else
       runner.registerInfo("'#{weatherFilePath}' does not exist or is not an .epw file.")
