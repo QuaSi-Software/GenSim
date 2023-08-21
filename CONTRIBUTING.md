@@ -69,7 +69,7 @@ In dieser Testumgebung wird der komplette Prozess beginnend mit der Eingabe in d
 
 Der erste Teil der Testumgebung ist das Ausführen von Tests mit der zu prüfenden Version von GenSim mit den Eingabedaten der Typgebäude:
 1. Öffnen von GenSim in der zu testenden Version
-1. Importieren des Parametersatzes für das Typgebäude 1 (Mehrfamilienhaus) durch Import der Datei `Test/parameter_sets/test_01.osw`.
+1. Importieren des Parametersatzes für das Typgebäude 1 (Mehrfamilienhaus) durch Import der Datei `Test/parameter_sets/env_iv/test_01.osw`.
 1. Prüfen ob die Parameter, insbesondere ausgewählte Profile, richtig eingelesen wurden, da die Importfunktion nicht in allen Fällen 100% zuverlässig ist
 1. Ausführen der Simulation mit GenSim
 1. Öffnen der Datei `Test/Results_to_JSON.xlsm`
