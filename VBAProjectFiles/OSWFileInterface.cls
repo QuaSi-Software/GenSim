@@ -706,30 +706,30 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             Set dd_lueftung = Sheets("HAUPTSEITE").DropDowns("dd_lueftung")
 
             'Parameter Modell
-            If args.Exists("zoneDetails") Then cb_zoneDetails.Value = GetArgument(args, "zoneDetails")
-            If args.Exists("detailedHVAC") Then cb_detailedHVAC.Value = GetArgument(args, "detailedHVAC")
+            If args.Exists("include_zone_details") Then cb_zoneDetails.Value = GetArgument(args, "include_zone_details")
+            If args.Exists("include_detailed_hvac") Then cb_detailedHVAC.Value = GetArgument(args, "include_detailed_hvac")
             If args.Exists("ventilation_type") Then dd_lueftung.Value = GetArgument(args, "ventilation_type")
             Call dropdown_Lueftung
 
             'Parameter Geometrie, die nicht für Modellerzeugung benötigt werden
             If args.Exists("floor_length") Then Range("LAENGE") = GetArgument(args, "floor_length")
             If args.Exists("floor_width") Then Range("BREITE") = GetArgument(args, "floor_width")
-            If args.Exists("NRF_BGF") Then Range("BGF_zu_NRF") = GetArgument(args, "NRF_BGF")
-            If args.Exists("ratio_NRF_BGF") Then DDFindAndSetValue ddRatio1, GetArgument(args, "ratio_NRF_BGF")  'dd oben deklariert
+            If args.Exists("nfa_gfa_ratio") Then Range("BGF_zu_NRF") = GetArgument(args, "nfa_gfa_ratio")
+            If args.Exists("nfa_gfa_ratio_selection") Then DDFindAndSetValue ddRatio1, GetArgument(args, "nfa_gfa_ratio_selection")
             Call DropDown_BGF_NRF_Generisch
 
             'Lüftungsanlage
-            If args.Exists("vorlauf_Luft") Then Range("Vorlauf_Lüftung") = GetArgument(args, "vorlauf_Luft")
-            If args.Exists("nachlauf_Luft") Then Range("Nachlauf_Lüftung") = GetArgument(args, "nachlauf_Luft")
+            If args.Exists("ventilation_lead_time") Then Range("Vorlauf_Lüftung") = GetArgument(args, "ventilation_lead_time")
+            If args.Exists("ventilation_follow_up_time") Then Range("Nachlauf_Lüftung") = GetArgument(args, "ventilation_follow_up_time")
 
             'Weiteres
-            If args.Exists("Shadingcontrol") Then cb_shadingcontrol.Value = GetArgument(args, "Shadingcontrol")
-            If args.Exists("Infiltration") Then cb_inf.Value = GetArgument(args, "Infiltration")
-            If args.Exists("Lightingcontrol") Then cb_lightingcontrol.Value = GetArgument(args, "Lightingcontrol")
-            If args.Exists("Windowvent") Then cb_windowvent.Value = GetArgument(args, "Windowvent")
+            If args.Exists("include_shading_control") Then cb_shadingcontrol.Value = GetArgument(args, "include_shading_control")
+            If args.Exists("include_infiltration") Then cb_inf.Value = GetArgument(args, "include_infiltration")
+            If args.Exists("include_lighting_control") Then cb_lightingcontrol.Value = GetArgument(args, "include_lighting_control")
+            If args.Exists("include_window_ventilation") Then cb_windowvent.Value = GetArgument(args, "include_window_ventilation")
 
             'Geometrie Generisch/Importiert
-            If args.Exists("genGeom") Then Range("geometry_source") = GetArgument(args, "genGeom")
+            If args.Exists("generate_geometry_selection") Then Range("geometry_source") = GetArgument(args, "generate_geometry_selection")
             Call label_geom
 
             'Nutzung - Feiertage
@@ -738,12 +738,12 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             iEntry = 0
 
             'Lüftung
-            If args.Exists("FloorHeight_kond") Then Range("FloorHeight_kond") = GetArgument(args, "FloorHeight_kond")
-            If args.Exists("FloorHeight_import") Then Range("FloorHeight_import") = GetArgument(args, "FloorHeight_import")
+            If args.Exists("conditioned_floor_height") Then Range("FloorHeight_kond") = GetArgument(args, "conditioned_floor_height")
+            If args.Exists("imported_floor_height") Then Range("FloorHeight_import") = GetArgument(args, "imported_floor_height")
             'hier wird durch unveränderte Eingabeparameter zurückgeschrieben (ohne Berücksichtigung FloorHeightRation und NRF/BGF)
-            If args.Exists("ACH_Input_Parameter") Then Range("ACH") = GetArgument(args, "ACH_Input_Parameter")
-            If args.Exists("Holidays") Then
-                datum = Split(GetArgument(args, "Holidays", True), ";")
+            If args.Exists("air_changes_input") Then Range("ACH") = GetArgument(args, "air_changes_input")
+            If args.Exists("holidays") Then
+                datum = Split(GetArgument(args, "holidays", True), ";")
                 DatesCount = UBound(datum())
 
                 Do While iEntry <= (DatesCount / 2 - 1)
@@ -754,23 +754,23 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             End If
 
         Case "set_weather_axis_timestep":
-            If args.Exists("WeatherFilePath") Then
+            If args.Exists("weather_file_path") Then
                 Dim parts() As String
-                parts = Split(args("WeatherFilePath"), "\")
+                parts = Split(args("weather_file_path"), "\")
                 If parts(UBound(parts)) <> "" Then
                     Dim dd1 As DropDown: Set dd1 = Sheets("HAUPTSEITE").DropDowns("DropDown1")
                     DDFindAndSetValue dd1, parts(UBound(parts))
                 End If
             End If
 
-            If args.Exists("NorthAxis") Then
-                DDFindAndSetValue dd2, GetArgument(args, "NorthAxis")
+            If args.Exists("north_axis") Then
+                DDFindAndSetValue dd2, GetArgument(args, "north_axis")
             End If
 
-            If args.Exists("Timestep") Then
+            If args.Exists("time_step") Then
                 Dim dd_timestep As DropDown
                 Set dd_timestep = Sheets("Hauptseite").DropDowns("dropdown_timestep")
-                dd_timestep.Value = IIf(GetArgument(args, "Timestep") = 4, 1, 2)
+                dd_timestep.Value = IIf(GetArgument(args, "time_step") = 4, 1, 2)
             End If
 
         Case "add_geometry":
@@ -788,28 +788,27 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             If args.Exists("window_to_wall_ratio_south") Then Range("WWRS") = GetArgument(args, "window_to_wall_ratio_south")
             If args.Exists("window_to_wall_ratio_west") Then Range("WWRW") = GetArgument(args, "window_to_wall_ratio_west")
 
-            If args.Exists("AdiabaticNorth") Then DDFindAndSetValue dd42, GetArgument(args, "AdiabaticNorth")
-            If args.Exists("AdiabaticEast") Then DDFindAndSetValue dd43, GetArgument(args, "AdiabaticEast")
-            If args.Exists("AdiabaticSouth") Then DDFindAndSetValue dd44, GetArgument(args, "AdiabaticSouth")
-            If args.Exists("AdiabaticWest") Then DDFindAndSetValue dd45, GetArgument(args, "AdiabaticWest")
-            If args.Exists("AdiabaticRoof") Then DDFindAndSetValue dd46, GetArgument(args, "AdiabaticRoof")
-            If args.Exists("AdiabaticFloor") Then DDFindAndSetValue dd47, GetArgument(args, "AdiabaticFloor")
+            If args.Exists("adiabatic_north") Then DDFindAndSetValue dd42, GetArgument(args, "adiabatic_north")
+            If args.Exists("adiabatic_east") Then DDFindAndSetValue dd43, GetArgument(args, "adiabatic_east")
+            If args.Exists("adiabatic_south") Then DDFindAndSetValue dd44, GetArgument(args, "adiabatic_south")
+            If args.Exists("adiabatic_west") Then DDFindAndSetValue dd45, GetArgument(args, "adiabatic_west")
+            If args.Exists("adiabatic_roof") Then DDFindAndSetValue dd46, GetArgument(args, "adiabatic_roof")
+            If args.Exists("adiabatic_floor") Then DDFindAndSetValue dd47, GetArgument(args, "adiabatic_floor")
 
-            If args.Exists("perimeterdepth") Then Range("PerimeterDepth") = GetArgument(args, "perimeterdepth")
+            If args.Exists("perimeter_depth") Then Range("PerimeterDepth") = GetArgument(args, "perimeter_depth")
 
         Case "add_materials_and_construction":
             Dim dd21 As DropDown: Set dd21 = Sheets("HAUPTSEITE").DropDowns("Dropdown21")
             Dim dd22 As DropDown: Set dd22 = Sheets("HAUPTSEITE").DropDowns("Dropdown22")
 
-            If args.Exists("is_custom_standard") And args.Exists("selected_standard") Then
-
+            If args.Exists("is_custom_standard") And args.Exists("construction_standard_selection") Then
                 If GetArgument(args, "is_custom_standard") = "Ja" Then
                     Dim i, j, k As Integer
                     Dim nrOfLayers As Integer: nrOfLayers = 4
-                    Dim names(1 To 4) As String: names(1) = "ExternalWallMat": names(2) = "RoofMat"
-                        names(3) = "SlabMat": names(4) = "InteriorSlabs"
-                    Dim attrs(1 To 5) As String: attrs(1) = "Name": attrs(2) = "Thickness"
-                        attrs(3) = "Conductivity": attrs(4) = "Density": attrs(5) = "SpecificHeat"
+                    Dim names(1 To 4) As String: names(1) = "external_wall": names(2) = "roof"
+                        names(3) = "base_plate": names(4) = "interior_slab"
+                    Dim attrs(1 To 5) As String: attrs(1) = "name": attrs(2) = "thickness"
+                        attrs(3) = "conductivity": attrs(4) = "density": attrs(5) = "heat_capacity"
                     Dim rangeAttrs As Variant: rangeAttrs = Sheets("EIGENE BAUTEILE").Range("C8:V11")
                     Dim rangeWindows As Variant: rangeWindows = Sheets("EIGENE BAUTEILE").Range("B13:D13")
 
@@ -819,152 +818,146 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
                                 ' Wenn kein Bauteil Name eingetragen ist, dann sollen die Nullen der folgenden 'attrs'
                                 ' (Thickness, Conductivity, Density, SpecificHeat)
                                 ' nicht geschrieben, sondern übersprungen werden ...
-                                If args.Exists(names(idx_name) & idx_layer & attrs(idx_attr)) _
-                                    And Not GetArgument(args, names(idx_name) & idx_layer & attrs(1)) = "" _
+                                If args.Exists(names(idx_name) & "_" & idx_layer & "_" & attrs(idx_attr)) _
+                                    And Not GetArgument(args, names(idx_name) & "_" & idx_layer & "_" & attrs(1)) = "" _
                                 Then
                                     rangeAttrs(idx_name, (idx_layer - 1) * UBound(attrs) + idx_attr) = _
-                                        GetArgument(args, names(idx_name) & idx_layer & attrs(idx_attr))
+                                        GetArgument(args, names(idx_name) & "_" & idx_layer & "_" & attrs(idx_attr))
                                 End If
                             Next
                         Next
                     Next
 
-                    If args.Exists("WindowsUValue") Then rangeWindows(1, 1) = GetArgument(args, "WindowsUValue")
-                    If args.Exists("WindowsName") Then rangeWindows(1, 2) = GetArgument(args, "WindowsName")
-                    If args.Exists("WindowsSHGC") Then rangeWindows(1, 3) = GetArgument(args, "WindowsSHGC")
+                    If args.Exists("windows_u_value") Then rangeWindows(1, 1) = GetArgument(args, "windows_u_value")
+                    If args.Exists("windows_name") Then rangeWindows(1, 2) = GetArgument(args, "windows_name")
+                    If args.Exists("windows_shgc") Then rangeWindows(1, 3) = GetArgument(args, "windows_shgc")
 
-                    Sheets("EIGENE BAUTEILE").Range("B6") = GetArgument(args, "selected_standard")
+                    Sheets("EIGENE BAUTEILE").Range("B6") = GetArgument(args, "construction_standard_selection")
                     Sheets("EIGENE BAUTEILE").Range("C8:V11") = rangeAttrs
                     Sheets("EIGENE BAUTEILE").Range("B13:D13") = rangeWindows
 
                 End If
             End If
 
-            If args.Exists("selected_standard") Then DDFindAndSetValue dd21, GetArgument(args, "selected_standard")
-            If args.Exists("selected_masses") Then DDFindAndSetValue dd22, GetArgument(args, "selected_masses")
+            If args.Exists("construction_standard_selection") Then DDFindAndSetValue dd21, GetArgument(args, "construction_standard_selection")
+            If args.Exists("inner_masses_selection") Then DDFindAndSetValue dd22, GetArgument(args, "inner_masses_selection")
 
         Case "add_internal_loads":
-            If args.Exists("NRF/BGF") And args.Exists("ElectricEquipmentPowerPerFloorArea") Then
-                Range("Electric") = val(GetArgument(args, "ElectricEquipmentPowerPerFloorArea")) _
-                    / val(GetArgument(args, "NRF/BGF"))
+            If args.Exists("electric_equipment_power_per_floor_area") Then
+                Range("Electric") = GetArgument(args, "electric_equipment_power_per_floor_area")
             End If
-            If args.Exists("NRF/BGF") And args.Exists("LightingPowerPerFloorArea") Then
-                Range("Lights") = val(GetArgument(args, "LightingPowerPerFloorArea")) _
-                    / val(GetArgument(args, "NRF/BGF"))
+            If args.Exists("lighting_power_per_floor_area") Then
+                Range("Lights") = GetArgument(args, "lighting_power_per_floor_area")
             End If
-            If args.Exists("NRF/BGF") And args.Exists("PeoplePerFloorArea") Then
-                Range("People") = 1# / (val(GetArgument(args, "PeoplePerFloorArea")) / val(GetArgument(args, "NRF/BGF")))
+            If args.Exists("floor_area_per_person") Then
+                Range("People") = 1# / val(GetArgument(args, "floor_area_per_person"))
             End If
 
-            If args.Exists("is_imported") And args.Exists("is_custom_ratio") Then
+            If args.Exists("is_imported_model") And args.Exists("is_custom_ratio") Then
                 Dim ddRatio2 As DropDown: Set ddRatio2 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF_Import")
 
-                If GetArgument(args, "is_imported") = "Ja" Then
-                    If args.Exists("selected_ratio") Then DDFindAndSetValue ddRatio2, GetArgument(args, "selected_ratio")
+                If GetArgument(args, "is_imported_model") = "Ja" Then
+                    If args.Exists("nfa_gfa_ratio_selection") Then DDFindAndSetValue ddRatio2, GetArgument(args, "nfa_gfa_ratio_selection")
                     Call DropDown_BGF_NRF_Geometrie_Import
-                    If GetArgument(args, "is_custom_ratio") = "Ja" Then Range("BGF_zu_NRF_import") = GetArgument(args, "NRF/BGF")
-                    If args.Exists("area_bgf_import") Then Range("BldgArea_import") = GetArgument(args, "area_bgf_import")
+                    If GetArgument(args, "is_custom_ratio") = "Ja" Then Range("BGF_zu_NRF_import") = GetArgument(args, "nfa_gfa_ratio")
+                    If args.Exists("area_gfa_import") Then Range("BldgArea_import") = GetArgument(args, "area_gfa_import")
                 Else
-                    If args.Exists("selected_ratio") Then DDFindAndSetValue ddRatio1, GetArgument(args, "selected_ratio")
-                    If GetArgument(args, "is_custom_ratio") = "Ja" Then Range("BGF_zu_NRF") = GetArgument(args, "NRF/BGF")
+                    If args.Exists("nfa_gfa_ratio_selection") Then DDFindAndSetValue ddRatio1, GetArgument(args, "nfa_gfa_ratio_selection")
+                    If GetArgument(args, "is_custom_ratio") = "Ja" Then Range("BGF_zu_NRF") = GetArgument(args, "nfa_gfa_ratio")
                 End If
             End If
 
-            If args.Exists("ElectricEquipmentSchedule") And args.Exists("is_custom_ElectricEquipment") Then _
-                ImportSchedule args, "ElectricEquipment", "B10:B105", "B8"
-            If args.Exists("LightSchedule") And args.Exists("is_custom_Light") Then _
-                ImportSchedule args, "Light", "J10:J105", "J8"
-            If args.Exists("PeopleSchedule") And args.Exists("is_custom_People") Then _
-                ImportSchedule args, "People", "R10:R105", "R8"
-            If args.Exists("PeopleActivitySchedule") And args.Exists("is_custom_PeopleActivity") Then _
-                ImportSchedule args, "PeopleActivity", "Z10:Z105", "Z8"
+            If args.Exists("electric_equipment_sched_selection") And args.Exists("is_custom_electric_equipment") Then _
+                ImportSchedule args, "electric_equipment", "B10:B105", "B8"
+            If args.Exists("lighting_sched_selection") And args.Exists("is_custom_lighting") Then _
+                ImportSchedule args, "lighting", "J10:J105", "J8"
+            If args.Exists("people_sched_selection") And args.Exists("is_custom_people") Then _
+                ImportSchedule args, "people", "R10:R105", "R8"
+            If args.Exists("people_activity_sched_selection") And args.Exists("is_custom_people_activity") Then _
+                ImportSchedule args, "people_activity", "Z10:Z105", "Z8"
 
-            If args.Exists("ElectricEquipmentSchedule") Then
+            If args.Exists("electric_equipment_sched_selection") Then
                 Dim dd23 As DropDown: Set dd23 = Sheets("HAUPTSEITE").DropDowns("Dropdown23")
-                DDFindAndSetValue dd23, GetArgument(args, "ElectricEquipmentSchedule")
+                DDFindAndSetValue dd23, GetArgument(args, "electric_equipment_sched_selection")
             End If
-            If args.Exists("LightSchedule") Then
+            If args.Exists("lighting_sched_selection") Then
                 Dim dd49 As DropDown: Set dd49 = Sheets("HAUPTSEITE").DropDowns("Dropdown49")
-                DDFindAndSetValue dd49, GetArgument(args, "LightSchedule")
+                DDFindAndSetValue dd49, GetArgument(args, "lighting_sched_selection")
             End If
-            If args.Exists("PeopleSchedule") Then
+            If args.Exists("people_sched_selection") Then
                 Dim dd50 As DropDown: Set dd50 = Sheets("HAUPTSEITE").DropDowns("Dropdown50")
-                DDFindAndSetValue dd50, GetArgument(args, "PeopleSchedule")
+                DDFindAndSetValue dd50, GetArgument(args, "people_sched_selection")
             End If
-            If args.Exists("PeopleActivitySchedule") Then
+            If args.Exists("people_activity_sched_selection") Then
                 Dim dd51 As DropDown: Set dd51 = Sheets("HAUPTSEITE").DropDowns("Dropdown51")
-                DDFindAndSetValue dd51, GetArgument(args, "PeopleActivitySchedule")
+                DDFindAndSetValue dd51, GetArgument(args, "people_activity_sched_selection")
             End If
 
         Case "add_ideal_loads":
-            If args.Exists("wrg") Then
-                wrgVal = IIf(GetArgument(args, "wrg") = "None", "Keine", IIf(GetArgument(args, "wrg") = "Sensible", "Sensibel", "Latent"))
+            If args.Exists("heat_recovery_method") Then
+                wrgVal = IIf(GetArgument(args, "heat_recovery_method") = "None", "Keine", IIf(GetArgument(args, "heat_recovery_method") = "Sensible", "Sensibel", "Latent"))
                 DDFindAndSetValue dd33, wrgVal
             End If
 
-            If args.Exists("hvacSchedule") And args.Exists("is_custom_hvac") Then _
+            If args.Exists("hvac_sched_selection") And args.Exists("is_custom_hvac") Then _
                 ImportSchedule args, "hvac", "AH10:AH105", "AH8"
 
-            If args.Exists("hvacSchedule") Then
-                DDFindAndSetValue dd55, GetArgument(args, "hvacSchedule")
+            If args.Exists("hvac_sched_selection") Then
+                DDFindAndSetValue dd55, GetArgument(args, "hvac_sched_selection")
             End If
 
-            If args.Exists("latent") Then Range("LATENT") = GetArgument(args, "latent")
-            If args.Exists("sensible") Then Range("SENSIBLE") = GetArgument(args, "sensible")
+            If args.Exists("latent_efficiency") Then Range("LATENT") = GetArgument(args, "latent_efficiency")
+            If args.Exists("sensible_efficiency") Then Range("SENSIBLE") = GetArgument(args, "sensible_efficiency")
 
         Case "add_detailed_hvac":
-            If args.Exists("wrg") Then
-                wrgVal = IIf(GetArgument(args, "wrg") = "None", "Keine", IIf(GetArgument(args, "wrg") = "Sensible", "Sensibel", "Latent"))
+            If args.Exists("heat_recovery_method") Then
+                wrgVal = IIf(GetArgument(args, "heat_recovery_method") = "None", "Keine", IIf(GetArgument(args, "heat_recovery_method") = "Sensible", "Sensibel", "Latent"))
                 DDFindAndSetValue dd33, wrgVal
             End If
 
-            If args.Exists("hvacSchedule") And args.Exists("is_custom_hvac") Then _
+            If args.Exists("hvac_sched_selection") And args.Exists("is_custom_hvac") Then _
                 ImportSchedule args, "hvac", "AH10:AH105", "AH8"
 
-            If args.Exists("hvacSchedule") Then
-                DDFindAndSetValue dd55, GetArgument(args, "hvacSchedule")
+            If args.Exists("hvac_sched_selection") Then
+                DDFindAndSetValue dd55, GetArgument(args, "hvac_sched_selection")
             End If
 
-            If args.Exists("latent") Then Range("LATENT") = GetArgument(args, "latent")
-            If args.Exists("sensible") Then Range("SENSIBLE") = GetArgument(args, "sensible")
+            If args.Exists("latent_efficiency") Then Range("LATENT") = GetArgument(args, "latent_efficiency")
+            If args.Exists("sensible_efficiency") Then Range("SENSIBLE") = GetArgument(args, "sensible_efficiency")
 
         Case "add_shading_controls":
-            If args.Exists("SolarSetpoint") Then Range("SHCO_IRR") = GetArgument(args, "SolarSetpoint")
+            If args.Exists("solar_setpoint") Then Range("SHCO_IRR") = GetArgument(args, "solar_setpoint")
 
         Case "add_infiltration":
-            If args.Exists("AirChangesPerHour") Then Range("INFIL") = GetArgument(args, "AirChangesPerHour")
+            If args.Exists("air_changes") Then Range("INFIL") = GetArgument(args, "air_changes")
 
         Case "add_lighting_controls":
-            If args.Exists("DaylightingSetpoint") Then Range("LC_LUX") = GetArgument(args, "DaylightingSetpoint")
+            If args.Exists("daylighting_setpoint") Then Range("LC_LUX") = GetArgument(args, "daylighting_setpoint")
 
         Case "add_temperature_setpoints":
-            If args.Exists("heatingTemp") And args.Exists("is_custom_heating") Then _
-                ImportSchedule args, "zoneHeatingTemp", "AP10:AP105", "AP8"
-            If args.Exists("coolingTemp") And args.Exists("is_custom_cooling") Then _
-                ImportSchedule args, "zoneCoolingTemp", "AX10:AX105", "AX8"
+            If args.Exists("heating_temp_selection") And args.Exists("is_custom_heating") Then _
+                ImportSchedule args, "zone_heating_temp", "AP10:AP105", "AP8"
+            If args.Exists("cooling_temp_selection") And args.Exists("is_custom_cooling") Then _
+                ImportSchedule args, "zone_cooling_temp", "AX10:AX105", "AX8"
 
-            If args.Exists("heatingTemp") Then
-                Sheets("EIGENE NUTZUNGSPROFILE").Range("AP8") = GetArgument(args, "heatingTemp")  ' NEU
+            If args.Exists("heating_temp_selection") Then
+                Sheets("EIGENE NUTZUNGSPROFILE").Range("AP8") = GetArgument(args, "heating_temp_selection")
                 Dim dd60 As DropDown: Set dd60 = Sheets("HAUPTSEITE").DropDowns("Dropdown60")
-                DDFindAndSetValue dd60, GetArgument(args, "heatingTemp")
+                DDFindAndSetValue dd60, GetArgument(args, "heating_temp_selection")
             End If
-            If args.Exists("coolingTemp") Then
-                Sheets("EIGENE NUTZUNGSPROFILE").Range("AX8") = GetArgument(args, "coolingTemp")  'NEU
+            If args.Exists("cooling_temp_selection") Then
+                Sheets("EIGENE NUTZUNGSPROFILE").Range("AX8") = GetArgument(args, "cooling_temp_selection")
                 Dim dd86 As DropDown: Set dd86 = Sheets("HAUPTSEITE").DropDowns("Dropdown86")
-                DDFindAndSetValue dd86, GetArgument(args, "coolingTemp")
+                DDFindAndSetValue dd86, GetArgument(args, "cooling_temp_selection")
             End If
-
-            If args.Exists("HeatingTemperatureSetpoint") Then Range("HeatingSetpTemp") = GetArgument(args, "HeatingTemperatureSetpoint") ' WOZU GEHÖRT DIESE RANGE ???
-            If args.Exists("CoolingTemperatureSetpoint") Then Range("CoolingSetTemp") = GetArgument(args, "CoolingTemperatureSetpoint")
 
         Case "save_model":
-            If args.Exists("FileName") Then Range("FileName") = GetArgument(args, "FileName")
+            If args.Exists("file_name") Then Range("FileName") = GetArgument(args, "file_name")
 
         Case "inject_zone_ventilation_idf":
-
-            If args.Exists("VentilationACH") Then Range("windowvent_ach") = GetArgument(args, "VentilationACH")
-            If args.Exists("MinIndoorTemperature") Then Range("windowvent_temp") = GetArgument(args, "MinIndoorTemperature")
-            If args.Exists("DeltaT") Then Range("windowvent_dt") = GetArgument(args, "DeltaT")
+            If args.Exists("air_changes") Then Range("windowvent_ach") = GetArgument(args, "air_changes")
+            If args.Exists("min_indoor_temperature") Then Range("windowvent_temp") = GetArgument(args, "min_indoor_temperature")
+            If args.Exists("temperature_difference") Then Range("windowvent_dt") = GetArgument(args, "temperature_difference")
 
         Case "inject_ideal_load_parameters_idf":
             'Already handled in AddingIdealAirLoads
@@ -985,9 +978,9 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             translate.Add "Sunday", "Sonntag"
             translate.Add "UseWeatherFile", "Nach Wetterdaten"
 
-            If args.Exists("DayToStartSimulation") Then
-                If translate.Exists(args("DayToStartSimulation")) Then
-                    DDFindAndSetValue dd80, translate(GetArgument(args, "DayToStartSimulation"))
+            If args.Exists("day_to_start_simulation") Then
+                If translate.Exists(args("day_to_start_simulation")) Then
+                    DDFindAndSetValue dd80, translate(GetArgument(args, "day_to_start_simulation"))
                 End If
             End If
 
@@ -1020,16 +1013,16 @@ Sub ImportSchedule(ByRef args As Scripting.Dictionary, ByRef scheduleName As Str
     If GetArgument(args, "is_custom_" & scheduleName) = "Nein" Then Exit Sub
 
     Dim values As Variant
-    Dim bs As String: bs = IIf(scheduleName = "hvac", "Sched", "Schedule")
+    Dim bs As String: bs = "_sched_"
 
-    values = Split(Trim(GetArgument(args, scheduleName & bs & "Werktag", True)), ";")
+    values = Split(Trim(GetArgument(args, scheduleName & bs & "weekday", True)), ";")
     Sheets("EIGENE NUTZUNGSPROFILE").Range(rangeName).Offset(0, 0) = Application.Transpose(values)
-    values = Split(Trim(GetArgument(args, scheduleName & bs & "Samstag", True)), ";")
+    values = Split(Trim(GetArgument(args, scheduleName & bs & "saturday", True)), ";")
     Sheets("EIGENE NUTZUNGSPROFILE").Range(rangeName).Offset(0, 1) = Application.Transpose(values)
-    values = Split(Trim(GetArgument(args, scheduleName & bs & "Sonntag", True)), ";")
+    values = Split(Trim(GetArgument(args, scheduleName & bs & "sunday", True)), ";")
     Sheets("EIGENE NUTZUNGSPROFILE").Range(rangeName).Offset(0, 2) = Application.Transpose(values)
-    values = Split(Trim(GetArgument(args, scheduleName & bs & "Feiertag", True)), ";")
+    values = Split(Trim(GetArgument(args, scheduleName & bs & "holiday", True)), ";")
     Sheets("EIGENE NUTZUNGSPROFILE").Range(rangeName).Offset(0, 3) = Application.Transpose(values)
 
-    Sheets("EIGENE NUTZUNGSPROFILE").Range(schedNameRange) = GetArgument(args, scheduleName & "Schedule", True)
+    Sheets("EIGENE NUTZUNGSPROFILE").Range(schedNameRange) = GetArgument(args, scheduleName & "_sched_selection", True)
 End Sub
