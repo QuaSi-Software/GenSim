@@ -1026,3 +1026,28 @@ Sub ImportSchedule(ByRef args As Scripting.Dictionary, ByRef scheduleName As Str
 
     Sheets("EIGENE NUTZUNGSPROFILE").Range(schedNameRange) = GetArgument(args, scheduleName & "_sched_selection", True)
 End Sub
+
+Private Function GetArgument( _
+    oDict As Dictionary, sArgName As String, _
+    Optional forceCommaReplace As Boolean = False _
+) As String
+    Dim sArg As String: sArg = oDict(sArgName)
+
+    If sArg = "true" Then
+        GetArgument = "Ja"
+    ElseIf sArg = "false" Then
+        GetArgument = "Nein"
+    ElseIf forceCommaReplace Or IsNumeric(sArg) Then
+        GetArgument = Replace(sArg, ".", ",")
+    Else
+        sArg = Replace(sArg, "$ae$", "ä")
+        sArg = Replace(sArg, "$oe$", "ö")
+        sArg = Replace(sArg, "$ue$", "ü")
+        sArg = Replace(sArg, "$AE$", "Ä")
+        sArg = Replace(sArg, "$OE$", "Ö")
+        sArg = Replace(sArg, "$UE$", "Ü")
+        sArg = Replace(sArg, "$ss$", "ß")
+        sArg = Replace(sArg, "$deg$", "°")
+        GetArgument = sArg
+    End If
+End Function
