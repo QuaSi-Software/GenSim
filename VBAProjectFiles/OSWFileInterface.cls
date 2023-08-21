@@ -298,7 +298,7 @@ Sub ExportAddDetailedHVAC( _
     jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
     jFile.AddSchedule "hvac_sched", Range("HVACWD")
     jFile.AddHolidays "holidays", Range("Feiertage")
-    jFile.AddArgument "hvac_schedule", dd55.List(dd55.Value)
+    jFile.AddArgument "hvac_sched_selection", dd55.List(dd55.Value)
     jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
     jFile.AddSchedule "zone_heating_temp_sched", Range("HeatingWD")
     jFile.AddSchedule "zone_cooling_temp_sched", Range("CoolingWD")
@@ -334,7 +334,7 @@ Sub ExportAddIdealLoads( _
     jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
     jFile.AddSchedule "hvac_sched", Range("HVACWD")
     jFile.AddHolidays "holidays", Range("Feiertage")
-    jFile.AddArgument "hvac_schedule", dd55.List(dd55.Value)
+    jFile.AddArgument "hvac_sched_selection", dd55.List(dd55.Value)
     jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
 
     jFile.AddMeasure "add_ideal_loads"
