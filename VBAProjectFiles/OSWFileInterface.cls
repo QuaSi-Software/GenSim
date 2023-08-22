@@ -995,7 +995,7 @@ End Sub
 Sub DDFindAndSetValue(ByRef dd As DropDown, ByVal val As Variant)
     Dim i As Integer
     For i = 1 To dd.ListCount
-        If dd.List(i) = val Then dd.Value = i
+        If Trim(dd.List(i)) = Trim(val) Then dd.Value = i
     Next
 End Sub
 
