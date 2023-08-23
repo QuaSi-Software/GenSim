@@ -1,0 +1,352 @@
+{
+   "measure_paths": [
+      "$GENSIM_PATH$\\Measures"
+   ],
+   "seed_file": "Model.osm",
+   "weather_file": "$GENSIM_PATH$\\Wetter\\TRY2015_Wiesbaden_Jahr.epw",
+   "steps": [
+      {
+         "arguments": {
+         },
+         "measure_dir_name": "create_empty_model"
+      },
+      {
+         "arguments": {
+            "weather_file_path": "$GENSIM_PATH$\\Wetter\\TRY2015_Wiesbaden_Jahr.epw",
+            "north_axis": "-15",
+            "time_step": "1"
+         },
+         "measure_dir_name": "set_weather_axis_timestep"
+      },
+      {
+         "arguments": {
+            "include_zone_details": "0",
+            "include_detailed_hvac": "0",
+            "ventilation_type": "2",
+            "floor_length": "24",
+            "floor_width": "24",
+            "nfa_gfa_ratio_selection": "BKI 2015 - Berufliche Schulen ",
+            "nfa_gfa_ratio": "0.886",
+            "generate_geometry_selection": "1",
+            "holidays": "",
+            "ventilation_lead_time": "1",
+            "ventilation_follow_up_time": "1",
+            "conditioned_floor_height": "2.6",
+            "imported_floor_height": "3",
+            "air_changes_input": "2",
+            "include_window_ventilation": "1",
+            "include_infiltration": "1",
+            "include_shading_control": "1",
+            "include_lighting_control": "1"
+         },
+         "measure_dir_name": "custom_export_params"
+      },
+      {
+         "arguments": {
+            "floor_area": "1152",
+            "building_length": "24",
+            "building_width": "24",
+            "number_of_stories": "2",
+            "floor_to_floor_height": "2.9",
+            "surface_matching": "true",
+            "make_zones": "true",
+            "window_to_wall_ratio_north": "0.6",
+            "window_to_wall_ratio_east": "0.6",
+            "window_to_wall_ratio_south": "0.6",
+            "window_to_wall_ratio_west": "0.6",
+            "adiabatic_north": "true",
+            "adiabatic_east": "true",
+            "adiabatic_south": "true",
+            "adiabatic_west": "true",
+            "adiabatic_roof": "true",
+            "adiabatic_floor": "true",
+            "perimeter_depth": "3"
+         },
+         "measure_dir_name": "add_geometry"
+      },
+      {
+         "arguments": {
+            "external_wall_1_name": "Zementestrich",
+            "external_wall_1_thickness": "0.01",
+            "external_wall_1_conductivity": "0.7",
+            "external_wall_1_density": "1400",
+            "external_wall_1_heat_capacity": "1100",
+            "external_wall_2_name": "D$ae$mmung",
+            "external_wall_2_thickness": "0.135",
+            "external_wall_2_conductivity": "0.032",
+            "external_wall_2_density": "30",
+            "external_wall_2_heat_capacity": "1500",
+            "external_wall_3_name": "Stahlbeton",
+            "external_wall_3_thickness": "0.2",
+            "external_wall_3_conductivity": "2.5",
+            "external_wall_3_density": "2400",
+            "external_wall_3_heat_capacity": "880",
+            "external_wall_4_name": "Zementestrich",
+            "external_wall_4_thickness": "0.005",
+            "external_wall_4_conductivity": "0.87",
+            "external_wall_4_density": "1400",
+            "external_wall_4_heat_capacity": "1000",
+            "roof_1_name": "D$ae$mmung",
+            "roof_1_thickness": "0.18",
+            "roof_1_conductivity": "0.032",
+            "roof_1_density": "30",
+            "roof_1_heat_capacity": "1500",
+            "roof_2_name": "Stahlbeton",
+            "roof_2_thickness": "0.2",
+            "roof_2_conductivity": "2.5",
+            "roof_2_density": "2400",
+            "roof_2_heat_capacity": "880",
+            "roof_3_name": "Zementestrich",
+            "roof_3_thickness": "0.005",
+            "roof_3_conductivity": "0.87",
+            "roof_3_density": "1400",
+            "roof_3_heat_capacity": "1000",
+            "roof_4_name": "",
+            "roof_4_thickness": "0",
+            "roof_4_conductivity": "0",
+            "roof_4_density": "0",
+            "roof_4_heat_capacity": "0",
+            "base_plate_1_name": "Zementestrich",
+            "base_plate_1_thickness": "0.01",
+            "base_plate_1_conductivity": "0.7",
+            "base_plate_1_density": "1400",
+            "base_plate_1_heat_capacity": "1100",
+            "base_plate_2_name": "D$ae$mmung",
+            "base_plate_2_thickness": "0.145",
+            "base_plate_2_conductivity": "0.04",
+            "base_plate_2_density": "30",
+            "base_plate_2_heat_capacity": "1500",
+            "base_plate_3_name": "Stahlbeton",
+            "base_plate_3_thickness": "0.2",
+            "base_plate_3_conductivity": "2.5",
+            "base_plate_3_density": "2400",
+            "base_plate_3_heat_capacity": "880",
+            "base_plate_4_name": "Zementestrich",
+            "base_plate_4_thickness": "0.005",
+            "base_plate_4_conductivity": "0.87",
+            "base_plate_4_density": "1400",
+            "base_plate_4_heat_capacity": "1000",
+            "inner_masses_1_name": "Kalksandstein 1,8",
+            "inner_masses_1_thickness": "0.15",
+            "inner_masses_1_conductivity": "0.99",
+            "inner_masses_1_density": "1800",
+            "inner_masses_1_heat_capacity": "1000",
+            "inner_masses_2_name": "",
+            "inner_masses_2_thickness": "0",
+            "inner_masses_2_conductivity": "0",
+            "inner_masses_2_density": "0",
+            "inner_masses_2_heat_capacity": "0",
+            "inner_masses_3_name": "",
+            "inner_masses_3_thickness": "0",
+            "inner_masses_3_conductivity": "0",
+            "inner_masses_3_density": "0",
+            "inner_masses_3_heat_capacity": "0",
+            "interior_slab_1_name": "D$ae$mmung",
+            "interior_slab_1_thickness": "0.1",
+            "interior_slab_1_conductivity": "0.032",
+            "interior_slab_1_density": "20",
+            "interior_slab_1_heat_capacity": "1500",
+            "interior_slab_2_name": "Stahlbeton",
+            "interior_slab_2_thickness": "0.2",
+            "interior_slab_2_conductivity": "2.5",
+            "interior_slab_2_density": "2400",
+            "interior_slab_2_heat_capacity": "880",
+            "interior_slab_3_name": "",
+            "interior_slab_3_thickness": "0",
+            "interior_slab_3_conductivity": "0",
+            "interior_slab_3_density": "0",
+            "interior_slab_3_heat_capacity": "0",
+            "interior_slab_4_name": "",
+            "interior_slab_4_thickness": "0",
+            "interior_slab_4_conductivity": "0",
+            "interior_slab_4_density": "0",
+            "interior_slab_4_heat_capacity": "0",
+            "chilled_ceiling_source_layer": "2",
+            "chilled_ceiling_temp_calc_layer": "2",
+            "chilled_ceiling_dim_ctf": "2",
+            "chilled_ceiling_tube_spacing": "0.15",
+            "chilled_ceiling_1_name": "I01 25mm insulation board",
+            "chilled_ceiling_1_thickness": "0.0254",
+            "chilled_ceiling_1_conductivity": "0.03",
+            "chilled_ceiling_1_density": "43",
+            "chilled_ceiling_1_heat_capacity": "1210",
+            "chilled_ceiling_2_name": "Metal",
+            "chilled_ceiling_2_thickness": "0.01",
+            "chilled_ceiling_2_conductivity": "45",
+            "chilled_ceiling_2_density": "7824",
+            "chilled_ceiling_2_heat_capacity": "800",
+            "chilled_ceiling_3_name": "",
+            "chilled_ceiling_3_thickness": "0",
+            "chilled_ceiling_3_conductivity": "0",
+            "chilled_ceiling_3_density": "0",
+            "chilled_ceiling_3_heat_capacity": "0",
+            "chilled_ceiling_4_name": "",
+            "chilled_ceiling_4_thickness": "0",
+            "chilled_ceiling_4_conductivity": "0",
+            "chilled_ceiling_4_density": "0",
+            "chilled_ceiling_4_heat_capacity": "0",
+            "windows_name": "Fenster mit 3-Scheiben-W$ae$rmeschutz-Verglasung",
+            "windows_u_value": "0.9",
+            "windows_shgc": "0.5",
+            "construction_standard_selection": "Neubau: EH 55",
+            "is_custom_standard": "false",
+            "inner_masses_selection": "Mittel"
+         },
+         "measure_dir_name": "add_materials_and_construction"
+      },
+      {
+         "arguments": {
+         },
+         "measure_dir_name": "detect_external_zones"
+      },
+      {
+         "arguments": {
+            "electric_equipment_power_per_floor_area": "10",
+            "lighting_power_per_floor_area": "6",
+            "floor_area_per_person": "9",
+            "electric_equipment_sched_weekday": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0.15;0.15;0.15;0.15;0.6;0.6;0.6;0.6;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.6;0.6;0.6;0.6;0.2;0.2;0.2;0.2;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "electric_equipment_sched_saturday": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "electric_equipment_sched_sunday": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "electric_equipment_sched_holiday": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "lighting_sched_weekday": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "lighting_sched_saturday": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "lighting_sched_sunday": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "lighting_sched_holiday": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "people_sched_weekday": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0.15;0.15;0.15;0.15;0.6;0.6;0.6;0.6;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.6;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.65;0.6;0.6;0.6;0.6;0.2;0.2;0.2;0.2;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "people_sched_saturday": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "people_sched_sunday": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "people_sched_holiday": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "people_activity_sched_weekday": " 140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140",
+            "people_activity_sched_saturday": " 140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140",
+            "people_activity_sched_sunday": " 140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140",
+            "people_activity_sched_holiday": " 140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140",
+            "holidays": "-",
+            "area_gfa_import": "2515",
+            "nfa_gfa_ratio": "0.886",
+            "nfa_gfa_ratio_selection": "BKI 2015 - Berufliche Schulen ",
+            "is_custom_ratio": "false",
+            "is_imported_model": "false",
+            "electric_equipment_sched_selection": "DIN 18599: Einzel-/Gruppen-/Gro$ss$raumb$ue$ro",
+            "lighting_sched_selection": "DIN 18599: Gro$ss$raumb$ue$ro",
+            "people_sched_selection": "DIN 18599: Einzel-/Gruppen-/Gro$ss$raumb$ue$ro",
+            "people_activity_sched_selection": "DIN 18599: Standard",
+            "is_custom_electric_equipment": "false",
+            "is_custom_lighting": "false",
+            "is_custom_people": "false",
+            "is_custom_people_activity": "false"
+         },
+         "measure_dir_name": "add_internal_loads"
+      },
+      {
+         "arguments": {
+            "heat_recovery_method": "Sensible",
+            "latent_efficiency": "1",
+            "sensible_efficiency": "0.75",
+            "ach_per_hour": "2",
+            "nfa_gfa_ratio": "0.886",
+            "floor_height_ratio": 0.896551724137931,
+            "hvac_sched_weekday": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "hvac_sched_saturday": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "hvac_sched_sunday": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "hvac_sched_holiday": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
+            "holidays": "-",
+            "hvac_sched_selection": "DIN 18599: Einzel-/Gruppen-/Gro$ss$raumb$ue$ro",
+            "is_custom_hvac": "false",
+            "zone_heating_temp_sched_weekday": " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20",
+            "zone_heating_temp_sched_saturday": " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20",
+            "zone_heating_temp_sched_sunday": " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20",
+            "zone_heating_temp_sched_holiday": " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20",
+            "zone_cooling_temp_sched_weekday": " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25",
+            "zone_cooling_temp_sched_saturday": " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25",
+            "zone_cooling_temp_sched_sunday": " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25",
+            "zone_cooling_temp_sched_holiday": " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25",
+            "hot_water_temp_setpoint": "82",
+            "hot_water_temp_diff": "11",
+            "cold_water_temp_setpoint": "10",
+            "cold_water_temp_diff": "5",
+            "supply_fan_pressure_rise": "750",
+            "return_fan_pressure_rise": "750",
+            "system_type": "2"
+         },
+         "measure_dir_name": "add_detailed_hvac"
+      },
+      {
+         "arguments": {
+            "solar_setpoint": "180"
+         },
+         "measure_dir_name": "add_shading_controls"
+      },
+      {
+         "arguments": {
+            "air_changes": "0.1",
+            "nfa_gfa_ratio": "0.886",
+            "floor_height_ratio": 0.896551724137931
+         },
+         "measure_dir_name": "add_infiltration"
+      },
+      {
+         "arguments": {
+            "daylighting_setpoint": "500"
+         },
+         "measure_dir_name": "add_lighting_controls"
+      },
+      {
+         "arguments": {
+            "heating_temp_selection": "Konstant 20$deg$C",
+            "cooling_temp_selection": "Konstant 25$deg$C",
+            "is_custom_heating": "false",
+            "is_custom_cooling": "false",
+            "zone_heating_temp_sched_weekday": " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20",
+            "zone_heating_temp_sched_saturday": " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20",
+            "zone_heating_temp_sched_sunday": " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20",
+            "zone_heating_temp_sched_holiday": " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20",
+            "zone_cooling_temp_sched_weekday": " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25",
+            "zone_cooling_temp_sched_saturday": " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25",
+            "zone_cooling_temp_sched_sunday": " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25",
+            "zone_cooling_temp_sched_holiday": " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25",
+            "holidays": "-"
+         },
+         "measure_dir_name": "add_temperature_setpoints"
+      },
+      {
+         "arguments": {
+            "output_path": "$GENSIM_PATH$\\Output",
+            "file_name": "Model"
+         },
+         "measure_dir_name": "save_model"
+      },
+      {
+         "arguments": {
+            "air_changes": "2",
+            "min_indoor_temperature": "24",
+            "temperature_difference": "0"
+         },
+         "measure_dir_name": "inject_zone_ventilation_idf"
+      },
+      {
+         "arguments": {
+            "heat_recovery_type": "Sensible",
+            "sensible_efficiency": "0.75",
+            "latent_efficiency": "1",
+            "air_changes": "2",
+            "nfa_gfa_ratio": "0.886",
+            "floor_height_ratio": 0.896551724137931
+         },
+         "measure_dir_name": "inject_ideal_load_parameters_idf"
+      },
+      {
+         "arguments": {
+         },
+         "measure_dir_name": "inject_radiant_surfaces_idf"
+      },
+      {
+         "arguments": {
+            "time_step": "4",
+            "day_to_start_simulation": "Sunday",
+            "heating_sizing_factor": "1.25",
+            "cooling_sizing_factor": "1.15"
+         },
+         "measure_dir_name": "set_meters_idf"
+      }
+   ]
+}

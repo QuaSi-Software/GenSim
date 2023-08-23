@@ -83,3 +83,41 @@ class TestExportToOSW < Test::Unit::TestCase
     end
   end
 end
+
+# Tests for the import of parameters from an OSW file
+class TestImportedOSW < Test::Unit::TestCase
+  # check the export of parameter values after a parameter file has been imported
+  def test_generic_geometry_and_weather
+    file_content = File.read("./parameter_sets/env_ii/generic_geometry_and_weather.osw")
+    expected = JSON.parse(file_content)
+
+    file_content = File.read("./../Output/generic_geometry_and_weather.osw")
+    exported = JSON.parse(file_content)
+
+    assert(exported.key?("weather_file"), "Missing key weather_file\n")
+    assert_equal(
+      prepare_path(expected["weather_file"]),
+      prepare_path(exported["weather_file"])
+    )
+
+    assert(exported.key?("measure_paths"), "Missing key measure_paths\n")
+    expected["measure_paths"].each_with_index do |element, index|
+      assert_equal(
+        prepare_path(element),
+        prepare_path(exported["measure_paths"][index])
+      )
+    end
+
+    assert(exported.key?("seed_file"), "Missing key seed_file\n")
+    assert_equal(expected["seed_file"], exported["seed_file"])
+
+    assert(exported.key?("steps"), "Missing key steps\n")
+    expected["steps"].each_with_index do |element, index|
+      if index >= exported["steps"].length
+        assert(false, "Wanted to check measure at pos #{index} but could not find it\n")
+      else
+        check_measure(element, exported["steps"][index])
+      end
+    end
+  end
+end
