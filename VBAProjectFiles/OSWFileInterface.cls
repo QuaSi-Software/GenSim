@@ -714,9 +714,6 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             'Parameter Geometrie, die nicht für Modellerzeugung benötigt werden
             If args.Exists("floor_length") Then Range("LAENGE") = GetArgument(args, "floor_length")
             If args.Exists("floor_width") Then Range("BREITE") = GetArgument(args, "floor_width")
-            If args.Exists("nfa_gfa_ratio") Then Range("BGF_zu_NRF") = GetArgument(args, "nfa_gfa_ratio")
-            If args.Exists("nfa_gfa_ratio_selection") Then DDFindAndSetValue ddRatio1, GetArgument(args, "nfa_gfa_ratio_selection")
-            Call DropDown_BGF_NRF_Generisch
 
             'Lüftungsanlage
             If args.Exists("ventilation_lead_time") Then Range("Vorlauf_Lüftung") = GetArgument(args, "ventilation_lead_time")
@@ -863,6 +860,7 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
                     If args.Exists("area_gfa_import") Then Range("BldgArea_import") = GetArgument(args, "area_gfa_import")
                 Else
                     If args.Exists("nfa_gfa_ratio_selection") Then DDFindAndSetValue ddRatio1, GetArgument(args, "nfa_gfa_ratio_selection")
+                    Call DropDown_BGF_NRF_Generisch
                     If GetArgument(args, "is_custom_ratio") = "Ja" Then Range("BGF_zu_NRF") = GetArgument(args, "nfa_gfa_ratio")
                 End If
             End If

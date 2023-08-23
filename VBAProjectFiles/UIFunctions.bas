@@ -238,12 +238,14 @@ End Sub
 
 Sub DropDown_BGF_NRF_Generisch()
     Sheets("Wetterdateien").Range("index_BGF_zu_NRF").Offset(1, 0) = 1
-    Range("BGF_zu_NRF") = Range("index_BGF_zu_NRF")
+    Sheets("Wetterdateien").Range("index_BGF_zu_NRF").Calculate
+    Range("BGF_zu_NRF") = Sheets("Wetterdateien").Range("index_BGF_zu_NRF")
 End Sub
 
 Sub DropDown_BGF_NRF_Geometrie_Import()
     Sheets("Wetterdateien").Range("index_BGF_zu_NRF_import").Offset(1, 0) = 1
-    Range("BGF_zu_NRF_import") = Range("index_BGF_zu_NRF_import")
+    Sheets("Wetterdateien").Range("index_BGF_zu_NRF_import").Calculate
+    Range("BGF_zu_NRF_import") = Sheets("Wetterdateien").Range("index_BGF_zu_NRF_import")
 End Sub
 
 Sub FillLocationParameters(bForce As Boolean)
