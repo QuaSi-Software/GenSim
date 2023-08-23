@@ -37,24 +37,6 @@ class CustomExportParams < OpenStudio::Measure::ModelMeasure
     ventilation_type.setDisplayName("Ventilation type")
     args << ventilation_type
 
-    floor_length = OpenStudio::Measure::OSArgument.makeDoubleArgument("floor_length", false)
-    floor_length.setDisplayName("Floor length")
-    floor_length.setUnits("m")
-    args << floor_length
-
-    floor_width = OpenStudio::Measure::OSArgument.makeDoubleArgument("floor_width", false)
-    floor_width.setDisplayName("Floor width")
-    floor_width.setUnits("m")
-    args << floor_width
-
-    ratio_NRF_BGF_selection = OpenStudio::Measure::OSArgument.makeStringArgument("nfa_gfa_ratio_selection", false)
-    ratio_NRF_BGF_selection.setDisplayName("Selection value of ratio of NFA over GFA")
-    args << ratio_NRF_BGF_selection
-
-    ratio_NRF_BGF = OpenStudio::Measure::OSArgument.makeDoubleArgument("nfa_gfa_ratio", false)
-    ratio_NRF_BGF.setDisplayName("Ratio of NFA over GFA")
-    args << ratio_NRF_BGF
-
     holidays = OpenStudio::Measure::OSArgument.makeStringArgument("holidays", false)
     holidays.setDisplayName("Definition of holidays")
     args << holidays

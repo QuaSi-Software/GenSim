@@ -101,12 +101,6 @@ Sub ExportCustomExportParams( _
     jFile.AddArgument "include_detailed_hvac", IIf(cb_detailedHVAC.Value = 1, 1, 0)
     jFile.AddArgument "ventilation_type", dd_lueftung.Value
 
-    'parameters of the geometry which are not required in the measures
-    jFile.AddArgument "floor_length", Range("LAENGE")
-    jFile.AddArgument "floor_width", Range("BREITE")
-    jFile.AddArgument "nfa_gfa_ratio_selection", ddRatio1.List(ddRatio1.Value)
-    jFile.AddArgument "nfa_gfa_ratio", Range("BGF_zu_NRF")
-
     If bGeneric Then
         jFile.AddArgument "generate_geometry_selection", 1
     Else
