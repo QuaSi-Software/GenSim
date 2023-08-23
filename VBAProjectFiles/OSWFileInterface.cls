@@ -850,7 +850,7 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
                 Range("Lights") = GetArgument(args, "lighting_power_per_floor_area")
             End If
             If args.Exists("floor_area_per_person") Then
-                Range("People") = 1# / val(GetArgument(args, "floor_area_per_person"))
+                Range("People") = GetArgument(args, "floor_area_per_person")
             End If
 
             If args.Exists("is_imported_model") And args.Exists("is_custom_ratio") Then
