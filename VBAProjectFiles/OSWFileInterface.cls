@@ -711,10 +711,6 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             If args.Exists("ventilation_type") Then dd_lueftung.Value = GetArgument(args, "ventilation_type")
             Call dropdown_Lueftung
 
-            'Parameter Geometrie, die nicht für Modellerzeugung benötigt werden
-            If args.Exists("floor_length") Then Range("LAENGE") = GetArgument(args, "floor_length")
-            If args.Exists("floor_width") Then Range("BREITE") = GetArgument(args, "floor_width")
-
             'Lüftungsanlage
             If args.Exists("ventilation_lead_time") Then Range("Vorlauf_Lüftung") = GetArgument(args, "ventilation_lead_time")
             If args.Exists("ventilation_follow_up_time") Then Range("Nachlauf_Lüftung") = GetArgument(args, "ventilation_follow_up_time")
@@ -778,6 +774,8 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             Dim dd46 As DropDown: Set dd46 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_d")
             Dim dd47 As DropDown: Set dd47 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_b")
 
+            If args.Exists("building_length") Then Range("LAENGE") = GetArgument(args, "building_length")
+            If args.Exists("building_width") Then Range("BREITE") = GetArgument(args, "building_width")
             If args.Exists("number_of_stories") Then Range("NoFloors") = GetArgument(args, "number_of_stories")
             If args.Exists("floor_to_floor_height") Then Range("FloorHeight") = GetArgument(args, "floor_to_floor_height")
             If args.Exists("window_to_wall_ratio_north") Then Range("WWRN") = GetArgument(args, "window_to_wall_ratio_north")
