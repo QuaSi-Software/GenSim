@@ -27,17 +27,17 @@
             "floor_width": "25",
             "ratio_NRF_BGF": "BKI 2015 - B$ue$rogeb$ae$ude ",
             "NRF_BGF": "0.851",
+            "genGeom": "1",
             "Holidays": "",
             "vorlauf_Luft": "1",
             "nachlauf_Luft": "1",
-            "Shadingcontrol": "1",
-            "Infiltration": "1",
-            "Lightingcontrol": "1",
-            "Windowvent": "1",
-            "genGeom": "1",
             "FloorHeight_kond": "2.6",
             "FloorHeight_import": "3",
-            "ACH_Input_Parameter": "2"
+            "ACH_Input_Parameter": "2",
+            "Windowvent": "1",
+            "Infiltration": "1",
+            "Shadingcontrol": "1",
+            "Lightingcontrol": "1"
          },
          "measure_dir_name": "CustomExportParams"
       },

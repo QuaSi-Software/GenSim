@@ -7,6 +7,457 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+
+' Export method for measure CreateAnEmptyModel.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportCreateAnEmptyModel(ByRef jFile As JSONFile)
+    Dim dd1 As DropDown 'weather data
+    Set dd1 = Sheets("HAUPTSEITE").DropDowns("DropDown1")
+
+    jFile.CreateFile Range("FileName") + ".osm", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
+    jFile.AddMeasure "CreateAnEmptyModel"
+End Sub
+
+' Export method for measure SetWeatherAxisTimestep.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param bGeneric Boolean ByVal If the geometry is generic (true) or imported (false)
+' @param bCopyOSMFile Boolean ByVal If true makes a copy of the supplied geometry file.
+'   This is a necessary step only for the export before a simulation run, but is not
+'   not required for an export of parameters for other purposes.
+' @param NrOfTimesteps As Integer ByVal Number of timesteps per hour.
+Sub ExportSetWeatherAxisTimestep( _
+    ByRef jFile As JSONFile, _
+    ByVal bGeneric As Boolean, _
+    ByVal bCopyOSMFile As Boolean, _
+    ByVal NrOfTimesteps As Integer _
+)
+    Dim dd1 As DropDown 'weather data
+    Set dd1 = Sheets("HAUPTSEITE").DropDowns("DropDown1")
+    Dim dd2 As DropDown 'orientation
+    Set dd2 = Sheets("HAUPTSEITE").DropDowns("Dropdown2")
+
+    If bGeneric Then
+        jFile.AddArgument "WeatherFilePath", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
+        jFile.AddArgument "NorthAxis", dd2.List(dd2.Value)
+        jFile.AddArgument "Timestep", CStr(NrOfTimesteps)
+    Else
+        Dim localOSMPath As String: localOSMPath = ""
+
+        If bCopyOSMFile Then
+            Dim fso As New FileSystemObject
+            Dim sOSMFileName As String
+            Dim sOSMPathName As String
+            sOSMPathName = Range("path_geometry_Import")
+            sOSMFileName = fso.GetFileName(sOSMPathName)
+            sOSMFileName = Replace(sOSMFileName, Chr(223), "ss")
+            sOSMFileName = Replace(sOSMFileName, Chr(228), "ae")
+            sOSMFileName = Replace(sOSMFileName, Chr(252), "ue")
+            sOSMFileName = Replace(sOSMFileName, Chr(246), "oe")
+            sOSMFileName = Replace(sOSMFileName, Chr(196), "Ae")
+            sOSMFileName = Replace(sOSMFileName, Chr(220), "Ue")
+            sOSMFileName = Replace(sOSMFileName, Chr(214), "Oe")
+
+            localOSMPath = GetOutputFolder() + "\" + sOSMFileName
+            FileCopy sOSMPathName, localOSMPath
+        End If
+
+        jFile.CreateFile localOSMPath, GetWeatherFolder() & "\" & dd1.List(dd1.Value)
+        jFile.AddArgument "WeatherFilePath", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
+        jFile.AddArgument "Timestep", CStr(NrOfTimesteps)
+    End If
+
+    jFile.AddMeasure "SetWeatherAxisTimestep"
+End Sub
+
+' Export method for measure CustomExportParams.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param bGeneric Boolean ByVal If the geometry is generic (true) or imported (false)
+Sub ExportCustomExportParams( _
+    ByRef jFile As JSONFile, _
+    ByVal bGeneric As Boolean _
+)
+    Dim ddRatio1 As DropDown 'ratio NFA/GFA
+    Set ddRatio1 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF")
+    Dim dd_lueftung As DropDown 'type of ventilation
+    Set dd_lueftung = Sheets("HAUPTSEITE").DropDowns("dd_lueftung")
+    Dim cb_windowvent As CheckBox
+    Set cb_windowvent = Sheets("HAUPTSEITE").CheckBoxes("Checkbox_windowvent")
+    Dim cb_inf As CheckBox
+    Set cb_inf = Sheets("HAUPTSEITE").CheckBoxes("checkbox_inf")
+    Dim cb_lightingcontrol As CheckBox
+    Set cb_lightingcontrol = Sheets("HAUPTSEITE").CheckBoxes("checkbox lightingcontrol")
+    Dim cb_shadingcontrol As CheckBox
+    Set cb_shadingcontrol = Sheets("HAUPTSEITE").CheckBoxes("checkbox_shadingcontrol")
+    Dim cb_zoneDetails As CheckBox
+    Set cb_zoneDetails = Sheets("Parameter").CheckBoxes("checkbox_ZoneDetails")
+    Dim cb_detailedHVAC As CheckBox
+    Set cb_detailedHVAC = Sheets("Parameter").CheckBoxes("checkbox_hvac")
+
+    'parameters for the generic HVAC model
+    jFile.AddArgument "zoneDetails", IIf(cb_zoneDetails.Value = 1, 1, 0)
+    jFile.AddArgument "detailedHVAC", IIf(cb_detailedHVAC.Value = 1, 1, 0)
+    jFile.AddArgument "ventilation_type", dd_lueftung.Value
+
+    'parameters of the geometry which are not required in the measures
+    jFile.AddArgument "floor_length", Range("LAENGE")
+    jFile.AddArgument "floor_width", Range("BREITE")
+    jFile.AddArgument "ratio_NRF_BGF", ddRatio1.List(ddRatio1.Value)
+    jFile.AddArgument "NRF_BGF", Range("BGF_zu_NRF")
+
+    If bGeneric Then
+        jFile.AddArgument "genGeom", 1
+    Else
+        jFile.AddArgument "genGeom", 2
+    End If
+
+    'definition of holidays
+    Dim strArg As String
+    strArg = ""
+    Dim iEntry As Integer
+    iEntry = 0
+
+    Do While Not (IsEmpty(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 0)))
+        strArg = strArg + CStr(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 0))
+        strArg = strArg + ";" + CStr(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 1)) + ";"
+        iEntry = iEntry + 1
+    Loop
+    jFile.AddArgument "Holidays", strArg
+
+    'parameters of the ventilation system
+    jFile.AddArgument "vorlauf_Luft", Range("Vorlauf_Lüftung")
+    jFile.AddArgument "nachlauf_Luft", Range("Nachlauf_Lüftung")
+    jFile.AddArgument "FloorHeight_kond", Range("FloorHeight_kond")
+    jFile.AddArgument "FloorHeight_import", Range("FloorHeight_import")
+    jFile.AddArgument "ACH_Input_Parameter", Range("ACH")
+    jFile.AddArgument "Windowvent", IIf(cb_windowvent.Value = 1, 1, 0)
+    jFile.AddArgument "Infiltration", IIf(cb_inf.Value = 1, 1, 0)
+
+    'other parameters
+    jFile.AddArgument "Shadingcontrol", IIf(cb_shadingcontrol.Value = 1, 1, 0)
+    jFile.AddArgument "Lightingcontrol", IIf(cb_lightingcontrol.Value = 1, 1, 0)
+
+    jFile.AddMeasure "CustomExportParams"
+End Sub
+
+' Export method for measure BarAspectRatioStudy.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportBarAspectRatioStudy(ByRef jFile As JSONFile)
+    Dim dd42 As DropDown 'adiabatic north
+    Set dd42 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_n")
+    Dim dd43 As DropDown 'adiabatic east
+    Set dd43 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_o")
+    Dim dd44 As DropDown 'adiabatic south
+    Set dd44 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_s")
+    Dim dd45 As DropDown 'adiabatic west
+    Set dd45 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_w")
+    Dim dd46 As DropDown 'adiabatic roof
+    Set dd46 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_d")
+    Dim dd47 As DropDown 'adiabatic base plate
+    Set dd47 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_b")
+
+    jFile.AddArgument "floor_area", Range("BldgArea")
+    jFile.AddArgument "ns_to_ew_ratio", Range("NSEWRatio")
+    jFile.AddArgument "number_of_stories", Range("NoFloors")
+    jFile.AddArgument "floor_to_floor_height", Range("FloorHeight")
+    jFile.AddArgument "surface_matching", "true"
+    jFile.AddArgument "make_zones", "true"
+    jFile.AddArgument "window_to_wall_ratio_north", Range("WWRN")
+    jFile.AddArgument "window_to_wall_ratio_east", Range("WWRO")
+    jFile.AddArgument "window_to_wall_ratio_south", Range("WWRS")
+    jFile.AddArgument "window_to_wall_ratio_west", Range("WWRW")
+    jFile.AddArgument "AdiabaticNorth", dd42.List(dd42.Value)
+    jFile.AddArgument "AdiabaticEast", dd43.List(dd43.Value)
+    jFile.AddArgument "AdiabaticSouth", dd44.List(dd44.Value)
+    jFile.AddArgument "AdiabaticWest", dd45.List(dd45.Value)
+    jFile.AddArgument "AdiabaticRoof", dd46.List(dd46.Value)
+    jFile.AddArgument "AdiabaticFloor", dd47.List(dd47.Value)
+    jFile.AddArgument "perimeterdepth", Range("PerimeterDepth")
+
+    jFile.AddMeasure "BarAspectRatioStudy"
+End Sub
+
+' Export method for measure AddingMaterialsAndConstructions.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportAddingMaterialsAndConstructions(ByRef jFile As JSONFile)
+    Dim dd21 As DropDown 'building standard
+    Set dd21 = Sheets("HAUPTSEITE").DropDowns("Dropdown21")
+    Dim dd22 As DropDown 'inner masses
+    Set dd22 = Sheets("HAUPTSEITE").DropDowns("Dropdown22")
+
+    jFile.AddConstruction "ExternalWallMat", Range("AWMat1"), 4
+    jFile.AddConstruction "RoofMat", Range("DMat1"), 4
+    jFile.AddConstruction "SlabMat", Range("BPMat1"), 4
+    jFile.AddConstruction "Massen", Range("Massen"), 3
+    jFile.AddConstruction "InteriorSlabs", Range("ZwischenDecke"), 4
+    jFile.AddInternalSourceConstructionHardcoded "ChilledCeiling", 2, 2, 2, 0.15, Range("ZwischenDecke"), 2
+    jFile.AddWindowConstruction "Windows", Range("WINDOWSSLS"), Range("WINDOWSSLS").Offset(0, -1), Range("WINDOWSSLS").Offset(0, 1)
+    jFile.AddArgument "selected_standard", dd21.List(dd21.Value)
+    jFile.AddArgument "is_custom_standard", IIf(dd21.Value > (dd21.ListCount - 4), "Ja", "Nein")
+    jFile.AddArgument "selected_masses", dd22.List(dd22.Value)
+
+    jFile.AddMeasure "AddingMaterialsAndConstructions"
+End Sub
+
+' Export method for measure AddThermalZones.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportAddThermalZones(ByRef jFile As JSONFile)
+    jFile.AddMeasure "AddThermalZones"
+End Sub
+
+' Export method for measure DetectingExternalZones.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportDetectingExternalZones(ByRef jFile As JSONFile)
+    jFile.AddMeasure "DetectingExternalZones"
+End Sub
+
+' Export method for measure AddingInternalLoads.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param bGeneric Boolean ByVal If the geometry is generic (true) or imported (false)
+' @param nrf_bgf Double ByVal Ratio of NFA over GFA
+Sub ExportAddingInternalLoads( _
+    ByRef jFile As JSONFile, _
+    ByVal bGeneric As Boolean, _
+    ByVal nrf_bgf As Double _
+)
+    Dim ddRatio1 As DropDown 'ratio NFA/GFA
+    Set ddRatio1 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF")
+    Dim ddRatio2 As DropDown 'ratio NFA/GFA imported
+    Set ddRatio2 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF_Import")
+    Dim dd23 As DropDown 'electric equipment
+    Set dd23 = Sheets("HAUPTSEITE").DropDowns("Dropdown23")
+    Dim dd49 As DropDown 'artificial lighting
+    Set dd49 = Sheets("HAUPTSEITE").DropDowns("Dropdown49")
+    Dim dd50 As DropDown 'presence of persons
+    Set dd50 = Sheets("HAUPTSEITE").DropDowns("Dropdown50")
+    Dim dd51 As DropDown 'activity of persons
+    Set dd51 = Sheets("HAUPTSEITE").DropDowns("Dropdown51")
+
+    Dim isCustom As Boolean
+    Dim selected As String
+
+    If bGeneric Then
+        isCustom = ddRatio1.Value = 1
+        selected = ddRatio1.List(ddRatio1.Value)
+    Else
+        isCustom = ddRatio2.Value = 1
+        selected = ddRatio2.List(ddRatio2.Value)
+    End If
+
+    jFile.AddArgument "ElectricEquipmentPowerPerFloorArea", Range("Electric") * nrf_bgf
+    jFile.AddArgument "LightingPowerPerFloorArea", Range("Lights") * nrf_bgf
+    jFile.AddArgument "PeoplePerFloorArea", 1 / Range("People") * nrf_bgf
+    jFile.AddSchedule "ElectricEquipmentSchedule", Range("ElectricWD")
+    jFile.AddSchedule "LightSchedule", Range("LightWD")
+    jFile.AddSchedule "PeopleSchedule", Range("PeopleWD")
+    jFile.AddSchedule "PeopleActivitySchedule", Range("PeopleActivityWD")
+    jFile.AddHolidays "Holidays", Range("Feiertage")
+    jFile.AddArgument "area_bgf_import", Range("BldgArea_import")
+    jFile.AddArgument "NRF/BGF", CStr(nrf_bgf)
+    jFile.AddArgument "selected_ratio", selected
+    jFile.AddArgument "is_custom_ratio", IIf(isCustom, "true", "false")
+    jFile.AddArgument "is_imported", IIf(bGeneric, "false", "true")
+    jFile.AddArgument "ElectricEquipmentSchedule", dd23.List(dd23.Value)
+    jFile.AddArgument "LightSchedule", dd49.List(dd49.Value)
+    jFile.AddArgument "PeopleSchedule", dd50.List(dd50.Value)
+    jFile.AddArgument "PeopleActivitySchedule", dd51.List(dd51.Value)
+    jFile.AddArgument "is_custom_ElectricEquipment", IIf(dd23.Value > (dd23.ListCount - 2), "true", "false")
+    jFile.AddArgument "is_custom_Light", IIf(dd49.Value > (dd49.ListCount - 2), "true", "false")
+    jFile.AddArgument "is_custom_People", IIf(dd50.Value > (dd50.ListCount - 2), "true", "false")
+    jFile.AddArgument "is_custom_PeopleActivity", IIf(dd51.Value > (dd51.ListCount - 2), "true", "false")
+
+    jFile.AddMeasure "AddingInternalLoads"
+End Sub
+
+' Export method for measure AddDetailedHVAC.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param nrf_bgf Double ByVal Ratio of NFA over GFA
+' @param FloorHeight_Ratio Double ByVal Ratio of conditioned over total floor height
+Sub ExportAddDetailedHVAC( _
+    ByRef jFile As JSONFile, _
+    ByVal nrf_bgf As Double, _
+    ByVal FloorHeight_Ratio As Double _
+)
+    Dim dd55 As DropDown 'schedule ventilation
+    Set dd55 = Sheets("HAUPTSEITE").DropDowns("Dropdown55")
+
+    jFile.AddArgument "wrg", Range("WRG")
+    jFile.AddArgument "latent", Range("LATENT")
+    jFile.AddArgument "sensible", Range("SENSIBLE")
+    jFile.AddArgument "ach", Range("ACH") * FloorHeight_Ratio * nrf_bgf
+    jFile.AddSchedule "hvacSched", Range("HVACWD")
+    jFile.AddHolidays "Holidays", Range("Feiertage")
+    jFile.AddArgument "hvacSchedule", dd55.List(dd55.Value)
+    jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
+
+    jFile.AddSchedule "zoneHeatingTempSched", Range("HeatingWD")
+    jFile.AddSchedule "zoneCoolingTempSched", Range("CoolingWD")
+    jFile.AddArgument "hotWaterTempSetpoint", 82
+    jFile.AddArgument "hotWaterDeltaT", 11
+    jFile.AddArgument "coldWaterTempSetpoint", 10
+    jFile.AddArgument "coldWaterDeltaT", 5
+    jFile.AddArgument "fanPressureRiseSupply", CStr(750) 'update 10.01.22 -> new standard DIN EN 16798-3 - SFP2
+    jFile.AddArgument "fanPressureRiseReturn", CStr(750)
+    jFile.AddArgument "system_type", Range("system_type")
+
+    jFile.AddMeasure "AddDetailedHVAC"
+End Sub
+
+' Export method for measure AddingIdealAirLoads.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param nrf_bgf Double ByVal Ratio of NFA over GFA
+' @param FloorHeight_Ratio Double ByVal Ratio of conditioned over total floor height
+Sub ExportAddingIdealAirLoads( _
+    ByRef jFile As JSONFile, _
+    ByVal nrf_bgf As Double, _
+    ByVal FloorHeight_Ratio As Double _
+)
+    Dim dd55 As DropDown 'schedule ventilation
+    Set dd55 = Sheets("HAUPTSEITE").DropDowns("Dropdown55")
+
+    jFile.AddArgument "wrg", Range("WRG")
+    jFile.AddArgument "latent", Range("LATENT")
+    jFile.AddArgument "sensible", Range("SENSIBLE")
+    jFile.AddArgument "ach", Range("ACH") * FloorHeight_Ratio * nrf_bgf
+    jFile.AddSchedule "hvacSched", Range("HVACWD")
+    jFile.AddHolidays "Holidays", Range("Feiertage")
+    jFile.AddArgument "hvacSchedule", dd55.List(dd55.Value)
+    jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
+
+    jFile.AddMeasure "AddingIdealAirLoads"
+End Sub
+
+' Export method for measure AddingShadingControls.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportAddingShadingControls(ByRef jFile As JSONFile)
+    jFile.AddArgument "SolarSetpoint", Range("SHCO_IRR")
+    jFile.AddMeasure "AddingShadingControls"
+End Sub
+
+' Export method for measure AddingInfiltration.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param nrf_bgf Double ByVal Ratio of NFA over GFA
+' @param FloorHeight_Ratio Double ByVal Ratio of conditioned over total floor height
+Sub ExportAddingInfiltration( _
+    ByRef jFile As JSONFile, _
+    ByVal nrf_bgf As Double, _
+    ByVal FloorHeight_Ratio As Double _
+)
+    jFile.AddArgument "AirChangesPerHour", Range("INFIL") * FloorHeight_Ratio * nrf_bgf
+    jFile.AddMeasure "AddingInfiltration"
+End Sub
+
+' Export method for measure AddingLightingControls.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportAddingLightingControls(ByRef jFile As JSONFile)
+    jFile.AddArgument "DaylightingSetpoint", Range("LC_LUX")
+    jFile.AddMeasure "AddingLightingControls"
+End Sub
+
+' Export method for measure AddingTemperatureSetpoints.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportAddingTemperatureSetpoints(ByRef jFile As JSONFile)
+    Dim dd60 As DropDown 'setpoints heating
+    Set dd60 = Sheets("HAUPTSEITE").DropDowns("Dropdown60")
+    Dim dd86 As DropDown 'setpoint cooling
+    Set dd86 = Sheets("HAUPTSEITE").DropDowns("Dropdown86")
+
+    jFile.AddArgument "heatingTemp", dd60.List(dd60.Value)
+    jFile.AddArgument "coolingTemp", dd86.List(dd86.Value)
+    jFile.AddArgument "is_custom_heating", IIf(dd60.Value > 3, "true", "false")
+    jFile.AddArgument "is_custom_cooling", IIf(dd86.Value > 3, "true", "false")
+    jFile.AddSchedule "zoneHeatingTempSchedule", Range("HeatingWD")
+    jFile.AddSchedule "zoneCoolingTempSchedule", Range("CoolingWD")
+    jFile.AddHolidays "Holidays", Range("Feiertage")
+    jFile.AddMeasure "AddingTemperatureSetpoints"
+End Sub
+
+' Export method for measure SaveModel.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportSaveModel(ByRef jFile As JSONFile)
+    jFile.AddArgument "pathtosave", GetOutputFolder()
+    jFile.AddArgument "FileName", Range("FileName")
+    jFile.AddMeasure "SaveModel"
+End Sub
+
+' Export method for measure InjectZoneVentilationIDF.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportInjectZoneVentilationIDF(ByRef jFile As JSONFile)
+    jFile.AddArgument "VentilationACH", Range("windowvent_ach")
+    jFile.AddArgument "MinIndoorTemperature", Range("windowvent_temp")
+    jFile.AddArgument "DeltaT", Range("windowvent_dt")
+    jFile.AddMeasure "InjectZoneVentilationIDF"
+End Sub
+
+' Export method for measure InjectIdealLoadParametersIDF.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param nrf_bgf Double ByVal Ratio of NFA over GFA
+' @param FloorHeight_Ratio Double ByVal Ratio of conditioned over total floor height
+Sub ExportInjectIdealLoadParametersIDF( _
+    ByRef jFile As JSONFile, _
+    ByVal nrf_bgf As Double, _
+    ByVal FloorHeight_Ratio As Double _
+)
+    jFile.AddArgument "HeatRecoveryType", Range("WRG")
+    jFile.AddArgument "SensibleEffectiveness", Range("SENSIBLE")
+    jFile.AddArgument "LatentEffectiveness", Range("LATENT")
+    jFile.AddArgument "ACH", Range("ACH") * FloorHeight_Ratio * nrf_bgf
+    jFile.AddMeasure "InjectIdealLoadParametersIDF"
+End Sub
+
+' Export method for measure InjectRadiantSurfacesIDF.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportInjectRadiantSurfacesIDF(ByRef jFile As JSONFile)
+    jFile.AddMeasure "InjectRadiantSurfacesIDF"
+End Sub
+
+' Export method for measure InjectHolidays.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportInjectHolidays(ByRef jFile As JSONFile)
+    feiertage_active = 0
+    For r = 1 To 5
+        feiertage_active = feiertage_active + Range("Feiertage").Offset(r - 1, 0) + Range("Feiertage").Offset(r - 1, 1)
+    Next
+
+    If feiertage_active > 0 Then
+        jFile.AddHolidays "Holidays", Range("Feiertage")
+        jFile.AddMeasure "InjectHolidays"
+    End If
+End Sub
+
+' Export method for measure SetMeters.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param NrOfTimesteps As Integer ByVal Number of timesteps per hour.
+Sub ExportSetMeters( _
+    ByRef jFile As JSONFile, _
+    ByVal NrOfTimesteps As Integer _
+)
+    jFile.AddArgument "Timestep", CStr(NrOfTimesteps)
+    jFile.AddArgument "DayToStartSimulation", Range("DayToStartSimulation")
+    jFile.AddArgument "HeatingSizingFactor", Range("HeatingSizingFactor")
+    jFile.AddArgument "CoolingSizingFactor", Range("CoolingSizingFactor")
+    jFile.AddMeasure "SetMeters"
+End Sub
+
 ' This class is intended to provide an interface for writing parameters to an
 ' OSW file or reading them from one. The import/export is not a simple 1-to-1
 ' match of ranges and values, thus the macros might take some time and needs
@@ -38,43 +489,6 @@ Sub ExportToOSW( _
     ByVal bCopyOSMFile As Boolean, _
     ByVal bDetailedHVAC As Boolean _
 )
-    Dim dd1 As DropDown 'Wetterdaten
-    Set dd1 = Sheets("HAUPTSEITE").DropDowns("DropDown1")
-    Dim dd2 As DropDown 'Orientierung
-    Set dd2 = Sheets("HAUPTSEITE").DropDowns("Dropdown2")
-    Dim dd21 As DropDown 'Gebäudestandard
-    Set dd21 = Sheets("HAUPTSEITE").DropDowns("Dropdown21")
-    Dim dd22 As DropDown 'innere Massen
-    Set dd22 = Sheets("HAUPTSEITE").DropDowns("Dropdown22")
-    Dim dd23 As DropDown 'Elektrische Geräte
-    Set dd23 = Sheets("HAUPTSEITE").DropDowns("Dropdown23")
-    Dim ddRatio1 As DropDown 'Verhältnis NRF/BGF
-    Set ddRatio1 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF")
-    Dim ddRatio2 As DropDown 'Verhältnis NRF/BGF Importiert
-    Set ddRatio2 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF_Import")
-    Dim dd42 As DropDown 'Adiabat Nord
-    Set dd42 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_n")
-    Dim dd43 As DropDown 'Adiabat Ost
-    Set dd43 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_o")
-    Dim dd44 As DropDown 'Adiabat Süd
-    Set dd44 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_s")
-    Dim dd45 As DropDown 'Adiabat West
-    Set dd45 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_w")
-    Dim dd46 As DropDown 'Adiabat Dach
-    Set dd46 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_d")
-    Dim dd47 As DropDown 'Adiabat Bodenplatte
-    Set dd47 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_b")
-    Dim dd49 As DropDown 'Beleuchtung
-    Set dd49 = Sheets("HAUPTSEITE").DropDowns("Dropdown49")
-    Dim dd50 As DropDown 'Personen Anwesenheit
-    Set dd50 = Sheets("HAUPTSEITE").DropDowns("Dropdown50")
-    Dim dd51 As DropDown 'Personen Aktivität
-    Set dd51 = Sheets("HAUPTSEITE").DropDowns("Dropdown51")
-    Dim dd55 As DropDown 'Betriebszeiten Lüftung
-    Set dd55 = Sheets("HAUPTSEITE").DropDowns("Dropdown55")
-    Dim dd_lueftung As DropDown 'Lüftungsanlage Typ
-    Set dd_lueftung = Sheets("HAUPTSEITE").DropDowns("dd_lueftung")
-
     Dim cb_windowvent As CheckBox
     Set cb_windowvent = Sheets("HAUPTSEITE").CheckBoxes("Checkbox_windowvent")
     Dim cb_inf As CheckBox
@@ -83,390 +497,125 @@ Sub ExportToOSW( _
     Set cb_lightingcontrol = Sheets("HAUPTSEITE").CheckBoxes("checkbox lightingcontrol")
     Dim cb_shadingcontrol As CheckBox
     Set cb_shadingcontrol = Sheets("HAUPTSEITE").CheckBoxes("checkbox_shadingcontrol")
-    Dim cb_zoneDetails As CheckBox
-    Set cb_zoneDetails = Sheets("Parameter").CheckBoxes("checkbox_ZoneDetails")
-    Dim cb_detailedHVAC As CheckBox
-    Set cb_detailedHVAC = Sheets("Parameter").CheckBoxes("checkbox_hvac")
 
-    Dim dd60 As DropDown 'Solltemp Heizung
-    Set dd60 = Sheets("HAUPTSEITE").DropDowns("Dropdown60")
-    Dim dd86 As DropDown 'Solltemp Kühlung
-    Set dd86 = Sheets("HAUPTSEITE").DropDowns("Dropdown86")
     Dim dd_timestep As DropDown
     Set dd_timestep = Sheets("Hauptseite").DropDowns("dropdown_timestep")
     Dim Timestep As Double
-    Dim Timestep_s As String
-    Timestep = 60 / dd_timestep.List(dd_timestep.Value)
-    Timestep_s = Timestep
-
-    Dim jFile As New JSONFile
-
-    If Not bGeneric Then
-        Dim localOSMPath As String: localOSMPath = ""
-
-        If bCopyOSMFile Then
-            Dim fso As New FileSystemObject
-            Dim sOSMFileName As String
-            Dim sOSMPathName As String
-            sOSMPathName = Range("path_geometry_Import")
-            sOSMFileName = fso.GetFileName(sOSMPathName)
-            sOSMFileName = Replace(sOSMFileName, Chr(223), "ss")
-            sOSMFileName = Replace(sOSMFileName, Chr(228), "ae")
-            sOSMFileName = Replace(sOSMFileName, Chr(252), "ue")
-            sOSMFileName = Replace(sOSMFileName, Chr(246), "oe")
-            sOSMFileName = Replace(sOSMFileName, Chr(196), "Ae")
-            sOSMFileName = Replace(sOSMFileName, Chr(220), "Ue")
-            sOSMFileName = Replace(sOSMFileName, Chr(214), "Oe")
-
-            localOSMPath = GetOutputFolder() + "\" + sOSMFileName
-            FileCopy sOSMPathName, localOSMPath
-        End If
-
-        jFile.CreateFile localOSMPath, GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-
-        jFile.AddArgument "WeatherFilePath", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-        jFile.AddArgument "Timestep", Timestep_s
-        jFile.AddMeasure "SetWeatherAxisTimestep"
-    Else
-        jFile.CreateFile Range("FileName") + ".osm", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-        ' first we create an empty model with the empty model measure
-        jFile.AddMeasure "CreateAnEmptyModel"
-
-        jFile.AddArgument "WeatherFilePath", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-        jFile.AddArgument "NorthAxis", dd2.List(dd2.Value)
-        jFile.AddArgument "Timestep", Timestep_s
-        jFile.AddMeasure "SetWeatherAxisTimestep"
-    End If
-
-    '--------Alle zusätzlichen Parameter für den 'CustomExport'
-
-    'Parameter Modell
-    jFile.AddArgument "zoneDetails", IIf(cb_zoneDetails.Value = 1, 1, 0)
-    jFile.AddArgument "detailedHVAC", IIf(cb_detailedHVAC.Value = 1, 1, 0)
-    jFile.AddArgument "ventilation_type", dd_lueftung.Value
-
-    'Parameter Geometrie, die nicht für Modellerzeugung benötigt werden
-    jFile.AddArgument "floor_length", Range("LAENGE")
-    jFile.AddArgument "floor_width", Range("BREITE")
-    jFile.AddArgument "ratio_NRF_BGF", ddRatio1.List(ddRatio1.Value)
-    jFile.AddArgument "NRF_BGF", Range("BGF_zu_NRF")
-
-    ' Arguments "selected_standard", "is_custom_standard", "selected_masses" are added in Measure "AddingMaterialsAndConstructions"
-    ' weitere Argumente are added in Measure "AddingInternalLoads"
-    ' Arguments "hvacSchedule", "is_custom_hvac" are added in "AddDetailedHVAC" bzw. "AddingIdealAirLoads" (je nach cb_hvac)
-
-    '  Nutzung - Feiertage
-    Dim strArg As String
-    strArg = ""
-    Dim iEntry As Integer
-    iEntry = 0
-
-    Do While Not (IsEmpty(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 0)))
-        strArg = strArg + CStr(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 0))
-        strArg = strArg + ";" + CStr(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 1)) + ";"
-        iEntry = iEntry + 1
-    Loop
-    jFile.AddArgument "Holidays", strArg
-
-
-    'Lüftungsanlage
-    jFile.AddArgument "vorlauf_Luft", Range("Vorlauf_Lüftung")
-    jFile.AddArgument "nachlauf_Luft", Range("Nachlauf_Lüftung")
-
-    'Weiteres
-    jFile.AddArgument "Shadingcontrol", IIf(cb_shadingcontrol.Value = 1, 1, 0)
-    jFile.AddArgument "Infiltration", IIf(cb_inf.Value = 1, 1, 0)
-    jFile.AddArgument "Lightingcontrol", IIf(cb_lightingcontrol.Value = 1, 1, 0)
-    jFile.AddArgument "Windowvent", IIf(cb_windowvent.Value = 1, 1, 0)
-
-    'Geometrie
-    If bGeneric Then
-        jFile.AddArgument "genGeom", 1
-    Else
-        jFile.AddArgument "genGeom", 2
-    End If
-
-    'Lüftung
-    jFile.AddArgument "FloorHeight_kond", Range("FloorHeight_kond")
-    jFile.AddArgument "FloorHeight_import", Range("FloorHeight_import")
-    jFile.AddArgument "ACH_Input_Parameter", Range("ACH")
-
-    jFile.AddMeasure "CustomExportParams"
-
-    ''''''''''''''''''''''''''''''' Building Model
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    Range("GeomStatus") = "Start ..."
-
-    ''''''''''''''''''''''''''''''' Geometry
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    If bGeneric Then
-        jFile.AddArgument "floor_area", Range("BldgArea")
-        jFile.AddArgument "ns_to_ew_ratio", Range("NSEWRatio")
-        jFile.AddArgument "number_of_stories", Range("NoFloors")
-        jFile.AddArgument "floor_to_floor_height", Range("FloorHeight")
-        jFile.AddArgument "surface_matching", "true"
-        jFile.AddArgument "make_zones", "true"
-        jFile.AddArgument "window_to_wall_ratio_north", Range("WWRN")
-        jFile.AddArgument "window_to_wall_ratio_east", Range("WWRO")
-        jFile.AddArgument "window_to_wall_ratio_south", Range("WWRS")
-        jFile.AddArgument "window_to_wall_ratio_west", Range("WWRW")
-        jFile.AddArgument "AdiabaticNorth", dd42.List(dd42.Value)
-        jFile.AddArgument "AdiabaticEast", dd43.List(dd43.Value)
-        jFile.AddArgument "AdiabaticSouth", dd44.List(dd44.Value)
-        jFile.AddArgument "AdiabaticWest", dd45.List(dd45.Value)
-        jFile.AddArgument "AdiabaticRoof", dd46.List(dd46.Value)
-        jFile.AddArgument "AdiabaticFloor", dd47.List(dd47.Value)
-        jFile.AddArgument "perimeterdepth", Range("PerimeterDepth")
-
-        jFile.AddMeasure "BarAspectRatioStudy"
-    End If
-
-    ' update status
-    Range("GeomStatus") = "Definiert"
-    DoEvents
-
-    ''''''''''''''''''''''''''''''' Assign Constructions
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    Range("UStatus") = "Start ..."
-    jFile.AddConstruction "ExternalWallMat", Range("AWMat1"), 4
-    jFile.AddConstruction "RoofMat", Range("DMat1"), 4
-    jFile.AddConstruction "SlabMat", Range("BPMat1"), 4
-    jFile.AddConstruction "Massen", Range("Massen"), 3
-    jFile.AddConstruction "InteriorSlabs", Range("ZwischenDecke"), 4
-    jFile.AddInternalSourceConstructionHardcoded "ChilledCeiling", 2, 2, 2, 0.15, Range("ZwischenDecke"), 2
-    jFile.AddWindowConstruction "Windows", Range("WINDOWSSLS"), Range("WINDOWSSLS").Offset(0, -1), Range("WINDOWSSLS").Offset(0, 1)
-    jFile.AddArgument "selected_standard", dd21.List(dd21.Value)
-    jFile.AddArgument "is_custom_standard", IIf(dd21.Value > (dd21.ListCount - 4), "Ja", "Nein")
-    jFile.AddArgument "selected_masses", dd22.List(dd22.Value)
-
-    jFile.AddMeasure "AddingMaterialsAndConstructions"
-    Range("UStatus") = "Definiert"
-    DoEvents
-
-    ''''''''''''''''''''''''''''''' Adding Thermal Zones and Detecting External Zones
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    If Not bGeneric Then jFile.AddMeasure "AddThermalZones"
-    jFile.AddMeasure "DetectingExternalZones"
-
-    ''''''''''''''''''''''''''''''' internal load measure (schedules)
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    Range("LoadStatus") = "Start ..."
+    Dim NrOfTimesteps As Integer
+    Timestep = dd_timestep.List(dd_timestep.Value)
+    NrOfTimesteps = 60 / Timestep
 
     Dim nrf_bgf As Double
-    Dim isCustom As Boolean
-    Dim selected As String
-
     If bGeneric Then
         nrf_bgf = Range("BGF_zu_NRF")
-        isCustom = ddRatio1.Value = 1
-        selected = ddRatio1.List(ddRatio1.Value)
     Else
         nrf_bgf = Range("BGF_zu_NRF_import")
-        isCustom = ddRatio2.Value = 1
-        selected = ddRatio2.List(ddRatio2.Value)
     End If
 
-    jFile.AddArgument "ElectricEquipmentPowerPerFloorArea", Range("Electric") * nrf_bgf
-    jFile.AddArgument "LightingPowerPerFloorArea", Range("Lights") * nrf_bgf
-    jFile.AddArgument "PeoplePerFloorArea", 1 / Range("People") * nrf_bgf
-    jFile.AddSchedule "ElectricEquipmentSchedule", Range("ElectricWD")
-    jFile.AddSchedule "LightSchedule", Range("LightWD")
-    jFile.AddSchedule "PeopleSchedule", Range("PeopleWD")
-    jFile.AddSchedule "PeopleActivitySchedule", Range("PeopleActivityWD")
-    jFile.AddHolidays "Holidays", Range("Feiertage")
-    jFile.AddArgument "area_bgf_import", Range("BldgArea_import")
-    jFile.AddArgument "NRF/BGF", CStr(nrf_bgf)
-    jFile.AddArgument "selected_ratio", selected
-    jFile.AddArgument "is_custom_ratio", IIf(isCustom, "true", "false")
-    jFile.AddArgument "is_imported", IIf(bGeneric, "false", "true")
-    jFile.AddArgument "ElectricEquipmentSchedule", dd23.List(dd23.Value)
-    jFile.AddArgument "LightSchedule", dd49.List(dd49.Value)
-    jFile.AddArgument "PeopleSchedule", dd50.List(dd50.Value)
-    jFile.AddArgument "PeopleActivitySchedule", dd51.List(dd51.Value)
-    jFile.AddArgument "is_custom_ElectricEquipment", IIf(dd23.Value > (dd23.ListCount - 2), "true", "false")
-    jFile.AddArgument "is_custom_Light", IIf(dd49.Value > (dd49.ListCount - 2), "true", "false")
-    jFile.AddArgument "is_custom_People", IIf(dd50.Value > (dd50.ListCount - 2), "true", "false")
-    jFile.AddArgument "is_custom_PeopleActivity", IIf(dd51.Value > (dd51.ListCount - 2), "true", "false")
-
-    jFile.AddMeasure "AddingInternalLoads"
-    Range("LoadStatus") = "Definiert"
-    DoEvents
-
-    '''''''''''''''' Calling Ideal loads measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    Range("IdealLoads") = "Start ..."
-
-    ' Pressure Rise
-    If Range("WRG") = "None" Then
-        PressureRise_ReturnFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
-        PressureRise_SupplyFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
-    Else
-        PressureRise_ReturnFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
-        PressureRise_SupplyFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
-    End If
-
-    'Korrektur der zu hohen Luftwechselrate, weil das konditionierte Raumvolumen um die Zwischendecken-Dicke zu groß ist
+    'correction factor of parameters specific to the conditioned volume as false ceilings
+    'are not considered conditioned
+    Dim FloorHeight_Ratio As Double
     If Range("geometry_source") = 1 Then
         FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight")
     Else
         FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight_import")
     End If
 
-    ' common arguments
-    jFile.AddArgument "wrg", Range("WRG")
-    jFile.AddArgument "latent", Range("LATENT")
-    jFile.AddArgument "sensible", Range("SENSIBLE")
-    jFile.AddArgument "ach", Range("ACH") * FloorHeight_Ratio * nrf_bgf 'Bugfix 01/22 : Korrektur kond. Raumhöhe sowie Korrektur NRF/BGF
-    jFile.AddSchedule "hvacSched", Range("HVACWD")
-    jFile.AddHolidays "Holidays", Range("Feiertage")
-    jFile.AddArgument "hvacSchedule", dd55.List(dd55.Value)
-    jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
+    Dim jFile As New JSONFile
 
-    If bDetailedHVAC Then
-        jFile.AddSchedule "zoneHeatingTempSched", Range("HeatingWD")
-        jFile.AddSchedule "zoneCoolingTempSched", Range("CoolingWD")
-        jFile.AddArgument "hotWaterTempSetpoint", 82
-        jFile.AddArgument "hotWaterDeltaT", 11
-        jFile.AddArgument "coldWaterTempSetpoint", 10
-        jFile.AddArgument "coldWaterDeltaT", 5
-        jFile.AddArgument "fanPressureRiseSupply", CStr(PressureRise_SupplyFan)
-        jFile.AddArgument "fanPressureRiseReturn", CStr(PressureRise_ReturnFan)
-        jFile.AddArgument "system_type", Range("system_type")
-
-        jFile.AddMeasure "AddDetailedHVAC"
-    Else
-        jFile.AddMeasure "AddingIdealAirLoads"
+    If bGeneric Then
+        Call ExportCreateAnEmptyModel(jFile)
     End If
 
-    Range("IdealLoads") = "Definiert"
+    Call ExportSetWeatherAxisTimestep(jFile, bGeneric, bCopyOSMFile, NrOfTimesteps)
+    Call ExportCustomExportParams(jFile, bGeneric)
+
+    Range("GeomStatus") = "Start ..."
+    If bGeneric Then
+        Call ExportBarAspectRatioStudy(jFile)
+        Range("GeomStatus") = "Definiert"
+    Else
+        Range("GeomStatus") = "Deaktiviert"
+    End If
     DoEvents
 
-    '''''''''''''''' Calling Shading Control measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    Range("UStatus") = "Start ..."
+    Call ExportAddingMaterialsAndConstructions(jFile)
+    Range("UStatus") = "Definiert"
+    DoEvents
+
+    If Not bGeneric Then Call ExportAddThermalZones(jFile)
+    Call ExportDetectingExternalZones(jFile)
+
+    Range("LoadStatus") = "Start ..."
+    Call ExportAddingInternalLoads(jFile, bGeneric, nrf_bgf)
+    Range("LoadStatus") = "Definiert"
+    DoEvents
+
+    Range("IdealLoads") = "Start ..."
+    If bDetailedHVAC Then
+        Call ExportAddDetailedHVAC(jFile, nrf_bgf, FloorHeight_Ratio)
+    Else
+        Call ExportAddingIdealAirLoads(jFile, nrf_bgf, FloorHeight_Ratio)
+    End If
+    Range("IdealLoads") = "Definiert"
+    DoEvents
 
     If Not cb_shadingcontrol.Value = 1 Then
         Range("ShadingControl") = "Deaktiviert"
     Else
         Range("ShadingControl") = "Start ..."
-        jFile.AddArgument "SolarSetpoint", Range("SHCO_IRR")
-        jFile.AddMeasure "AddingShadingControls"
+        Call ExportAddingShadingControls(jFile)
         Range("ShadingControl") = "Definiert"
     End If
     DoEvents
-
-    '''''''''''''''' Calling infiltration measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
     If Not cb_inf.Value = 1 Then
         Range("Infiltration") = "Deaktiviert"
     Else
         Range("Infiltration") = "Start ..."
-        jFile.AddArgument "AirChangesPerHour", Range("INFIL") * FloorHeight_Ratio * nrf_bgf
-        jFile.AddMeasure "AddingInfiltration"
+        Call ExportAddingInfiltration(jFile, nrf_bgf, FloorHeight_Ratio)
         Range("Infiltration") = "Definiert"
     End If
     DoEvents
-
-    '''''''''''''''' Calling lighting control measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
     If Not cb_lightingcontrol.Value = 1 Then
         Range("LightingControl") = "Deaktiviert"
     Else
         Range("LightingControl") = "Start ..."
-        jFile.AddArgument "DaylightingSetpoint", Range("LC_LUX")
-        jFile.AddMeasure "AddingLightingControls"
+        Call ExportAddingLightingControls(jFile)
         Range("LightingControl") = "Definiert"
     End If
+    DoEvents
 
-    '''''''''''''''' Calling Setpoint Measure loads measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    jFile.AddArgument "heatingTemp", dd60.List(dd60.Value)
-    jFile.AddArgument "coolingTemp", dd86.List(dd86.Value)
-    jFile.AddArgument "is_custom_heating", IIf(dd60.Value > 3, "true", "false")  ' da bisher nur drei feste Profile zur Auswahl stehen
-    jFile.AddArgument "is_custom_cooling", IIf(dd86.Value > 3, "true", "false")
-    jFile.AddSchedule "zoneHeatingTempSchedule", Range("HeatingWD")
-    jFile.AddSchedule "zoneCoolingTempSchedule", Range("CoolingWD")
-    jFile.AddHolidays "Holidays", Range("Feiertage")
-    jFile.AddMeasure "AddingTemperatureSetpoints"
+    Range("TempSetpoint") = "Start ..."
+    Call ExportAddingTemperatureSetpoints(jFile)
     Range("TempSetpoint") = "Definiert"
+    DoEvents
 
-    ' save in the resulting OSM for debugging with the SaveToModel measure
-    jFile.AddArgument "pathtosave", GetOutputFolder()
-    jFile.AddArgument "FileName", Range("FileName")
-    jFile.AddMeasure "SaveModel"
-
-    '''''''''''''''' Calling IDF window ventilation measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    Call ExportSaveModel(jFile)
 
     If Not cb_windowvent.Value = 1 Then
         Range("window_ventilation") = "Deaktiviert"
     Else
         Range("window_ventilation") = "Start ..."
-        jFile.AddArgument "VentilationACH", Range("windowvent_ach")
-        jFile.AddArgument "MinIndoorTemperature", Range("windowvent_temp")
-        jFile.AddArgument "DeltaT", Range("windowvent_dt")
-        jFile.AddMeasure "InjectZoneVentilationIDF"
+        Call ExportInjectZoneVentilationIDF(jFile)
         Range("window_ventilation") = "Definiert"
     End If
-
-    '''''''''''''''' Calling IDF Ideal loads Measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    Range("IDFIdealLoads") = "Start ..."
-
-    jFile.AddArgument "HeatRecoveryType", Range("WRG")
-    jFile.AddArgument "SensibleEffectiveness", Range("SENSIBLE")
-    jFile.AddArgument "LatentEffectiveness", Range("LATENT")
-    jFile.AddArgument "ACH", Range("ACH") * FloorHeight_Ratio * nrf_bgf 'Bugfix 01/22 : Korrektur kond. Raumhöhe sowie Korrektur NRF/BGF
-    jFile.AddMeasure "InjectIdealLoadParametersIDF"
-    Range("IDFIdealLoads") = "Definiert"
-    ' update the progress messages
     DoEvents
 
-    '''''''''''''''' Calling IDF Radiant Surface Measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    Range("IDFIdealLoads") = "Start ..."
+    Call ExportInjectIdealLoadParametersIDF(jFile, nrf_bgf, FloorHeight_Ratio)
+    Range("IDFIdealLoads") = "Definiert"
+    DoEvents
 
     If bDetailedHVAC Then
-        'Range("IDFIdealLoads") = "Start ..."
-
-        jFile.AddMeasure "InjectRadiantSurfacesIDF"
-        'Range("IDFIdealLoads") = "Definiert"
-
-        ' update the progress messages
-        DoEvents
+        Call ExportInjectRadiantSurfacesIDF(jFile)
     End If
 
-    '''''''''''''''' Calling IDF InjectHolidays Measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    Call ExportInjectHolidays(jFile)
+    Call ExportSetMeters(jFile, NrOfTimesteps)
 
-    feiertage_active = 0
-    For r = 1 To 5
-        feiertage_active = feiertage_active + Range("Feiertage").Offset(r - 1, 0) + Range("Feiertage").Offset(r - 1, 1)
-    Next
-
-    If feiertage_active > 0 Then
-        jFile.AddHolidays "Holidays", Range("Feiertage")
-        jFile.AddMeasure "InjectHolidays"
-    End If
-
-    '''''''''''''''' Calling IDF Set Meters Measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    jFile.AddArgument "Timestep", Timestep_s
-    jFile.AddArgument "DayToStartSimulation", Range("DayToStartSimulation")
-    jFile.AddArgument "HeatingSizingFactor", Range("HeatingSizingFactor")
-    jFile.AddArgument "CoolingSizingFactor", Range("CoolingSizingFactor")
-    jFile.AddMeasure "SetMeters"
-
-    ' save the JSON file
     jFile.Save sFilename
 End Sub
 
