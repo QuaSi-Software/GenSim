@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>inject_ideal_load_parameters_idf</name>
   <uid>e3487a61-abd7-4f98-ae4f-c77301e48a4d</uid>
-  <version_id>df2b7579-272e-40db-9a11-51fecc0f61ca</version_id>
-  <version_modified>20180727T094751Z</version_modified>
+  <version_id>48a08c7b-5722-4a9e-93aa-99f7e41bf5e1</version_id>
+  <version_modified>20230714T085728Z</version_modified>
   <xml_checksum>7DF45990</xml_checksum>
   <class_name>InjectIdealLoadParametersIDF</class_name>
   <display_name>InjectIdealLoadParametersIDF</display_name>
@@ -71,7 +71,19 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>4AD182AD</checksum>
+      <checksum>46F0C649</checksum>
+    </file>
+    <file>
+      <filename>example_model.idf</filename>
+      <filetype>idf</filetype>
+      <usage_type>test</usage_type>
+      <checksum>81319CFD</checksum>
+    </file>
+    <file>
+      <filename>InjectdealLoadParametersIdf_Test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>8A8F3054</checksum>
     </file>
   </files>
 </measure>

@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>adding_internal_loads</name>
   <uid>9db02274-2ce9-48e3-810d-ab9088f09c62</uid>
-  <version_id>488f5bab-8bb2-4c99-ae53-2a0f52380e3e</version_id>
-  <version_modified>20180727T085621Z</version_modified>
+  <version_id>c360d9d0-7055-4452-a09b-6be4c1377052</version_id>
+  <version_modified>20230714T085537Z</version_modified>
   <xml_checksum>57232789</xml_checksum>
   <class_name>AddingInternalLoads</class_name>
   <display_name>AddingInternalLoads</display_name>
@@ -53,6 +53,13 @@
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
+      <name>ElectricEquipmentScheduleFeiertag</name>
+      <display_name>ElectricEquipmentScheduleFeiertag</display_name>
+      <type>String</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
       <name>LightScheduleWerktag</name>
       <display_name>LightScheduleWerktag</display_name>
       <type>String</type>
@@ -69,6 +76,13 @@
     <argument>
       <name>LightScheduleSonntag</name>
       <display_name>LightScheduleSonntag</display_name>
+      <type>String</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>LightScheduleFeiertag</name>
+      <display_name>LightScheduleFeiertag</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
@@ -95,6 +109,13 @@
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
+      <name>PeopleScheduleFeiertag</name>
+      <display_name>PeopleScheduleFeiertag</display_name>
+      <type>String</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
       <name>PeopleActivityScheduleWerktag</name>
       <display_name>PeopleActivityScheduleWerktag</display_name>
       <type>String</type>
@@ -114,6 +135,171 @@
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>PeopleActivityScheduleFeiertag</name>
+      <display_name>PeopleActivityScheduleFeiertag</display_name>
+      <type>String</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>Holidays</name>
+      <display_name>Holidays</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>area_bgf_import</name>
+      <display_name>area_bgf_import</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>NRF/BGF</name>
+      <display_name>NRF/BGF</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>selected_ratio</name>
+      <display_name>selected_ratio</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>is_custom_ratio</name>
+      <display_name>is_custom_ratio</display_name>
+      <type>Boolean</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+      <choices>
+        <choice>
+          <value>true</value>
+          <display_name>true</display_name>
+        </choice>
+        <choice>
+          <value>false</value>
+          <display_name>false</display_name>
+        </choice>
+      </choices>
+    </argument>
+    <argument>
+      <name>is_imported</name>
+      <display_name>is_imported</display_name>
+      <type>Boolean</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+      <choices>
+        <choice>
+          <value>true</value>
+          <display_name>true</display_name>
+        </choice>
+        <choice>
+          <value>false</value>
+          <display_name>false</display_name>
+        </choice>
+      </choices>
+    </argument>
+    <argument>
+      <name>ElectricEquipmentSchedule</name>
+      <display_name>ElectricEquipmentSchedule</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>LightSchedule</name>
+      <display_name>LightSchedule</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>PeopleSchedule</name>
+      <display_name>PeopleSchedule</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>PeopleActivitySchedule</name>
+      <display_name>PeopleActivitySchedule</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>is_custom_ElectricEquipment</name>
+      <display_name>is_custom_ElectricEquipment</display_name>
+      <type>Boolean</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+      <choices>
+        <choice>
+          <value>true</value>
+          <display_name>true</display_name>
+        </choice>
+        <choice>
+          <value>false</value>
+          <display_name>false</display_name>
+        </choice>
+      </choices>
+    </argument>
+    <argument>
+      <name>is_custom_Light</name>
+      <display_name>is_custom_Light</display_name>
+      <type>Boolean</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+      <choices>
+        <choice>
+          <value>true</value>
+          <display_name>true</display_name>
+        </choice>
+        <choice>
+          <value>false</value>
+          <display_name>false</display_name>
+        </choice>
+      </choices>
+    </argument>
+    <argument>
+      <name>is_custom_People</name>
+      <display_name>is_custom_People</display_name>
+      <type>Boolean</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+      <choices>
+        <choice>
+          <value>true</value>
+          <display_name>true</display_name>
+        </choice>
+        <choice>
+          <value>false</value>
+          <display_name>false</display_name>
+        </choice>
+      </choices>
+    </argument>
+    <argument>
+      <name>is_custom_PeopleActivity</name>
+      <display_name>is_custom_PeopleActivity</display_name>
+      <type>Boolean</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+      <choices>
+        <choice>
+          <value>true</value>
+          <display_name>true</display_name>
+        </choice>
+        <choice>
+          <value>false</value>
+          <display_name>false</display_name>
+        </choice>
+      </choices>
     </argument>
   </arguments>
   <outputs/>
@@ -153,7 +339,19 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>2C938F07</checksum>
+      <checksum>F071FC7D</checksum>
+    </file>
+    <file>
+      <filename>AddingInternalLoads_Test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>2E0C9193</checksum>
+    </file>
+    <file>
+      <filename>example_model.osm</filename>
+      <filetype>osm</filetype>
+      <usage_type>test</usage_type>
+      <checksum>4B0919CA</checksum>
     </file>
   </files>
 </measure>

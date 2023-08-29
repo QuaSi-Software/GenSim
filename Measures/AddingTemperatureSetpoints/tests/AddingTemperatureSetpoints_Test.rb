@@ -16,7 +16,7 @@ class AddingTemperatureSetpoints_Test < MiniTest::Test
         # get arguments with a new instance of the measure
         arguments = GetArguments(AddingTemperatureSetpoints.new, OpenStudio::Model::Model.new)
 
-        assert_equal(9, arguments.size)
+        assert_equal(13, arguments.size)
     end
 
     def test_bad_argument_values
@@ -45,6 +45,10 @@ class AddingTemperatureSetpoints_Test < MiniTest::Test
         args_hash["zoneCoolingTempScheduleSonntag"] = defaultSched
         args_hash["zoneCoolingTempScheduleFeiertag"] = defaultSched
         args_hash["Holidays"] = defaultSched
+        args_hash["heatingTemp"] = "Konstant 20°C"
+        args_hash["coolingTemp"] = "Konstant 25°C"
+        args_hash["is_custom_heating"] = false
+        args_hash["is_custom_cooling"] = false
 
          # load an existing model
         dir = File.expand_path(File.dirname(__FILE__))

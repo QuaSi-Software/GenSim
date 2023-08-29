@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>adding_lighting_controls</name>
   <uid>ac34ac49-f21b-4c54-83e9-3615aa06acf1</uid>
-  <version_id>a93ebf3f-b844-42a1-b38a-8b292553227f</version_id>
-  <version_modified>20180727T085621Z</version_modified>
+  <version_id>06dfaf7b-c9cc-4aa8-be0c-63c4ba0d7db7</version_id>
+  <version_modified>20230714T085547Z</version_modified>
   <xml_checksum>81C5D8E7</xml_checksum>
   <class_name>AddingLightingControls</class_name>
   <display_name>AddingLightingControls</display_name>
@@ -56,7 +56,25 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>B52116B0</checksum>
+      <checksum>11D18056</checksum>
+    </file>
+    <file>
+      <filename>AddingLightingControls_Test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>20A9B3EC</checksum>
+    </file>
+    <file>
+      <filename>example_model.osm</filename>
+      <filetype>osm</filetype>
+      <usage_type>test</usage_type>
+      <checksum>C9D10A7E</checksum>
+    </file>
+    <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>A54B5736</checksum>
     </file>
   </files>
 </measure>

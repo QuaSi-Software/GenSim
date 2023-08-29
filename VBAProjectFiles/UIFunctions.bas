@@ -444,7 +444,7 @@ Sub ExportOSWFile()
         'Do the import
         Dim interface As OSWFileInterface: Set interface = New OSWFileInterface
         Sheets("HAUPTSEITE").Unprotect
-        Call interface.ExportToOSW(varResult, True, True, True, (Range("geometry_source") = 1), bDetailedHVAC)
+        Call interface.ExportToOSW(varResult, (Range("geometry_source") = 1), False, bDetailedHVAC)
         Sheets("HAUPTSEITE").Protect
 
         Application.Calculation = xlCalculationAutomatic

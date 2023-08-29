@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>adding_shading_controls</name>
   <uid>020cd542-7e01-422a-becb-e32c0318f9d9</uid>
-  <version_id>980ba3b0-f309-4c13-9e3e-0b2da6dbc4f0</version_id>
-  <version_modified>20180727T085621Z</version_modified>
+  <version_id>63cd1337-80c2-44b8-bc1f-4eb87a2dc35f</version_id>
+  <version_modified>20230714T085618Z</version_modified>
   <xml_checksum>2AF3A68E</xml_checksum>
   <class_name>AddingShadingControls</class_name>
   <display_name>AddingShadingControls</display_name>
@@ -56,7 +56,19 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>7B91B813</checksum>
+      <checksum>BC713C14</checksum>
+    </file>
+    <file>
+      <filename>AddingShadingControls_Test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>4BF96063</checksum>
+    </file>
+    <file>
+      <filename>example_model.osm</filename>
+      <filetype>osm</filetype>
+      <usage_type>test</usage_type>
+      <checksum>49A24D5A</checksum>
     </file>
   </files>
 </measure>

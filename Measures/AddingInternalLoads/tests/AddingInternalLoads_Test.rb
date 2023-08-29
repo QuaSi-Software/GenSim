@@ -21,7 +21,7 @@ class AddingInternalLoads_Test < MiniTest::Test
         # get arguments with a new instance of the measure
         arguments = GetArguments(AddingInternalLoads.new, OpenStudio::Model::Model.new)
 
-        assert_equal(20, arguments.size)
+        assert_equal(33, arguments.size)
     end
 
     def test_bad_argument_values
@@ -65,7 +65,20 @@ class AddingInternalLoads_Test < MiniTest::Test
         args_hash["hvacSchedWerktag"] = defaultSched
         args_hash["hvacSchedSamstag"] = defaultSched
         args_hash["hvacSchedSonntag"] = defaultSched
-        
+        args_hash["area_bgf_import"] = 2515
+        args_hash["NRF/BGF"] = 0.851
+        args_hash["selected_ratio"] = "BKI 2015 - Bürogebäude "
+        args_hash["is_custom_ratio"] = false
+        args_hash["is_imported"] = false
+        args_hash["ElectricEquipmentSchedule"] = "DIN 18599: Einzel-/Gruppen-/Großraumbüro"
+        args_hash["LightSchedule"] = "DIN 18599: Großraumbüro"
+        args_hash["PeopleSchedule"] = "DIN 18599: Einzel-/Gruppen-/Großraumbüro"
+        args_hash["PeopleActivitySchedule"] = "DIN 18599: Standard"
+        args_hash["is_custom_ElectricEquipment"] = false
+        args_hash["is_custom_Light"] = false
+        args_hash["is_custom_People"] = false
+        args_hash["is_custom_PeopleActivity"] = false
+
         # load an existing model
         dir = File.expand_path(File.dirname(__FILE__))
         model = OpenModel(dir)

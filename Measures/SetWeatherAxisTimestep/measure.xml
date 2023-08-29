@@ -1,9 +1,9 @@
 <measure>
   <schema_version>3.0</schema_version>
-  <name>SetWeatherAxisTimestep</name>
+  <name>set_weather_axis_timestep</name>
   <uid>1fd78114-23ef-4ee1-80f4-d1695976a55b</uid>
-  <version_id>02c40910-5070-4d8e-bcc3-a97d3bf416e4</version_id>
-  <version_modified>20180817T090645Z</version_modified>
+  <version_id>e5c35183-ae82-4281-9490-6f5a63763c59</version_id>
+  <version_modified>20230714T085804Z</version_modified>
   <xml_checksum>74C70850</xml_checksum>
   <class_name>SetWeatherAxisTimestep</class_name>
   <display_name>SetWeatherAxisTimestep</display_name>
@@ -18,18 +18,19 @@
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>NorthAxis</name>
-      <display_name>NorthAxis</display_name>
-      <type>Double</type>
-      <required>true</required>
-      <model_dependent>false</model_dependent>
-    </argument>
-    <argument>
       <name>Timestep</name>
       <display_name>Timestep</display_name>
       <type>Integer</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>NorthAxis</name>
+      <display_name>NorthAxis</display_name>
+      <type>Double</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+      <default_value>-9999</default_value>
     </argument>
   </arguments>
   <outputs/>
@@ -59,19 +60,19 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>A796ED81</checksum>
-    </file>
-    <file>
-      <filename>set_weather_axis_timestep_test.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>test</usage_type>
-      <checksum>B527E79C</checksum>
+      <checksum>6D6E09A8</checksum>
     </file>
     <file>
       <filename>example_model.osm</filename>
       <filetype>osm</filetype>
       <usage_type>test</usage_type>
-      <checksum>53D14E69</checksum>
+      <checksum>31115A0D</checksum>
+    </file>
+    <file>
+      <filename>SetWeatherAxis_Test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>C13882A9</checksum>
     </file>
   </files>
 </measure>

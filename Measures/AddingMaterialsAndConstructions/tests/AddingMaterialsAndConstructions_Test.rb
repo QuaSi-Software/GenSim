@@ -17,7 +17,7 @@ class AddingMaterialsAndConstructions_Test < MiniTest::Unit::TestCase
     # get arguments with a new instance of the measure
     arguments = GetArguments(AddingMaterialsAndConstructions.new, OpenStudio::Model::Model.new)
 
-    assert_equal(122, arguments.size)
+    assert_equal(125, arguments.size)
     assert_equal("ExternalWallMat1Name", arguments[0].name)
   end
 
@@ -58,7 +58,11 @@ class AddingMaterialsAndConstructions_Test < MiniTest::Unit::TestCase
     args_hash[s + "Name"] = s + "Name"
     args_hash[s + "UValue"] = 2
     args_hash[s + "SHGC"] = 1
-        
+
+    args_hash["is_custom_standard"] = false
+    args_hash["selected_standard"] = "Neubau: EH 55"
+    args_hash["selected_masses"] = "Mittel"
+
     # load an existing model
     dir = File.expand_path(File.dirname(__FILE__))
     model = OpenModel(dir)

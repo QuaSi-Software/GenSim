@@ -43,6 +43,21 @@ class AddingInternalLoads < OpenStudio::Measure::ModelMeasure
 	args << OpenStudio::Measure::OSArgument.makeStringArgument("PeopleActivityScheduleSonntag", true)
 	args << OpenStudio::Measure::OSArgument.makeStringArgument("PeopleActivityScheduleFeiertag", true)
 	args << OpenStudio::Measure::OSArgument.makeStringArgument("Holidays", false)
+
+	# custom parameters for loading from OSW
+	args << OpenStudio::Measure::OSArgument.makeDoubleArgument("area_bgf_import", false)
+	args << OpenStudio::Measure::OSArgument.makeDoubleArgument("NRF/BGF", false)
+	args << OpenStudio::Measure::OSArgument.makeStringArgument("selected_ratio", false)
+	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_ratio", false)
+	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_imported", false)
+	args << OpenStudio::Measure::OSArgument.makeStringArgument("ElectricEquipmentSchedule", false)
+	args << OpenStudio::Measure::OSArgument.makeStringArgument("LightSchedule", false)
+	args << OpenStudio::Measure::OSArgument.makeStringArgument("PeopleSchedule", false)
+	args << OpenStudio::Measure::OSArgument.makeStringArgument("PeopleActivitySchedule", false)
+	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_ElectricEquipment", false)
+	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_Light", false)
+	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_People", false)
+	args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_PeopleActivity", false)
     
     return args
   end

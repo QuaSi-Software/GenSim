@@ -1,9 +1,9 @@
 <measure>
   <schema_version>3.0</schema_version>
-  <name>InjectHolidays</name>
+  <name>inject_holidays</name>
   <uid>3bdd4f5d-02e7-43ad-b151-9f781ef887b3</uid>
-  <version_id>1ddca2d0-57ef-456c-92bf-ed7936457aa6</version_id>
-  <version_modified>20180727T091806Z</version_modified>
+  <version_id>91b5a251-ce99-433a-86e9-c3591e20baca</version_id>
+  <version_modified>20230714T085712Z</version_modified>
   <xml_checksum>0B6DEAE1</xml_checksum>
   <class_name>InjectHolidays</class_name>
   <display_name>InjectHolidays</display_name>
@@ -50,7 +50,19 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>B705E9EB</checksum>
+      <checksum>E9E22EE2</checksum>
+    </file>
+    <file>
+      <filename>example_model.idf</filename>
+      <filetype>idf</filetype>
+      <usage_type>test</usage_type>
+      <checksum>5F902A67</checksum>
+    </file>
+    <file>
+      <filename>InjectHolidays_Test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>08072768</checksum>
     </file>
   </files>
 </measure>
