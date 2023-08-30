@@ -27,6 +27,14 @@ class AddingInfiltration < OpenStudio::Measure::ModelMeasure
     infiltration_ach.setDisplayName("Space Infiltration Air Changes Per Hour (1/h).")
     infiltration_ach.setDefaultValue(0.1)
     args << infiltration_ach
+    nfa_gfa_ratio = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("nfa_gfa_ratio",true)
+    nfa_gfa_ratio.setDisplayName("Ratio of NFA over GFA")
+    nfa_gfa_ratio.setDefaultValue(1)
+    args << nfa_gfa_ratio
+    floor_height_ratio = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("floor_height_ratio",true)
+    floor_height_ratio.setDisplayName("Ratio of conditioned floor height over total floor height")
+    floor_height_ratio.setDefaultValue(1)
+    args << floor_height_ratio
 
 
     return args
@@ -43,6 +51,11 @@ class AddingInfiltration < OpenStudio::Measure::ModelMeasure
 
     #assign the user inputs to variables
     infiltration_ach = runner.getDoubleArgumentValue("AirChangesPerHour",user_arguments)
+    nfa_gfa_ratio = runner.getDoubleArgumentValue("nfa_gfa_ratio",user_arguments)
+    floor_height_ratio = runner.getDoubleArgumentValue("floor_height_ratio",user_arguments)
+
+    # rescale air change rate to conditioned volume and GFA
+    infiltration_ach = infiltration_ach * nfa_gfa_ratio * floor_height_ratio
 
     #check infiltration for reasonableness
     if infiltration_ach < 0

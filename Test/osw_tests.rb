@@ -34,10 +34,12 @@ def check_measure(expected, exported)
             exported["arguments"].key?(key),
             "Missing parameter key #{key} in measure#{expected["measure_dir_name"]}"
         )
+
+        err_msg = "Value mismatch in measure #{expected['measure_dir_name']}::#{key}"
         if key.include?("Path") || key.include?("path")
-            assert_equal(prepare_path(value), prepare_path(exported["arguments"][key]))
+            assert_equal(prepare_path(value), prepare_path(exported["arguments"][key]), err_msg)
         else
-            assert_equal(value, exported["arguments"][key])
+            assert_equal(value, exported["arguments"][key], err_msg)
         end
     end
 end

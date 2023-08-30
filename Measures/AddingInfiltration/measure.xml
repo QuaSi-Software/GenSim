@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>adding_infiltration</name>
   <uid>fc9a4e6a-409c-4788-aa87-76d3fee0088c</uid>
-  <version_id>a55773b8-d3a9-434c-95ef-fb36ee12a390</version_id>
-  <version_modified>20230714T085519Z</version_modified>
+  <version_id>a7f0d20f-11b3-467d-82c4-18822f71c6a7</version_id>
+  <version_modified>20230727T145604Z</version_modified>
   <xml_checksum>19EEDBBB</xml_checksum>
   <class_name>AddingInfiltration</class_name>
   <display_name>AddingInfiltration</display_name>
@@ -17,6 +17,22 @@
       <required>true</required>
       <model_dependent>false</model_dependent>
       <default_value>0.1</default_value>
+    </argument>
+    <argument>
+      <name>nfa_gfa_ratio</name>
+      <display_name>Ratio of NFA over GFA</display_name>
+      <type>Double</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+      <default_value>1</default_value>
+    </argument>
+    <argument>
+      <name>floor_height_ratio</name>
+      <display_name>Ratio of conditioned floor height over total floor height</display_name>
+      <type>Double</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+      <default_value>1</default_value>
     </argument>
   </arguments>
   <outputs/>
@@ -48,6 +64,12 @@
   </attributes>
   <files>
     <file>
+      <filename>example_model.osm</filename>
+      <filetype>osm</filetype>
+      <usage_type>test</usage_type>
+      <checksum>7264201D</checksum>
+    </file>
+    <file>
       <version>
         <software_program>OpenStudio</software_program>
         <identifier>2.5.0</identifier>
@@ -56,19 +78,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>57810A60</checksum>
+      <checksum>66AA0C1F</checksum>
     </file>
     <file>
       <filename>AddingInfiltration_Test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>F897CAD2</checksum>
-    </file>
-    <file>
-      <filename>example_model.osm</filename>
-      <filetype>osm</filetype>
-      <usage_type>test</usage_type>
-      <checksum>7264201D</checksum>
+      <checksum>BED358D8</checksum>
     </file>
   </files>
 </measure>

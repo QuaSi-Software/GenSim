@@ -38,6 +38,15 @@ class AddingIdealAirLoads < OpenStudio::Measure::ModelMeasure
     ach.setDisplayName("Air changes per hours")
     ach.setDefaultValue(1)
     args << ach
+    nfa_gfa_ratio = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("nfa_gfa_ratio",true)
+    nfa_gfa_ratio.setDisplayName("Ratio of NFA over GFA")
+    nfa_gfa_ratio.setDefaultValue(1)
+    args << nfa_gfa_ratio
+    floor_height_ratio = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("floor_height_ratio",true)
+    floor_height_ratio.setDisplayName("Ratio of conditioned floor height over total floor height")
+    floor_height_ratio.setDefaultValue(1)
+    args << floor_height_ratio
+
 	args << OpenStudio::Measure::OSArgument.makeStringArgument("hvacSchedWerktag", true)
 	args << OpenStudio::Measure::OSArgument.makeStringArgument("hvacSchedSamstag", true)
 	args << OpenStudio::Measure::OSArgument.makeStringArgument("hvacSchedSonntag", true)
@@ -62,6 +71,8 @@ class AddingIdealAirLoads < OpenStudio::Measure::ModelMeasure
 	latent = runner.getDoubleArgumentValue("latent",user_arguments)
 	sensible = runner.getDoubleArgumentValue("sensible",user_arguments)
 	ach = runner.getDoubleArgumentValue("ach",user_arguments)
+  nfa_gfa_ratio = runner.getDoubleArgumentValue("nfa_gfa_ratio",user_arguments)
+  floor_height_ratio = runner.getDoubleArgumentValue("floor_height_ratio",user_arguments)
 	hvacSchedWeekday = runner.getStringArgumentValue("hvacSchedWerktag", user_arguments)
 	hvacSchedSaturday = runner.getStringArgumentValue("hvacSchedSamstag", user_arguments)
 	hvacSchedSunday = runner.getStringArgumentValue("hvacSchedSonntag", user_arguments)
@@ -69,6 +80,10 @@ class AddingIdealAirLoads < OpenStudio::Measure::ModelMeasure
 	holidays = runner.getStringArgumentValue("Holidays", user_arguments)
 
 	hvacSched = CreateSchedule(model, "HVACSched", hvacSchedWeekday, hvacSchedSaturday, hvacSchedSunday, hvacSchedFeiertag, holidays)
+
+    # rescale air change rate to conditioned volume and GFA
+    ach = ach * nfa_gfa_ratio * floor_height_ratio
+
     # array of zones initially using ideal air loads
     startingIdealAir = []
 

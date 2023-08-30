@@ -21,7 +21,7 @@ class AddingIdealAirLoads_Test < MiniTest::Test
         # get arguments with a new instance of the measure
         arguments = GetArguments(AddingIdealAirLoads.new, OpenStudio::Model::Model.new)
 
-        assert_equal(9, arguments.size)
+        assert_equal(11, arguments.size)
     end
 
     def test_bad_argument_values

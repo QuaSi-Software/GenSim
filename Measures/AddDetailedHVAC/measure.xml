@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>add_detailed_hvac</name>
   <uid>75c17475-d6d2-4074-a097-0c2202206dab</uid>
-  <version_id>f0240b3b-02cb-4622-a6b4-054784411623</version_id>
-  <version_modified>20230714T085440Z</version_modified>
+  <version_id>a131117d-e2e7-45c9-a924-dda78815b343</version_id>
+  <version_modified>20230727T144107Z</version_modified>
   <xml_checksum>C49A7DAB</xml_checksum>
   <class_name>AddDetailedHVAC</class_name>
   <display_name>AddDetailedHVAC</display_name>
@@ -37,6 +37,22 @@
     <argument>
       <name>ach</name>
       <display_name>Air changes per hours</display_name>
+      <type>Double</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+      <default_value>1</default_value>
+    </argument>
+    <argument>
+      <name>nfa_gfa_ratio</name>
+      <display_name>Ratio of NFA over GFA</display_name>
+      <type>Double</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+      <default_value>1</default_value>
+    </argument>
+    <argument>
+      <name>floor_height_ratio</name>
+      <display_name>Ratio of conditioned floor height over total floor height</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
@@ -243,6 +259,12 @@
   </attributes>
   <files>
     <file>
+      <filename>example_model.osm</filename>
+      <filetype>osm</filetype>
+      <usage_type>test</usage_type>
+      <checksum>9B673135</checksum>
+    </file>
+    <file>
       <version>
         <software_program>OpenStudio</software_program>
         <identifier>2.7.0</identifier>
@@ -251,19 +273,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>288B3316</checksum>
+      <checksum>023DC766</checksum>
     </file>
     <file>
       <filename>AddDetailedHVAC_Test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>7084E03F</checksum>
-    </file>
-    <file>
-      <filename>example_model.osm</filename>
-      <filetype>osm</filetype>
-      <usage_type>test</usage_type>
-      <checksum>9B673135</checksum>
+      <checksum>773A0EDE</checksum>
     </file>
   </files>
 </measure>

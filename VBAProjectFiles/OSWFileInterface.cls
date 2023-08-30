@@ -160,7 +160,8 @@ Sub ExportBarAspectRatioStudy(ByRef jFile As JSONFile)
     Set dd47 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_b")
 
     jFile.AddArgument "floor_area", Range("BldgArea")
-    jFile.AddArgument "ns_to_ew_ratio", Range("NSEWRatio")
+    jFile.AddArgument "building_length", Range("LAENGE")
+    jFile.AddArgument "building_width", Range("BREITE")
     jFile.AddArgument "number_of_stories", Range("NoFloors")
     jFile.AddArgument "floor_to_floor_height", Range("FloorHeight")
     jFile.AddArgument "surface_matching", "true"
@@ -251,9 +252,9 @@ Sub ExportAddingInternalLoads( _
         selected = ddRatio2.List(ddRatio2.Value)
     End If
 
-    jFile.AddArgument "ElectricEquipmentPowerPerFloorArea", Range("Electric") * nrf_bgf
-    jFile.AddArgument "LightingPowerPerFloorArea", Range("Lights") * nrf_bgf
-    jFile.AddArgument "PeoplePerFloorArea", 1 / Range("People") * nrf_bgf
+    jFile.AddArgument "ElectricEquipmentPowerPerFloorArea", Range("Electric")
+    jFile.AddArgument "LightingPowerPerFloorArea", Range("Lights")
+    jFile.AddArgument "FloorAreaPerPerson", Range("People")
     jFile.AddSchedule "ElectricEquipmentSchedule", Range("ElectricWD")
     jFile.AddSchedule "LightSchedule", Range("LightWD")
     jFile.AddSchedule "PeopleSchedule", Range("PeopleWD")
@@ -292,7 +293,9 @@ Sub ExportAddDetailedHVAC( _
     jFile.AddArgument "wrg", Range("WRG")
     jFile.AddArgument "latent", Range("LATENT")
     jFile.AddArgument "sensible", Range("SENSIBLE")
-    jFile.AddArgument "ach", Range("ACH") * FloorHeight_Ratio * nrf_bgf
+    jFile.AddArgument "ach", Range("ACH")
+    jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
+    jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
     jFile.AddSchedule "hvacSched", Range("HVACWD")
     jFile.AddHolidays "Holidays", Range("Feiertage")
     jFile.AddArgument "hvacSchedule", dd55.List(dd55.Value)
@@ -327,7 +330,9 @@ Sub ExportAddingIdealAirLoads( _
     jFile.AddArgument "wrg", Range("WRG")
     jFile.AddArgument "latent", Range("LATENT")
     jFile.AddArgument "sensible", Range("SENSIBLE")
-    jFile.AddArgument "ach", Range("ACH") * FloorHeight_Ratio * nrf_bgf
+    jFile.AddArgument "ach", Range("ACH")
+    jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
+    jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
     jFile.AddSchedule "hvacSched", Range("HVACWD")
     jFile.AddHolidays "Holidays", Range("Feiertage")
     jFile.AddArgument "hvacSchedule", dd55.List(dd55.Value)
@@ -354,7 +359,9 @@ Sub ExportAddingInfiltration( _
     ByVal nrf_bgf As Double, _
     ByVal FloorHeight_Ratio As Double _
 )
-    jFile.AddArgument "AirChangesPerHour", Range("INFIL") * FloorHeight_Ratio * nrf_bgf
+    jFile.AddArgument "AirChangesPerHour", Range("INFIL")
+    jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
+    jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
     jFile.AddMeasure "AddingInfiltration"
 End Sub
 
@@ -417,7 +424,9 @@ Sub ExportInjectIdealLoadParametersIDF( _
     jFile.AddArgument "HeatRecoveryType", Range("WRG")
     jFile.AddArgument "SensibleEffectiveness", Range("SENSIBLE")
     jFile.AddArgument "LatentEffectiveness", Range("LATENT")
-    jFile.AddArgument "ACH", Range("ACH") * FloorHeight_Ratio * nrf_bgf
+    jFile.AddArgument "ACH", Range("ACH")
+    jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
+    jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
     jFile.AddMeasure "InjectIdealLoadParametersIDF"
 End Sub
 

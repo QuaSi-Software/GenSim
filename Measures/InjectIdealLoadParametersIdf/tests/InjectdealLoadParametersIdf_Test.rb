@@ -16,7 +16,7 @@ class InjectIdealLoadParametersIDF_Test < MiniTest::Test
         # get arguments with a new instance of the measure
         arguments = GetArguments(InjectIdealLoadParametersIDF.new, OpenStudio::Model::Model.new)
 
-        assert_equal(4, arguments.size)
+        assert_equal(6, arguments.size)
     end
 
     def test_bad_argument_values
@@ -37,6 +37,8 @@ class InjectIdealLoadParametersIDF_Test < MiniTest::Test
         args_hash["SensibleEffectiveness"] = "0.9"
         args_hash["LatentEffectiveness"] = "0.8"
         args_hash["ACH"] = "3"
+        args_hash["nfa_gfa_ratio"] = "0.8"
+        args_hash["floor_height_ratio"] = "0.8"
 
         # load an existing model
         dir = File.expand_path(File.dirname(__FILE__))
