@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>save_model</name>
   <uid>82c89850-4b47-4ab2-bd7d-78b6c80e2b96</uid>
-  <version_id>e5bd7763-3749-486e-8199-d32dee6ed309</version_id>
-  <version_modified>20230728T142246Z</version_modified>
+  <version_id>18b17f8f-eab1-4547-a40e-76b25c3b94ed</version_id>
+  <version_modified>20230809T092514Z</version_modified>
   <xml_checksum>2AF3A68E</xml_checksum>
   <class_name>SaveModel</class_name>
   <display_name>SaveModel</display_name>
@@ -11,14 +11,14 @@
   <modeler_description></modeler_description>
   <arguments>
     <argument>
-      <name>pathtosave</name>
+      <name>output_path</name>
       <display_name>Path to Save</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>FileName</name>
+      <name>file_name</name>
       <display_name>File Name</display_name>
       <type>String</type>
       <required>true</required>
@@ -54,17 +54,6 @@
   </attributes>
   <files>
     <file>
-      <version>
-        <software_program>OpenStudio</software_program>
-        <identifier>2.5.0</identifier>
-        <min_compatible>2.5.0</min_compatible>
-      </version>
-      <filename>measure.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>script</usage_type>
-      <checksum>7FA71BFC</checksum>
-    </file>
-    <file>
       <filename>example_model.osm</filename>
       <filetype>osm</filetype>
       <usage_type>test</usage_type>
@@ -81,6 +70,17 @@
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
       <checksum>CBFA65B6</checksum>
+    </file>
+    <file>
+      <version>
+        <software_program>OpenStudio</software_program>
+        <identifier>2.5.0</identifier>
+        <min_compatible>2.5.0</min_compatible>
+      </version>
+      <filename>measure.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>script</usage_type>
+      <checksum>C4FB4109</checksum>
     </file>
   </files>
 </measure>

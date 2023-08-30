@@ -22,7 +22,7 @@ class InjectHolidaysIDF < OpenStudio::Measure::EnergyPlusMeasure
   def arguments(workspace)
     args = OpenStudio::Measure::OSArgumentVector.new
 
-	args <<  OpenStudio::Measure::OSArgument.makeStringArgument("Holidays", true)
+	args <<  OpenStudio::Measure::OSArgument.makeStringArgument("holidays", true)
 
     return args
   end
@@ -37,7 +37,7 @@ class InjectHolidaysIDF < OpenStudio::Measure::EnergyPlusMeasure
     end
 
     # assign the user inputs to variables
-	holidays = runner.getStringArgumentValue("Holidays", user_arguments)
+	holidays = runner.getStringArgumentValue("holidays", user_arguments)
 
   # report final condition of model
   idfHolidays = workspace.getObjectsByType("RunPeriodControl:SpecialDays".to_IddObjectType)

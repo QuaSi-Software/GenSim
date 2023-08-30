@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>add_detailed_hvac</name>
   <uid>75c17475-d6d2-4074-a097-0c2202206dab</uid>
-  <version_id>0d14f304-dd75-4ebf-acd6-07ee1abc90e7</version_id>
-  <version_modified>20230728T141917Z</version_modified>
+  <version_id>17ec22e6-c449-4aa1-81cb-95a8bb158211</version_id>
+  <version_modified>20230801T092416Z</version_modified>
   <xml_checksum>C49A7DAB</xml_checksum>
   <class_name>AddDetailedHVAC</class_name>
   <display_name>AddDetailedHVAC</display_name>
@@ -11,15 +11,15 @@
   <modeler_description></modeler_description>
   <arguments>
     <argument>
-      <name>wrg</name>
-      <display_name>Heat Recocovery Ratio</display_name>
+      <name>heat_recovery_method</name>
+      <display_name>Heat recovery method</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
       <default_value>none</default_value>
     </argument>
     <argument>
-      <name>latent</name>
+      <name>latent_efficiency</name>
       <display_name>Latent efficiency</display_name>
       <type>Double</type>
       <required>true</required>
@@ -27,16 +27,16 @@
       <default_value>0.65</default_value>
     </argument>
     <argument>
-      <name>sensible</name>
-      <display_name>sensible efficiency</display_name>
+      <name>sensible_efficiency</name>
+      <display_name>Sensible efficiency</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
       <default_value>0.7</default_value>
     </argument>
     <argument>
-      <name>ach</name>
-      <display_name>Air changes per hours</display_name>
+      <name>ach_per_hour</name>
+      <display_name>Air changes per hour</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
@@ -59,8 +59,8 @@
       <default_value>1</default_value>
     </argument>
     <argument>
-      <name>hvacSchedule</name>
-      <display_name>hvacSchedule</display_name>
+      <name>hvac_schedule</name>
+      <display_name>hvac_schedule</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
@@ -83,139 +83,139 @@
       </choices>
     </argument>
     <argument>
-      <name>hvacSchedWerktag</name>
-      <display_name>hvacSchedWerktag</display_name>
+      <name>hvac_sched_weekday</name>
+      <display_name>hvac_sched_weekday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>hvacSchedSamstag</name>
-      <display_name>hvacSchedSamstag</display_name>
+      <name>hvac_sched_saturday</name>
+      <display_name>hvac_sched_saturday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>hvacSchedSonntag</name>
-      <display_name>hvacSchedSonntag</display_name>
+      <name>hvac_sched_sunday</name>
+      <display_name>hvac_sched_sunday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>hvacSchedFeiertag</name>
-      <display_name>hvacSchedFeiertag</display_name>
+      <name>hvac_sched_holiday</name>
+      <display_name>hvac_sched_holiday</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>Holidays</name>
-      <display_name>Holidays</display_name>
+      <name>holidays</name>
+      <display_name>holidays</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>zoneHeatingTempSchedWerktag</name>
-      <display_name>zoneHeatingTempSchedWerktag</display_name>
+      <name>zone_heating_temp_sched_weekday</name>
+      <display_name>zone_heating_temp_sched_weekday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>zoneHeatingTempSchedSamstag</name>
-      <display_name>zoneHeatingTempSchedSamstag</display_name>
+      <name>zone_heating_temp_sched_saturday</name>
+      <display_name>zone_heating_temp_sched_saturday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>zoneHeatingTempSchedSonntag</name>
-      <display_name>zoneHeatingTempSchedSonntag</display_name>
+      <name>zone_heating_temp_sched_sunday</name>
+      <display_name>zone_heating_temp_sched_sunday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>zoneHeatingTempSchedFeiertag</name>
-      <display_name>zoneHeatingTempSchedFeiertag</display_name>
+      <name>zone_heating_temp_sched_holiday</name>
+      <display_name>zone_heating_temp_sched_holiday</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>zoneCoolingTempSchedWerktag</name>
-      <display_name>zoneCoolingTempSchedWerktag</display_name>
+      <name>zone_cooling_temp_sched_weekday</name>
+      <display_name>zone_cooling_temp_sched_weekday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>zoneCoolingTempSchedSamstag</name>
-      <display_name>zoneCoolingTempSchedSamstag</display_name>
+      <name>zone_cooling_temp_sched_saturday</name>
+      <display_name>zone_cooling_temp_sched_saturday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>zoneCoolingTempSchedSonntag</name>
-      <display_name>zoneCoolingTempSchedSonntag</display_name>
+      <name>zone_cooling_temp_sched_sunday</name>
+      <display_name>zone_cooling_temp_sched_sunday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>zoneCoolingTempSchedFeiertag</name>
-      <display_name>zoneCoolingTempSchedFeiertag</display_name>
+      <name>zone_cooling_temp_sched_holiday</name>
+      <display_name>zone_cooling_temp_sched_holiday</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>hotWaterTempSetpoint</name>
-      <display_name>Hot Water Temp Setpoint</display_name>
+      <name>hot_water_temp_setpoint</name>
+      <display_name>Hot water temperature setpoint</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
       <default_value>50</default_value>
     </argument>
     <argument>
-      <name>hotWaterDeltaT</name>
-      <display_name>Hot Water Delta T</display_name>
+      <name>hot_water_temp_diff</name>
+      <display_name>Hot water temperature difference</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
       <default_value>5</default_value>
     </argument>
     <argument>
-      <name>coldWaterTempSetpoint</name>
-      <display_name>Cold Water Temp Setpoint</display_name>
+      <name>cold_water_temp_setpoint</name>
+      <display_name>Cold water temperature setpoint</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
       <default_value>15</default_value>
     </argument>
     <argument>
-      <name>coldWaterDeltaT</name>
-      <display_name>Cold Water Delta T</display_name>
+      <name>cold_water_temp_diff</name>
+      <display_name>Cold water temperature difference</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
       <default_value>5</default_value>
     </argument>
     <argument>
-      <name>fanPressureRiseSupply</name>
-      <display_name>Supply Fan Pressure Rise</display_name>
+      <name>supply_fan_pressure_rise</name>
+      <display_name>Supply fan pressure rise</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
       <default_value>250</default_value>
     </argument>
     <argument>
-      <name>fanPressureRiseReturn</name>
-      <display_name>Return Fan Pressure Rise</display_name>
+      <name>return_fan_pressure_rise</name>
+      <display_name>Return fan pressure rise</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
@@ -223,7 +223,7 @@
     </argument>
     <argument>
       <name>system_type</name>
-      <display_name>Type of Ventilation System</display_name>
+      <display_name>Type of ventilation system</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
@@ -273,13 +273,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>023DC766</checksum>
+      <checksum>1587BA67</checksum>
     </file>
     <file>
       <filename>add_detailed_hvac_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>773A0EDE</checksum>
+      <checksum>784E41FD</checksum>
     </file>
   </files>
 </measure>

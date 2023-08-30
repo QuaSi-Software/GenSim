@@ -21,19 +21,19 @@ class AddTemperatureSetpoints < OpenStudio::Measure::ModelMeasure
   # define the arguments that the user will input
   def arguments(model)
     args = OpenStudio::Measure::OSArgumentVector.new
-    args << OpenStudio::Measure::OSArgument.makeStringArgument("heatingTemp", false)
-    args << OpenStudio::Measure::OSArgument.makeStringArgument("coolingTemp", false)
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("heating_temp_selection", false)
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("cooling_temp_selection", false)
     args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_heating", false)
     args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_cooling", false)
-    args << OpenStudio::Measure::OSArgument.makeStringArgument("zoneHeatingTempScheduleWerktag", true)
-    args << OpenStudio::Measure::OSArgument.makeStringArgument("zoneHeatingTempScheduleSamstag", true)
-    args << OpenStudio::Measure::OSArgument.makeStringArgument("zoneHeatingTempScheduleSonntag", true)
-    args << OpenStudio::Measure::OSArgument.makeStringArgument("zoneHeatingTempScheduleFeiertag", false)
-    args << OpenStudio::Measure::OSArgument.makeStringArgument("zoneCoolingTempScheduleWerktag", true)
-    args << OpenStudio::Measure::OSArgument.makeStringArgument("zoneCoolingTempScheduleSamstag", true)
-    args << OpenStudio::Measure::OSArgument.makeStringArgument("zoneCoolingTempScheduleSonntag", true)
-    args << OpenStudio::Measure::OSArgument.makeStringArgument("zoneCoolingTempScheduleFeiertag", false)
-    args << OpenStudio::Measure::OSArgument.makeStringArgument("Holidays", false)
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("zone_heating_temp_sched_weekday", true)
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("zone_heating_temp_sched_saturday", true)
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("zone_heating_temp_sched_sunday", true)
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("zone_heating_temp_sched_holiday", false)
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("zone_cooling_temp_sched_weekday", true)
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("zone_cooling_temp_sched_saturday", true)
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("zone_cooling_temp_sched_sunday", true)
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("zone_cooling_temp_sched_holiday", false)
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("holidays", false)
     return args
   end
 
@@ -46,18 +46,18 @@ class AddTemperatureSetpoints < OpenStudio::Measure::ModelMeasure
       return false
     end
 
-    holidays = runner.getStringArgumentValue("Holidays", user_arguments)
-    zoneHeatingTempSchedWeekday = runner.getStringArgumentValue("zoneHeatingTempScheduleWerktag", user_arguments)
-    zoneHeatingTempSchedSaturday = runner.getStringArgumentValue("zoneHeatingTempScheduleSamstag", user_arguments)
-    zoneHeatingTempSchedSunday = runner.getStringArgumentValue("zoneHeatingTempScheduleSonntag", user_arguments)
-    zoneHeatingTempSchedFeiertag = runner.getStringArgumentValue("zoneHeatingTempScheduleFeiertag", user_arguments)
-    zoneCoolingTempSchedWeekday = runner.getStringArgumentValue("zoneCoolingTempScheduleWerktag", user_arguments)
-    zoneCoolingTempSchedSaturday = runner.getStringArgumentValue("zoneCoolingTempScheduleSamstag", user_arguments)
-    zoneCoolingTempSchedSunday = runner.getStringArgumentValue("zoneCoolingTempScheduleSonntag", user_arguments)
-    zoneCoolingTempSchedFeiertag = runner.getStringArgumentValue("zoneCoolingTempScheduleFeiertag", user_arguments)
+    holidays = runner.getStringArgumentValue("holidays", user_arguments)
+    zone_heating_temp_sched_weekday = runner.getStringArgumentValue("zone_heating_temp_sched_weekday", user_arguments)
+    zone_heating_temp_sched_saturday = runner.getStringArgumentValue("zone_heating_temp_sched_saturday", user_arguments)
+    zone_heating_temp_sched_sunday = runner.getStringArgumentValue("zone_heating_temp_sched_sunday", user_arguments)
+    zone_heating_temp_sched_holiday = runner.getStringArgumentValue("zone_heating_temp_sched_holiday", user_arguments)
+    zone_cooling_temp_sched_weekday = runner.getStringArgumentValue("zone_cooling_temp_sched_weekday", user_arguments)
+    zone_cooling_temp_sched_saturday = runner.getStringArgumentValue("zone_cooling_temp_sched_saturday", user_arguments)
+    zone_cooling_temp_sched_sunday = runner.getStringArgumentValue("zone_cooling_temp_sched_sunday", user_arguments)
+    zone_cooling_temp_sched_holiday = runner.getStringArgumentValue("zone_cooling_temp_sched_holiday", user_arguments)
 
-    zoneHeatingTempSched = CreateSchedule(model, "ZoneHeatingTempSched", zoneHeatingTempSchedWeekday, zoneHeatingTempSchedSaturday, zoneHeatingTempSchedSunday, zoneHeatingTempSchedFeiertag, holidays, false, true)
-    zoneCoolingTempSched = CreateSchedule(model, "ZoneCoolingTempSched", zoneCoolingTempSchedWeekday, zoneCoolingTempSchedSaturday, zoneCoolingTempSchedSunday, zoneCoolingTempSchedFeiertag, holidays)
+    zoneHeatingTempSched = CreateSchedule(model, "ZoneHeatingTempSched", zone_heating_temp_sched_weekday, zone_heating_temp_sched_saturday, zone_heating_temp_sched_sunday, zone_heating_temp_sched_holiday, holidays, false, true)
+    zoneCoolingTempSched = CreateSchedule(model, "ZoneCoolingTempSched", zone_cooling_temp_sched_weekday, zone_cooling_temp_sched_saturday, zone_cooling_temp_sched_sunday, zone_cooling_temp_sched_holiday, holidays)
 
     number_zones_modified = 0
     total_cost = 0

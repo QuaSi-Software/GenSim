@@ -32,7 +32,7 @@ def check_measure(expected, exported)
     expected["arguments"].each do |key, value|
         assert(
             exported["arguments"].key?(key),
-            "Missing parameter key #{key} in measure#{expected["measure_dir_name"]}"
+            "Missing parameter key #{key} in measure #{expected["measure_dir_name"]}"
         )
 
         err_msg = "Value mismatch in measure #{expected['measure_dir_name']}::#{key}"

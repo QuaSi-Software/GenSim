@@ -21,12 +21,12 @@ class SaveModel < OpenStudio::Measure::ModelMeasure
     args = OpenStudio::Measure::OSArgumentVector.new
 
     # the name of the space to add to the model
-    space_name = OpenStudio::Measure::OSArgument.makeStringArgument("pathtosave", true)
+    space_name = OpenStudio::Measure::OSArgument.makeStringArgument("output_path", true)
     space_name.setDisplayName("Path to Save")
     args << space_name
 	
 	# the name of the space to add to the model
-    file_name = OpenStudio::Measure::OSArgument.makeStringArgument("FileName", true)
+    file_name = OpenStudio::Measure::OSArgument.makeStringArgument("file_name", true)
     file_name.setDisplayName("File Name")
     args << file_name
 
@@ -43,8 +43,8 @@ class SaveModel < OpenStudio::Measure::ModelMeasure
     end
 
     # assign the user inputs to variables
-    pathtosave = runner.getStringArgumentValue("pathtosave", user_arguments)
-	file_name = runner.getStringArgumentValue("FileName", user_arguments)
+    pathtosave = runner.getStringArgumentValue("output_path", user_arguments)
+	file_name = runner.getStringArgumentValue("file_name", user_arguments)
 
     # report initial condition of model
     runner.registerInitialCondition("Starting to save OSM")

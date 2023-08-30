@@ -21,7 +21,7 @@ class AddShadingControls < OpenStudio::Measure::ModelMeasure
     args = OpenStudio::Measure::OSArgumentVector.new
 
     #make an argument for infiltration
-    setpoint = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("SolarSetpoint",true)
+    setpoint = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("solar_setpoint",true)
     setpoint.setDisplayName("Solar Irradiation [W/m²] on window above which the ShadingControl is activated")
     setpoint.setDefaultValue(180)
     args << setpoint
@@ -39,7 +39,7 @@ class AddShadingControls < OpenStudio::Measure::ModelMeasure
     end
 
     #assign the user inputs to variables
-    setpoint = runner.getDoubleArgumentValue("SolarSetpoint",user_arguments)
+    setpoint = runner.getDoubleArgumentValue("solar_setpoint",user_arguments)
 
     #check infiltration for reasonableness
     if setpoint < 0

@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>add_internal_loads</name>
   <uid>9db02274-2ce9-48e3-810d-ab9088f09c62</uid>
-  <version_id>a049785c-05aa-44d0-ba0c-c20bfe93a27f</version_id>
-  <version_modified>20230728T142034Z</version_modified>
+  <version_id>299bd0fd-442f-4499-91a6-fe8e369b2d52</version_id>
+  <version_modified>20230802T093647Z</version_modified>
   <xml_checksum>57232789</xml_checksum>
   <class_name>AddInternalLoads</class_name>
   <display_name>AddInternalLoads</display_name>
@@ -11,162 +11,162 @@
   <modeler_description></modeler_description>
   <arguments>
     <argument>
-      <name>NRF/BGF</name>
-      <display_name>NRF/BGF</display_name>
+      <name>nfa_gfa_ratio</name>
+      <display_name>nfa_gfa_ratio</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>ElectricEquipmentPowerPerFloorArea</name>
-      <display_name>ElectricEquipmentPowerPerFloorArea</display_name>
+      <name>electric_equipment_power_per_floor_area</name>
+      <display_name>electric_equipment_power_per_floor_area</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>LightingPowerPerFloorArea</name>
-      <display_name>LightingPowerPerFloorArea</display_name>
+      <name>lighting_power_per_floor_area</name>
+      <display_name>lighting_power_per_floor_area</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>FloorAreaPerPerson</name>
-      <display_name>FloorAreaPerPerson</display_name>
+      <name>floor_area_per_person</name>
+      <display_name>floor_area_per_person</display_name>
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>ElectricEquipmentScheduleWerktag</name>
-      <display_name>ElectricEquipmentScheduleWerktag</display_name>
+      <name>electric_equipment_sched_weekday</name>
+      <display_name>electric_equipment_sched_weekday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>ElectricEquipmentScheduleSamstag</name>
-      <display_name>ElectricEquipmentScheduleSamstag</display_name>
+      <name>electric_equipment_sched_saturday</name>
+      <display_name>electric_equipment_sched_saturday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>ElectricEquipmentScheduleSonntag</name>
-      <display_name>ElectricEquipmentScheduleSonntag</display_name>
+      <name>electric_equipment_sched_sunday</name>
+      <display_name>electric_equipment_sched_sunday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>ElectricEquipmentScheduleFeiertag</name>
-      <display_name>ElectricEquipmentScheduleFeiertag</display_name>
+      <name>electric_equipment_sched_holiday</name>
+      <display_name>electric_equipment_sched_holiday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>LightScheduleWerktag</name>
-      <display_name>LightScheduleWerktag</display_name>
+      <name>lighting_sched_weekday</name>
+      <display_name>lighting_sched_weekday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>LightScheduleSamstag</name>
-      <display_name>LightScheduleSamstag</display_name>
+      <name>lighting_sched_saturday</name>
+      <display_name>lighting_sched_saturday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>LightScheduleSonntag</name>
-      <display_name>LightScheduleSonntag</display_name>
+      <name>lighting_sched_sunday</name>
+      <display_name>lighting_sched_sunday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>LightScheduleFeiertag</name>
-      <display_name>LightScheduleFeiertag</display_name>
+      <name>lighting_sched_holiday</name>
+      <display_name>lighting_sched_holiday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>PeopleScheduleWerktag</name>
-      <display_name>PeopleScheduleWerktag</display_name>
+      <name>people_sched_weekday</name>
+      <display_name>people_sched_weekday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>PeopleScheduleSamstag</name>
-      <display_name>PeopleScheduleSamstag</display_name>
+      <name>people_sched_saturday</name>
+      <display_name>people_sched_saturday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>PeopleScheduleSonntag</name>
-      <display_name>PeopleScheduleSonntag</display_name>
+      <name>people_sched_sunday</name>
+      <display_name>people_sched_sunday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>PeopleScheduleFeiertag</name>
-      <display_name>PeopleScheduleFeiertag</display_name>
+      <name>people_sched_holiday</name>
+      <display_name>people_sched_holiday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>PeopleActivityScheduleWerktag</name>
-      <display_name>PeopleActivityScheduleWerktag</display_name>
+      <name>people_activity_sched_weekday</name>
+      <display_name>people_activity_sched_weekday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>PeopleActivityScheduleSamstag</name>
-      <display_name>PeopleActivityScheduleSamstag</display_name>
+      <name>people_activity_sched_saturday</name>
+      <display_name>people_activity_sched_saturday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>PeopleActivityScheduleSonntag</name>
-      <display_name>PeopleActivityScheduleSonntag</display_name>
+      <name>people_activity_sched_sunday</name>
+      <display_name>people_activity_sched_sunday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>PeopleActivityScheduleFeiertag</name>
-      <display_name>PeopleActivityScheduleFeiertag</display_name>
+      <name>people_activity_sched_holiday</name>
+      <display_name>people_activity_sched_holiday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>Holidays</name>
-      <display_name>Holidays</display_name>
+      <name>holidays</name>
+      <display_name>holidays</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>area_bgf_import</name>
-      <display_name>area_bgf_import</display_name>
+      <name>area_gfa_import</name>
+      <display_name>area_gfa_import</display_name>
       <type>Double</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>selected_ratio</name>
-      <display_name>selected_ratio</display_name>
+      <name>nfa_gfa_ratio_selection</name>
+      <display_name>nfa_gfa_ratio_selection</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
@@ -189,8 +189,8 @@
       </choices>
     </argument>
     <argument>
-      <name>is_imported</name>
-      <display_name>is_imported</display_name>
+      <name>is_imported_model</name>
+      <display_name>is_imported_model</display_name>
       <type>Boolean</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
@@ -206,36 +206,36 @@
       </choices>
     </argument>
     <argument>
-      <name>ElectricEquipmentSchedule</name>
-      <display_name>ElectricEquipmentSchedule</display_name>
+      <name>electric_equipment_sched_selection</name>
+      <display_name>electric_equipment_sched_selection</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>LightSchedule</name>
-      <display_name>LightSchedule</display_name>
+      <name>lighting_sched_selection</name>
+      <display_name>lighting_sched_selection</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>PeopleSchedule</name>
-      <display_name>PeopleSchedule</display_name>
+      <name>people_sched_selection</name>
+      <display_name>people_sched_selection</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>PeopleActivitySchedule</name>
-      <display_name>PeopleActivitySchedule</display_name>
+      <name>people_activity_sched_selection</name>
+      <display_name>people_activity_sched_selection</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>is_custom_ElectricEquipment</name>
-      <display_name>is_custom_ElectricEquipment</display_name>
+      <name>is_custom_electric_equipment</name>
+      <display_name>is_custom_electric_equipment</display_name>
       <type>Boolean</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
@@ -251,8 +251,8 @@
       </choices>
     </argument>
     <argument>
-      <name>is_custom_Light</name>
-      <display_name>is_custom_Light</display_name>
+      <name>is_custom_lighting</name>
+      <display_name>is_custom_lighting</display_name>
       <type>Boolean</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
@@ -268,8 +268,8 @@
       </choices>
     </argument>
     <argument>
-      <name>is_custom_People</name>
-      <display_name>is_custom_People</display_name>
+      <name>is_custom_people</name>
+      <display_name>is_custom_people</display_name>
       <type>Boolean</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
@@ -285,8 +285,8 @@
       </choices>
     </argument>
     <argument>
-      <name>is_custom_PeopleActivity</name>
-      <display_name>is_custom_PeopleActivity</display_name>
+      <name>is_custom_people_activity</name>
+      <display_name>is_custom_people_activity</display_name>
       <type>Boolean</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
@@ -345,13 +345,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>6F4042E7</checksum>
+      <checksum>79D7A2D6</checksum>
     </file>
     <file>
       <filename>add_internal_loads_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>CC830072</checksum>
+      <checksum>4CF57E05</checksum>
     </file>
   </files>
 </measure>

@@ -20,10 +20,10 @@ class InjectIdealLoadParametersIDF < OpenStudio::Measure::EnergyPlusMeasure
   def arguments(workspace)
     args = OpenStudio::Measure::OSArgumentVector.new
 
-    args << OpenStudio::Measure::OSArgument::makeStringArgument("HeatRecoveryType",true)
-	args << OpenStudio::Measure::OSArgument::makeDoubleArgument("SensibleEffectiveness",true)
-	args << OpenStudio::Measure::OSArgument::makeDoubleArgument("LatentEffectiveness",true)
-	args << OpenStudio::Measure::OSArgument::makeDoubleArgument("ACH",true)
+    args << OpenStudio::Measure::OSArgument::makeStringArgument("heat_recovery_type",true)
+	args << OpenStudio::Measure::OSArgument::makeDoubleArgument("sensible_efficiency",true)
+	args << OpenStudio::Measure::OSArgument::makeDoubleArgument("latent_efficiency",true)
+	args << OpenStudio::Measure::OSArgument::makeDoubleArgument("air_changes",true)
   nfa_gfa_ratio = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("nfa_gfa_ratio",true)
   nfa_gfa_ratio.setDisplayName("Ratio of NFA over GFA")
   nfa_gfa_ratio.setDefaultValue(1)
@@ -46,10 +46,10 @@ class InjectIdealLoadParametersIDF < OpenStudio::Measure::EnergyPlusMeasure
     end
 
     # assign the user inputs to variables
-    heatRecoveryType = runner.getStringArgumentValue("HeatRecoveryType", user_arguments)
-	sensibleEffectiveness = runner.getDoubleArgumentValue("SensibleEffectiveness", user_arguments)
-	latentEffectiveness = runner.getDoubleArgumentValue("LatentEffectiveness", user_arguments)
-	ach = runner.getDoubleArgumentValue("ACH", user_arguments)
+    heatRecoveryType = runner.getStringArgumentValue("heat_recovery_type", user_arguments)
+	sensibleEffectiveness = runner.getDoubleArgumentValue("sensible_efficiency", user_arguments)
+	latentEffectiveness = runner.getDoubleArgumentValue("latent_efficiency", user_arguments)
+	ach = runner.getDoubleArgumentValue("air_changes", user_arguments)
   nfa_gfa_ratio = runner.getDoubleArgumentValue("nfa_gfa_ratio",user_arguments)
   floor_height_ratio = runner.getDoubleArgumentValue("floor_height_ratio",user_arguments)
 	

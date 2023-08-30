@@ -39,9 +39,9 @@ Sub ExportSetWeatherAxisTimestep( _
     Set dd2 = Sheets("HAUPTSEITE").DropDowns("Dropdown2")
 
     If bGeneric Then
-        jFile.AddArgument "WeatherFilePath", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-        jFile.AddArgument "NorthAxis", dd2.List(dd2.Value)
-        jFile.AddArgument "Timestep", CStr(NrOfTimesteps)
+        jFile.AddArgument "weather_file_path", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
+        jFile.AddArgument "north_axis", dd2.List(dd2.Value)
+        jFile.AddArgument "time_step", CStr(NrOfTimesteps)
     Else
         Dim localOSMPath As String: localOSMPath = ""
 
@@ -64,8 +64,8 @@ Sub ExportSetWeatherAxisTimestep( _
         End If
 
         jFile.CreateFile localOSMPath, GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-        jFile.AddArgument "WeatherFilePath", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-        jFile.AddArgument "Timestep", CStr(NrOfTimesteps)
+        jFile.AddArgument "weather_file_path", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
+        jFile.AddArgument "time_step", CStr(NrOfTimesteps)
     End If
 
     jFile.AddMeasure "set_weather_axis_timestep"
@@ -97,20 +97,20 @@ Sub ExportCustomExportParams( _
     Set cb_detailedHVAC = Sheets("Parameter").CheckBoxes("checkbox_hvac")
 
     'parameters for the generic HVAC model
-    jFile.AddArgument "zoneDetails", IIf(cb_zoneDetails.Value = 1, 1, 0)
-    jFile.AddArgument "detailedHVAC", IIf(cb_detailedHVAC.Value = 1, 1, 0)
+    jFile.AddArgument "include_zone_details", IIf(cb_zoneDetails.Value = 1, 1, 0)
+    jFile.AddArgument "include_detailed_hvac", IIf(cb_detailedHVAC.Value = 1, 1, 0)
     jFile.AddArgument "ventilation_type", dd_lueftung.Value
 
     'parameters of the geometry which are not required in the measures
     jFile.AddArgument "floor_length", Range("LAENGE")
     jFile.AddArgument "floor_width", Range("BREITE")
-    jFile.AddArgument "ratio_NRF_BGF", ddRatio1.List(ddRatio1.Value)
-    jFile.AddArgument "NRF_BGF", Range("BGF_zu_NRF")
+    jFile.AddArgument "nfa_gfa_ratio_selection", ddRatio1.List(ddRatio1.Value)
+    jFile.AddArgument "nfa_gfa_ratio", Range("BGF_zu_NRF")
 
     If bGeneric Then
-        jFile.AddArgument "genGeom", 1
+        jFile.AddArgument "generate_geometry_selection", 1
     Else
-        jFile.AddArgument "genGeom", 2
+        jFile.AddArgument "generate_geometry_selection", 2
     End If
 
     'definition of holidays
@@ -124,20 +124,20 @@ Sub ExportCustomExportParams( _
         strArg = strArg + ";" + CStr(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 1)) + ";"
         iEntry = iEntry + 1
     Loop
-    jFile.AddArgument "Holidays", strArg
+    jFile.AddArgument "holidays", strArg
 
     'parameters of the ventilation system
-    jFile.AddArgument "vorlauf_Luft", Range("Vorlauf_Lüftung")
-    jFile.AddArgument "nachlauf_Luft", Range("Nachlauf_Lüftung")
-    jFile.AddArgument "FloorHeight_kond", Range("FloorHeight_kond")
-    jFile.AddArgument "FloorHeight_import", Range("FloorHeight_import")
-    jFile.AddArgument "ACH_Input_Parameter", Range("ACH")
-    jFile.AddArgument "Windowvent", IIf(cb_windowvent.Value = 1, 1, 0)
-    jFile.AddArgument "Infiltration", IIf(cb_inf.Value = 1, 1, 0)
+    jFile.AddArgument "ventilation_lead_time", Range("Vorlauf_Lüftung")
+    jFile.AddArgument "ventilation_follow_up_time", Range("Nachlauf_Lüftung")
+    jFile.AddArgument "conditioned_floor_height", Range("FloorHeight_kond")
+    jFile.AddArgument "imported_floor_height", Range("FloorHeight_import")
+    jFile.AddArgument "air_changes_input", Range("ACH")
+    jFile.AddArgument "include_window_ventilation", IIf(cb_windowvent.Value = 1, 1, 0)
+    jFile.AddArgument "include_infiltration", IIf(cb_inf.Value = 1, 1, 0)
 
     'other parameters
-    jFile.AddArgument "Shadingcontrol", IIf(cb_shadingcontrol.Value = 1, 1, 0)
-    jFile.AddArgument "Lightingcontrol", IIf(cb_lightingcontrol.Value = 1, 1, 0)
+    jFile.AddArgument "include_shading_control", IIf(cb_shadingcontrol.Value = 1, 1, 0)
+    jFile.AddArgument "include_lighting_control", IIf(cb_lightingcontrol.Value = 1, 1, 0)
 
     jFile.AddMeasure "custom_export_params"
 End Sub
@@ -170,13 +170,13 @@ Sub ExportAddGeometry(ByRef jFile As JSONFile)
     jFile.AddArgument "window_to_wall_ratio_east", Range("WWRO")
     jFile.AddArgument "window_to_wall_ratio_south", Range("WWRS")
     jFile.AddArgument "window_to_wall_ratio_west", Range("WWRW")
-    jFile.AddArgument "AdiabaticNorth", dd42.List(dd42.Value)
-    jFile.AddArgument "AdiabaticEast", dd43.List(dd43.Value)
-    jFile.AddArgument "AdiabaticSouth", dd44.List(dd44.Value)
-    jFile.AddArgument "AdiabaticWest", dd45.List(dd45.Value)
-    jFile.AddArgument "AdiabaticRoof", dd46.List(dd46.Value)
-    jFile.AddArgument "AdiabaticFloor", dd47.List(dd47.Value)
-    jFile.AddArgument "perimeterdepth", Range("PerimeterDepth")
+    jFile.AddArgument "adiabatic_north", dd42.List(dd42.Value)
+    jFile.AddArgument "adiabatic_east", dd43.List(dd43.Value)
+    jFile.AddArgument "adiabatic_south", dd44.List(dd44.Value)
+    jFile.AddArgument "adiabatic_west", dd45.List(dd45.Value)
+    jFile.AddArgument "adiabatic_roof", dd46.List(dd46.Value)
+    jFile.AddArgument "adiabatic_floor", dd47.List(dd47.Value)
+    jFile.AddArgument "perimeter_depth", Range("PerimeterDepth")
 
     jFile.AddMeasure "add_geometry"
 End Sub
@@ -190,16 +190,16 @@ Sub ExportAddMaterialsAndConstruction(ByRef jFile As JSONFile)
     Dim dd22 As DropDown 'inner masses
     Set dd22 = Sheets("HAUPTSEITE").DropDowns("Dropdown22")
 
-    jFile.AddConstruction "ExternalWallMat", Range("AWMat1"), 4
-    jFile.AddConstruction "RoofMat", Range("DMat1"), 4
-    jFile.AddConstruction "SlabMat", Range("BPMat1"), 4
-    jFile.AddConstruction "Massen", Range("Massen"), 3
-    jFile.AddConstruction "InteriorSlabs", Range("ZwischenDecke"), 4
-    jFile.AddInternalSourceConstructionHardcoded "ChilledCeiling", 2, 2, 2, 0.15, Range("ZwischenDecke"), 2
-    jFile.AddWindowConstruction "Windows", Range("WINDOWSSLS"), Range("WINDOWSSLS").Offset(0, -1), Range("WINDOWSSLS").Offset(0, 1)
-    jFile.AddArgument "selected_standard", dd21.List(dd21.Value)
+    jFile.AddConstruction "external_wall", Range("AWMat1"), 4
+    jFile.AddConstruction "roof", Range("DMat1"), 4
+    jFile.AddConstruction "base_plate", Range("BPMat1"), 4
+    jFile.AddConstruction "inner_masses", Range("Massen"), 3
+    jFile.AddConstruction "interior_slab", Range("ZwischenDecke"), 4
+    jFile.AddInternalSourceConstructionHardcoded "chilled_ceiling", 2, 2, 2, 0.15, Range("ZwischenDecke"), 2
+    jFile.AddWindowConstruction "windows", Range("WINDOWSSLS"), Range("WINDOWSSLS").Offset(0, -1), Range("WINDOWSSLS").Offset(0, 1)
+    jFile.AddArgument "construction_standard_selection", dd21.List(dd21.Value)
     jFile.AddArgument "is_custom_standard", IIf(dd21.Value > (dd21.ListCount - 4), "Ja", "Nein")
-    jFile.AddArgument "selected_masses", dd22.List(dd22.Value)
+    jFile.AddArgument "inner_masses_selection", dd22.List(dd22.Value)
 
     jFile.AddMeasure "add_materials_and_construction"
 End Sub
@@ -252,27 +252,27 @@ Sub ExportAddInternalLoads( _
         selected = ddRatio2.List(ddRatio2.Value)
     End If
 
-    jFile.AddArgument "ElectricEquipmentPowerPerFloorArea", Range("Electric")
-    jFile.AddArgument "LightingPowerPerFloorArea", Range("Lights")
-    jFile.AddArgument "FloorAreaPerPerson", Range("People")
-    jFile.AddSchedule "ElectricEquipmentSchedule", Range("ElectricWD")
-    jFile.AddSchedule "LightSchedule", Range("LightWD")
-    jFile.AddSchedule "PeopleSchedule", Range("PeopleWD")
-    jFile.AddSchedule "PeopleActivitySchedule", Range("PeopleActivityWD")
-    jFile.AddHolidays "Holidays", Range("Feiertage")
-    jFile.AddArgument "area_bgf_import", Range("BldgArea_import")
-    jFile.AddArgument "NRF/BGF", CStr(nrf_bgf)
-    jFile.AddArgument "selected_ratio", selected
+    jFile.AddArgument "electric_equipment_power_per_floor_area", Range("Electric")
+    jFile.AddArgument "lighting_power_per_floor_area", Range("Lights")
+    jFile.AddArgument "floor_area_per_person", Range("People")
+    jFile.AddSchedule "electric_equipment_sched", Range("ElectricWD")
+    jFile.AddSchedule "lighting_sched", Range("LightWD")
+    jFile.AddSchedule "people_sched", Range("PeopleWD")
+    jFile.AddSchedule "people_activity_sched", Range("PeopleActivityWD")
+    jFile.AddHolidays "holidays", Range("Feiertage")
+    jFile.AddArgument "area_gfa_import", Range("BldgArea_import")
+    jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
+    jFile.AddArgument "nfa_gfa_ratio_selection", selected
     jFile.AddArgument "is_custom_ratio", IIf(isCustom, "true", "false")
-    jFile.AddArgument "is_imported", IIf(bGeneric, "false", "true")
-    jFile.AddArgument "ElectricEquipmentSchedule", dd23.List(dd23.Value)
-    jFile.AddArgument "LightSchedule", dd49.List(dd49.Value)
-    jFile.AddArgument "PeopleSchedule", dd50.List(dd50.Value)
-    jFile.AddArgument "PeopleActivitySchedule", dd51.List(dd51.Value)
-    jFile.AddArgument "is_custom_ElectricEquipment", IIf(dd23.Value > (dd23.ListCount - 2), "true", "false")
-    jFile.AddArgument "is_custom_Light", IIf(dd49.Value > (dd49.ListCount - 2), "true", "false")
-    jFile.AddArgument "is_custom_People", IIf(dd50.Value > (dd50.ListCount - 2), "true", "false")
-    jFile.AddArgument "is_custom_PeopleActivity", IIf(dd51.Value > (dd51.ListCount - 2), "true", "false")
+    jFile.AddArgument "is_imported_model", IIf(bGeneric, "false", "true")
+    jFile.AddArgument "electric_equipment_sched_selection", dd23.List(dd23.Value)
+    jFile.AddArgument "lighting_sched_selection", dd49.List(dd49.Value)
+    jFile.AddArgument "people_sched_selection", dd50.List(dd50.Value)
+    jFile.AddArgument "people_activity_sched_selection", dd51.List(dd51.Value)
+    jFile.AddArgument "is_custom_electric_equipment", IIf(dd23.Value > (dd23.ListCount - 2), "true", "false")
+    jFile.AddArgument "is_custom_lighting", IIf(dd49.Value > (dd49.ListCount - 2), "true", "false")
+    jFile.AddArgument "is_custom_people", IIf(dd50.Value > (dd50.ListCount - 2), "true", "false")
+    jFile.AddArgument "is_custom_people_activity", IIf(dd51.Value > (dd51.ListCount - 2), "true", "false")
 
     jFile.AddMeasure "add_internal_loads"
 End Sub
@@ -290,25 +290,24 @@ Sub ExportAddDetailedHVAC( _
     Dim dd55 As DropDown 'schedule ventilation
     Set dd55 = Sheets("HAUPTSEITE").DropDowns("Dropdown55")
 
-    jFile.AddArgument "wrg", Range("WRG")
-    jFile.AddArgument "latent", Range("LATENT")
-    jFile.AddArgument "sensible", Range("SENSIBLE")
-    jFile.AddArgument "ach", Range("ACH")
+    jFile.AddArgument "heat_recovery_method", Range("WRG")
+    jFile.AddArgument "latent_efficiency", Range("LATENT")
+    jFile.AddArgument "sensible_efficiency", Range("SENSIBLE")
+    jFile.AddArgument "ach_per_hour", Range("ACH")
     jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
     jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
-    jFile.AddSchedule "hvacSched", Range("HVACWD")
-    jFile.AddHolidays "Holidays", Range("Feiertage")
-    jFile.AddArgument "hvacSchedule", dd55.List(dd55.Value)
+    jFile.AddSchedule "hvac_sched", Range("HVACWD")
+    jFile.AddHolidays "holidays", Range("Feiertage")
+    jFile.AddArgument "hvac_schedule", dd55.List(dd55.Value)
     jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
-
-    jFile.AddSchedule "zoneHeatingTempSched", Range("HeatingWD")
-    jFile.AddSchedule "zoneCoolingTempSched", Range("CoolingWD")
-    jFile.AddArgument "hotWaterTempSetpoint", 82
-    jFile.AddArgument "hotWaterDeltaT", 11
-    jFile.AddArgument "coldWaterTempSetpoint", 10
-    jFile.AddArgument "coldWaterDeltaT", 5
-    jFile.AddArgument "fanPressureRiseSupply", CStr(750) 'update 10.01.22 -> new standard DIN EN 16798-3 - SFP2
-    jFile.AddArgument "fanPressureRiseReturn", CStr(750)
+    jFile.AddSchedule "zone_heating_temp_sched", Range("HeatingWD")
+    jFile.AddSchedule "zone_cooling_temp_sched", Range("CoolingWD")
+    jFile.AddArgument "hot_water_temp_setpoint", 82
+    jFile.AddArgument "hot_water_temp_diff", 11
+    jFile.AddArgument "cold_water_temp_setpoint", 10
+    jFile.AddArgument "cold_water_temp_diff", 5
+    jFile.AddArgument "supply_fan_pressure_rise", CStr(750) 'update 10.01.22 -> new standard DIN EN 16798-3 - SFP2
+    jFile.AddArgument "return_fan_pressure_rise", CStr(750)
     jFile.AddArgument "system_type", Range("system_type")
 
     jFile.AddMeasure "add_detailed_hvac"
@@ -327,15 +326,15 @@ Sub ExportAddIdealLoads( _
     Dim dd55 As DropDown 'schedule ventilation
     Set dd55 = Sheets("HAUPTSEITE").DropDowns("Dropdown55")
 
-    jFile.AddArgument "wrg", Range("WRG")
-    jFile.AddArgument "latent", Range("LATENT")
-    jFile.AddArgument "sensible", Range("SENSIBLE")
-    jFile.AddArgument "ach", Range("ACH")
+    jFile.AddArgument "heat_recovery_method", Range("WRG")
+    jFile.AddArgument "latent_efficiency", Range("LATENT")
+    jFile.AddArgument "sensible_efficiency", Range("SENSIBLE")
+    jFile.AddArgument "ach_per_hour", Range("ACH")
     jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
     jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
-    jFile.AddSchedule "hvacSched", Range("HVACWD")
-    jFile.AddHolidays "Holidays", Range("Feiertage")
-    jFile.AddArgument "hvacSchedule", dd55.List(dd55.Value)
+    jFile.AddSchedule "hvac_sched", Range("HVACWD")
+    jFile.AddHolidays "holidays", Range("Feiertage")
+    jFile.AddArgument "hvac_schedule", dd55.List(dd55.Value)
     jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
 
     jFile.AddMeasure "add_ideal_loads"
@@ -345,7 +344,7 @@ End Sub
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
 Sub ExportAddShadingControls(ByRef jFile As JSONFile)
-    jFile.AddArgument "SolarSetpoint", Range("SHCO_IRR")
+    jFile.AddArgument "solar_setpoint", Range("SHCO_IRR")
     jFile.AddMeasure "add_shading_controls"
 End Sub
 
@@ -359,7 +358,7 @@ Sub ExportAddInfiltration( _
     ByVal nrf_bgf As Double, _
     ByVal FloorHeight_Ratio As Double _
 )
-    jFile.AddArgument "AirChangesPerHour", Range("INFIL")
+    jFile.AddArgument "air_changes", Range("INFIL")
     jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
     jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
     jFile.AddMeasure "add_infiltration"
@@ -369,7 +368,7 @@ End Sub
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
 Sub ExportAddLightingControls(ByRef jFile As JSONFile)
-    jFile.AddArgument "DaylightingSetpoint", Range("LC_LUX")
+    jFile.AddArgument "daylighting_setpoint", Range("LC_LUX")
     jFile.AddMeasure "add_lighting_controls"
 End Sub
 
@@ -382,13 +381,13 @@ Sub ExportAddTemperatureSetpoints(ByRef jFile As JSONFile)
     Dim dd86 As DropDown 'setpoint cooling
     Set dd86 = Sheets("HAUPTSEITE").DropDowns("Dropdown86")
 
-    jFile.AddArgument "heatingTemp", dd60.List(dd60.Value)
-    jFile.AddArgument "coolingTemp", dd86.List(dd86.Value)
+    jFile.AddArgument "heating_temp_selection", dd60.List(dd60.Value)
+    jFile.AddArgument "cooling_temp_selection", dd86.List(dd86.Value)
     jFile.AddArgument "is_custom_heating", IIf(dd60.Value > 3, "true", "false")
     jFile.AddArgument "is_custom_cooling", IIf(dd86.Value > 3, "true", "false")
-    jFile.AddSchedule "zoneHeatingTempSchedule", Range("HeatingWD")
-    jFile.AddSchedule "zoneCoolingTempSchedule", Range("CoolingWD")
-    jFile.AddHolidays "Holidays", Range("Feiertage")
+    jFile.AddSchedule "zone_heating_temp_sched", Range("HeatingWD")
+    jFile.AddSchedule "zone_cooling_temp_sched", Range("CoolingWD")
+    jFile.AddHolidays "holidays", Range("Feiertage")
     jFile.AddMeasure "add_temperature_setpoints"
 End Sub
 
@@ -396,8 +395,8 @@ End Sub
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
 Sub ExportSaveModel(ByRef jFile As JSONFile)
-    jFile.AddArgument "pathtosave", GetOutputFolder()
-    jFile.AddArgument "FileName", Range("FileName")
+    jFile.AddArgument "output_path", GetOutputFolder()
+    jFile.AddArgument "file_name", Range("FileName")
     jFile.AddMeasure "save_model"
 End Sub
 
@@ -405,9 +404,9 @@ End Sub
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
 Sub ExportInjectZoneVentilationIDF(ByRef jFile As JSONFile)
-    jFile.AddArgument "VentilationACH", Range("windowvent_ach")
-    jFile.AddArgument "MinIndoorTemperature", Range("windowvent_temp")
-    jFile.AddArgument "DeltaT", Range("windowvent_dt")
+    jFile.AddArgument "air_changes", Range("windowvent_ach")
+    jFile.AddArgument "min_indoor_temperature", Range("windowvent_temp")
+    jFile.AddArgument "temperature_difference", Range("windowvent_dt")
     jFile.AddMeasure "inject_zone_ventilation_idf"
 End Sub
 
@@ -421,10 +420,10 @@ Sub ExportInjectIdealLoadParametersIDF( _
     ByVal nrf_bgf As Double, _
     ByVal FloorHeight_Ratio As Double _
 )
-    jFile.AddArgument "HeatRecoveryType", Range("WRG")
-    jFile.AddArgument "SensibleEffectiveness", Range("SENSIBLE")
-    jFile.AddArgument "LatentEffectiveness", Range("LATENT")
-    jFile.AddArgument "ACH", Range("ACH")
+    jFile.AddArgument "heat_recovery_type", Range("WRG")
+    jFile.AddArgument "sensible_efficiency", Range("SENSIBLE")
+    jFile.AddArgument "latent_efficiency", Range("LATENT")
+    jFile.AddArgument "air_changes", Range("ACH")
     jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
     jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
     jFile.AddMeasure "inject_ideal_load_parameters_idf"
@@ -447,7 +446,7 @@ Sub ExportInjectHolidaysIDF(ByRef jFile As JSONFile)
     Next
 
     If feiertage_active > 0 Then
-        jFile.AddHolidays "Holidays", Range("Feiertage")
+        jFile.AddHolidays "holidays", Range("Feiertage")
         jFile.AddMeasure "inject_holidays_idf"
     End If
 End Sub
@@ -460,10 +459,10 @@ Sub ExportSetMetersIDF( _
     ByRef jFile As JSONFile, _
     ByVal NrOfTimesteps As Integer _
 )
-    jFile.AddArgument "Timestep", CStr(NrOfTimesteps)
-    jFile.AddArgument "DayToStartSimulation", Range("DayToStartSimulation")
-    jFile.AddArgument "HeatingSizingFactor", Range("HeatingSizingFactor")
-    jFile.AddArgument "CoolingSizingFactor", Range("CoolingSizingFactor")
+    jFile.AddArgument "time_step", CStr(NrOfTimesteps)
+    jFile.AddArgument "day_to_start_simulation", Range("DayToStartSimulation")
+    jFile.AddArgument "heating_sizing_factor", Range("HeatingSizingFactor")
+    jFile.AddArgument "cooling_sizing_factor", Range("CoolingSizingFactor")
     jFile.AddMeasure "set_meters_idf"
 End Sub
 

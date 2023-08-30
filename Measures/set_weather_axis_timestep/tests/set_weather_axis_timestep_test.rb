@@ -33,8 +33,8 @@ class SetWeatherAxisTimestepTest < MiniTest::Test
     def test_good_argument_values
         # If the argument has a default that you want to use, you don't need it in the hash
         args_hash = {}
-        args_hash["WeatherFilePath"] = "Test.epw"
-        args_hash["Timestep"] = "6"
+        args_hash["weather_file_path"] = "Test.epw"
+        args_hash["time_step"] = "6"
 
         # load an existing model
         dir = File.expand_path(File.dirname(__FILE__))

@@ -36,17 +36,17 @@ class AddTemperatureSetpointsTest < MiniTest::Test
         defaultSched = " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20"
         # create hash of argument values
         args_hash = {}
-        args_hash["zoneHeatingTempScheduleWerktag"] = defaultSched
-        args_hash["zoneHeatingTempScheduleSamstag"] = defaultSched
-        args_hash["zoneHeatingTempScheduleSonntag"] = defaultSched
-        args_hash["zoneHeatingTempScheduleFeiertag"] = defaultSched
-        args_hash["zoneCoolingTempScheduleWerktag"] = defaultSched
-        args_hash["zoneCoolingTempScheduleSamstag"] = defaultSched
-        args_hash["zoneCoolingTempScheduleSonntag"] = defaultSched
-        args_hash["zoneCoolingTempScheduleFeiertag"] = defaultSched
-        args_hash["Holidays"] = defaultSched
-        args_hash["heatingTemp"] = "Konstant 20°C"
-        args_hash["coolingTemp"] = "Konstant 25°C"
+        args_hash["zone_heating_temp_sched_weekday"] = defaultSched
+        args_hash["zone_heating_temp_sched_saturday"] = defaultSched
+        args_hash["zone_heating_temp_sched_sunday"] = defaultSched
+        args_hash["zone_heating_temp_sched_holiday"] = defaultSched
+        args_hash["zone_cooling_temp_sched_weekday"] = defaultSched
+        args_hash["zone_cooling_temp_sched_saturday"] = defaultSched
+        args_hash["zone_cooling_temp_sched_sunday"] = defaultSched
+        args_hash["zone_cooling_temp_sched_holiday"] = defaultSched
+        args_hash["holidays"] = defaultSched
+        args_hash["heating_temp_selection"] = "Konstant 20°C"
+        args_hash["cooling_temp_selection"] = "Konstant 25°C"
         args_hash["is_custom_heating"] = false
         args_hash["is_custom_cooling"] = false
 

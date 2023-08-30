@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>add_shading_controls</name>
   <uid>020cd542-7e01-422a-becb-e32c0318f9d9</uid>
-  <version_id>4393e5e4-fd32-45e9-ab7d-1013e114d238</version_id>
-  <version_modified>20230728T142102Z</version_modified>
+  <version_id>073ae8d3-fc49-453c-b90a-17c2145c938c</version_id>
+  <version_modified>20230809T092506Z</version_modified>
   <xml_checksum>2AF3A68E</xml_checksum>
   <class_name>AddShadingControls</class_name>
   <display_name>AddShadingControls</display_name>
@@ -11,7 +11,7 @@
   <modeler_description></modeler_description>
   <arguments>
     <argument>
-      <name>SolarSetpoint</name>
+      <name>solar_setpoint</name>
       <display_name>Solar Irradiation [W/m²] on window above which the ShadingControl is activated</display_name>
       <type>Double</type>
       <required>true</required>
@@ -54,6 +54,12 @@
       <checksum>49A24D5A</checksum>
     </file>
     <file>
+      <filename>add_shading_controls_test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>ED5727C5</checksum>
+    </file>
+    <file>
       <version>
         <software_program>OpenStudio</software_program>
         <identifier>2.5.0</identifier>
@@ -62,13 +68,7 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>97204838</checksum>
-    </file>
-    <file>
-      <filename>add_shading_controls_test.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>test</usage_type>
-      <checksum>ED5727C5</checksum>
+      <checksum>721E0F59</checksum>
     </file>
   </files>
 </measure>

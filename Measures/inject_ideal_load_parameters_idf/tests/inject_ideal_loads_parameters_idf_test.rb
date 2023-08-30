@@ -33,10 +33,10 @@ class InjectIdealLoadParametersIDFTest < MiniTest::Test
     def test_good_argument_values
         # If the argument has a default that you want to use, you don't need it in the hash
         args_hash = {}
-        args_hash["HeatRecoveryType"] = "Sensible"
-        args_hash["SensibleEffectiveness"] = "0.9"
-        args_hash["LatentEffectiveness"] = "0.8"
-        args_hash["ACH"] = "3"
+        args_hash["heat_recovery_type"] = "Sensible"
+        args_hash["sensible_efficiency"] = "0.9"
+        args_hash["latent_efficiency"] = "0.8"
+        args_hash["air_changes"] = "3"
         args_hash["nfa_gfa_ratio"] = "0.8"
         args_hash["floor_height_ratio"] = "0.8"
 

@@ -20,14 +20,14 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
   def arguments(workspace)
     args = OpenStudio::Measure::OSArgumentVector.new
 
-    args << OpenStudio::Measure::OSArgument::makeIntegerArgument("Timestep",true)
-		dtsS = OpenStudio::Measure::OSArgument::makeStringArgument("DayToStartSimulation",false)
+    args << OpenStudio::Measure::OSArgument::makeIntegerArgument("time_step",true)
+		dtsS = OpenStudio::Measure::OSArgument::makeStringArgument("day_to_start_simulation",false)
 		dtsS.setDefaultValue("UseWeatherFile")
     args << dtsS
-		sizingHeatingFactor = OpenStudio::Measure::OSArgument::makeDoubleArgument("HeatingSizingFactor",false)
+		sizingHeatingFactor = OpenStudio::Measure::OSArgument::makeDoubleArgument("heating_sizing_factor",false)
 		sizingHeatingFactor.setDefaultValue("1.25")
 		args << sizingHeatingFactor
-		sizingCoolingFactor = OpenStudio::Measure::OSArgument::makeDoubleArgument("CoolingSizingFactor",false)
+		sizingCoolingFactor = OpenStudio::Measure::OSArgument::makeDoubleArgument("cooling_sizing_factor",false)
 		sizingCoolingFactor.setDefaultValue("1.15")
 		args << sizingCoolingFactor
     return args
@@ -43,10 +43,10 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     end
 
     # assign the user inputs to variables
-    timestep = runner.getIntegerArgumentValue("Timestep", user_arguments)
-	heatingSizingFactor = runner.getDoubleArgumentValue("HeatingSizingFactor", user_arguments)
-	coolingSizingFactor = runner.getDoubleArgumentValue("CoolingSizingFactor", user_arguments)
-	dayToStartSimulation = runner.getStringArgumentValue("DayToStartSimulation", user_arguments)
+    timestep = runner.getIntegerArgumentValue("time_step", user_arguments)
+	heatingSizingFactor = runner.getDoubleArgumentValue("heating_sizing_factor", user_arguments)
+	coolingSizingFactor = runner.getDoubleArgumentValue("cooling_sizing_factor", user_arguments)
+	dayToStartSimulation = runner.getStringArgumentValue("day_to_start_simulation", user_arguments)
 
 	customMeters = workspace.getObjectsByType("Meter:Custom".to_IddObjectType)
  	runner.registerInitialCondition("The building started with #{customMeters.size} Custom Meters with version #{workspace.version().str()}.")

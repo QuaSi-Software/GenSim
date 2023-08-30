@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>add_geometry</name>
   <uid>3dcac94d-8a2e-43b6-8698-a3a4e8f3903f</uid>
-  <version_id>3a7c4dbd-c551-4250-bc89-804542083da0</version_id>
-  <version_modified>20230728T141937Z</version_modified>
+  <version_id>e18971b1-6b13-4767-8ba9-c28d13a853bf</version_id>
+  <version_modified>20230809T075214Z</version_modified>
   <xml_checksum>49BEF039</xml_checksum>
   <class_name>AddGeometry</class_name>
   <display_name>AddGeometry</display_name>
@@ -120,7 +120,7 @@
       <default_value>0.3</default_value>
     </argument>
     <argument>
-      <name>AdiabaticNorth</name>
+      <name>adiabatic_north</name>
       <display_name>Adiabatic north facade?</display_name>
       <type>Boolean</type>
       <required>false</required>
@@ -138,7 +138,7 @@
       </choices>
     </argument>
     <argument>
-      <name>AdiabaticEast</name>
+      <name>adiabatic_east</name>
       <display_name>Adiabatic east facade?</display_name>
       <type>Boolean</type>
       <required>false</required>
@@ -156,7 +156,7 @@
       </choices>
     </argument>
     <argument>
-      <name>AdiabaticSouth</name>
+      <name>adiabatic_south</name>
       <display_name>Adiabatic south facade?</display_name>
       <type>Boolean</type>
       <required>false</required>
@@ -174,7 +174,7 @@
       </choices>
     </argument>
     <argument>
-      <name>AdiabaticWest</name>
+      <name>adiabatic_west</name>
       <display_name>Adiabatic west facade?</display_name>
       <type>Boolean</type>
       <required>false</required>
@@ -192,7 +192,7 @@
       </choices>
     </argument>
     <argument>
-      <name>AdiabaticRoof</name>
+      <name>adiabatic_roof</name>
       <display_name>Adiabatic roof?</display_name>
       <type>Boolean</type>
       <required>false</required>
@@ -210,7 +210,7 @@
       </choices>
     </argument>
     <argument>
-      <name>AdiabaticFloor</name>
+      <name>adiabatic_floor</name>
       <display_name>Adiabatic floor?</display_name>
       <type>Boolean</type>
       <required>false</required>
@@ -228,7 +228,7 @@
       </choices>
     </argument>
     <argument>
-      <name>perimeterdepth</name>
+      <name>perimeter_depth</name>
       <display_name>Perimeter Depth</display_name>
       <type>Double</type>
       <required>false</required>
@@ -271,6 +271,12 @@
       <checksum>16F7B378</checksum>
     </file>
     <file>
+      <filename>add_geometry_test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>52238327</checksum>
+    </file>
+    <file>
       <version>
         <software_program>OpenStudio</software_program>
         <identifier>1.0.4</identifier>
@@ -279,13 +285,7 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>E2796AB5</checksum>
-    </file>
-    <file>
-      <filename>add_geometry_test.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>test</usage_type>
-      <checksum>52238327</checksum>
+      <checksum>B5B93238</checksum>
     </file>
   </files>
 </measure>
