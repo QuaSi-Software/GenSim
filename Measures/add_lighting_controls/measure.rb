@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 # *******************************************************************************
 # OpenStudio(R), Copyright (c) 2008-2020, Alliance for Sustainable Energy, LLC.
 # With modifications by: Matthias Stickel
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -37,29 +39,29 @@
 
 # start the measure
 class AddLightingControls < OpenStudio::Measure::ModelMeasure
-
   # human readable name
   def name
     return "AddLightingControls"
   end
 
-  # human readable description
+  # general description of measure
   def description
-    return ""
+    return "Add lighting controls."
   end
 
-  # human readable description of modeling approach
+  # description for users of what the measure does and how it works
   def modeler_description
-    return ""
+    return "Add lighting controls."
   end
 
   # define the arguments that the user will input
-  def arguments(model)
+  def arguments(_model)
     args = OpenStudio::Measure::OSArgumentVector.new
 
-     #make an argument for setpoint
-    setpoint = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("daylighting_setpoint",true)
-    setpoint.setDisplayName("Daylighting Setpoint (lux)")
+    # make an argument for setpoint
+    setpoint = OpenStudio::Measure::OSArgument.makeDoubleArgument("daylighting_setpoint", true)
+    setpoint.setDisplayName("Daylighting Setpoint")
+    setpoint.setUnits("lux")
     setpoint.setDefaultValue(500)
     args << setpoint
 
@@ -71,43 +73,41 @@ class AddLightingControls < OpenStudio::Measure::ModelMeasure
     super(model, runner, user_arguments)
 
     # use the built-in error checking
-    if !runner.validateUserArguments(arguments(model), user_arguments)
-      return false
-    end
+    return false unless runner.validateUserArguments(arguments(model), user_arguments)
 
     # ===== assign the user inputs to variables
-    setpoint = runner.getDoubleArgumentValue("daylighting_setpoint",user_arguments)
+    setpoint = runner.getDoubleArgumentValue("daylighting_setpoint", user_arguments)
 
     # ===== check the setpoint for reasonableness
-    if setpoint < 0 or setpoint > 9999 
+    if (setpoint < 0) || (setpoint > 9999)
       runner.registerError("A setpoint of #{setpoint} lux is outside the measure limit.")
       return false
     elsif setpoint > 2000
-      runner.registerWarning("A setpoint of #{setpoint} lux is abnormally high.") 
+      runner.registerWarning("A setpoint of #{setpoint} lux is abnormally high.")
     end
 
-	  # ===== variables for logging    
-    area = 0 #variable to tally the area to which the overall measure is applied
-    sensor_count = 0 #variable to aggregate the number of sensors installed 
-    sensor_area = 0 #variable to aggregate the area affected of new sensors
-	
+    # ===== variables for logging
+    area = 0 # variable to tally the area to which the overall measure is applied
+    sensor_count = 0 # variable to aggregate the number of sensors installed
+    sensor_area = 0 # variable to aggregate the area affected of new sensors
+
     affected_zones = []
     affected_zone_names = []
-    #hash to hold sensor objects
+    # hash to hold sensor objects
     new_sensor_objects = {}
 
     # ===== reporting initial condition of model
-	  spaces = model.getSpaces
+    spaces = model.getSpaces
     runner.registerInitialCondition("#{spaces.size} spaces without lighting control")
 
     # ===== loop through all spaces and add a daylighting sensor with dimming to each
-    spaces.each do |space|	
+    spaces.each do |space|
       area += space.floorArea
-	  #-----
-      #ELIMINATE spaces that don't have exterior natural lighting
+      #-----
+      # ELIMINATE spaces that don't have exterior natural lighting
       has_ext_nat_light = false
       space.surfaces.each do |surface|
-        next if not surface.outsideBoundaryCondition == "Outdoors"
+        next if surface.outsideBoundaryCondition != "Outdoors"
         surface.subSurfaces.each do |sub_surface|
           next if sub_surface.subSurfaceType == "Door"
           next if sub_surface.subSurfaceType == "OverheadDoor"
@@ -116,15 +116,15 @@ class AddLightingControls < OpenStudio::Measure::ModelMeasure
       end
       if has_ext_nat_light == false
         runner.registerWarning("Space '#{space.name}' has no exterior natural lighting. No sensor will be added.")
-       next
+        next
       end
-      #FIND floors
+      # FIND floors
       floors = []
       space.surfaces.each do |surface|
-        next if not surface.surfaceType == "Floor"
+        next if surface.surfaceType != "Floor"
         floors << surface
       end
-      #THIS method only works for flat (non-inclined) floors
+      # THIS method only works for flat (non-inclined) floors
       boundingBox = OpenStudio::BoundingBox.new
       floors.each do |floor|
         boundingBox.addPoints(floor.vertices)
@@ -134,105 +134,101 @@ class AddLightingControls < OpenStudio::Measure::ModelMeasure
       zmin = boundingBox.minZ.get
       xmax = boundingBox.maxX.get
       ymax = boundingBox.maxY.get
-      #CREATE a new sensor and put at the center of the space
+      # CREATE a new sensor and put at the center of the space
       sensor = OpenStudio::Model::DaylightingControl.new(model)
       sensor.setName("#{space.name} daylighting control")
       x_pos = (xmin + xmax) / 2
       y_pos = (ymin + ymax) / 2
-      z_pos = zmin + 0.76 #put it 76 cm above the floor
+      z_pos = zmin + 0.76 # put it 76 cm above the floor
       new_point = OpenStudio::Point3d.new(x_pos, y_pos, z_pos)
       sensor.setPosition(new_point)
       sensor.setIlluminanceSetpoint(setpoint)
       sensor.setLightingControlType("Stepped")
-	  sensor.setNumberofSteppedControlSteps(1)
+      sensor.setNumberofSteppedControlSteps(1)
       sensor.setSpace(space)
-      puts sensor 
-	  
-	  #-----
-	  #PUSH unique zones to array for use later in measure
+      puts sensor
+
+      #-----
+      # PUSH unique zones to array for use later in measure
       temp_zone = space.thermalZone.get
       if affected_zone_names.include?(temp_zone.name.to_s) == false
         affected_zones << temp_zone
         affected_zone_names << temp_zone.name.to_s
       end
 
-	  #PUSH sensor object into hash with space name
-      new_sensor_objects[space.name.to_s] = sensor	  
+      # PUSH sensor object into hash with space name
+      new_sensor_objects[space.name.to_s] = sensor
 
-      #ADD floor area to the daylighting area tally
+      # ADD floor area to the daylighting area tally
       sensor_area += space.floorArea
-      #ADD to sensor count for reporting
+      # ADD to sensor count for reporting
       sensor_count += 1
+    end # end spaces.each do
 
-    end #end spaces.each do
-	
-    if sensor_count == 0 
+    if sensor_count == 0
       runner.registerAsNotApplicable("No spaces became new lighting sensors.")
       return true
-    end  
-	
-	##########
-	#loop through THERMAL ZONES for spaces with daylighting controls added
-	
+    end
+
+    ##########
+    # loop through THERMAL ZONES for spaces with daylighting controls added
+
     affected_zones.each do |zone|
       zone_spaces = zone.spaces
       zone_spaces_with_new_sensors = []
       zone_spaces.each do |zone_space|
-        if not zone_space.daylightingControls.empty?
+        unless zone_space.daylightingControls.empty?
           zone_spaces_with_new_sensors << zone_space
         end
       end
 
-      if not zone_spaces_with_new_sensors.empty?
-        #need to identify the two largest spaces
-        primary_area = 0
-        secondary_area = 0
-        primary_space = nil
-        secondary_space = nil
-        three_or_more_sensors = false
+      next if zone_spaces_with_new_sensors.empty?
+      # need to identify the two largest spaces
+      primary_area = 0
+      secondary_area = 0
+      primary_space = nil
+      secondary_space = nil
+      three_or_more_sensors = false
 
-        # dfg temp - need to add another if statement so only get spaces with sensors
-        zone_spaces_with_new_sensors.each do |zone_space|
-          zone_space_area = zone_space.floorArea
-          if zone_space_area > primary_area
-            primary_area = zone_space_area
-            primary_space = zone_space
-          elsif zone_space_area > secondary_area
-            secondary_area = zone_space_area
-            secondary_space = zone_space
-          else
-            #setup flag to warn user that more than 2 sensors can't be added to a space
-            three_or_more_sensors = true
-          end
-
+      # dfg temp - need to add another if statement so only get spaces with sensors
+      zone_spaces_with_new_sensors.each do |zone_space|
+        zone_space_area = zone_space.floorArea
+        if zone_space_area > primary_area
+          primary_area = zone_space_area
+          primary_space = zone_space
+        elsif zone_space_area > secondary_area
+          secondary_area = zone_space_area
+          secondary_space = zone_space
+        else
+          # setup flag to warn user that more than 2 sensors can't be added to a space
+          three_or_more_sensors = true
         end
+      end
 
-        if primary_space
-          #setup primary sensor
-          sensor_primary = new_sensor_objects[primary_space.name.to_s]
-          zone.setPrimaryDaylightingControl(sensor_primary)
-          zone.setFractionofZoneControlledbyPrimaryDaylightingControl(primary_area/(primary_area + secondary_area))
-        end
+      if primary_space
+        # setup primary sensor
+        sensor_primary = new_sensor_objects[primary_space.name.to_s]
+        zone.setPrimaryDaylightingControl(sensor_primary)
+        zone.setFractionofZoneControlledbyPrimaryDaylightingControl(primary_area / (primary_area + secondary_area))
+      end
 
-        if secondary_space
-          #setup secondary sensor
-          sensor_secondary = new_sensor_objects[secondary_space.name.to_s]
-          zone.setSecondaryDaylightingControl(sensor_secondary)
-          zone.setFractionofZoneControlledbySecondaryDaylightingControl(secondary_area/(primary_area + secondary_area))
-        end
+      if secondary_space
+        # setup secondary sensor
+        sensor_secondary = new_sensor_objects[secondary_space.name.to_s]
+        zone.setSecondaryDaylightingControl(sensor_secondary)
+        zone.setFractionofZoneControlledbySecondaryDaylightingControl(secondary_area / (primary_area + secondary_area))
+      end
 
-        #warn that additional sensors were not used
-        if three_or_more_sensors == true
-          runner.registerWarning("Thermal zone '#{zone.name}' had more than two spaces with sensors. Only two sensors were associated with the thermal zone.")
-        end
+      # warn that additional sensors were not used
+      if three_or_more_sensors == true
+        runner.registerWarning("Thermal zone '#{zone.name}' had more than two spaces with sensors. Only two sensors were associated with the thermal zone.")
+      end
+      # end if not zone_spaces.empty?
+    end # end affected_zones.each do
 
-      end #end if not zone_spaces.empty?
-
-    end #end affected_zones.each do
-	
-	  runner.registerInfo("#{area} square meters total area to which the overall daylighting control measure is applied")
-	  runner.registerFinalCondition("#{sensor_count} sensors added on a total effected sensor area of #{sensor_area} square meters")
-	  return true
+    runner.registerInfo("#{area} square meters total area to which the overall daylighting control measure is applied")
+    runner.registerFinalCondition("#{sensor_count} sensors added on a total effected sensor area of #{sensor_area} square meters")
+    return true
   end
 end
 

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 # *******************************************************************************
 # OpenStudio(R), Copyright (c) 2008-2021, Alliance for Sustainable Energy, LLC.
 # With modifications by: Tobias Maile
 # All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
@@ -41,299 +43,281 @@
 # see the URL below for access to C++ documentation on model objects (click on "model" in the main window to view model objects)
 # http://openstudio.nrel.gov/sites/openstudio.nrel.gov/files/nv_data/cpp_documentation_it/model/html/namespaces.html
 
-#start the measure
-class AddGeometry < OpenStudio::Ruleset::ModelUserScript
-  
-  #define the name that a user will see, this method may be deprecated as
-  #the display name in PAT comes from the name field in measure.xml
+# start the measure
+class AddGeometry < OpenStudio::Measure::ModelMeasure
+  # define the name that a user will see, this method may be deprecated as
+  # the display name in PAT comes from the name field in measure.xml
   def name
     return "AddGeometry"
   end
 
-  #define the arguments that the user will input
-  def arguments(model)
+  # general description of measure
+  def description
+    return "Add geometry from simple inputs."
+  end
+
+  # description for users of what the measure does and how it works
+  def modeler_description
+    return "Add geometry from simple inputs."
+  end
+
+  # define the arguments that the user will input
+  def arguments(_model)
     args = OpenStudio::Measure::OSArgumentVector.new
-    
-    #make an argument for total floor area
-    floor_area = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("floor_area",true)
+
+    # make an argument for total floor area
+    floor_area = OpenStudio::Measure::OSArgument.makeDoubleArgument("floor_area", true)
     floor_area.setDisplayName("Total Building Floor Area")
     floor_area.setUnits("m^2")
     args << floor_area
 
-    #make an argument for building length
-    building_length = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("building_length",true)
+    # make an argument for building length
+    building_length = OpenStudio::Measure::OSArgument.makeDoubleArgument("building_length", true)
     building_length.setDisplayName("Length of North/South Facade")
     building_length.setDefaultValue(20.0)
     args << building_length
 
-    #make an argument for building width
-    building_width = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("building_width",true)
+    # make an argument for building width
+    building_width = OpenStudio::Measure::OSArgument.makeDoubleArgument("building_width", true)
     building_width.setDisplayName("Width of East/West Facade")
     building_width.setDefaultValue(10.0)
     args << building_width
 
-    #make an argument for number of floors
-    number_of_stories = OpenStudio::Ruleset::OSArgument::makeIntegerArgument("number_of_stories",true)
-    number_of_stories.setDisplayName("Number of Floors.")
+    # make an argument for number of floors
+    number_of_stories = OpenStudio::Measure::OSArgument.makeIntegerArgument("number_of_stories", true)
+    number_of_stories.setDisplayName("Number of Floors")
     number_of_stories.setDefaultValue(2)
     args << number_of_stories
 
-    #make an argument for floor height
-    floor_to_floor_height = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("floor_to_floor_height",true)
+    # make an argument for floor height
+    floor_to_floor_height = OpenStudio::Measure::OSArgument.makeDoubleArgument("floor_to_floor_height", true)
     floor_to_floor_height.setDisplayName("Floor to Floor Height")
     floor_to_floor_height.setUnits("m")
     floor_to_floor_height.setDefaultValue(3.3)
     args << floor_to_floor_height
 
-    #make an argument to surface match
-    surface_matching = OpenStudio::Ruleset::OSArgument::makeBoolArgument("surface_matching",true)
-    surface_matching.setDisplayName("Surface Matching?")
+    # make an argument to surface match
+    surface_matching = OpenStudio::Measure::OSArgument.makeBoolArgument("surface_matching", true)
+    surface_matching.setDisplayName("Surface Matching")
     surface_matching.setDefaultValue(true)
     args << surface_matching
 
-    #make an argument to create zones from spaces
-    make_zones = OpenStudio::Ruleset::OSArgument::makeBoolArgument("make_zones",true)
-    make_zones.setDisplayName("Make Thermal Zones from Spaces?")
+    # make an argument to create zones from spaces
+    make_zones = OpenStudio::Measure::OSArgument.makeBoolArgument("make_zones", true)
+    make_zones.setDisplayName("Make Thermal Zones from Spaces")
     make_zones.setDefaultValue(true)
     args << make_zones
-	
-	#make an argument for wwr
-    window_to_wall_ratio_north = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("window_to_wall_ratio_north",true)
+
+    # make an argument for wwr
+    window_to_wall_ratio_north = OpenStudio::Measure::OSArgument.makeDoubleArgument("window_to_wall_ratio_north", true)
     window_to_wall_ratio_north.setDisplayName("Window to Wall Ratio North")
     window_to_wall_ratio_north.setDefaultValue(0.3)
     args << window_to_wall_ratio_north
-	
-	#make an argument for wwr
-    window_to_wall_ratio_east = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("window_to_wall_ratio_east",true)
+
+    # make an argument for wwr
+    window_to_wall_ratio_east = OpenStudio::Measure::OSArgument.makeDoubleArgument("window_to_wall_ratio_east", true)
     window_to_wall_ratio_east.setDisplayName("Window to Wall Ratio East")
     window_to_wall_ratio_east.setDefaultValue(0.3)
     args << window_to_wall_ratio_east
-	
-  	#make an argument for wwr
-    window_to_wall_ratio_south = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("window_to_wall_ratio_south",true)
+
+    # make an argument for wwr
+    window_to_wall_ratio_south = OpenStudio::Measure::OSArgument.makeDoubleArgument("window_to_wall_ratio_south", true)
     window_to_wall_ratio_south.setDisplayName("Window to Wall Ratio South")
     window_to_wall_ratio_south.setDefaultValue(0.3)
     args << window_to_wall_ratio_south
-	
-	  #make an argument for wwr
-    window_to_wall_ratio_west = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("window_to_wall_ratio_west",true)
+
+    # make an argument for wwr
+    window_to_wall_ratio_west = OpenStudio::Measure::OSArgument.makeDoubleArgument("window_to_wall_ratio_west", true)
     window_to_wall_ratio_west.setDisplayName("Window to Wall Ratio West")
     window_to_wall_ratio_west.setDefaultValue(0.3)
     args << window_to_wall_ratio_west
-    
-    #make an argument to create zones from spaces
-    adiabaticN = OpenStudio::Ruleset::OSArgument::makeBoolArgument("adiabatic_north",false)
-    adiabaticN.setDisplayName("Adiabatic north facade?")
+
+    # make an argument to create zones from spaces
+    adiabaticN = OpenStudio::Measure::OSArgument.makeBoolArgument("adiabatic_north", false)
+    adiabaticN.setDisplayName("Adiabatic north facade")
     adiabaticN.setDefaultValue(false)
     args << adiabaticN
-    
-    #make an argument to create zones from spaces
-    adiabaticE = OpenStudio::Ruleset::OSArgument::makeBoolArgument("adiabatic_east",false)
-    adiabaticE.setDisplayName("Adiabatic east facade?")
+
+    # make an argument to create zones from spaces
+    adiabaticE = OpenStudio::Measure::OSArgument.makeBoolArgument("adiabatic_east", false)
+    adiabaticE.setDisplayName("Adiabatic east facade")
     adiabaticE.setDefaultValue(false)
     args << adiabaticE
-    
-    #make an argument to create zones from spaces
-    adiabaticS = OpenStudio::Ruleset::OSArgument::makeBoolArgument("adiabatic_south",false)
-    adiabaticS.setDisplayName("Adiabatic south facade?")
+
+    # make an argument to create zones from spaces
+    adiabaticS = OpenStudio::Measure::OSArgument.makeBoolArgument("adiabatic_south", false)
+    adiabaticS.setDisplayName("Adiabatic south facade")
     adiabaticS.setDefaultValue(false)
     args << adiabaticS
-    
-    #make an argument to create zones from spaces
-    adiabaticW = OpenStudio::Ruleset::OSArgument::makeBoolArgument("adiabatic_west",false)
-    adiabaticW.setDisplayName("Adiabatic west facade?")
+
+    # make an argument to create zones from spaces
+    adiabaticW = OpenStudio::Measure::OSArgument.makeBoolArgument("adiabatic_west", false)
+    adiabaticW.setDisplayName("Adiabatic west facade")
     adiabaticW.setDefaultValue(false)
     args << adiabaticW
-    
-    #make an argument to create zones from spaces
-    adiabaticR = OpenStudio::Ruleset::OSArgument::makeBoolArgument("adiabatic_roof",false)
-    adiabaticR.setDisplayName("Adiabatic roof?")
+
+    # make an argument to create zones from spaces
+    adiabaticR = OpenStudio::Measure::OSArgument.makeBoolArgument("adiabatic_roof", false)
+    adiabaticR.setDisplayName("Adiabatic roof")
     adiabaticR.setDefaultValue(false)
     args << adiabaticR
-    
-    #make an argument to create zones from spaces
-    adiabaticF = OpenStudio::Ruleset::OSArgument::makeBoolArgument("adiabatic_floor",false)
-    adiabaticF.setDisplayName("Adiabatic floor?")
+
+    # make an argument to create zones from spaces
+    adiabaticF = OpenStudio::Measure::OSArgument.makeBoolArgument("adiabatic_floor", false)
+    adiabaticF.setDisplayName("Adiabatic floor")
     adiabaticF.setDefaultValue(false)
     args << adiabaticF
 
-    #make an argument for depth of perimeter zone
-    perimeterdepth = OpenStudio::Ruleset::OSArgument::makeDoubleArgument("perimeter_depth",false)
+    # make an argument for depth of perimeter zone
+    perimeterdepth = OpenStudio::Measure::OSArgument.makeDoubleArgument("perimeter_depth", false)
     perimeterdepth.setDisplayName("Perimeter Depth")
     perimeterdepth.setDefaultValue(6)
     args << perimeterdepth
 
     return args
-  end #end the arguments method
+  end # end the arguments method
 
-  #define what happens when the measure is run
+  # define what happens when the measure is run
   def run(model, runner, user_arguments)
     super(model, runner, user_arguments)
 
-    #use the built-in error checking
-    if not runner.validateUserArguments(arguments(model), user_arguments)
-      return false
-    end
+    # use the built-in error checking
+    return false unless runner.validateUserArguments(arguments(model), user_arguments)
 
-    #assign the user inputs to variables
-    floor_area = runner.getDoubleArgumentValue("floor_area",user_arguments)
-    building_length = runner.getDoubleArgumentValue("building_length",user_arguments)
-    building_width = runner.getDoubleArgumentValue("building_width",user_arguments)
-    number_of_stories = runner.getIntegerArgumentValue("number_of_stories",user_arguments)
-    floor_to_floor_height = runner.getDoubleArgumentValue("floor_to_floor_height",user_arguments)
-    surface_matching = runner.getBoolArgumentValue("surface_matching",user_arguments)
-    make_zones = runner.getBoolArgumentValue("make_zones",user_arguments)
-    window_to_wall_ratio_north = runner.getDoubleArgumentValue("window_to_wall_ratio_north",user_arguments)
-    window_to_wall_ratio_east = runner.getDoubleArgumentValue("window_to_wall_ratio_east",user_arguments)
-    window_to_wall_ratio_south = runner.getDoubleArgumentValue("window_to_wall_ratio_south",user_arguments)
-    window_to_wall_ratio_west = runner.getDoubleArgumentValue("window_to_wall_ratio_west",user_arguments)
-    adiabaticNorth = runner.getBoolArgumentValue("adiabatic_north",user_arguments)
-    adiabaticEast = runner.getBoolArgumentValue("adiabatic_east",user_arguments)
-    adiabaticSouth = runner.getBoolArgumentValue("adiabatic_south",user_arguments)
-    adiabaticWest = runner.getBoolArgumentValue("adiabatic_west",user_arguments)
-    adiabaticRoof = runner.getBoolArgumentValue("adiabatic_roof",user_arguments)
-    adiabaticFloor = runner.getBoolArgumentValue("adiabatic_floor",user_arguments)
-    perimeterdepth = runner.getDoubleArgumentValue("perimeter_depth",user_arguments)
+    # assign the user inputs to variables
+    floor_area = runner.getDoubleArgumentValue("floor_area", user_arguments)
+    building_length = runner.getDoubleArgumentValue("building_length", user_arguments)
+    building_width = runner.getDoubleArgumentValue("building_width", user_arguments)
+    number_of_stories = runner.getIntegerArgumentValue("number_of_stories", user_arguments)
+    floor_to_floor_height = runner.getDoubleArgumentValue("floor_to_floor_height", user_arguments)
+    surface_matching = runner.getBoolArgumentValue("surface_matching", user_arguments)
+    make_zones = runner.getBoolArgumentValue("make_zones", user_arguments)
+    window_to_wall_ratio_north = runner.getDoubleArgumentValue("window_to_wall_ratio_north", user_arguments)
+    window_to_wall_ratio_east = runner.getDoubleArgumentValue("window_to_wall_ratio_east", user_arguments)
+    window_to_wall_ratio_south = runner.getDoubleArgumentValue("window_to_wall_ratio_south", user_arguments)
+    window_to_wall_ratio_west = runner.getDoubleArgumentValue("window_to_wall_ratio_west", user_arguments)
+    adiabaticNorth = runner.getBoolArgumentValue("adiabatic_north", user_arguments)
+    adiabaticEast = runner.getBoolArgumentValue("adiabatic_east", user_arguments)
+    adiabaticSouth = runner.getBoolArgumentValue("adiabatic_south", user_arguments)
+    adiabaticWest = runner.getBoolArgumentValue("adiabatic_west", user_arguments)
+    adiabaticRoof = runner.getBoolArgumentValue("adiabatic_roof", user_arguments)
+    adiabaticFloor = runner.getBoolArgumentValue("adiabatic_floor", user_arguments)
+    perimeterdepth = runner.getDoubleArgumentValue("perimeter_depth", user_arguments)
 
-    #test for positive inputs
-    if not floor_area > 0
-      runner.registerError("Enter a total building area greater than 0.")
-    end
-    if not building_length > 0
-      runner.registerError("Enter a building length greater than 0.")
-    end
-    if not building_width > 0
-      runner.registerError("Enter a building width greater than 0.")
-    end
-    if not number_of_stories > 0
+    # test for positive inputs
+    runner.registerError("Enter a total building area greater than 0.") if floor_area <= 0
+    runner.registerError("Enter a building length greater than 0.") if building_length <= 0
+    runner.registerError("Enter a building width greater than 0.") if building_width <= 0
+    if number_of_stories <= 0
       runner.registerError("Enter a number of stories 1 or greater.")
     end
-    if not floor_to_floor_height > 0
-      runner.registerError("Enter a positive floor height.")
-    end
+    runner.registerError("Enter a positive floor height.") if floor_to_floor_height <= 0
 
-    #helper to make numbers pretty (converts 4125001.25641 to 4,125,001.26 or 4,125,001). The definition be called through this measure.
-    def neat_numbers(number, roundto = 2) #round to 0 or 2)
-      if roundto == 2
-        number = sprintf "%.2f", number
-      else
-        number = number.round
-      end
-      #regex to add commas
-      number.to_s.reverse.gsub(%r{([0-9]{3}(?=([0-9])))}, "\\1,").reverse
-    end #end def neat_numbers
-
-    #helper to make it easier to do unit conversions on the fly.  The definition be called through this measure.
-    def unit_helper(number,from_unit_string,to_unit_string)
-      converted_number = OpenStudio::convert(OpenStudio::Quantity.new(number, OpenStudio::createUnit(from_unit_string).get), OpenStudio::createUnit(to_unit_string).get).get.value
-    end
-
-    #determine if core and perimeter zoning can be used
-    if building_length > 10 and building_width > 10
-      perimeter_zone_depth = perimeterdepth #hard coded in meters
+    # determine if core and perimeter zoning can be used
+    if (building_length > 10) && (building_width > 10)
+      perimeter_zone_depth = perimeterdepth # hard coded in meters
     else
-      perimeter_zone_depth = 0 #if any size is to small then just model floor as single zone, issue warning
+      perimeter_zone_depth = 0 # if any size is to small then just model floor as single zone, issue warning
       runner.registerWarning("Due to the size of the building modeling each floor as a single zone.")
     end
 
-    #Loop through the number of floors
-    for floor in (0..number_of_stories-1)
-
+    # Loop through the number of floors
+    for floor in (0..number_of_stories - 1)
       z = floor_to_floor_height * floor
 
-      #Create a new story within the building
+      # Create a new story within the building
       story = OpenStudio::Model::BuildingStory.new(model)
       story.setNominalFloortoFloorHeight(floor_to_floor_height)
-      story.setName("Story #{floor+1}")
+      story.setName("Story #{floor + 1}")
 
-      nw_point = OpenStudio::Point3d.new(0,building_width,z)
-      ne_point = OpenStudio::Point3d.new(building_length,building_width,z)
-      se_point = OpenStudio::Point3d.new(building_length,0,z)
-      sw_point = OpenStudio::Point3d.new(0,0,z)
+      nw_point = OpenStudio::Point3d.new(0, building_width, z)
+      ne_point = OpenStudio::Point3d.new(building_length, building_width, z)
+      se_point = OpenStudio::Point3d.new(building_length, 0, z)
+      sw_point = OpenStudio::Point3d.new(0, 0, z)
 
       # Identity matrix for setting space origins
-      m = OpenStudio::Matrix.new(4,4,0)
-      m[0,0] = 1
-      m[1,1] = 1
-      m[2,2] = 1
-      m[3,3] = 1
+      m = OpenStudio::Matrix.new(4, 4, 0)
+      m[0, 0] = 1
+      m[1, 1] = 1
+      m[2, 2] = 1
+      m[3, 3] = 1
 
-      #Define polygons for a rectangular building
+      # Define polygons for a rectangular building
       if perimeter_zone_depth > 0
-        perimeter_nw_point = nw_point + OpenStudio::Vector3d.new(perimeter_zone_depth,-perimeter_zone_depth,0)
-        perimeter_ne_point = ne_point + OpenStudio::Vector3d.new(-perimeter_zone_depth,-perimeter_zone_depth,0)
-        perimeter_se_point = se_point + OpenStudio::Vector3d.new(-perimeter_zone_depth,perimeter_zone_depth,0)
-        perimeter_sw_point = sw_point + OpenStudio::Vector3d.new(perimeter_zone_depth,perimeter_zone_depth,0)
+        perimeter_nw_point = nw_point + OpenStudio::Vector3d.new(perimeter_zone_depth, -perimeter_zone_depth, 0)
+        perimeter_ne_point = ne_point + OpenStudio::Vector3d.new(-perimeter_zone_depth, -perimeter_zone_depth, 0)
+        perimeter_se_point = se_point + OpenStudio::Vector3d.new(-perimeter_zone_depth, perimeter_zone_depth, 0)
+        perimeter_sw_point = sw_point + OpenStudio::Vector3d.new(perimeter_zone_depth, perimeter_zone_depth, 0)
 
         west_polygon = OpenStudio::Point3dVector.new
         west_polygon << sw_point
         west_polygon << nw_point
         west_polygon << perimeter_nw_point
         west_polygon << perimeter_sw_point
-        west_space = OpenStudio::Model::Space::fromFloorPrint(west_polygon, floor_to_floor_height, model)
+        west_space = OpenStudio::Model::Space.fromFloorPrint(west_polygon, floor_to_floor_height, model)
         west_space = west_space.get
-        m[0,3] = sw_point.x
-        m[1,3] = sw_point.y
-        m[2,3] = sw_point.z
+        m[0, 3] = sw_point.x
+        m[1, 3] = sw_point.y
+        m[2, 3] = sw_point.z
         west_space.changeTransformation(OpenStudio::Transformation.new(m))
         west_space.setBuildingStory(story)
-        west_space.setName("Story #{floor+1} West Perimeter Space")
+        west_space.setName("Story #{floor + 1} West Perimeter Space")
 
         north_polygon = OpenStudio::Point3dVector.new
         north_polygon << nw_point
         north_polygon << ne_point
         north_polygon << perimeter_ne_point
         north_polygon << perimeter_nw_point
-        north_space = OpenStudio::Model::Space::fromFloorPrint(north_polygon, floor_to_floor_height, model)
+        north_space = OpenStudio::Model::Space.fromFloorPrint(north_polygon, floor_to_floor_height, model)
         north_space = north_space.get
-        m[0,3] = perimeter_nw_point.x
-        m[1,3] = perimeter_nw_point.y
-        m[2,3] = perimeter_nw_point.z
+        m[0, 3] = perimeter_nw_point.x
+        m[1, 3] = perimeter_nw_point.y
+        m[2, 3] = perimeter_nw_point.z
         north_space.changeTransformation(OpenStudio::Transformation.new(m))
         north_space.setBuildingStory(story)
-        north_space.setName("Story #{floor+1} North Perimeter Space")
+        north_space.setName("Story #{floor + 1} North Perimeter Space")
 
         east_polygon = OpenStudio::Point3dVector.new
         east_polygon << ne_point
         east_polygon << se_point
         east_polygon << perimeter_se_point
         east_polygon << perimeter_ne_point
-        east_space = OpenStudio::Model::Space::fromFloorPrint(east_polygon, floor_to_floor_height, model)
+        east_space = OpenStudio::Model::Space.fromFloorPrint(east_polygon, floor_to_floor_height, model)
         east_space = east_space.get
-        m[0,3] = perimeter_se_point.x
-        m[1,3] = perimeter_se_point.y
-        m[2,3] = perimeter_se_point.z
+        m[0, 3] = perimeter_se_point.x
+        m[1, 3] = perimeter_se_point.y
+        m[2, 3] = perimeter_se_point.z
         east_space.changeTransformation(OpenStudio::Transformation.new(m))
         east_space.setBuildingStory(story)
-        east_space.setName("Story #{floor+1} East Perimeter Space")
+        east_space.setName("Story #{floor + 1} East Perimeter Space")
 
         south_polygon = OpenStudio::Point3dVector.new
         south_polygon << se_point
         south_polygon << sw_point
         south_polygon << perimeter_sw_point
         south_polygon << perimeter_se_point
-        south_space = OpenStudio::Model::Space::fromFloorPrint(south_polygon, floor_to_floor_height, model)
+        south_space = OpenStudio::Model::Space.fromFloorPrint(south_polygon, floor_to_floor_height, model)
         south_space = south_space.get
-        m[0,3] = sw_point.x
-        m[1,3] = sw_point.y
-        m[2,3] = sw_point.z
+        m[0, 3] = sw_point.x
+        m[1, 3] = sw_point.y
+        m[2, 3] = sw_point.z
         south_space.changeTransformation(OpenStudio::Transformation.new(m))
         south_space.setBuildingStory(story)
-        south_space.setName("Story #{floor+1} South Perimeter Space")
+        south_space.setName("Story #{floor + 1} South Perimeter Space")
 
         core_polygon = OpenStudio::Point3dVector.new
         core_polygon << perimeter_sw_point
         core_polygon << perimeter_nw_point
         core_polygon << perimeter_ne_point
         core_polygon << perimeter_se_point
-        core_space = OpenStudio::Model::Space::fromFloorPrint(core_polygon, floor_to_floor_height, model)
+        core_space = OpenStudio::Model::Space.fromFloorPrint(core_polygon, floor_to_floor_height, model)
         core_space = core_space.get
-        m[0,3] = perimeter_sw_point.x
-        m[1,3] = perimeter_sw_point.y
-        m[2,3] = perimeter_sw_point.z
+        m[0, 3] = perimeter_sw_point.x
+        m[1, 3] = perimeter_sw_point.y
+        m[2, 3] = perimeter_sw_point.z
         core_space.changeTransformation(OpenStudio::Transformation.new(m))
         core_space.setBuildingStory(story)
-        core_space.setName("Story #{floor+1} Core Space")
+        core_space.setName("Story #{floor + 1} Core Space")
 
         # Minimal zones
       else
@@ -342,108 +326,101 @@ class AddGeometry < OpenStudio::Ruleset::ModelUserScript
         core_polygon << nw_point
         core_polygon << ne_point
         core_polygon << se_point
-        core_space = OpenStudio::Model::Space::fromFloorPrint(core_polygon, floor_to_floor_height, model)
+        core_space = OpenStudio::Model::Space.fromFloorPrint(core_polygon, floor_to_floor_height, model)
         core_space = core_space.get
-        m[0,3] = sw_point.x
-        m[1,3] = sw_point.y
-        m[2,3] = sw_point.z
+        m[0, 3] = sw_point.x
+        m[1, 3] = sw_point.y
+        m[2, 3] = sw_point.z
         core_space.changeTransformation(OpenStudio::Transformation.new(m))
         core_space.setBuildingStory(story)
-        core_space.setName("Story #{floor+1} Core Space")
-
+        core_space.setName("Story #{floor + 1} Core Space")
       end
 
-      #Set vertical story position
+      # Set vertical story position
       story.setNominalZCoordinate(z)
+    end # End of floor loop
 
-    end #End of floor loop
-
-    #put all of the spaces in the model into a vector
+    # put all of the spaces in the model into a vector
     spaces = OpenStudio::Model::SpaceVector.new
     model.getSpaces.each do |space|
       spaces << space
-      if make_zones
-        #create zones
-        new_zone = OpenStudio::Model::ThermalZone.new(model)
-        space.setThermalZone(new_zone)
-        zone_name = space.name.get.gsub("Space","Zone")
-        new_zone.setName(zone_name)
-      end
+      next unless make_zones
+      # create zones
+      new_zone = OpenStudio::Model::ThermalZone.new(model)
+      space.setThermalZone(new_zone)
+      zone_name = space.name.get.gsub("Space", "Zone")
+      new_zone.setName(zone_name)
     end
 
     if surface_matching
-      #match surfaces for each space in the vector
+      # match surfaces for each space in the vector
       OpenStudio::Model.matchSurfaces(spaces)
     end
-	
-	#loop through surfaces finding exterior walls with proper orientation
-  surfaces = model.getSurfaces
-  surfaces.each do |s|
-    if s.surfaceType == "RoofCeiling" and s.outsideBoundaryCondition == "Outdoors" and adiabaticRoof
-      s.setOutsideBoundaryCondition("Adiabatic")
-    elsif s.surfaceType == "Floor" and s.outsideBoundaryCondition == "Outdoors" and adiabaticFloor
-      s.setOutsideBoundaryCondition("Adiabatic")
-	elsif s.surfaceType == "Floor" and s.outsideBoundaryCondition == "Ground" and adiabaticFloor
-      s.setOutsideBoundaryCondition("Adiabatic")
-    end
-    
-    next if not s.surfaceType == "Wall"
-    next if not s.outsideBoundaryCondition == "Outdoors"
-    if s.space.empty?
-      runner.registerWarning("#{s.name} doesn't have a parent space and won't be included in the measure reporting or modifications.")
-      next
-    end
 
-      # get the absoluteAzimuth for the surface so we can categorize it
-      absoluteAzimuth =  OpenStudio::convert(s.azimuth,"rad","deg").get + s.space.get.directionofRelativeNorth + model.getBuilding.northAxis
-      until absoluteAzimuth < 360.0
-        absoluteAzimuth = absoluteAzimuth - 360.0
+    # loop through surfaces finding exterior walls with proper orientation
+    surfaces = model.getSurfaces
+    surfaces.each do |s|
+      if (s.surfaceType == "RoofCeiling") && (s.outsideBoundaryCondition == "Outdoors") && adiabaticRoof
+        s.setOutsideBoundaryCondition("Adiabatic")
+      elsif (s.surfaceType == "Floor") && (s.outsideBoundaryCondition == "Outdoors") && adiabaticFloor
+        s.setOutsideBoundaryCondition("Adiabatic")
+      elsif (s.surfaceType == "Floor") && (s.outsideBoundaryCondition == "Ground") && adiabaticFloor
+        s.setOutsideBoundaryCondition("Adiabatic")
       end
 
-      #if facade == "North"
-      if (absoluteAzimuth >= 315.0 or absoluteAzimuth < 45.0)
-        if(adiabaticNorth)
+      next if s.surfaceType != "Wall"
+      next if s.outsideBoundaryCondition != "Outdoors"
+      if s.space.empty?
+        runner.registerWarning("#{s.name} doesn't have a parent space and won't be included in the measure reporting or modifications.")
+        next
+      end
+
+      # get the absoluteAzimuth for the surface so we can categorize it
+      absoluteAzimuth = OpenStudio.convert(s.azimuth, "rad", "deg").get + s.space.get.directionofRelativeNorth + model.getBuilding.northAxis
+      absoluteAzimuth -= 360.0 until absoluteAzimuth < 360.0
+
+      # if facade == "North"
+      if (absoluteAzimuth >= 315.0) || (absoluteAzimuth < 45.0)
+        if adiabaticNorth
           s.setOutsideBoundaryCondition("Adiabatic")
-			    s.setWindowToWallRatio(0.0)
-			  else
-			    s.setWindowToWallRatio(window_to_wall_ratio_north)
-			  end
-      #elsif facade == "East"
-      elsif (absoluteAzimuth >= 45.0 and absoluteAzimuth < 135.0)
-			 if(adiabaticEast)
+          s.setWindowToWallRatio(0.0)
+        else
+          s.setWindowToWallRatio(window_to_wall_ratio_north)
+        end
+        # elsif facade == "East"
+      elsif (absoluteAzimuth >= 45.0) && (absoluteAzimuth < 135.0)
+        if adiabaticEast
           s.setOutsideBoundaryCondition("Adiabatic")
           s.setWindowToWallRatio(0.0)
         else
           s.setWindowToWallRatio(window_to_wall_ratio_east)
         end
-      #elsif facade == "South"
-      elsif (absoluteAzimuth >= 135.0 and absoluteAzimuth < 225.0)
-			 if(adiabaticSouth)
+        # elsif facade == "South"
+      elsif (absoluteAzimuth >= 135.0) && (absoluteAzimuth < 225.0)
+        if adiabaticSouth
           s.setOutsideBoundaryCondition("Adiabatic")
           s.setWindowToWallRatio(0.0)
         else
           s.setWindowToWallRatio(window_to_wall_ratio_south)
         end
-      #elsif facade == "West"
-      elsif (absoluteAzimuth >= 225.0 and absoluteAzimuth < 315.0)
-			 if(adiabaticWest)
+        # elsif facade == "West"
+      elsif (absoluteAzimuth >= 225.0) && (absoluteAzimuth < 315.0)
+        if adiabaticWest
           s.setOutsideBoundaryCondition("Adiabatic")
           s.setWindowToWallRatio(0.0)
         else
           s.setWindowToWallRatio(window_to_wall_ratio_west)
         end
       end
-	end
+    end
 
-    #reporting final condition of model
+    # reporting final condition of model
     finishing_spaces = model.getSpaces
     runner.registerFinalCondition("The building finished with #{finishing_spaces.size} spaces.")
-    
+
     return true
- 
-  end #end the run method
+  end # end the run method
+end # end the measure
 
-end #end the measure
-
-#this allows the measure to be use by the application
+# this allows the measure to be use by the application
 AddGeometry.new.registerWithApplication

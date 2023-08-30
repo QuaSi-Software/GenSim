@@ -2,24 +2,24 @@
   <schema_version>3.0</schema_version>
   <name>add_ideal_loads</name>
   <uid>bad408fa-2a4e-46a2-84a4-eca24a8c4096</uid>
-  <version_id>de30f108-4427-4ef6-959a-218067c71a2f</version_id>
-  <version_modified>20230728T141948Z</version_modified>
+  <version_id>b266be20-38e8-4ea7-af5c-5d4589258850</version_id>
+  <version_modified>20230814T134050Z</version_modified>
   <xml_checksum>C49A7DAB</xml_checksum>
   <class_name>AddIdealLoads</class_name>
   <display_name>AddIdealLoads</display_name>
-  <description></description>
-  <modeler_description></modeler_description>
+  <description>Add ideal loads.</description>
+  <modeler_description>Add ideal loads.</modeler_description>
   <arguments>
     <argument>
-      <name>wrg</name>
-      <display_name>Heat Recocovery Ratio</display_name>
+      <name>heat_recovery_method</name>
+      <display_name>Heat Recocovery Method</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
       <default_value>none</default_value>
     </argument>
     <argument>
-      <name>latent</name>
+      <name>latent_efficiency</name>
       <display_name>Latent efficiency</display_name>
       <type>Double</type>
       <required>true</required>
@@ -27,7 +27,7 @@
       <default_value>0.65</default_value>
     </argument>
     <argument>
-      <name>sensible</name>
+      <name>sensible_efficiency</name>
       <display_name>sensible efficiency</display_name>
       <type>Double</type>
       <required>true</required>
@@ -35,7 +35,7 @@
       <default_value>0.7</default_value>
     </argument>
     <argument>
-      <name>ach</name>
+      <name>ach_per_hour</name>
       <display_name>Air changes per hours</display_name>
       <type>Double</type>
       <required>true</required>
@@ -59,36 +59,36 @@
       <default_value>1</default_value>
     </argument>
     <argument>
-      <name>hvacSchedWerktag</name>
-      <display_name>hvacSchedWerktag</display_name>
+      <name>hvac_sched_weekday</name>
+      <display_name>hvac_sched_weekday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>hvacSchedSamstag</name>
-      <display_name>hvacSchedSamstag</display_name>
+      <name>hvac_sched_saturday</name>
+      <display_name>hvac_sched_saturday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>hvacSchedSonntag</name>
-      <display_name>hvacSchedSonntag</display_name>
+      <name>hvac_sched_sunday</name>
+      <display_name>hvac_sched_sunday</display_name>
       <type>String</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>hvacSchedFeiertag</name>
-      <display_name>hvacSchedFeiertag</display_name>
+      <name>hvac_sched_holiday</name>
+      <display_name>hvac_sched_holiday</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
-      <name>Holidays</name>
-      <display_name>Holidays</display_name>
+      <name>holidays</name>
+      <display_name>holidays</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
@@ -137,13 +137,19 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>B8B06C11</checksum>
+      <checksum>BFA07D3B</checksum>
     </file>
     <file>
       <filename>add_ideal_loads_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>6C8DFE94</checksum>
+      <checksum>4A2D40C6</checksum>
+    </file>
+    <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
     </file>
   </files>
 </measure>

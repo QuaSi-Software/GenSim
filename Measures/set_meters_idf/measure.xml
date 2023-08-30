@@ -2,13 +2,13 @@
   <schema_version>3.0</schema_version>
   <name>set_meters_idf</name>
   <uid>f6530b2e-e6e0-4b16-888c-54226d297dd4</uid>
-  <version_id>1c96cf1b-2d3a-42e2-87ee-1f9348af77c5</version_id>
-  <version_modified>20230809T094752Z</version_modified>
+  <version_id>c4cb7f96-fc81-49d3-86b2-a6b3886ad094</version_id>
+  <version_modified>20230814T140611Z</version_modified>
   <xml_checksum>15DBE762</xml_checksum>
   <class_name>SetMetersIDF</class_name>
   <display_name>SetMetersIDF</display_name>
-  <description></description>
-  <modeler_description></modeler_description>
+  <description>Adds meter objects for outputting.</description>
+  <modeler_description>Adds meter objects for outputting.</modeler_description>
   <arguments>
     <argument>
       <name>time_step</name>
@@ -75,7 +75,7 @@
       <filename>set_meters_idf_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>48DDADCE</checksum>
+      <checksum>913C3CDC</checksum>
     </file>
     <file>
       <version>
@@ -86,7 +86,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>53034C86</checksum>
+      <checksum>70D841E2</checksum>
+    </file>
+    <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
     </file>
   </files>
 </measure>

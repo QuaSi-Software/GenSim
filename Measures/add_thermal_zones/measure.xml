@@ -2,13 +2,13 @@
   <schema_version>3.0</schema_version>
   <name>add_thermal_zones</name>
   <uid>ac34ac49-f21b-4c54-83e9-3615aa06acf2</uid>
-  <version_id>2969550a-0a7d-4d4d-a33f-20e808e7ed2f</version_id>
-  <version_modified>20230728T142118Z</version_modified>
+  <version_id>838cce16-c513-4336-9753-be8f5203f6e7</version_id>
+  <version_modified>20230814T140549Z</version_modified>
   <xml_checksum>89ABF456</xml_checksum>
   <class_name>AddThermalZones</class_name>
   <display_name>AddThermalZones</display_name>
-  <description></description>
-  <modeler_description></modeler_description>
+  <description>Add thermal zones.</description>
+  <modeler_description>Add thermal zones.</modeler_description>
   <arguments/>
   <outputs/>
   <provenances/>
@@ -39,6 +39,12 @@
   </attributes>
   <files>
     <file>
+      <filename>example_model.osm</filename>
+      <filetype>osm</filetype>
+      <usage_type>test</usage_type>
+      <checksum>B99DC402</checksum>
+    </file>
+    <file>
       <version>
         <software_program>OpenStudio</software_program>
         <identifier>2.5.0</identifier>
@@ -47,19 +53,19 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>3FDF5AEE</checksum>
-    </file>
-    <file>
-      <filename>example_model.osm</filename>
-      <filetype>osm</filetype>
-      <usage_type>test</usage_type>
-      <checksum>B99DC402</checksum>
+      <checksum>0478350E</checksum>
     </file>
     <file>
       <filename>add_thermal_zones_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>1985702B</checksum>
+      <checksum>C97AF1FF</checksum>
+    </file>
+    <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
     </file>
   </files>
 </measure>

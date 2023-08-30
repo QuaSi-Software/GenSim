@@ -1,27 +1,28 @@
+# frozen_string_literal: true
+
 ########################################################
 # This is just a simple measure to create an empty model
 ########################################################
 
 # start the measure
 class CreateEmptyModel < OpenStudio::Measure::ModelMeasure
-
   # human readable name
   def name
     return "CreateEmptyModel"
   end
 
-  # human readable description
+  # general description of measure
   def description
     return "This just creates an empty model"
   end
 
-  # human readable description of modeling approach
+  # description for users of what the measure does and how it works
   def modeler_description
     return "This just creates an empty model"
   end
 
   # define the arguments that the user will input
-  def arguments(model)
+  def arguments(_model)
     args = OpenStudio::Measure::OSArgumentVector.new
 
     return args
@@ -31,12 +32,8 @@ class CreateEmptyModel < OpenStudio::Measure::ModelMeasure
   def run(model, runner, user_arguments)
     super(model, runner, user_arguments)
 
-	# use the built-in error checking
-    if !runner.validateUserArguments(arguments(model), user_arguments)
-      return false
-    end
-	
-    model = OpenStudio::Model::Model.new
+    # use the built-in error checking
+    return false unless runner.validateUserArguments(arguments(model), user_arguments)
 
     # report final condition of model
     runner.registerFinalCondition("The Model was created.")

@@ -2,13 +2,13 @@
   <schema_version>3.0</schema_version>
   <name>add_geometry</name>
   <uid>3dcac94d-8a2e-43b6-8698-a3a4e8f3903f</uid>
-  <version_id>e18971b1-6b13-4767-8ba9-c28d13a853bf</version_id>
-  <version_modified>20230809T075214Z</version_modified>
+  <version_id>b407a5eb-49f9-4f70-bfe7-8fce06478f8a</version_id>
+  <version_modified>20230814T134038Z</version_modified>
   <xml_checksum>49BEF039</xml_checksum>
   <class_name>AddGeometry</class_name>
   <display_name>AddGeometry</display_name>
-  <description>This measure will create a building envelope based on a target floor area, aspect ratio, and floor to floor height.</description>
-  <modeler_description>This is based on the SketchUp Plugin user script to create a rectangular building, but just uses different inputs. The resulting building will have a core and perimeter zoning, unless it is too small, in which case eac floor will have a single zone.</modeler_description>
+  <description>Add geometry from simple inputs.</description>
+  <modeler_description>Add geometry from simple inputs.</modeler_description>
   <arguments>
     <argument>
       <name>floor_area</name>
@@ -36,7 +36,7 @@
     </argument>
     <argument>
       <name>number_of_stories</name>
-      <display_name>Number of Floors.</display_name>
+      <display_name>Number of Floors</display_name>
       <type>Integer</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
@@ -53,7 +53,7 @@
     </argument>
     <argument>
       <name>surface_matching</name>
-      <display_name>Surface Matching?</display_name>
+      <display_name>Surface Matching</display_name>
       <type>Boolean</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
@@ -71,7 +71,7 @@
     </argument>
     <argument>
       <name>make_zones</name>
-      <display_name>Make Thermal Zones from Spaces?</display_name>
+      <display_name>Make Thermal Zones from Spaces</display_name>
       <type>Boolean</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
@@ -121,7 +121,7 @@
     </argument>
     <argument>
       <name>adiabatic_north</name>
-      <display_name>Adiabatic north facade?</display_name>
+      <display_name>Adiabatic north facade</display_name>
       <type>Boolean</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
@@ -139,7 +139,7 @@
     </argument>
     <argument>
       <name>adiabatic_east</name>
-      <display_name>Adiabatic east facade?</display_name>
+      <display_name>Adiabatic east facade</display_name>
       <type>Boolean</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
@@ -157,7 +157,7 @@
     </argument>
     <argument>
       <name>adiabatic_south</name>
-      <display_name>Adiabatic south facade?</display_name>
+      <display_name>Adiabatic south facade</display_name>
       <type>Boolean</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
@@ -175,7 +175,7 @@
     </argument>
     <argument>
       <name>adiabatic_west</name>
-      <display_name>Adiabatic west facade?</display_name>
+      <display_name>Adiabatic west facade</display_name>
       <type>Boolean</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
@@ -193,7 +193,7 @@
     </argument>
     <argument>
       <name>adiabatic_roof</name>
-      <display_name>Adiabatic roof?</display_name>
+      <display_name>Adiabatic roof</display_name>
       <type>Boolean</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
@@ -211,7 +211,7 @@
     </argument>
     <argument>
       <name>adiabatic_floor</name>
-      <display_name>Adiabatic floor?</display_name>
+      <display_name>Adiabatic floor</display_name>
       <type>Boolean</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
@@ -274,7 +274,7 @@
       <filename>add_geometry_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>52238327</checksum>
+      <checksum>2692424B</checksum>
     </file>
     <file>
       <version>
@@ -285,7 +285,7 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>B5B93238</checksum>
+      <checksum>37C6CB57</checksum>
     </file>
   </files>
 </measure>

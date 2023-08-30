@@ -2,13 +2,13 @@
   <schema_version>3.0</schema_version>
   <name>add_lighting_controls</name>
   <uid>ac34ac49-f21b-4c54-83e9-3615aa06acf1</uid>
-  <version_id>2b632110-725c-4be2-baab-4f41c56f35f8</version_id>
-  <version_modified>20230809T092458Z</version_modified>
+  <version_id>2cf795db-2046-4f08-a087-4bcbe2ab5090</version_id>
+  <version_modified>20230814T134117Z</version_modified>
   <xml_checksum>81C5D8E7</xml_checksum>
   <class_name>AddLightingControls</class_name>
   <display_name>AddLightingControls</display_name>
-  <description></description>
-  <modeler_description></modeler_description>
+  <description>Add lighting controls.</description>
+  <modeler_description>Add lighting controls.</modeler_description>
   <arguments>
     <argument>
       <name>daylighting_setpoint</name>
@@ -68,13 +68,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>44CE940D</checksum>
+      <checksum>CDCBFC7F</checksum>
     </file>
     <file>
       <filename>add_lighting_controls_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>938FF842</checksum>
+      <checksum>67574AE1</checksum>
     </file>
   </files>
 </measure>

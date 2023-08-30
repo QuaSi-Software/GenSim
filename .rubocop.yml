@@ -1,0 +1,82 @@
+AllCops:
+  TargetRubyVersion: 2.5
+  UseCache: false
+
+Style/StringLiterals:
+  Description: 'Checks if uses of quotes match the configured preference.'
+  StyleGuide: '#consistent-string-literals'
+  Enabled: true
+  EnforcedStyle: double_quotes
+  SupportedStyles:
+    - single_quotes
+    - double_quotes
+  # If `true`, strings which span multiple lines using `\` for continuation must
+  # use the same type of quotes on each line.
+  ConsistentQuotesInMultiline: true
+
+Metrics/LineLength:
+  Description: 'Checks that line length does not exceed the configured limit.'
+  StyleGuide: '#max-line-length'
+  Enabled: true
+  Max: 92
+  # To make it possible to copy or click on URIs in the code, we allow lines
+  # containing a URI to be longer than Max.
+  AllowHeredoc: true
+  AllowURI: true
+  URISchemes:
+    - http
+    - https
+  # The IgnoreCopDirectives option causes the LineLength rule to ignore cop
+  # directives like '# rubocop: enable ...' when calculating a line's length.
+  IgnoreCopDirectives: true
+
+Metrics/MethodLength:
+  Description: 'Avoid methods longer than 80 lines of code.'
+  StyleGuide: '#short-methods'
+  Enabled: true
+  CountComments: false  # count full line comments?
+  Max: 80
+
+Metrics/BlockLength:
+  Description: 'Avoid long blocks with many lines.'
+  Enabled: true
+  CountComments: false  # count full line comments?
+  Max: 80
+
+Metrics/ClassLength:
+  Description: 'Avoid classes longer than 500 lines of code.'
+  Enabled: true
+  CountComments: false  # count full line comments?
+  Max: 500
+
+Metrics/ModuleLength:
+  Description: 'Avoid modules longer than 500 lines of code.'
+  Enabled: true
+  CountComments: false  # count full line comments?
+  Max: 500
+
+Metrics/AbcSize:
+  Description: >-
+                 A calculated magnitude based on number of assignments,
+                 branches, and conditions.
+  Reference:
+    - http://c2.com/cgi/wiki?AbcMetric
+    - https://en.wikipedia.org/wiki/ABC_Software_Metric
+  Enabled: false
+  # The ABC size is a calculated magnitude, so this number can be an Integer or
+  # a Float.
+  Max: 17
+
+Style/RedundantReturn:
+  Description: "Don't use return where it's not required."
+  StyleGuide: '#no-explicit-return'
+  Enabled: false
+  # When `true` allows code like `return x, y`.
+  AllowMultipleReturnValues: false
+
+Style/AsciiComments:
+  Description: 'Use only ascii symbols in comments.'
+  StyleGuide: '#english-comments'
+  Enabled: false
+  AllowedChars:
+    - ©

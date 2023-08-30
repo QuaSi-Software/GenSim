@@ -2,13 +2,13 @@
   <schema_version>3.0</schema_version>
   <name>inject_zone_ventilation_idf</name>
   <uid>3bdd4f5d-02e7-43ad-b151-9f781ef887b3</uid>
-  <version_id>dbb880c3-9ec5-425a-ac03-1642d9fb510a</version_id>
-  <version_modified>20230809T094744Z</version_modified>
+  <version_id>e3f71cea-df0f-4f46-a6e8-3a1e38a53aa3</version_id>
+  <version_modified>20230814T140606Z</version_modified>
   <xml_checksum>0B6DEAE1</xml_checksum>
   <class_name>InjectZoneVentilationIDF</class_name>
   <display_name>InjectZoneVentilationIDF</display_name>
-  <description>Replace this text with an explanation of what the measure does in terms that can be understood by a general building professional audience (building owners, architects, engineers, contractors, etc.).  This description will be used to create reports aimed at convincing the owner and/or design team to implement the measure in the actual building design.  For this reason, the description may include details about how the measure would be implemented, along with explanations of qualitative benefits associated with the measure.  It is good practice to include citations in the measure if the description is taken from a known source or if specific benefits are listed.</description>
-  <modeler_description>Replace this text with an explanation for the energy modeler specifically.  It should explain how the measure is modeled, including any requirements about how the baseline model must be set up, major assumptions, citations of references to applicable modeling resources, etc.  The energy modeler should be able to read this description and understand what changes the measure is making to the model and why these changes are being made.  Because the Modeler Description is written for an expert audience, using common abbreviations for brevity is good practice.</modeler_description>
+  <description>Inject zone ventilation.</description>
+  <modeler_description>Inject zone ventilation.</modeler_description>
   <arguments>
     <argument>
       <name>air_changes</name>
@@ -70,13 +70,19 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>6C00A41F</checksum>
+      <checksum>B0AB8573</checksum>
     </file>
     <file>
       <filename>inject_zone_ventilation_idf_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>E569824F</checksum>
+      <checksum>1BEB6652</checksum>
+    </file>
+    <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
     </file>
   </files>
 </measure>

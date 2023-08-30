@@ -2,13 +2,13 @@
   <schema_version>3.0</schema_version>
   <name>set_weather_axis_timestep</name>
   <uid>1fd78114-23ef-4ee1-80f4-d1695976a55b</uid>
-  <version_id>8df05576-11d9-42f7-b6da-31c844873320</version_id>
-  <version_modified>20230809T075229Z</version_modified>
+  <version_id>aff05601-91f9-4912-9d5b-183ad92f20cf</version_id>
+  <version_modified>20230814T140613Z</version_modified>
   <xml_checksum>74C70850</xml_checksum>
   <class_name>SetWeatherAxisTimestep</class_name>
   <display_name>SetWeatherAxisTimestep</display_name>
-  <description></description>
-  <modeler_description></modeler_description>
+  <description>Set axis of building and time step of simulation.</description>
+  <modeler_description>Set axis of building and time step of simulation.</modeler_description>
   <arguments>
     <argument>
       <name>weather_file_path</name>
@@ -66,13 +66,19 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>DF8B45AA</checksum>
+      <checksum>4F24100F</checksum>
     </file>
     <file>
       <filename>set_weather_axis_timestep_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>41A389BF</checksum>
+      <checksum>B413D62A</checksum>
+    </file>
+    <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
     </file>
   </files>
 </measure>

@@ -2,13 +2,13 @@
   <schema_version>3.0</schema_version>
   <name>inject_ideal_load_parameters_idf</name>
   <uid>e3487a61-abd7-4f98-ae4f-c77301e48a4d</uid>
-  <version_id>5ef6386f-cc34-480a-86a4-bea2f14d9bca</version_id>
-  <version_modified>20230809T094737Z</version_modified>
+  <version_id>f208a6b7-e8c9-4a7d-83af-2f4cb7211f20</version_id>
+  <version_modified>20230814T140601Z</version_modified>
   <xml_checksum>7DF45990</xml_checksum>
   <class_name>InjectIdealLoadParametersIDF</class_name>
   <display_name>InjectIdealLoadParametersIDF</display_name>
-  <description></description>
-  <modeler_description></modeler_description>
+  <description>Inject ideal load parameters.</description>
+  <modeler_description>Inject ideal load parameters.</modeler_description>
   <arguments>
     <argument>
       <name>heat_recovery_type</name>
@@ -93,13 +93,19 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>7B55DA6B</checksum>
+      <checksum>0983C724</checksum>
     </file>
     <file>
       <filename>inject_ideal_loads_parameters_idf_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>81BCE065</checksum>
+      <checksum>715EBDEE</checksum>
+    </file>
+    <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
     </file>
   </files>
 </measure>

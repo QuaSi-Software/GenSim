@@ -1,27 +1,28 @@
+# frozen_string_literal: true
+
 ########################################################
 # This is a measure to detect external zones by looping through space surfaces and finding window subsurfaces
 ########################################################
 
 # start the measure
 class DetectExternalZones < OpenStudio::Measure::ModelMeasure
-
   # human readable name
   def name
     return "DetectExternalZones"
   end
 
-  # human readable description
+  # general description of measure
   def description
-    return ""
+    return "Detect external zones."
   end
 
-  # human readable description of modeling approach
+  # description for users of what the measure does and how it works
   def modeler_description
-    return ""
+    return "Detect external zones."
   end
 
   # define the arguments that the user will input
-  def arguments(model)
+  def arguments(_model)
     args = OpenStudio::Measure::OSArgumentVector.new
     return args
   end
@@ -31,47 +32,45 @@ class DetectExternalZones < OpenStudio::Measure::ModelMeasure
     super(model, runner, user_arguments)
 
     # use the built-in error checking
-    if !runner.validateUserArguments(arguments(model), user_arguments)
-      return false
-    end
+    return false unless runner.validateUserArguments(arguments(model), user_arguments)
 
     # check if the mode is null
     if model.nil?
       runner.registerFinalCondition("The model is null!")
-	    return false
+      return false
     end
 
     # ===== reporting initial condition of model
-	  spaces = model.getSpaces
+    spaces = model.getSpaces
     runner.registerInitialCondition("#{spaces.size} spaces")
 
-	  externalSpaces = []
-	  externalZones = []
-	
+    externalSpaces = []
+    externalZones = []
+
     # ===== loop through all spaces finding zones with windows and mark them with zone name extension "EXT"
-	spaces.each do |space|	
+    spaces.each do |space|
       has_ext_nat_light = false
       space.surfaces.each do |surface|
-        next if not surface.outsideBoundaryCondition == "Outdoors"
+        next if surface.outsideBoundaryCondition != "Outdoors"
         surface.subSurfaces.each do |sub_surface|
           next if sub_surface.subSurfaceType == "Door"
           next if sub_surface.subSurfaceType == "OverheadDoor"
-		    has_ext_nat_light = true
+          has_ext_nat_light = true
+        end
       end
-    end
-    if has_ext_nat_light == false
-      runner.registerWarning("Space '#{space.name}' has no exterior window")
-	  else
-		  temp_zone = space.thermalZone.get
-		  temp_zone.setName("EXT-#{temp_zone.name}")
-	    space.setName("EXT-#{space.name}")
-		  externalSpaces << space
-		  externalZones << temp_zone
-	  end
-  end #end spaces.each de_sensors == true
-        
-	runner.registerFinalCondition("'#{externalSpaces.size}' external spaces and '#{externalZones.size}' external zones found.")
-	return true
+      if has_ext_nat_light == false
+        runner.registerWarning("Space '#{space.name}' has no exterior window")
+      else
+        temp_zone = space.thermalZone.get
+        temp_zone.setName("EXT-#{temp_zone.name}")
+        space.setName("EXT-#{space.name}")
+        externalSpaces << space
+        externalZones << temp_zone
+      end
+    end # end spaces.each de_sensors == true
+
+    runner.registerFinalCondition("'#{externalSpaces.size}' external spaces and '#{externalZones.size}' external zones found.")
+    return true
   end
 end
 
