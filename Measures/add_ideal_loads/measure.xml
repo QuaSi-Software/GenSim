@@ -1,0 +1,149 @@
+<measure>
+  <schema_version>3.0</schema_version>
+  <name>add_ideal_loads</name>
+  <uid>bad408fa-2a4e-46a2-84a4-eca24a8c4096</uid>
+  <version_id>de30f108-4427-4ef6-959a-218067c71a2f</version_id>
+  <version_modified>20230728T141948Z</version_modified>
+  <xml_checksum>C49A7DAB</xml_checksum>
+  <class_name>AddIdealLoads</class_name>
+  <display_name>AddIdealLoads</display_name>
+  <description></description>
+  <modeler_description></modeler_description>
+  <arguments>
+    <argument>
+      <name>wrg</name>
+      <display_name>Heat Recocovery Ratio</display_name>
+      <type>String</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+      <default_value>none</default_value>
+    </argument>
+    <argument>
+      <name>latent</name>
+      <display_name>Latent efficiency</display_name>
+      <type>Double</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+      <default_value>0.65</default_value>
+    </argument>
+    <argument>
+      <name>sensible</name>
+      <display_name>sensible efficiency</display_name>
+      <type>Double</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+      <default_value>0.7</default_value>
+    </argument>
+    <argument>
+      <name>ach</name>
+      <display_name>Air changes per hours</display_name>
+      <type>Double</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+      <default_value>1</default_value>
+    </argument>
+    <argument>
+      <name>nfa_gfa_ratio</name>
+      <display_name>Ratio of NFA over GFA</display_name>
+      <type>Double</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+      <default_value>1</default_value>
+    </argument>
+    <argument>
+      <name>floor_height_ratio</name>
+      <display_name>Ratio of conditioned floor height over total floor height</display_name>
+      <type>Double</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+      <default_value>1</default_value>
+    </argument>
+    <argument>
+      <name>hvacSchedWerktag</name>
+      <display_name>hvacSchedWerktag</display_name>
+      <type>String</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>hvacSchedSamstag</name>
+      <display_name>hvacSchedSamstag</display_name>
+      <type>String</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>hvacSchedSonntag</name>
+      <display_name>hvacSchedSonntag</display_name>
+      <type>String</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>hvacSchedFeiertag</name>
+      <display_name>hvacSchedFeiertag</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>Holidays</name>
+      <display_name>Holidays</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+  </arguments>
+  <outputs/>
+  <provenances/>
+  <tags>
+    <tag>HVAC.Whole System</tag>
+  </tags>
+  <attributes>
+    <attribute>
+      <name>Measure Type</name>
+      <value>ModelMeasure</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>Apply Measure Now</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>OpenStudio Application</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>Parametric Analysis Tool</value>
+      <datatype>string</datatype>
+    </attribute>
+  </attributes>
+  <files>
+    <file>
+      <filename>example_model.osm</filename>
+      <filetype>osm</filetype>
+      <usage_type>test</usage_type>
+      <checksum>EA03FC47</checksum>
+    </file>
+    <file>
+      <version>
+        <software_program>OpenStudio</software_program>
+        <identifier>2.5.0</identifier>
+        <min_compatible>2.5.0</min_compatible>
+      </version>
+      <filename>measure.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>script</usage_type>
+      <checksum>B8B06C11</checksum>
+    </file>
+    <file>
+      <filename>add_ideal_loads_test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>6C8DFE94</checksum>
+    </file>
+  </files>
+</measure>
