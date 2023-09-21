@@ -105,4 +105,13 @@ class TestImportedOSW < Test::Unit::TestCase
       "./../Output/generic_geometry_and_weather.osw"
     )
   end
+
+  # check the export of parameter values after a parameter file has been imported
+  # this checks parameters for the hvac system
+  def test_hvac_parameters
+    compare_osw_files(
+      "./parameter_sets/env_ii/hvac_parameters.osw",
+      "./../Output/hvac_parameters.osw"
+    )
+  end
 end
