@@ -114,4 +114,13 @@ class TestImportedOSW < Test::Unit::TestCase
       "./../Output/hvac_parameters.osw"
     )
   end
+
+  # check the export of parameter values after a parameter file has been imported
+  # this checks parameters for the building standard (envelope and inner masses)
+  def test_building_standards
+    compare_osw_files(
+      "./parameter_sets/env_ii/building_standards.osw",
+      "./../Output/building_standards.osw"
+    )
+  end
 end
