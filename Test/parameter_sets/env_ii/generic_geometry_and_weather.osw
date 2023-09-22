@@ -337,7 +337,7 @@
       },
       {
          "arguments": {
-            "time_step": "4",
+            "time_step": "1",
             "day_to_start_simulation": "Sunday",
             "heating_sizing_factor": "1.25",
             "cooling_sizing_factor": "1.15"
