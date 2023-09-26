@@ -2,8 +2,8 @@
   <schema_version>3.0</schema_version>
   <name>add_detailed_hvac</name>
   <uid>75c17475-d6d2-4074-a097-0c2202206dab</uid>
-  <version_id>36461124-3767-4307-8991-39809bc275fe</version_id>
-  <version_modified>20230814T134027Z</version_modified>
+  <version_id>7c95c2eb-1be8-49b7-a354-3e684ce98ae9</version_id>
+  <version_modified>20230926T075422Z</version_modified>
   <xml_checksum>C49A7DAB</xml_checksum>
   <class_name>AddDetailedHVAC</class_name>
   <display_name>AddDetailedHVAC</display_name>
@@ -59,8 +59,8 @@
       <default_value>1</default_value>
     </argument>
     <argument>
-      <name>hvac_schedule</name>
-      <display_name>hvac_schedule</display_name>
+      <name>hvac_sched_selection</name>
+      <display_name>hvac_sched_selection</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
@@ -265,6 +265,12 @@
       <checksum>9B673135</checksum>
     </file>
     <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
+    </file>
+    <file>
       <version>
         <software_program>OpenStudio</software_program>
         <identifier>2.7.0</identifier>
@@ -273,19 +279,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>03F65CBA</checksum>
+      <checksum>65615429</checksum>
     </file>
     <file>
       <filename>add_detailed_hvac_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>3ECF48D9</checksum>
-    </file>
-    <file>
-      <filename>LICENSE.md</filename>
-      <filetype>md</filetype>
-      <usage_type>license</usage_type>
-      <checksum>07A1DAC9</checksum>
+      <checksum>866CB8EA</checksum>
     </file>
   </files>
 </measure>

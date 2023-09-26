@@ -48,7 +48,7 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
     floor_height_ratio.setDefaultValue(1)
     args << floor_height_ratio
 
-    args << OpenStudio::Measure::OSArgument.makeStringArgument("hvac_schedule", false)
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("hvac_sched_selection", false)
     args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_hvac", false)
     args << OpenStudio::Measure::OSArgument.makeStringArgument("hvac_sched_weekday", true)
     args << OpenStudio::Measure::OSArgument.makeStringArgument("hvac_sched_saturday", true)
