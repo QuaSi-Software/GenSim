@@ -3,11 +3,17 @@ Sub RunOpenStudioCLI()
     Dim Argument As String
     Dim processMessage As String
 
-    CreateEmptyOSMFile GetOutputFolder() & "\" + Range("FileName") + ".osm"
-
-    Argument = Chr(34) & GetOpenStudioBinPath() & "\OpenStudio.exe" & Chr(34) & " --verbose run --workflow " & Chr(34) & GetOutputFolder() & "\" + Range("FileName") + ".osw" & Chr(34)
-
     Sheets("Hauptseite").Select
+
+    Argument = GetRubyExePath() & " " & Chr(34) & GetMeasuresFolder & "/gensim_cli.rb" & Chr(34) _
+        & " create_empty_osm --output_folder=" & Chr(34) & GetOutputFolder() & Chr(34) _
+        & " " & Range("FileName") + ".osm"
+    retval = ExecCmd(Argument)
+
+    Argument = GetRubyExePath() & " " & Chr(34) & GetMeasuresFolder & "/gensim_cli.rb" & Chr(34) _
+        & " run_workflow --output_folder=" & Chr(34) & GetOutputFolder() & Chr(34) _
+        & " --os_bin_path=" & Chr(34) & GetOpenStudioBinPath() & "/openstudio.exe" & Chr(34) _
+        & " " + Range("FileName") + ".osw"
     retval = ExecCmd(Argument)
 
     Range("Status").Offset(1, 1) = "beendet (" & WorksheetFunction.Round((Time - Startzeit_indv) * 86400, 1) & " s)"
@@ -75,19 +81,4 @@ Sub RunOpenStudioCLI()
             DoEvents
         End If
     End If
-End Sub
-
-Sub CreateEmptyOSMFile(sOSMFilePath As String)
-    Dim fso As Object
-    Set fso = CreateObject("Scripting.FileSystemObject")
-    Dim oFile As Object
-    Set oFile = fso.CreateTextFile(sOSMFilePath)
-    oFile.WriteLine "OS:Version,"
-    oFile.WriteLine "  {0f20289d-c9f3-4775-8548-e6b6a77e899a}, !- Handle"
-    oFile.WriteLine "  2.5.0;                                  !- Version Identifier"
-    oFile.WriteLine ""
-    ' should we include anything Else here To make it run smoother?
-    oFile.Close
-    Set fso = Nothing
-    Set oFile = Nothing
 End Sub
