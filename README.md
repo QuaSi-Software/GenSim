@@ -8,9 +8,16 @@ GenSim erzeugt anhand einfacher Eingabeparameter ein vollständiges EnergyPlus�
 **Die Benutzeroberfläche (GUI) für GenSim ist derzeit noch nicht im Repository enthalten. Diese wird derzeit noch für die Veröffentlichung vorbereitet und integriert sobald dies abgeschlossen ist.**
 
 # Benutzung
-Eine detailierte Dokumentation der Benutzung von GenSim wird auf der [offiziellen Dokumentation](https://quasi-software.readthedocs.io/en/latest/) des übergeordneten Projekts QuaSi zur Verfügung gestellt werden. Im Folgenden gibt es eine schnelle Einführung in die Benutzung.
+Eine detailierte Dokumentation der Benutzung von GenSim wird auf der [offiziellen Dokumentation](https://quasi-software.readthedocs.io/en/latest/) des übergeordneten Projekts QuaSi zur Verfügung gestellt werden. Im Folgenden gibt es eine schnelle Einführung in die Installation und Benutzung.
 
-TBD
+## Installation
+1. OpenStudio in Version 2.7.0 installieren. Ältere Versionen sind auf der [OpenStudio GitHub Seite](https://github.com/NREL/OpenStudio/releases) zu finden.
+1. Ruby in Version 2.5.x installieren. Ältere Versionen sind auf der [offiziellen Webseite von Ruby](https://www.ruby-lang.org/en/downloads/releases/) zu finden. Hierbei sind mehrere Dinge zu beachten:
+    1. Als Zielort sollte ein Unterordner namens `ruby-install` innerhalb des OpenStudio Verzeichnisses sein. Dieser sollte direkt als Oberverzeichnis für die Ruby-Installation dienen, die Ruby-Executable sollte z.B. unter `C:\openstudio-2.7.0\ruby-install\bin\ruby.exe` vorliegen.
+    1. Wenn weitere Ruby-Installationen auf dem System existieren, sollte ggf. diese Installation nicht in die `PATH` Systemumgebungsvariable aufgenommen werden. GenSim verwendet zur internen Benutzung von Ruby direkte Pfade, jedoch kann es zur Entwicklung nützlich sein diese Installation auch als Alias für `ruby` zu verwenden.
+
+## Benutzung
+Wird bald ergänzt.
 
 # Lizenz
 GenSim ist unter der MIT Lizenz veröffentlicht. Der Lizenztext ist in Datei `LICENSE.md` zu finden. Die gelisteten Personen sind als Autor\*innen von GenSim im Sinne des Urheberrechts zu verstehen. Wo nicht anders angegeben sind alle mitgelieferten Quell- und Binärdateien als von den Autor\*innen verfasst und unter der MIT Lizenz veröffentlich zu verstehen. Davon unberührt bleiben eingebundene Drittpartei-Quellen, welche mit deren entsprechender Lizenz versehen sind.
