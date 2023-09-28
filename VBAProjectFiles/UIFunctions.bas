@@ -11,12 +11,12 @@ Function GetOpenStudioBinPath()
         GetOpenStudioBinPath = Range("DirOpenStudio") & "\bin"
     End If
 End Function
-    
-Function GetRubyPath()
+
+Function GetRubyExePath()
     If Range("DirOpenStudio") = "" Then
-        GetRubyPath = "C:\Program Files\OpenStudio 1.14.0\ruby-install\ruby\bin\"
+        GetRubyExePath = "C:\openstudio-2.7.0\ruby-install\bin\ruby.exe"
     Else
-        GetRubyPath = Range("DirOpenStudio") & "\ruby-install\ruby\bin\"
+        GetRubyExePath = Range("DirOpenStudio") & "\ruby-install\bin\ruby.exe"
     End If
 End Function
 
