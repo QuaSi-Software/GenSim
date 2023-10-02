@@ -1,7 +1,5 @@
 Attribute VB_Name = "IOFunctions"
 
-Dim constList(0 To 29) As String
-
 Const METER_HEATING = "DistrictHeating:Facility"
 Const METER_COOLING = "DistrictCooling:Facility"
 
@@ -46,66 +44,6 @@ Const ZONE_HEATING_SEPOINT_NOT_MET_OCC = "Zone Heating Setpoint Not Met While Oc
 Const ZONE_COOLING_SEPOINT_NOT_MET = "Zone Cooling Setpoint Not Met Time"
 Const ZONE_COOLING_SEPOINT_NOT_MET_OCC = "Zone Cooling Setpoint Not Met While Occupied Time"
 
-
-Sub AssembleConstList()
-    Dim i As Integer
-    i = -1
-    constList(Inc(i)) = METER_HEATING
-    constList(Inc(i)) = METER_COOLING
-    
-    constList(Inc(i)) = METER_ELECTRICITY_LIGHTS
-    constList(Inc(i)) = METER_ELECTRICITY_PLUGS
-    
-    constList(Inc(i)) = METER_ELECTRICITY_FANS
-    constList(Inc(i)) = METER_ELECTRICITY_PUMPS
-    
-    constList(Inc(i)) = METER_ZONE_PLUGS
-    constList(Inc(i)) = METER_ZONE_LIGHTS
-    constList(Inc(i)) = METER_ZONE_PEOPLE
-    
-    constList(Inc(i)) = METER_WINDOW_SURFACE_HEAT_GAIN
-    constList(Inc(i)) = METER_WINDOW_SURFACE_HEAT_LOSS
-    
-    constList(Inc(i)) = METER_INTERNAL_LOADS
-    
-    constList(Inc(i)) = METER_SURFACE_FACE_CONDUCTION_TOTAL
-    
-    constList(Inc(i)) = METER_INFILTRATION_HEAT_LOSS
-    constList(Inc(i)) = METER_INFILTRATION_HEAT_GAIN
-    constList(Inc(i)) = METER_VENTILATION_HEAT_LOSS
-    constList(Inc(i)) = METER_VENTILATION_HEAT_GAIN
-    
-    constList(Inc(i)) = Zone_Mechanical_Ventilation_Cooling_Load_Increase_Energy
-    constList(Inc(i)) = Zone_Mechanical_Ventilation_No_Load_Heat_Removal_Energy
-    
-    constList(Inc(i)) = METER_ELECTRICITY_PV
-    constList(Inc(i)) = METER_ELECTRICITY_PRODUCED
-    
-    constList(Inc(i)) = FACILITY_HEATING_SEPOINT_NOT_MET
-    constList(Inc(i)) = FACILITY_HEATING_SEPOINT_NOT_MET_OCC
-    constList(Inc(i)) = FACILITY_COOLING_SEPOINT_NOT_MET
-    constList(Inc(i)) = FACILITY_COOLING_SEPOINT_NOT_MET_OCC
-    
-    Dim cb_detailed_zone_Results As CheckBox
-    Set cb_detailed_zone_Results = Sheets("Parameter").CheckBoxes("checkbox_ZoneDetails")
-    detailed_zone_Results = cb_detailed_zone_Results.Value = 1
-    
-    If detailed_zone_Results Then
-        constList(Inc(i)) = ZONE_MEAN_AIR_TEMPERATURE
-        constList(Inc(i)) = ZONE_HEATING_SEPOINT_NOT_MET
-        constList(Inc(i)) = ZONE_HEATING_SEPOINT_NOT_MET_OCC
-        constList(Inc(i)) = ZONE_COOLING_SEPOINT_NOT_MET
-        constList(Inc(i)) = ZONE_COOLING_SEPOINT_NOT_MET_OCC
-    Else
-        constList(Inc(i)) = ""
-        constList(Inc(i)) = ""
-        constList(Inc(i)) = ""
-        constList(Inc(i)) = ""
-        constList(Inc(i)) = ""
-    End If
-    
-End Sub
-
 Function Inc(ByRef data As Integer)
     data = data + 1
     Inc = data
@@ -136,36 +74,6 @@ Function CheckErrFile(filePath As String) As String
     Loop
     txtStream.Close
     CheckErrFile = ""
-End Function
-
-Function ConvertESOFile(filePath As String) As Boolean
-    AssembleConstList
-    
-    Dim rviFile As String
-    rviFile = GetOutputFolder() + "\Rvi.rvi"
-    
-    Dim fso As Object
-    Set fso = CreateObject("Scripting.FileSystemObject")
-    Dim oFile As Object
-    Set oFile = fso.CreateTextFile(rviFile)
-    oFile.WriteLine filePath
-    oFile.WriteLine Replace(filePath, ".eso", ".csv")
-    For Each item In constList
-        oFile.WriteLine item
-    Next item
-    oFile.WriteLine "0"
-    oFile.Close
-    Set fso = Nothing
-    Set oFile = Nothing
-    
-    retval = ExecCmd(Application.ActiveWorkbook.path + "\ReadVarsEso\ReadVarsEso.exe " + Chr(34) + rviFile + Chr(34) + " unlimited ")
-    If retval > 0 Then
-        MsgBox "Fehler waehrend der Generation der CSV Datei, Fehler Code: " & retval
-        Range("SimStatus") = "Simulation nicht erfolgreich"
-        ConvertESOFile = False
-    Else
-        ConvertESOFile = True
-    End If
 End Function
 
 Function ImportCSVFileNEW(filePath As String) As Boolean
