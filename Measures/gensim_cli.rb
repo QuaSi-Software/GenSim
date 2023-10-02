@@ -25,9 +25,14 @@ Facility Cooling Setpoint Not Met Time
 Facility Cooling Setpoint Not Met While Occupied Time
 """
 
+# CLI for running the necessary steps of a GenSim simulation.
+#
+# This CLI is intended to be used both by the GUI and other processes in the future. It
+# can also be used manually over a command line, however this is only useful for
+# debugging purposes.
 class GenSimCLI < Thor
 
-  # Command to run the workflow defined in an OSW file
+  # Command to run the workflow defined in an OSW file.
   #
   # @param workflow_file (String) The name of the workflow file
   desc "run_workflow --os_bin_path=/os/openstudio.exe WORKFLOW_FILE", "Execute the given workflow"
@@ -46,7 +51,7 @@ class GenSimCLI < Thor
   #
   # @param file_name (String) The name of the OSM file to create
   option :output_folder, :required => true, :default => "./Output"
-  desc "create_empty_osm --output_path=./Output FILE_NAME", "Create an empty OSM file"
+  desc "create_empty_osm --output_folder=./Output FILE_NAME", "Create an empty OSM file"
   def create_empty_osm(file_name="Model.osm")
     File.open(File.join(options["output_folder"], file_name), "w") do |file|
       file.write("OS:Version,\n")
