@@ -22,6 +22,11 @@ Wird bald ergänzt.
 # Lizenz
 GenSim ist unter der MIT Lizenz veröffentlicht. Der Lizenztext ist in Datei `LICENSE.md` zu finden. Die gelisteten Personen sind als Autor\*innen von GenSim im Sinne des Urheberrechts zu verstehen. Wo nicht anders angegeben sind alle mitgelieferten Quell- und Binärdateien als von den Autor\*innen verfasst und unter der MIT Lizenz veröffentlich zu verstehen. Davon unberührt bleiben eingebundene Drittpartei-Quellen, welche mit deren entsprechender Lizenz versehen sind.
 
+## Zusätzliche Datenquellen
+
+### Gebäudestandards Nichtwohngebäude
+Aus "Typologie und Bestand beheizter Nichtwohngebäude in Deutschland" von *[Bundesinstitut für Bau-, Stadt- und Raumforschung](http://www.bbsr.bund.de)* BBSR Bonn 2011 unter [Datenlizenz Deutschland – Namensnennung – Version 2.0](https://www.govdata.de/dl-de/by-2-0).
+
 # Herausgeber und Förderung
 GenSim wurde im Rahmen des Forschungsprojektes **ES-West_P2G2P: Klimaneutrales Stadtquartier Neue Weststadt Esslingen** entwickelt und wird im Rahmen des Forschungsprojektes **QuaSi_II: Simulationssoftware zur Planung Bewertung nachhaltiger Energieversorgung von Stadtquartieren** weiterentwickelt und herausgegeben.
 
@@ -29,7 +34,7 @@ Hauptentwickler und Herausgeber sind:
 * Maile Consulting
 * siz energieplus
 
-Nach einer Idee von Thilo Sautter von EGS-plan.
+Nach einer Idee von Thilo Sautter.
 
 ![Gefördert durch das Bundesministerium für Wirtschaft und Klimaschutz](docs/f%C3%B6rderung_bmwk.png "Gefördert durch das Bundesministerium für Wirtschaft und Klimaschutz")
 ![Gefördert durch das Bundesministerium für Bildung und Forschung](docs/f%C3%B6rderung_bmbf.png "Gefördert durch das Bundesministerium für Bildung und Forschung")
