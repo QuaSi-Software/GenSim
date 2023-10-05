@@ -866,6 +866,8 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             If args.Exists("people_activity_sched_selection") And args.Exists("is_custom_people_activity") Then _
                 ImportSchedule args, "people_activity", "Z10:Z105", "Z8"
 
+            DoEvents
+
             If args.Exists("electric_equipment_sched_selection") Then
                 Dim dd23 As DropDown: Set dd23 = Sheets("HAUPTSEITE").DropDowns("Dropdown23")
                 DDFindAndSetValue dd23, GetArgument(args, "electric_equipment_sched_selection")
@@ -892,6 +894,8 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             If args.Exists("hvac_sched_selection") And args.Exists("is_custom_hvac") Then _
                 ImportSchedule args, "hvac", "AH10:AH105", "AH8"
 
+            DoEvents
+
             If args.Exists("hvac_sched_selection") Then
                 DDFindAndSetValue dd55, GetArgument(args, "hvac_sched_selection")
             End If
@@ -907,6 +911,8 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
 
             If args.Exists("hvac_sched_selection") And args.Exists("is_custom_hvac") Then _
                 ImportSchedule args, "hvac", "AH10:AH105", "AH8"
+
+            DoEvents
 
             If args.Exists("hvac_sched_selection") Then
                 DDFindAndSetValue dd55, GetArgument(args, "hvac_sched_selection")
@@ -929,6 +935,8 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
                 ImportSchedule args, "zone_heating_temp", "AP10:AP105", "AP8"
             If args.Exists("cooling_temp_selection") And args.Exists("is_custom_cooling") Then _
                 ImportSchedule args, "zone_cooling_temp", "AX10:AX105", "AX8"
+
+            DoEvents
 
             If args.Exists("heating_temp_selection") Then
                 Sheets("EIGENE NUTZUNGSPROFILE").Range("AP8") = GetArgument(args, "heating_temp_selection")
