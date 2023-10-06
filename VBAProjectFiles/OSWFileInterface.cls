@@ -1013,16 +1013,16 @@ Sub ImportSchedule(ByRef args As Scripting.Dictionary, ByRef scheduleName As Str
     Dim values As Variant
     Dim bs As String: bs = "_sched_"
 
-    values = Split(Trim(GetArgument(args, scheduleName & bs & "weekday", True)), ";")
+    values = Split(Trim(GetArgument(args, scheduleName & bs & "weekday")), ";")
     Sheets("EIGENE NUTZUNGSPROFILE").Range(rangeName).Offset(0, 0) = Application.Transpose(values)
-    values = Split(Trim(GetArgument(args, scheduleName & bs & "saturday", True)), ";")
+    values = Split(Trim(GetArgument(args, scheduleName & bs & "saturday")), ";")
     Sheets("EIGENE NUTZUNGSPROFILE").Range(rangeName).Offset(0, 1) = Application.Transpose(values)
-    values = Split(Trim(GetArgument(args, scheduleName & bs & "sunday", True)), ";")
+    values = Split(Trim(GetArgument(args, scheduleName & bs & "sunday")), ";")
     Sheets("EIGENE NUTZUNGSPROFILE").Range(rangeName).Offset(0, 2) = Application.Transpose(values)
-    values = Split(Trim(GetArgument(args, scheduleName & bs & "holiday", True)), ";")
+    values = Split(Trim(GetArgument(args, scheduleName & bs & "holiday")), ";")
     Sheets("EIGENE NUTZUNGSPROFILE").Range(rangeName).Offset(0, 3) = Application.Transpose(values)
 
-    Sheets("EIGENE NUTZUNGSPROFILE").Range(schedNameRange) = GetArgument(args, scheduleName & "_sched_selection", True)
+    Sheets("EIGENE NUTZUNGSPROFILE").Range(schedNameRange) = GetArgument(args, scheduleName & "_sched_selection")
 End Sub
 
 Private Function GetArgument( _
