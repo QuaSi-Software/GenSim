@@ -397,9 +397,15 @@ Sub ImportOSWFile()
         'Do the import
         selectedPath = fileDialog.SelectedItems(1)
         Dim interface As OSWFileInterface: Set interface = New OSWFileInterface
-        Call interface.ImportFromOSW(selectedPath)
 
+        'As a temporary solution to a bug in the setting of dropdown values, do the import
+        'twice in a row
+        '@TODO find a better way to fix the bug
+        Call interface.ImportFromOSW(selectedPath)
+        Calculate
+        Call interface.ImportFromOSW(selectedPath)
         Application.Calculation = xlCalculationAutomatic
+
         'All done
         MsgBox "Laden abgeschlossen.", vbInformation, "Status"
     End If
