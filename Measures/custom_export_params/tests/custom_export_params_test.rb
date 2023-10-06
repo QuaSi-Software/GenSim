@@ -12,7 +12,7 @@ class CustomExportParamsTest < MiniTest::Test
   def test_number_of_arguments_and_argument_names
     arguments = GetArguments(CustomExportParams.new, OpenStudio::Model::Model.new)
 
-    assert_equal(18, arguments.size)
+    assert_equal(14, arguments.size)
   end
 
   def test_bad_argument_values

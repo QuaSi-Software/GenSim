@@ -3,7 +3,7 @@
       "$GENSIM_PATH$\\Measures"
    ],
    "seed_file": "Model.osm",
-   "weather_file": "$GENSIM_PATH$\\Wetter\\TRY2015_Stuttgart_Jahr.epw",
+   "weather_file": "$GENSIM_PATH$\\Wetter\\TRY2015_Wiesbaden_Jahr.epw",
    "steps": [
       {
          "arguments": {
@@ -12,9 +12,9 @@
       },
       {
          "arguments": {
-            "weather_file_path": "$GENSIM_PATH$\\Wetter\\TRY2015_Stuttgart_Jahr.epw",
-            "north_axis": "0",
-            "time_step": "4"
+            "weather_file_path": "$GENSIM_PATH$\\Wetter\\TRY2015_Wiesbaden_Jahr.epw",
+            "north_axis": "-15",
+            "time_step": "1"
          },
          "measure_dir_name": "set_weather_axis_timestep"
       },
@@ -39,24 +39,24 @@
       },
       {
          "arguments": {
-            "floor_area": "1875",
-            "building_length": "25",
-            "building_width": "25",
-            "number_of_stories": "3",
-            "floor_to_floor_height": "3",
+            "floor_area": "1152",
+            "building_length": "24",
+            "building_width": "24",
+            "number_of_stories": "2",
+            "floor_to_floor_height": "2.9",
             "surface_matching": "true",
             "make_zones": "true",
-            "window_to_wall_ratio_north": "0.5",
-            "window_to_wall_ratio_east": "0.5",
-            "window_to_wall_ratio_south": "0.5",
-            "window_to_wall_ratio_west": "0.5",
-            "adiabatic_north": "false",
-            "adiabatic_east": "false",
-            "adiabatic_south": "false",
-            "adiabatic_west": "false",
-            "adiabatic_roof": "false",
-            "adiabatic_floor": "false",
-            "perimeter_depth": "0"
+            "window_to_wall_ratio_north": "0.6",
+            "window_to_wall_ratio_east": "0.6",
+            "window_to_wall_ratio_south": "0.6",
+            "window_to_wall_ratio_west": "0.6",
+            "adiabatic_north": "true",
+            "adiabatic_east": "true",
+            "adiabatic_south": "true",
+            "adiabatic_west": "true",
+            "adiabatic_roof": "true",
+            "adiabatic_floor": "true",
+            "perimeter_depth": "3"
          },
          "measure_dir_name": "add_geometry"
       },
@@ -218,8 +218,8 @@
             "people_activity_sched_holiday": " 140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140;140",
             "holidays": "-",
             "area_gfa_import": "2515",
-            "nfa_gfa_ratio": "0.851",
-            "nfa_gfa_ratio_selection": "BKI 2015 - B$ue$rogeb$ae$ude ",
+            "nfa_gfa_ratio": "0.886",
+            "nfa_gfa_ratio_selection": "BKI 2015 - Berufliche Schulen ",
             "is_custom_ratio": "false",
             "is_imported_model": "false",
             "electric_equipment_sched_selection": "DIN 18599: Einzel-/Gruppen-/Gro$ss$raumb$ue$ro",
@@ -239,8 +239,8 @@
             "latent_efficiency": "1",
             "sensible_efficiency": "0.75",
             "ach_per_hour": "2",
-            "nfa_gfa_ratio": "0.851",
-            "floor_height_ratio": 0.866666666666667,
+            "nfa_gfa_ratio": "0.886",
+            "floor_height_ratio": 0.896551724137931,
             "hvac_sched_weekday": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
             "hvac_sched_saturday": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
             "hvac_sched_sunday": " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0",
@@ -275,8 +275,8 @@
       {
          "arguments": {
             "air_changes": "0.1",
-            "nfa_gfa_ratio": "0.851",
-            "floor_height_ratio": 0.866666666666667
+            "nfa_gfa_ratio": "0.886",
+            "floor_height_ratio": 0.896551724137931
          },
          "measure_dir_name": "add_infiltration"
       },
@@ -290,8 +290,8 @@
          "arguments": {
             "heating_temp_selection": "Konstant 20$deg$C",
             "cooling_temp_selection": "Konstant 25$deg$C",
-            "is_custom_heating": "false",
-            "is_custom_cooling": "false",
+            "is_custom_heating": "true",
+            "is_custom_cooling": "true",
             "zone_heating_temp_sched_weekday": " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20",
             "zone_heating_temp_sched_saturday": " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20",
             "zone_heating_temp_sched_sunday": " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20",
@@ -325,8 +325,8 @@
             "sensible_efficiency": "0.75",
             "latent_efficiency": "1",
             "air_changes": "2",
-            "nfa_gfa_ratio": "0.851",
-            "floor_height_ratio": 0.866666666666667
+            "nfa_gfa_ratio": "0.886",
+            "floor_height_ratio": 0.896551724137931
          },
          "measure_dir_name": "inject_ideal_load_parameters_idf"
       },
@@ -337,7 +337,7 @@
       },
       {
          "arguments": {
-            "time_step": "4",
+            "time_step": "1",
             "day_to_start_simulation": "Sunday",
             "heating_sizing_factor": "1.25",
             "cooling_sizing_factor": "1.15"

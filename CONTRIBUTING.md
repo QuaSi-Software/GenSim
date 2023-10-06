@@ -48,15 +48,39 @@ Voraussetzungen:
 * Ruby 2.5.9 oder später
 * MS Excel 2016 oder später
 
-In dieser Testumgebung wird geprüft, ob die auf Excel-basierende GUI die notwendigen Parameter und das Modell korrekt in die OpenStudio Workflow (OSW) Datei überträgt.
+In dieser Testumgebung wird geprüft, ob die auf Excel-basierende GUI die notwendigen Parameter und das Modell korrekt in die OpenStudio Workflow (OSW) Datei überträgt und diese auch korrekt importiert.
 
-1. Die GUI auf dem aktellsten Stand öffnen. Wenn zwischenzeitlich Änderungen an der GUI gemacht wurden (und die Datei gespeichert wurde) ist zu klären ob die Änderungen geprüft werden sollen. Wenn nicht, empfiehlt es sich diese zu verwerfen.
+#### Export Tests
+
+1. Die GUI auf dem aktuellsten Stand öffnen. Wenn zwischenzeitlich Änderungen an der GUI gemacht wurden (und die Datei gespeichert wurde) ist zu klären ob die Änderungen geprüft werden sollen. Wenn nicht, empfiehlt es sich diese zu verwerfen.
 1. Mit dem Makro `ImportVBACOde` (Tastenkürzel `Strg+i`) den aktuellsten VBA Code importieren. Dies ist nur notwendig wenn Änderungen am VBA Code gemacht wurden, die nun getestet werden sollen und welche noch nicht in einem Release-Commit in die GUI aufgenommen wurden.
 1. Über den Knopf `Export` einen Export ausführen. Dabei sollte die Datei unter `/path/to/GenSim/Output/Model.osw` gespeichert bzw. überschrieben werden.
 1. Auf der Kommandozeile:
     1. In das GenSim Verzeichnis und den `Test` Unterordner wechseln: `cd /path/to/GenSim/Test`
-    1. Die Tests ausführen: `ruby ./osw_tests.rb`
+    1. Die Tests ausführen: `ruby ./osw_tests.rb --testcase=TestExportToOSW`
     1. Die Ergebnisse werden direkt auf der Kommandozeile ausgegeben. Dort wird bei fehlschlagenden Tests auch ausgegeben welchen Grund dies hat. Insbesondere wird mit erwarteten Werten in Datei `Test/expected/exported_defaults.osw` verglichen.
+
+#### Import Tests
+
+Die Parameter sind in drei Sets eingeteilt, die Parameter mehr oder weniger thematisch gruppieren. Für die folgende Anleitung sind diese Namen exakt als `$name` zu verwenden:
+
+1. building_standards
+1. generic_geometry_and_weather
+1. hvac_parameters
+
+Für ein Parameter Set können die Tests wie folgt ausgeführt werden:
+
+1. Die GUI auf dem aktuellsten Stand öffnen. Wenn mehrere Parameter Sets hintereinander getestet werden, empfiehlt es sich die GUI zwischendurch ohne zu speichern zu schließen und neu zu öffnen.
+2. Mit dem Makro `ImportVBACOde` (Tastenkürzel `Strg+i`) den aktuellsten VBA Code importieren.
+3. Über den Knopf `Import` die Datei `Test/parameter_sets/env_ii/$name.osw` importieren.
+4. Ohne jegliche weitere Änderungen über den Knopf `Export` die Parameter in Datei `Output/$name.osw` exportieren.
+5. Option 1:
+    1. In das GenSim Verzeichnis und den `Test` Unterordner wechseln: `cd /path/to/GenSim/Test`
+    1. Die Tests ausführen: `ruby ./osw_tests.rb --name=test_$name`
+6. Option 2:
+    1. Schritte 1-4 für die restlichen Sets wiederholen
+    1. In das GenSim Verzeichnis und den `Test` Unterordner wechseln: `cd /path/to/GenSim/Test`
+    1. Die Tests ausführen: `ruby ./osw_tests.rb --testcase=TestImportedOSW`
 
 ### Testumgebung IV: End-to-End Tests
 Voraussetzungen:
@@ -69,7 +93,7 @@ In dieser Testumgebung wird der komplette Prozess beginnend mit der Eingabe in d
 
 Der erste Teil der Testumgebung ist das Ausführen von Tests mit der zu prüfenden Version von GenSim mit den Eingabedaten der Typgebäude:
 1. Öffnen von GenSim in der zu testenden Version
-1. Importieren des Parametersatzes für das Typgebäude 1 (Mehrfamilienhaus) durch Import der Datei `Test/parameter_sets/test_01.osw`.
+1. Importieren des Parametersatzes für das Typgebäude 1 (Mehrfamilienhaus) durch Import der Datei `Test/parameter_sets/env_iv/test_01.osw`.
 1. Prüfen ob die Parameter, insbesondere ausgewählte Profile, richtig eingelesen wurden, da die Importfunktion nicht in allen Fällen 100% zuverlässig ist
 1. Ausführen der Simulation mit GenSim
 1. Öffnen der Datei `Test/Results_to_JSON.xlsm`

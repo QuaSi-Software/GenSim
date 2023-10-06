@@ -46,40 +46,81 @@ def check_measure(expected, exported)
   end
 end
 
+# Perform tests comparing the two given OSW files.
+#
+# @param expected_file_path (String) File path to the OSW with expected values
+# @param compared_file_path (String) File path to the OSW with values to check
+def compare_osw_files(expected_file_path, compared_file_path)
+  file_content = File.read(expected_file_path)
+  expected = JSON.parse(file_content)
+
+  file_content = File.read(compared_file_path)
+  exported = JSON.parse(file_content)
+
+  assert(exported.key?("weather_file"), "Missing key weather_file\n")
+  assert_equal(
+    prepare_path(expected["weather_file"]),
+    prepare_path(exported["weather_file"])
+  )
+
+  assert(exported.key?("measure_paths"), "Missing key measure_paths\n")
+  expected["measure_paths"].each_with_index do |element, index|
+    assert_equal(
+      prepare_path(element),
+      prepare_path(exported["measure_paths"][index])
+    )
+  end
+
+  assert(exported.key?("seed_file"), "Missing key seed_file\n")
+  assert_equal(expected["seed_file"], exported["seed_file"])
+
+  assert(exported.key?("steps"), "Missing key steps\n")
+  expected["steps"].each_with_index do |element, index|
+    if index >= exported["steps"].length
+      assert(false, "Wanted to check measure at pos #{index} but could not find it\n")
+    else
+      check_measure(element, exported["steps"][index])
+    end
+  end
+end
+
 # Tests for the export of parameters to an OSW file
 class TestExportToOSW < Test::Unit::TestCase
   # check the export of default parameter valuess when nothing has been changed in the GUI
   def test_exported_defaults
-    file_content = File.read("./expected/exported_defaults.osw")
-    expected = JSON.parse(file_content)
-
-    file_content = File.read("./../Output/Model.osw")
-    exported = JSON.parse(file_content)
-
-    assert(exported.key?("weather_file"), "Missing key weather_file\n")
-    assert_equal(
-      prepare_path(expected["weather_file"]),
-      prepare_path(exported["weather_file"])
+    compare_osw_files(
+      "./expected/exported_defaults.osw",
+      "./../Output/Model.osw"
     )
+  end
+end
 
-    assert(exported.key?("measure_paths"), "Missing key measure_paths\n")
-    expected["measure_paths"].each_with_index do |element, index|
-      assert_equal(
-        prepare_path(element),
-        prepare_path(exported["measure_paths"][index])
-      )
-    end
+# Tests for the import of parameters from an OSW file
+class TestImportedOSW < Test::Unit::TestCase
+  # check the export of parameter values after a parameter file has been imported
+  # this checks parameters for generic geometry and weather data
+  def test_generic_geometry_and_weather
+    compare_osw_files(
+      "./parameter_sets/env_ii/generic_geometry_and_weather.osw",
+      "./../Output/generic_geometry_and_weather.osw"
+    )
+  end
 
-    assert(exported.key?("seed_file"), "Missing key seed_file\n")
-    assert_equal(expected["seed_file"], exported["seed_file"])
+  # check the export of parameter values after a parameter file has been imported
+  # this checks parameters for the hvac system
+  def test_hvac_parameters
+    compare_osw_files(
+      "./parameter_sets/env_ii/hvac_parameters.osw",
+      "./../Output/hvac_parameters.osw"
+    )
+  end
 
-    assert(exported.key?("steps"), "Missing key steps\n")
-    expected["steps"].each_with_index do |element, index|
-      if index >= exported["steps"].length
-        assert(false, "Wanted to check measure at pos #{index} but could not find it\n")
-      else
-        check_measure(element, exported["steps"][index])
-      end
-    end
+  # check the export of parameter values after a parameter file has been imported
+  # this checks parameters for the building standard (envelope and inner masses)
+  def test_building_standards
+    compare_osw_files(
+      "./parameter_sets/env_ii/building_standards.osw",
+      "./../Output/building_standards.osw"
+    )
   end
 end
