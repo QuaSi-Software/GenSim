@@ -6,17 +6,17 @@ Dim strWeatherDir As String
 
 Function GetOpenStudioBinPath()
     If Range("DirOpenStudio") = "" Then
-        GetOpenStudioBinPath = "C:\OpenStudio-2.5.0\bin"
+        GetOpenStudioBinPath = "C:\OpenStudio-2.7.0\bin"
     Else
         GetOpenStudioBinPath = Range("DirOpenStudio") & "\bin"
     End If
 End Function
-    
-Function GetRubyPath()
+
+Function GetRubyExePath()
     If Range("DirOpenStudio") = "" Then
-        GetRubyPath = "C:\Program Files\OpenStudio 1.14.0\ruby-install\ruby\bin\"
+        GetRubyExePath = "C:\openstudio-2.7.0\pat\ruby\bin\ruby.exe"
     Else
-        GetRubyPath = Range("DirOpenStudio") & "\ruby-install\ruby\bin\"
+        GetRubyExePath = Range("DirOpenStudio") & "\pat\ruby\bin\ruby.exe"
     End If
 End Function
 
@@ -397,9 +397,15 @@ Sub ImportOSWFile()
         'Do the import
         selectedPath = fileDialog.SelectedItems(1)
         Dim interface As OSWFileInterface: Set interface = New OSWFileInterface
-        Call interface.ImportFromOSW(selectedPath)
 
+        'As a temporary solution to a bug in the setting of dropdown values, do the import
+        'twice in a row
+        '@TODO find a better way to fix the bug
+        Call interface.ImportFromOSW(selectedPath)
+        Calculate
+        Call interface.ImportFromOSW(selectedPath)
         Application.Calculation = xlCalculationAutomatic
+
         'All done
         MsgBox "Laden abgeschlossen.", vbInformation, "Status"
     End If

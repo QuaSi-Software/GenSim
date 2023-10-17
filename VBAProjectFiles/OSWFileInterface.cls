@@ -866,6 +866,8 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             If args.Exists("people_activity_sched_selection") And args.Exists("is_custom_people_activity") Then _
                 ImportSchedule args, "people_activity", "Z10:Z105", "Z8"
 
+            DoEvents
+
             If args.Exists("electric_equipment_sched_selection") Then
                 Dim dd23 As DropDown: Set dd23 = Sheets("HAUPTSEITE").DropDowns("Dropdown23")
                 DDFindAndSetValue dd23, GetArgument(args, "electric_equipment_sched_selection")
@@ -892,6 +894,8 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             If args.Exists("hvac_sched_selection") And args.Exists("is_custom_hvac") Then _
                 ImportSchedule args, "hvac", "AH10:AH105", "AH8"
 
+            DoEvents
+
             If args.Exists("hvac_sched_selection") Then
                 DDFindAndSetValue dd55, GetArgument(args, "hvac_sched_selection")
             End If
@@ -907,6 +911,8 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
 
             If args.Exists("hvac_sched_selection") And args.Exists("is_custom_hvac") Then _
                 ImportSchedule args, "hvac", "AH10:AH105", "AH8"
+
+            DoEvents
 
             If args.Exists("hvac_sched_selection") Then
                 DDFindAndSetValue dd55, GetArgument(args, "hvac_sched_selection")
@@ -929,6 +935,8 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
                 ImportSchedule args, "zone_heating_temp", "AP10:AP105", "AP8"
             If args.Exists("cooling_temp_selection") And args.Exists("is_custom_cooling") Then _
                 ImportSchedule args, "zone_cooling_temp", "AX10:AX105", "AX8"
+
+            DoEvents
 
             If args.Exists("heating_temp_selection") Then
                 Sheets("EIGENE NUTZUNGSPROFILE").Range("AP8") = GetArgument(args, "heating_temp_selection")
@@ -1005,16 +1013,16 @@ Sub ImportSchedule(ByRef args As Scripting.Dictionary, ByRef scheduleName As Str
     Dim values As Variant
     Dim bs As String: bs = "_sched_"
 
-    values = Split(Trim(GetArgument(args, scheduleName & bs & "weekday", True)), ";")
+    values = Split(Trim(GetArgument(args, scheduleName & bs & "weekday")), ";")
     Sheets("EIGENE NUTZUNGSPROFILE").Range(rangeName).Offset(0, 0) = Application.Transpose(values)
-    values = Split(Trim(GetArgument(args, scheduleName & bs & "saturday", True)), ";")
+    values = Split(Trim(GetArgument(args, scheduleName & bs & "saturday")), ";")
     Sheets("EIGENE NUTZUNGSPROFILE").Range(rangeName).Offset(0, 1) = Application.Transpose(values)
-    values = Split(Trim(GetArgument(args, scheduleName & bs & "sunday", True)), ";")
+    values = Split(Trim(GetArgument(args, scheduleName & bs & "sunday")), ";")
     Sheets("EIGENE NUTZUNGSPROFILE").Range(rangeName).Offset(0, 2) = Application.Transpose(values)
-    values = Split(Trim(GetArgument(args, scheduleName & bs & "holiday", True)), ";")
+    values = Split(Trim(GetArgument(args, scheduleName & bs & "holiday")), ";")
     Sheets("EIGENE NUTZUNGSPROFILE").Range(rangeName).Offset(0, 3) = Application.Transpose(values)
 
-    Sheets("EIGENE NUTZUNGSPROFILE").Range(schedNameRange) = GetArgument(args, scheduleName & "_sched_selection", True)
+    Sheets("EIGENE NUTZUNGSPROFILE").Range(schedNameRange) = GetArgument(args, scheduleName & "_sched_selection")
 End Sub
 
 Private Function GetArgument( _

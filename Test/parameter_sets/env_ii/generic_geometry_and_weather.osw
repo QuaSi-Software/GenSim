@@ -219,7 +219,7 @@
             "holidays": "-",
             "area_gfa_import": "2515",
             "nfa_gfa_ratio": "0.886",
-            "nfa_gfa_ratio_selection": "BKI 2015 - Berufliche Schulen ",
+            "nfa_gfa_ratio_selection": "BKI Nutzungstyp - Berufliche Schulen ",
             "is_custom_ratio": "false",
             "is_imported_model": "false",
             "electric_equipment_sched_selection": "DIN 18599: Einzel-/Gruppen-/Gro$ss$raumb$ue$ro",

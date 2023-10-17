@@ -108,3 +108,12 @@ Diese Anweisungen müssen nun auch für die beiden Typgebäude 2 (Bürogebäude)
 Alternativ:
 1. `ruby ./end_to_end_tests.rb --name="test_case_01"`: Dies führt den einzelnen Test `test_case_01` aus.
 1. `ruby ./end_to_end_tests.rb --name=/test_case_0[12]/`: Dies führt Tests aus die dem angegebenen Pattern entsprechen, in diesem Fall die ersten beiden Testfälle.
+
+## GenSim CLI
+Statt der GUI kann auch die interne CLI benutzt werden um Simulationen durchzuführen. In diesem Fall muss die OSW-Datei auf anderem Weg erstellt werden. Die CLI basiert auf Ruby, daher bietet es sich an die Ruby-Installation, die auch für die GUI verwendet wird, zu benutzen. Im Folgenden wird davon ausgegangen, dass der Befehl `ruby` auf die korrekt Installation verweist.
+
+1. In das Hauptverzeichnis wechseln: `cd /path/to/GenSim`
+    1. Im Folgenden wird davon ausgegangen, dass dieser Pfad für `.` steht. Obwohl manche Commands relative Pfade mit `.` verarbeiten können, kann dieses Verhalten nicht garantiert werden. Wenn ein Command nicht funktioniert, versuche vollständige Pfade zu verwenden statt der `.` Abkürzung.
+1. Eine leere OSM-Datei erzeugen: `ruby ./Measures/gensim_cli.rb create_empty_osm --output_folder=./Output Model.osm`
+1. Die Simulation ausführen: `ruby ./Measures/gensim_cli.rb run_workflow --output_folder=./Output --os_bin_path=C:\openstudio-2.7.0\bin\openstudio.exe Model.osw`
+1. Den ESO Output in CSV umwandeln: `ruby ./Measures/gensim_cli.rb convert_eso_to_csv --output_folder=./Output/run --converter_exe=./ReadVarsEso/ReadVarsESO.exe eplusout.eso`

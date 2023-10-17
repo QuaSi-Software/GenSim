@@ -65,7 +65,7 @@ class AddInternalLoadsTest < MiniTest::Test
     args_hash["people_activity_sched_holiday"] = defaultSched
     args_hash["holidays"] = ""
     args_hash["area_gfa_import"] = 2515
-    args_hash["nfa_gfa_ratio_selection"] = "BKI 2015 - Bürogebäude "
+    args_hash["nfa_gfa_ratio_selection"] = "BKI Nutzungstyp - Bürogebäude "
     args_hash["is_custom_ratio"] = false
     args_hash["is_imported_model"] = false
     args_hash["electric_equipment_sched_selection"] = "DIN 18599: Einzel-/Gruppen-/Großraumbüro"

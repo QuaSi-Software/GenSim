@@ -219,7 +219,7 @@
             "holidays": "-",
             "area_gfa_import": "2515",
             "nfa_gfa_ratio": "0.851",
-            "nfa_gfa_ratio_selection": "BKI 2015 - B$ue$rogeb$ae$ude ",
+            "nfa_gfa_ratio_selection": "BKI Nutzungstyp - B$ue$rogeb$ae$ude ",
             "is_custom_ratio": "false",
             "is_imported_model": "false",
             "electric_equipment_sched_selection": "DIN 18599: Kantine",
