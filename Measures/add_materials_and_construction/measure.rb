@@ -57,7 +57,7 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
       osMat.setName(mat.Name)
       osMat.setRoughness("Rough")
       # set argument values
-      osMat.setThickness(OpenStudio::Quantity.new(mat.Thickness, OpenStudio.createUnit("m").get))
+      osMat.setThickness(mat.Thickness)
       osMat.setThermalResistance(mat.Conductivity)
 
       return osMat
@@ -66,7 +66,6 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
       osMat.setName(mat.Name)
       osMat.setRoughness("Rough")
       # set argument values
-      # osMat.setThickness( OpenStudio::Quantity.new(mat.Thickness, OpenStudio::createUnit("m").get))
       osMat.setThickness(mat.Thickness)
       osMat.setConductivity(mat.Conductivity)
       osMat.setDensity(mat.Density)
