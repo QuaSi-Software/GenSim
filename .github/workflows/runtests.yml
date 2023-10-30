@@ -1,0 +1,13 @@
+name: RunTests
+
+on:  [push, pull_request]
+
+jobs:
+  measure_tests:
+    name: Measure Tests
+    container: nrel/openstudio:3.0.0
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: bundle install
+      - run: ruby Measures/testrunner.rb
