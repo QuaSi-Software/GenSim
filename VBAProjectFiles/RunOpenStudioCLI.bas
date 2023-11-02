@@ -44,18 +44,12 @@ Sub RunOpenStudioCLI()
     DoEvents
     If Range("SimStatus") = "Erfolgreich" Then
         Range("Status").Offset(3, 0) = "CSV Datei generieren"
+        If IOFunctions.ConvertESOFile(GetOutputFolder() & "\run\eplusout.eso") Then
+            Range("Status").Offset(3, 1) = "beendet (" & WorksheetFunction.Round((Time - Startzeit_indv) * 86400, 1) & " s)"
+            Startzeit_indv = Time
 
-        Argument = GetRubyExePath() & " " & Chr(34) & GetMeasuresFolder & "/gensim_cli.rb" & Chr(34) _
-            & " convert_eso_to_csv --output_folder=" & Chr(34) & GetOutputFolder() & "/run" & Chr(34) _
-            & " --converter_exe=" & Chr(34) & Application.ActiveWorkbook.path _
-            & "/ReadVarsEso/ReadVarsESO.exe" & Chr(34) & " eplusout.eso"
-        retval = ExecCmd(Argument)
+            DoEvents
 
-        Range("Status").Offset(3, 1) = "beendet (" & WorksheetFunction.Round((Time - Startzeit_indv) * 86400, 1) & " s)"
-        Startzeit_indv = Time
-        DoEvents
-
-        If retval = 0 Then
             Range("Status").Offset(4, 0) = "CSV Datei importieren"
             IOFunctions.ImportCSVFileNEW GetOutputFolder() & "\run\eplusout.csv"
             Range("Status").Offset(4, 1) = "beendet (" & WorksheetFunction.Round((Time - Startzeit_indv) * 86400, 1) & " s)"
