@@ -5,8 +5,6 @@ Generische Gebäudesimulation auf Basis von EnergyPlus™.
 
 GenSim erzeugt anhand einfacher Eingabeparameter ein vollständiges EnergyPlus™-Gebäudemodell, simuliert dieses und gibt anschließend Ergebnisse in Form von Lastprofilen und Jahreswerten zurück.
 
-**Die Benutzeroberfläche (GUI) für GenSim ist derzeit noch nicht im Repository enthalten. Diese wird derzeit noch für die Veröffentlichung vorbereitet und integriert sobald dies abgeschlossen ist.**
-
 # Benutzung
 Eine detailierte Dokumentation der Benutzung von GenSim wird auf der [offiziellen Dokumentation](https://quasi-software.readthedocs.io/en/latest/) des übergeordneten Projekts QuaSi zur Verfügung gestellt werden. Im Folgenden gibt es eine schnelle Einführung in die Installation und Benutzung.
 
