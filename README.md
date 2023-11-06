@@ -5,8 +5,6 @@ Generische Gebäudesimulation auf Basis von EnergyPlus™.
 
 GenSim erzeugt anhand einfacher Eingabeparameter ein vollständiges EnergyPlus™-Gebäudemodell, simuliert dieses und gibt anschließend Ergebnisse in Form von Lastprofilen und Jahreswerten zurück.
 
-**Die Benutzeroberfläche (GUI) für GenSim ist derzeit noch nicht im Repository enthalten. Diese wird derzeit noch für die Veröffentlichung vorbereitet und integriert sobald dies abgeschlossen ist.**
-
 # Benutzung
 Eine detailierte Dokumentation der Benutzung von GenSim wird auf der [offiziellen Dokumentation](https://quasi-software.readthedocs.io/en/latest/) des übergeordneten Projekts QuaSi zur Verfügung gestellt werden. Im Folgenden gibt es eine schnelle Einführung in die Installation und Benutzung.
 
@@ -14,9 +12,6 @@ Eine detailierte Dokumentation der Benutzung von GenSim wird auf der [offizielle
 1. OpenStudio in Version 2.7.0 installieren. Ältere Versionen sind auf der [OpenStudio GitHub Seite](https://github.com/NREL/OpenStudio/releases) zu finden.
     * Dabei sollte OpenStudio standardmäßig in den Ordner `C:\openstudio-2.7.0` installiert werden.
     * Auf der Seite "Komponenten auswählen" sollten alle Komponenten zur Installation ausgewählt sein.
-1. Das Skript `post-install.bat` ausführen um notwendige Ruby-Gem zu installieren. Es wird empfohlen dies über eine Kommandozeile durchzuführen um Fehlermeldungen sichtbar zu machen.
-    * Wenn während der Ausführung des Skriptes die Meldung `Do you want to add this insecure source?` erscheint, diese mit `y` und Eingabe bestätigen. Dies ist nur notwendig, da die Ruby-Installation von OpenStudio das normale Gem-Repository `https://rubygems.org` nicht über HTTPS verwenden kann und HTTP verwenden muss. Das Skript stellt im Anschluss die Verbindung wieder auf HTTPS um.
-    * Wenn OpenStudio nicht in den Standard-Ordner installiert wurde, muss das Skript vorher in einem Texteditor auf den verwendeten Ordner angepasst werden.
 
 ## Benutzung
 Wird bald ergänzt.

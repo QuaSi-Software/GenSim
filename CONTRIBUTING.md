@@ -112,6 +112,7 @@ Alternativ:
 ## GenSim CLI
 Statt der GUI kann auch die interne CLI benutzt werden um Simulationen durchzuführen. In diesem Fall muss die OSW-Datei auf anderem Weg erstellt werden. Die CLI basiert auf Ruby, daher bietet es sich an die Ruby-Installation, die auch für die GUI verwendet wird, zu benutzen. Im Folgenden wird davon ausgegangen, dass der Befehl `ruby` auf die korrekt Installation verweist.
 
+1. (Einmalig) Notwendige Gems installieren: `gem install thor`
 1. In das Hauptverzeichnis wechseln: `cd /path/to/GenSim`
     1. Im Folgenden wird davon ausgegangen, dass dieser Pfad für `.` steht. Obwohl manche Commands relative Pfade mit `.` verarbeiten können, kann dieses Verhalten nicht garantiert werden. Wenn ein Command nicht funktioniert, versuche vollständige Pfade zu verwenden statt der `.` Abkürzung.
 1. Eine leere OSM-Datei erzeugen: `ruby ./Measures/gensim_cli.rb create_empty_osm --output_folder=./Output Model.osm`
