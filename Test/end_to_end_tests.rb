@@ -35,7 +35,7 @@ end
 # @return (Bool) True if the actual value is within the expected range
 def check_approximates(expected, actual, tolerance, message = nil, messages = nil)
   evaluated = (expected - tolerance <= actual) & (expected + tolerance >= actual)
-  messages.append(message) if !evaluated & !message.nil? & !messages.nil?
+  messages.push(message) if !evaluated & !message.nil? & !messages.nil?
   return evaluated
 end
 
