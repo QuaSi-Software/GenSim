@@ -1,7 +1,7 @@
 # GenSim
 ![GenSim](docs/logo_gensim.jpg "GenSim")
 
-Generische Gebäudesimulation auf Basis von EnergyPlus™.
+Generische Gebäudesimulation auf Basis von EnergyPlus™ v22.
 
 GenSim erzeugt anhand einfacher Eingabeparameter ein vollständiges EnergyPlus™-Gebäudemodell, simuliert dieses und gibt anschließend Ergebnisse in Form von Lastprofilen und Jahreswerten zurück.
 
@@ -13,9 +13,6 @@ Eine detailierte Dokumentation der Benutzung von GenSim wird auf der [offizielle
     * Dabei sollte OpenStudio standardmäßig in den Ordner `C:\openstudio-2.7.0` installiert werden.
     * Auf der Seite "Komponenten auswählen" sollten alle Komponenten zur Installation ausgewählt sein.
 
-## Benutzung
-Wird bald ergänzt.
-
 # Lizenz
 GenSim ist unter der MIT Lizenz veröffentlicht. Der Lizenztext ist in Datei `LICENSE.md` zu finden. Die gelisteten Personen sind als Autor\*innen von GenSim im Sinne des Urheberrechts zu verstehen. Wo nicht anders angegeben sind alle mitgelieferten Quell- und Binärdateien als von den Autor\*innen verfasst und unter der MIT Lizenz veröffentlich zu verstehen. Davon unberührt bleiben eingebundene Drittpartei-Quellen, welche mit deren entsprechender Lizenz versehen sind.
 
@@ -25,7 +22,7 @@ GenSim ist unter der MIT Lizenz veröffentlicht. Der Lizenztext ist in Datei `LI
 Aus "Typologie und Bestand beheizter Nichtwohngebäude in Deutschland" von *[Bundesinstitut für Bau-, Stadt- und Raumforschung](http://www.bbsr.bund.de)* BBSR Bonn 2011 unter [Datenlizenz Deutschland – Namensnennung – Version 2.0](https://www.govdata.de/dl-de/by-2-0).
 
 # Herausgeber und Förderung
-GenSim wurde im Rahmen des Forschungsprojektes **ES-West_P2G2P: Klimaneutrales Stadtquartier Neue Weststadt Esslingen** entwickelt und wird im Rahmen des Forschungsprojektes **QuaSi_II: Simulationssoftware zur Planung Bewertung nachhaltiger Energieversorgung von Stadtquartieren** weiterentwickelt und herausgegeben.
+GenSim wurde im Rahmen des Forschungsprojektes **ES-West_P2G2P: Klimaneutrales Stadtquartier Neue Weststadt Esslingen** (03SBE115) entwickelt und wird im Rahmen des Forschungsprojektes **QuaSi_II: Simulationssoftware zur Planung Bewertung nachhaltiger Energieversorgung von Stadtquartieren** (03EN3053) weiterentwickelt und herausgegeben.
 
 Hauptentwickler und Herausgeber sind:
 * Maile Consulting
