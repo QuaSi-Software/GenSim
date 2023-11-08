@@ -1,0 +1,71 @@
+<measure>
+  <schema_version>3.0</schema_version>
+  <name>detect_external_zones</name>
+  <uid>ac34ac49-f21b-4c54-83e9-3615aa06acf2</uid>
+  <version_id>847195ca-e382-4fb9-8e46-ca4eb30dd72a</version_id>
+  <version_modified>20230814T140556Z</version_modified>
+  <xml_checksum>2E19FDFD</xml_checksum>
+  <class_name>DetectExternalZones</class_name>
+  <display_name>DetectExternalZones</display_name>
+  <description>Detect external zones.</description>
+  <modeler_description>Detect external zones.</modeler_description>
+  <arguments/>
+  <outputs/>
+  <provenances/>
+  <tags>
+    <tag>DetectingExternalZones</tag>
+  </tags>
+  <attributes>
+    <attribute>
+      <name>Measure Type</name>
+      <value>ModelMeasure</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>Apply Measure Now</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>OpenStudio Application</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>Parametric Analysis Tool</value>
+      <datatype>string</datatype>
+    </attribute>
+  </attributes>
+  <files>
+    <file>
+      <filename>example_model.osm</filename>
+      <filetype>osm</filetype>
+      <usage_type>test</usage_type>
+      <checksum>9B25CD4C</checksum>
+    </file>
+    <file>
+      <version>
+        <software_program>OpenStudio</software_program>
+        <identifier>2.5.0</identifier>
+        <min_compatible>2.5.0</min_compatible>
+      </version>
+      <filename>measure.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>script</usage_type>
+      <checksum>4F3D3320</checksum>
+    </file>
+    <file>
+      <filename>detect_external_zones_test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>7313C484</checksum>
+    </file>
+    <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
+    </file>
+  </files>
+</measure>

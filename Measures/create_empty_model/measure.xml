@@ -1,0 +1,65 @@
+<measure>
+  <schema_version>3.0</schema_version>
+  <name>create_empty_model</name>
+  <uid>8e312045-ffd8-4851-82b2-a62c7d5a2a41</uid>
+  <version_id>f3f8f164-1425-4fd2-9248-b588fffb4337</version_id>
+  <version_modified>20230814T140551Z</version_modified>
+  <xml_checksum>2AF3A68E</xml_checksum>
+  <class_name>CreateEmptyModel</class_name>
+  <display_name>CreateEmptyModel</display_name>
+  <description>This just creates an empty model</description>
+  <modeler_description>This just creates an empty model</modeler_description>
+  <arguments/>
+  <outputs/>
+  <provenances/>
+  <tags>
+    <tag>Envelope.Form</tag>
+  </tags>
+  <attributes>
+    <attribute>
+      <name>Measure Type</name>
+      <value>ModelMeasure</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>Apply Measure Now</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>OpenStudio Application</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>Parametric Analysis Tool</value>
+      <datatype>string</datatype>
+    </attribute>
+  </attributes>
+  <files>
+    <file>
+      <version>
+        <software_program>OpenStudio</software_program>
+        <identifier>2.5.0</identifier>
+        <min_compatible>2.5.0</min_compatible>
+      </version>
+      <filename>measure.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>script</usage_type>
+      <checksum>645DCAB4</checksum>
+    </file>
+    <file>
+      <filename>create_empty_model_test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>D8F7DD72</checksum>
+    </file>
+    <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
+    </file>
+  </files>
+</measure>

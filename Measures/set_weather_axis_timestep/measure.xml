@@ -1,0 +1,84 @@
+<measure>
+  <schema_version>3.0</schema_version>
+  <name>set_weather_axis_timestep</name>
+  <uid>1fd78114-23ef-4ee1-80f4-d1695976a55b</uid>
+  <version_id>aff05601-91f9-4912-9d5b-183ad92f20cf</version_id>
+  <version_modified>20230814T140613Z</version_modified>
+  <xml_checksum>74C70850</xml_checksum>
+  <class_name>SetWeatherAxisTimestep</class_name>
+  <display_name>SetWeatherAxisTimestep</display_name>
+  <description>Set axis of building and time step of simulation.</description>
+  <modeler_description>Set axis of building and time step of simulation.</modeler_description>
+  <arguments>
+    <argument>
+      <name>weather_file_path</name>
+      <display_name>weather_file_path</display_name>
+      <type>String</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>time_step</name>
+      <display_name>time_step</display_name>
+      <type>Integer</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>north_axis</name>
+      <display_name>north_axis</display_name>
+      <type>Double</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+      <default_value>-9999</default_value>
+    </argument>
+  </arguments>
+  <outputs/>
+  <provenances/>
+  <tags>
+    <tag>Envelope.Form</tag>
+  </tags>
+  <attributes>
+    <attribute>
+      <name>Measure Type</name>
+      <value>ModelMeasure</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>OpenStudio Application</value>
+      <datatype>string</datatype>
+    </attribute>
+  </attributes>
+  <files>
+    <file>
+      <filename>example_model.osm</filename>
+      <filetype>osm</filetype>
+      <usage_type>test</usage_type>
+      <checksum>31115A0D</checksum>
+    </file>
+    <file>
+      <version>
+        <software_program>OpenStudio</software_program>
+        <identifier>2.5.0</identifier>
+        <min_compatible>2.5.0</min_compatible>
+      </version>
+      <filename>measure.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>script</usage_type>
+      <checksum>4F24100F</checksum>
+    </file>
+    <file>
+      <filename>set_weather_axis_timestep_test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>B413D62A</checksum>
+    </file>
+    <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
+    </file>
+  </files>
+</measure>

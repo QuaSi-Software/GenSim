@@ -7,6 +7,459 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+
+' Export method for measure CreateEmptyModel.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportCreateEmptyModel(ByRef jFile As JSONFile)
+    Dim dd1 As DropDown 'weather data
+    Set dd1 = Sheets("HAUPTSEITE").DropDowns("DropDown1")
+
+    jFile.CreateFile Range("FileName") + ".osm", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
+    jFile.AddMeasure "create_empty_model"
+End Sub
+
+' Export method for measure SetWeatherAxisTimestep.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param bGeneric Boolean ByVal If the geometry is generic (true) or imported (false)
+' @param bCopyOSMFile Boolean ByVal If true makes a copy of the supplied geometry file.
+'   This is a necessary step only for the export before a simulation run, but is not
+'   not required for an export of parameters for other purposes.
+' @param NrOfTimesteps As Integer ByVal Number of timesteps per hour.
+Sub ExportSetWeatherAxisTimestep( _
+    ByRef jFile As JSONFile, _
+    ByVal bGeneric As Boolean, _
+    ByVal bCopyOSMFile As Boolean, _
+    ByVal NrOfTimesteps As Integer _
+)
+    Dim dd1 As DropDown 'weather data
+    Set dd1 = Sheets("HAUPTSEITE").DropDowns("DropDown1")
+    Dim dd2 As DropDown 'orientation
+    Set dd2 = Sheets("HAUPTSEITE").DropDowns("Dropdown2")
+
+    If bGeneric Then
+        jFile.AddArgument "weather_file_path", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
+        jFile.AddArgument "north_axis", dd2.List(dd2.Value)
+        jFile.AddArgument "time_step", CStr(NrOfTimesteps)
+    Else
+        Dim localOSMPath As String: localOSMPath = ""
+
+        If bCopyOSMFile Then
+            Dim fso As New FileSystemObject
+            Dim sOSMFileName As String
+            Dim sOSMPathName As String
+            sOSMPathName = Range("path_geometry_Import")
+            sOSMFileName = fso.GetFileName(sOSMPathName)
+            sOSMFileName = Replace(sOSMFileName, Chr(223), "ss")
+            sOSMFileName = Replace(sOSMFileName, Chr(228), "ae")
+            sOSMFileName = Replace(sOSMFileName, Chr(252), "ue")
+            sOSMFileName = Replace(sOSMFileName, Chr(246), "oe")
+            sOSMFileName = Replace(sOSMFileName, Chr(196), "Ae")
+            sOSMFileName = Replace(sOSMFileName, Chr(220), "Ue")
+            sOSMFileName = Replace(sOSMFileName, Chr(214), "Oe")
+
+            localOSMPath = GetOutputFolder() + "\" + sOSMFileName
+            FileCopy sOSMPathName, localOSMPath
+        End If
+
+        jFile.CreateFile localOSMPath, GetWeatherFolder() & "\" & dd1.List(dd1.Value)
+        jFile.AddArgument "weather_file_path", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
+        jFile.AddArgument "time_step", CStr(NrOfTimesteps)
+    End If
+
+    jFile.AddMeasure "set_weather_axis_timestep"
+End Sub
+
+' Export method for measure CustomExportParams.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param bGeneric Boolean ByVal If the geometry is generic (true) or imported (false)
+Sub ExportCustomExportParams( _
+    ByRef jFile As JSONFile, _
+    ByVal bGeneric As Boolean _
+)
+    Dim ddRatio1 As DropDown 'ratio NFA/GFA
+    Set ddRatio1 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF")
+    Dim dd_lueftung As DropDown 'type of ventilation
+    Set dd_lueftung = Sheets("HAUPTSEITE").DropDowns("dd_lueftung")
+    Dim cb_windowvent As CheckBox
+    Set cb_windowvent = Sheets("HAUPTSEITE").CheckBoxes("Checkbox_windowvent")
+    Dim cb_inf As CheckBox
+    Set cb_inf = Sheets("HAUPTSEITE").CheckBoxes("checkbox_inf")
+    Dim cb_lightingcontrol As CheckBox
+    Set cb_lightingcontrol = Sheets("HAUPTSEITE").CheckBoxes("checkbox lightingcontrol")
+    Dim cb_shadingcontrol As CheckBox
+    Set cb_shadingcontrol = Sheets("HAUPTSEITE").CheckBoxes("checkbox_shadingcontrol")
+    Dim cb_zoneDetails As CheckBox
+    Set cb_zoneDetails = Sheets("Parameter").CheckBoxes("checkbox_ZoneDetails")
+    Dim cb_detailedHVAC As CheckBox
+    Set cb_detailedHVAC = Sheets("Parameter").CheckBoxes("checkbox_hvac")
+
+    'parameters for the generic HVAC model
+    jFile.AddArgument "include_zone_details", IIf(cb_zoneDetails.Value = 1, 1, 0)
+    jFile.AddArgument "include_detailed_hvac", IIf(cb_detailedHVAC.Value = 1, 1, 0)
+    jFile.AddArgument "ventilation_type", dd_lueftung.Value
+
+    If bGeneric Then
+        jFile.AddArgument "generate_geometry_selection", 1
+    Else
+        jFile.AddArgument "generate_geometry_selection", 2
+    End If
+
+    'definition of holidays
+    Dim strArg As String
+    strArg = ""
+    Dim iEntry As Integer
+    iEntry = 0
+
+    Do While Not (IsEmpty(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 0)))
+        strArg = strArg + CStr(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 0))
+        strArg = strArg + ";" + CStr(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 1)) + ";"
+        iEntry = iEntry + 1
+    Loop
+    jFile.AddArgument "holidays", strArg
+
+    'parameters of the ventilation system
+    jFile.AddArgument "ventilation_lead_time", Range("Vorlauf_Lüftung")
+    jFile.AddArgument "ventilation_follow_up_time", Range("Nachlauf_Lüftung")
+    jFile.AddArgument "conditioned_floor_height", Range("FloorHeight_kond")
+    jFile.AddArgument "imported_floor_height", Range("FloorHeight_import")
+    jFile.AddArgument "air_changes_input", Range("ACH")
+    jFile.AddArgument "include_window_ventilation", IIf(cb_windowvent.Value = 1, 1, 0)
+    jFile.AddArgument "include_infiltration", IIf(cb_inf.Value = 1, 1, 0)
+
+    'other parameters
+    jFile.AddArgument "include_shading_control", IIf(cb_shadingcontrol.Value = 1, 1, 0)
+    jFile.AddArgument "include_lighting_control", IIf(cb_lightingcontrol.Value = 1, 1, 0)
+
+    jFile.AddMeasure "custom_export_params"
+End Sub
+
+' Export method for measure AddGeometry.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportAddGeometry(ByRef jFile As JSONFile)
+    Dim dd42 As DropDown 'adiabatic north
+    Set dd42 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_n")
+    Dim dd43 As DropDown 'adiabatic east
+    Set dd43 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_o")
+    Dim dd44 As DropDown 'adiabatic south
+    Set dd44 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_s")
+    Dim dd45 As DropDown 'adiabatic west
+    Set dd45 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_w")
+    Dim dd46 As DropDown 'adiabatic roof
+    Set dd46 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_d")
+    Dim dd47 As DropDown 'adiabatic base plate
+    Set dd47 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_b")
+
+    jFile.AddArgument "floor_area", Range("BldgArea")
+    jFile.AddArgument "building_length", Range("LAENGE")
+    jFile.AddArgument "building_width", Range("BREITE")
+    jFile.AddArgument "number_of_stories", Range("NoFloors")
+    jFile.AddArgument "floor_to_floor_height", Range("FloorHeight")
+    jFile.AddArgument "surface_matching", "true"
+    jFile.AddArgument "make_zones", "true"
+    jFile.AddArgument "window_to_wall_ratio_north", Range("WWRN")
+    jFile.AddArgument "window_to_wall_ratio_east", Range("WWRO")
+    jFile.AddArgument "window_to_wall_ratio_south", Range("WWRS")
+    jFile.AddArgument "window_to_wall_ratio_west", Range("WWRW")
+    jFile.AddArgument "adiabatic_north", dd42.List(dd42.Value)
+    jFile.AddArgument "adiabatic_east", dd43.List(dd43.Value)
+    jFile.AddArgument "adiabatic_south", dd44.List(dd44.Value)
+    jFile.AddArgument "adiabatic_west", dd45.List(dd45.Value)
+    jFile.AddArgument "adiabatic_roof", dd46.List(dd46.Value)
+    jFile.AddArgument "adiabatic_floor", dd47.List(dd47.Value)
+    jFile.AddArgument "perimeter_depth", Range("PerimeterDepth")
+
+    jFile.AddMeasure "add_geometry"
+End Sub
+
+' Export method for measure AddMaterialsAndConstruction.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportAddMaterialsAndConstruction(ByRef jFile As JSONFile)
+    Dim dd21 As DropDown 'building standard
+    Set dd21 = Sheets("HAUPTSEITE").DropDowns("Dropdown21")
+    Dim dd22 As DropDown 'inner masses
+    Set dd22 = Sheets("HAUPTSEITE").DropDowns("Dropdown22")
+
+    jFile.AddConstruction "external_wall", Range("AWMat1"), 4
+    jFile.AddConstruction "roof", Range("DMat1"), 4
+    jFile.AddConstruction "base_plate", Range("BPMat1"), 4
+    jFile.AddConstruction "inner_masses", Range("Massen"), 3
+    jFile.AddConstruction "interior_slab", Range("ZwischenDecke"), 4
+    jFile.AddInternalSourceConstructionHardcoded "chilled_ceiling", 2, 2, 2, 0.15, Range("ZwischenDecke"), 2
+    jFile.AddWindowConstruction "windows", Range("WINDOWSSLS"), Range("WINDOWSSLS").Offset(0, -1), Range("WINDOWSSLS").Offset(0, 1)
+    jFile.AddArgument "construction_standard_selection", dd21.List(dd21.Value)
+    jFile.AddArgument "is_custom_standard", IIf(dd21.Value > (dd21.ListCount - 4), "Ja", "Nein")
+    jFile.AddArgument "inner_masses_selection", dd22.List(dd22.Value)
+
+    jFile.AddMeasure "add_materials_and_construction"
+End Sub
+
+' Export method for measure AddThermalZones.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportAddThermalZones(ByRef jFile As JSONFile)
+    jFile.AddMeasure "add_thermal_zones"
+End Sub
+
+' Export method for measure DetectExternalZones.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportDetectExternalZones(ByRef jFile As JSONFile)
+    jFile.AddMeasure "detect_external_zones"
+End Sub
+
+' Export method for measure AddInternalLoads.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param bGeneric Boolean ByVal If the geometry is generic (true) or imported (false)
+' @param nrf_bgf Double ByVal Ratio of NFA over GFA
+Sub ExportAddInternalLoads( _
+    ByRef jFile As JSONFile, _
+    ByVal bGeneric As Boolean, _
+    ByVal nrf_bgf As Double _
+)
+    Dim ddRatio1 As DropDown 'ratio NFA/GFA
+    Set ddRatio1 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF")
+    Dim ddRatio2 As DropDown 'ratio NFA/GFA imported
+    Set ddRatio2 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF_Import")
+    Dim dd23 As DropDown 'electric equipment
+    Set dd23 = Sheets("HAUPTSEITE").DropDowns("Dropdown23")
+    Dim dd49 As DropDown 'artificial lighting
+    Set dd49 = Sheets("HAUPTSEITE").DropDowns("Dropdown49")
+    Dim dd50 As DropDown 'presence of persons
+    Set dd50 = Sheets("HAUPTSEITE").DropDowns("Dropdown50")
+    Dim dd51 As DropDown 'activity of persons
+    Set dd51 = Sheets("HAUPTSEITE").DropDowns("Dropdown51")
+
+    Dim isCustom As Boolean
+    Dim selected As String
+
+    If bGeneric Then
+        isCustom = ddRatio1.Value = 1
+        selected = ddRatio1.List(ddRatio1.Value)
+    Else
+        isCustom = ddRatio2.Value = 1
+        selected = ddRatio2.List(ddRatio2.Value)
+    End If
+
+    jFile.AddArgument "electric_equipment_power_per_floor_area", Range("Electric")
+    jFile.AddArgument "lighting_power_per_floor_area", Range("Lights")
+    jFile.AddArgument "floor_area_per_person", Range("People")
+    jFile.AddSchedule "electric_equipment_sched", Range("ElectricWD")
+    jFile.AddSchedule "lighting_sched", Range("LightWD")
+    jFile.AddSchedule "people_sched", Range("PeopleWD")
+    jFile.AddSchedule "people_activity_sched", Range("PeopleActivityWD")
+    jFile.AddHolidays "holidays", Range("Feiertage")
+    jFile.AddArgument "area_gfa_import", Range("BldgArea_import")
+    jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
+    jFile.AddArgument "nfa_gfa_ratio_selection", selected
+    jFile.AddArgument "is_custom_ratio", IIf(isCustom, "true", "false")
+    jFile.AddArgument "is_imported_model", IIf(bGeneric, "false", "true")
+    jFile.AddArgument "electric_equipment_sched_selection", dd23.List(dd23.Value)
+    jFile.AddArgument "lighting_sched_selection", dd49.List(dd49.Value)
+    jFile.AddArgument "people_sched_selection", dd50.List(dd50.Value)
+    jFile.AddArgument "people_activity_sched_selection", dd51.List(dd51.Value)
+    jFile.AddArgument "is_custom_electric_equipment", IIf(dd23.Value > (dd23.ListCount - 2), "true", "false")
+    jFile.AddArgument "is_custom_lighting", IIf(dd49.Value > (dd49.ListCount - 2), "true", "false")
+    jFile.AddArgument "is_custom_people", IIf(dd50.Value > (dd50.ListCount - 2), "true", "false")
+    jFile.AddArgument "is_custom_people_activity", IIf(dd51.Value > (dd51.ListCount - 2), "true", "false")
+
+    jFile.AddMeasure "add_internal_loads"
+End Sub
+
+' Export method for measure AddDetailedHVAC.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param nrf_bgf Double ByVal Ratio of NFA over GFA
+' @param FloorHeight_Ratio Double ByVal Ratio of conditioned over total floor height
+Sub ExportAddDetailedHVAC( _
+    ByRef jFile As JSONFile, _
+    ByVal nrf_bgf As Double, _
+    ByVal FloorHeight_Ratio As Double _
+)
+    Dim dd55 As DropDown 'schedule ventilation
+    Set dd55 = Sheets("HAUPTSEITE").DropDowns("Dropdown55")
+
+    jFile.AddArgument "heat_recovery_method", Range("WRG")
+    jFile.AddArgument "latent_efficiency", Range("LATENT")
+    jFile.AddArgument "sensible_efficiency", Range("SENSIBLE")
+    jFile.AddArgument "ach_per_hour", Range("ACH")
+    jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
+    jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
+    jFile.AddSchedule "hvac_sched", Range("HVACWD")
+    jFile.AddHolidays "holidays", Range("Feiertage")
+    jFile.AddArgument "hvac_sched_selection", dd55.List(dd55.Value)
+    jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
+    jFile.AddSchedule "zone_heating_temp_sched", Range("HeatingWD")
+    jFile.AddSchedule "zone_cooling_temp_sched", Range("CoolingWD")
+    jFile.AddArgument "hot_water_temp_setpoint", 82
+    jFile.AddArgument "hot_water_temp_diff", 11
+    jFile.AddArgument "cold_water_temp_setpoint", 10
+    jFile.AddArgument "cold_water_temp_diff", 5
+    jFile.AddArgument "supply_fan_pressure_rise", CStr(750) 'update 10.01.22 -> new standard DIN EN 16798-3 - SFP2
+    jFile.AddArgument "return_fan_pressure_rise", CStr(750)
+    jFile.AddArgument "system_type", Range("system_type")
+
+    jFile.AddMeasure "add_detailed_hvac"
+End Sub
+
+' Export method for measure AddIdealLoads.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param nrf_bgf Double ByVal Ratio of NFA over GFA
+' @param FloorHeight_Ratio Double ByVal Ratio of conditioned over total floor height
+Sub ExportAddIdealLoads( _
+    ByRef jFile As JSONFile, _
+    ByVal nrf_bgf As Double, _
+    ByVal FloorHeight_Ratio As Double _
+)
+    Dim dd55 As DropDown 'schedule ventilation
+    Set dd55 = Sheets("HAUPTSEITE").DropDowns("Dropdown55")
+
+    jFile.AddArgument "heat_recovery_method", Range("WRG")
+    jFile.AddArgument "latent_efficiency", Range("LATENT")
+    jFile.AddArgument "sensible_efficiency", Range("SENSIBLE")
+    jFile.AddArgument "ach_per_hour", Range("ACH")
+    jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
+    jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
+    jFile.AddSchedule "hvac_sched", Range("HVACWD")
+    jFile.AddHolidays "holidays", Range("Feiertage")
+    jFile.AddArgument "hvac_sched_selection", dd55.List(dd55.Value)
+    jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
+
+    jFile.AddMeasure "add_ideal_loads"
+End Sub
+
+' Export method for measure AddShadingControls.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportAddShadingControls(ByRef jFile As JSONFile)
+    jFile.AddArgument "solar_setpoint", Range("SHCO_IRR")
+    jFile.AddMeasure "add_shading_controls"
+End Sub
+
+' Export method for measure AddInfiltration.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param nrf_bgf Double ByVal Ratio of NFA over GFA
+' @param FloorHeight_Ratio Double ByVal Ratio of conditioned over total floor height
+Sub ExportAddInfiltration( _
+    ByRef jFile As JSONFile, _
+    ByVal nrf_bgf As Double, _
+    ByVal FloorHeight_Ratio As Double _
+)
+    jFile.AddArgument "air_changes", Range("INFIL")
+    jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
+    jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
+    jFile.AddMeasure "add_infiltration"
+End Sub
+
+' Export method for measure AddLightingControls.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportAddLightingControls(ByRef jFile As JSONFile)
+    jFile.AddArgument "daylighting_setpoint", Range("LC_LUX")
+    jFile.AddMeasure "add_lighting_controls"
+End Sub
+
+' Export method for measure AddTemperatureSetpoints.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportAddTemperatureSetpoints(ByRef jFile As JSONFile)
+    Dim dd60 As DropDown 'setpoints heating
+    Set dd60 = Sheets("HAUPTSEITE").DropDowns("Dropdown60")
+    Dim dd86 As DropDown 'setpoint cooling
+    Set dd86 = Sheets("HAUPTSEITE").DropDowns("Dropdown86")
+
+    jFile.AddArgument "heating_temp_selection", dd60.List(dd60.Value)
+    jFile.AddArgument "cooling_temp_selection", dd86.List(dd86.Value)
+    jFile.AddArgument "is_custom_heating", IIf(dd60.Value > 3, "true", "false")
+    jFile.AddArgument "is_custom_cooling", IIf(dd86.Value > 3, "true", "false")
+    jFile.AddSchedule "zone_heating_temp_sched", Range("HeatingWD")
+    jFile.AddSchedule "zone_cooling_temp_sched", Range("CoolingWD")
+    jFile.AddHolidays "holidays", Range("Feiertage")
+    jFile.AddMeasure "add_temperature_setpoints"
+End Sub
+
+' Export method for measure SaveModel.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportSaveModel(ByRef jFile As JSONFile)
+    jFile.AddArgument "output_path", GetOutputFolder()
+    jFile.AddArgument "file_name", Range("FileName")
+    jFile.AddMeasure "save_model"
+End Sub
+
+' Export method for measure InjectZoneVentilationIDF.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportInjectZoneVentilationIDF(ByRef jFile As JSONFile)
+    jFile.AddArgument "air_changes", Range("windowvent_ach")
+    jFile.AddArgument "min_indoor_temperature", Range("windowvent_temp")
+    jFile.AddArgument "temperature_difference", Range("windowvent_dt")
+    jFile.AddMeasure "inject_zone_ventilation_idf"
+End Sub
+
+' Export method for measure InjectIdealLoadParametersIDF.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param nrf_bgf Double ByVal Ratio of NFA over GFA
+' @param FloorHeight_Ratio Double ByVal Ratio of conditioned over total floor height
+Sub ExportInjectIdealLoadParametersIDF( _
+    ByRef jFile As JSONFile, _
+    ByVal nrf_bgf As Double, _
+    ByVal FloorHeight_Ratio As Double _
+)
+    jFile.AddArgument "heat_recovery_type", Range("WRG")
+    jFile.AddArgument "sensible_efficiency", Range("SENSIBLE")
+    jFile.AddArgument "latent_efficiency", Range("LATENT")
+    jFile.AddArgument "air_changes", Range("ACH")
+    jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
+    jFile.AddArgument "floor_height_ratio", CStr(FloorHeight_Ratio)
+    jFile.AddMeasure "inject_ideal_load_parameters_idf"
+End Sub
+
+' Export method for measure InjectRadiantSurfacesIDF.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportInjectRadiantSurfacesIDF(ByRef jFile As JSONFile)
+    jFile.AddMeasure "inject_radiant_surfaces_idf"
+End Sub
+
+' Export method for measure InjectHolidaysIDF.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportInjectHolidaysIDF(ByRef jFile As JSONFile)
+    feiertage_active = 0
+    For r = 1 To 5
+        feiertage_active = feiertage_active + Range("Feiertage").Offset(r - 1, 0) + Range("Feiertage").Offset(r - 1, 1)
+    Next
+
+    If feiertage_active > 0 Then
+        jFile.AddHolidays "holidays", Range("Feiertage")
+        jFile.AddMeasure "inject_holidays_idf"
+    End If
+End Sub
+
+' Export method for measure SetMetersIDF.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param NrOfTimesteps As Integer ByVal Number of timesteps per hour.
+Sub ExportSetMetersIDF( _
+    ByRef jFile As JSONFile, _
+    ByVal NrOfTimesteps As Integer _
+)
+    jFile.AddArgument "time_step", CStr(NrOfTimesteps)
+    jFile.AddArgument "day_to_start_simulation", Range("DayToStartSimulation")
+    jFile.AddArgument "heating_sizing_factor", Range("HeatingSizingFactor")
+    jFile.AddArgument "cooling_sizing_factor", Range("CoolingSizingFactor")
+    jFile.AddMeasure "set_meters_idf"
+End Sub
+
 ' This class is intended to provide an interface for writing parameters to an
 ' OSW file or reading them from one. The import/export is not a simple 1-to-1
 ' match of ranges and values, thus the macros might take some time and needs
@@ -25,58 +478,19 @@ Attribute VB_Exposed = False
 ' @param sFilename String ByRef The filename of the exported file. Ths file
 '     is automatically written to the output folder, so the filename should
 '     only contain subdirectories of the output folder.
-' @param bDoCustomExport Boolean ByVal If true, adds some parameters that are
-'     not required (or expected) for a simulation run, but are useful for
-'     saving a parameter configuration as a seperate file
-' @param bPVSim Boolean ByVal If the PV simulation should run or not
-' @param bBuildingSim Boolean ByVal If the building simulation should run or not
 ' @param bGeneric Boolean ByVal If a generic building model should be used or
 '     instead an existing model be imported
+' @param bCopyOSMFile Boolean ByVal If true, copies the OSM file, provided that
+'     the geometry is imported and not generic, to the run folder. This is
+'     necessary for a simulation run, but not for the export of paramters.
+' @param bDetailedHVAC Boolean ByVal If true, sets the simulation up with a
+'     detailed HVAC model, otherwise with ideal loads
 Sub ExportToOSW( _
     ByVal sFilename As String, _
-    ByVal bDoCustomExport As Boolean, _
-    ByVal bPVSim As Boolean, _
-    ByVal bBuildingSim As Boolean, _
     ByVal bGeneric As Boolean, _
+    ByVal bCopyOSMFile As Boolean, _
     ByVal bDetailedHVAC As Boolean _
 )
-    Dim dd1 As DropDown 'Wetterdaten
-    Set dd1 = Sheets("HAUPTSEITE").DropDowns("DropDown1")
-    Dim dd2 As DropDown 'Orientierung
-    Set dd2 = Sheets("HAUPTSEITE").DropDowns("Dropdown2")
-    Dim dd21 As DropDown 'Gebäudestandard
-    Set dd21 = Sheets("HAUPTSEITE").DropDowns("Dropdown21")
-    Dim dd22 As DropDown 'innere Massen
-    Set dd22 = Sheets("HAUPTSEITE").DropDowns("Dropdown22")
-    Dim dd23 As DropDown 'Elektrische Geräte
-    Set dd23 = Sheets("HAUPTSEITE").DropDowns("Dropdown23")
-    Dim ddRatio1 As DropDown 'Verhältnis NRF/BGF
-    Set ddRatio1 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF")
-    Dim ddRatio2 As DropDown 'Verhältnis NRF/BGF Importiert
-    Set ddRatio2 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF_Import")
-    Dim dd42 As DropDown 'Adiabat Nord
-    Set dd42 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_n")
-    Dim dd43 As DropDown 'Adiabat Ost
-    Set dd43 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_o")
-    Dim dd44 As DropDown 'Adiabat SÃ¼d
-    Set dd44 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_s")
-    Dim dd45 As DropDown 'Adiabat West
-    Set dd45 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_w")
-    Dim dd46 As DropDown 'Adiabat Dach
-    Set dd46 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_d")
-    Dim dd47 As DropDown 'Adiabat Bodenplatte
-    Set dd47 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_b")
-    Dim dd49 As DropDown 'Beleuchtung
-    Set dd49 = Sheets("HAUPTSEITE").DropDowns("Dropdown49")
-    Dim dd50 As DropDown 'Personen Anwesenheit
-    Set dd50 = Sheets("HAUPTSEITE").DropDowns("Dropdown50")
-    Dim dd51 As DropDown 'Personen Aktivität
-    Set dd51 = Sheets("HAUPTSEITE").DropDowns("Dropdown51")
-    Dim dd55 As DropDown 'Betriebszeiten Lüftung
-    Set dd55 = Sheets("HAUPTSEITE").DropDowns("Dropdown55")
-    Dim dd_lueftung As DropDown 'Lüftungsanlage Typ
-    Set dd_lueftung = Sheets("HAUPTSEITE").DropDowns("dd_lueftung")
-
     Dim cb_windowvent As CheckBox
     Set cb_windowvent = Sheets("HAUPTSEITE").CheckBoxes("Checkbox_windowvent")
     Dim cb_inf As CheckBox
@@ -85,468 +499,125 @@ Sub ExportToOSW( _
     Set cb_lightingcontrol = Sheets("HAUPTSEITE").CheckBoxes("checkbox lightingcontrol")
     Dim cb_shadingcontrol As CheckBox
     Set cb_shadingcontrol = Sheets("HAUPTSEITE").CheckBoxes("checkbox_shadingcontrol")
-    Dim cb_buildingSim As CheckBox
-    Set cb_buildingSim = Sheets("HAUPTSEITE").CheckBoxes("checkbox_buildingsim")
-    Dim cb_pvSim As CheckBox
-    Set cb_pvSim = Sheets("HAUPTSEITE").CheckBoxes("checkbox_pvsim")
-    Dim cb_zoneDetails As CheckBox
-    Set cb_zoneDetails = Sheets("Parameter").CheckBoxes("checkbox_ZoneDetails")
-    Dim cb_detailedHVAC As CheckBox
-    Set cb_detailedHVAC = Sheets("Parameter").CheckBoxes("checkbox_hvac")
-    
-    Dim dd60 As DropDown 'Solltemp Heizung
-    Set dd60 = Sheets("HAUPTSEITE").DropDowns("Dropdown60")
-    Dim dd86 As DropDown 'Solltemp Kühlung
-    Set dd86 = Sheets("HAUPTSEITE").DropDowns("Dropdown86")
+
     Dim dd_timestep As DropDown
     Set dd_timestep = Sheets("Hauptseite").DropDowns("dropdown_timestep")
     Dim Timestep As Double
-    Dim Timestep_s As String
-    Timestep = 60 / dd_timestep.List(dd_timestep.Value)
-    Timestep_s = Timestep
+    Dim NrOfTimesteps As Integer
+    Timestep = dd_timestep.List(dd_timestep.Value)
+    NrOfTimesteps = 60 / Timestep
+
+    Dim nrf_bgf As Double
+    If bGeneric Then
+        nrf_bgf = Range("BGF_zu_NRF")
+    Else
+        nrf_bgf = Range("BGF_zu_NRF_import")
+    End If
+
+    'correction factor of parameters specific to the conditioned volume as false ceilings
+    'are not considered conditioned
+    Dim FloorHeight_Ratio As Double
+    If Range("geometry_source") = 1 Then
+        FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight")
+    Else
+        FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight_import")
+    End If
 
     Dim jFile As New JSONFile
 
-    If bBuildingSim And Not bGeneric Then
-        ' only if we have an import and geometry sim selected we import the external OSM file
-        ' copy the imported osm file into the currrent folder and replace any umlaut
-        Dim fso As New FileSystemObject
-        Dim sOSMFileName As String
-        Dim sOSMPathName As String
-        sOSMPathName = Range("path_geometry_Import")
-        sOSMFileName = fso.GetFileName(sOSMPathName)
-        sOSMFileName = Replace(sOSMFileName, Chr(228), "ae")
-        sOSMFileName = Replace(sOSMFileName, Chr(252), "ue")
-        sOSMFileName = Replace(sOSMFileName, Chr(246), "oe")
-        sOSMFileName = Replace(sOSMFileName, Chr(196), "Ae")
-        sOSMFileName = Replace(sOSMFileName, Chr(220), "Ue")
-        sOSMFileName = Replace(sOSMFileName, Chr(214), "Oe")
-        
-        If Not (bDoCustomExport) Then
-            Dim localOSMPath As String
-            localOSMPath = GetOutputFolder() + "\" + sOSMFileName
-            FileCopy sOSMPathName, localOSMPath
-        End If
-        jFile.CreateFile localOSMPath, GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-        
-        jFile.AddArgument "WeatherFilePath", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-        jFile.AddArgument "Timestep", Timestep_s
-        jFile.AddMeasure "SetWeatherAxisTimestep"
-    Else
-        jFile.CreateFile Range("FileName") + ".osm", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-        ' first we create an empty model with the empty model measure
-        jFile.AddMeasure "CreateAnEmptyModel"
-
-        jFile.AddArgument "WeatherFilePath", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
-        jFile.AddArgument "NorthAxis", dd2.List(dd2.Value)
-        jFile.AddArgument "Timestep", Timestep_s
-        jFile.AddMeasure "SetWeatherAxisTimestep"
-    End If
-    
-    '--------Alle zusätzlichen Parameter für den 'CustomExport'
-    If (bDoCustomExport) Then
-    
-        'Parameter Modell
-        jFile.AddArgument "buildingSim", IIf(cb_buildingSim.Value = 1, 1, 0)
-        jFile.AddArgument "pvSim", IIf(cb_pvSim.Value = 1, 1, 0)
-        jFile.AddArgument "zoneDetails", IIf(cb_zoneDetails.Value = 1, 1, 0)
-        jFile.AddArgument "detailedHVAC", IIf(cb_detailedHVAC.Value = 1, 1, 0)
-        jFile.AddArgument "ventilation_type", dd_lueftung.Value
-        
-        'Parameter Geometrie, die nicht für Modellerzeugung benötigt werden
-        jFile.AddArgument "floor_length", Range("LAENGE")
-        jFile.AddArgument "floor_width", Range("BREITE")
-        jFile.AddArgument "ratio_NRF_BGF", ddRatio1.List(ddRatio1.Value)
-        jFile.AddArgument "NRF_BGF", Range("BGF_zu_NRF")
-        
-        ' Arguments "selected_standard", "is_custom_standard", "selected_masses" are added in Measure "AddingMaterialsAndConstructions"
-        ' weitere Argumente are added in Measure "AddingInternalLoads"
-        ' Arguments "hvacSchedule", "is_custom_hvac" are added in "AddDetailedHVAC" bzw. "AddingIdealAirLoads" (je nach cb_hvac)
-        
-        '  Nutzung - Feiertage
-        Dim strArg As String
-        strArg = ""
-        Dim iEntry As Integer
-        iEntry = 0
-            
-        Do While Not (IsEmpty(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 0)))
-            strArg = strArg + CStr(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 0))
-            strArg = strArg + ";" + CStr(Sheets("EIGENE NUTZUNGSPROFILE").Range("feiertage").Offset(iEntry, 1)) + ";"
-            iEntry = iEntry + 1
-        Loop
-        jFile.AddArgument "Holidays", strArg
-
-        
-        'Lüftungsanlage
-        jFile.AddArgument "vorlauf_Luft", Range("Vorlauf_Lüftung")
-        jFile.AddArgument "nachlauf_Luft", Range("Nachlauf_Lüftung")
-        
-        'Weiteres
-        jFile.AddArgument "Shadingcontrol", IIf(cb_shadingcontrol.Value = 1, 1, 0)
-        jFile.AddArgument "Infiltration", IIf(cb_inf.Value = 1, 1, 0)
-        jFile.AddArgument "Lightingcontrol", IIf(cb_lightingcontrol.Value = 1, 1, 0)
-        jFile.AddArgument "Windowvent", IIf(cb_windowvent.Value = 1, 1, 0)
-        
-        'Geometrie
-        If bGeneric Then
-            jFile.AddArgument "genGeom", 1      'Range("geometry_source")
-        Else
-            jFile.AddArgument "genGeom", 2
-        End If
-                
-        'Lüftung (neue Parameter "konditionierte Raumhöhe" und "Geschosshöhe Geometrieimport"
-        jFile.AddArgument "FloorHeight_kond", Range("FloorHeight_kond")
-        jFile.AddArgument "FloorHeight_import", Range("FloorHeight_import")
-        jFile.AddArgument "ACH_Input_Parameter", Range("ACH")
-        
-        jFile.AddMeasure "CustomExportParams"
-
+    If bGeneric Then
+        Call ExportCreateEmptyModel(jFile)
     End If
 
-    ''''''''''''''''''''''''''''''' Building Model
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    Call ExportSetWeatherAxisTimestep(jFile, bGeneric, bCopyOSMFile, NrOfTimesteps)
+    Call ExportCustomExportParams(jFile, bGeneric)
 
-    If Not bBuildingSim Then
-        DeactivateStatusInfoForPVOnlyRun
-    Else
-        Range("GeomStatus") = "Start ..."
-
-        ''''''''''''''''''''''''''''''' Geometry
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-        If bGeneric Then
-            jFile.AddArgument "floor_area", Range("BldgArea")
-            jFile.AddArgument "ns_to_ew_ratio", Range("NSEWRatio")
-            jFile.AddArgument "number_of_stories", Range("NoFloors")
-            jFile.AddArgument "floor_to_floor_height", Range("FloorHeight")
-            jFile.AddArgument "surface_matching", "true"
-            jFile.AddArgument "make_zones", "true"
-            jFile.AddArgument "window_to_wall_ratio_north", Range("WWRN")
-            jFile.AddArgument "window_to_wall_ratio_east", Range("WWRO")
-            jFile.AddArgument "window_to_wall_ratio_south", Range("WWRS")
-            jFile.AddArgument "window_to_wall_ratio_west", Range("WWRW")
-            jFile.AddArgument "AdiabaticNorth", dd42.List(dd42.Value)
-            jFile.AddArgument "AdiabaticEast", dd43.List(dd43.Value)
-            jFile.AddArgument "AdiabaticSouth", dd44.List(dd44.Value)
-            jFile.AddArgument "AdiabaticWest", dd45.List(dd45.Value)
-            jFile.AddArgument "AdiabaticRoof", dd46.List(dd46.Value)
-            jFile.AddArgument "AdiabaticFloor", dd47.List(dd47.Value)
-            jFile.AddArgument "perimeterdepth", Range("PerimeterDepth")
-
-            jFile.AddMeasure "BarAspectRatioStudy"
-        End If
-        ' update status
+    Range("GeomStatus") = "Start ..."
+    If bGeneric Then
+        Call ExportAddGeometry(jFile)
         Range("GeomStatus") = "Definiert"
-        DoEvents
-
-        ''''''''''''''''''''''''''''''' Assign Constructions
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-        If Not bBuildingSim Then
-            Range("UStatus") = "Deaktiviert"
-        Else
-            Range("UStatus") = "Start ..."
-            jFile.AddConstruction "ExternalWallMat", Range("AWMat1"), 4
-            jFile.AddConstruction "RoofMat", Range("DMat1"), 4
-            jFile.AddConstruction "SlabMat", Range("BPMat1"), 4
-            jFile.AddConstruction "Massen", Range("Massen"), 3
-            jFile.AddConstruction "InteriorSlabs", Range("ZwischenDecke"), 4
-            jFile.AddInternalSourceConstructionHardcoded "ChilledCeiling", 2, 2, 2, 0.15, Range("ZwischenDecke"), 2
-            jFile.AddWindowConstruction "Windows", Range("WINDOWSSLS"), Range("WINDOWSSLS").Offset(0, -1), Range("WINDOWSSLS").Offset(0, 1)
-
-            If (bDoCustomExport) Then
-                jFile.AddArgument "selected_standard", dd21.List(dd21.Value)
-                jFile.AddArgument "is_custom_standard", IIf(dd21.Value > (dd21.ListCount - 4), "Ja", "Nein")
-                jFile.AddArgument "selected_masses", dd22.List(dd22.Value)
-            End If
-
-            jFile.AddMeasure "AddingMaterialsAndConstructions"
-            Range("UStatus") = "Definiert"
-        End If
-        DoEvents
-
-        ''''''''''''''''''''''''''''''' Adding Thermal Zones and Detecting External Zones
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-        If bBuildingSim Then
-
-            If Not bGeneric Then jFile.AddMeasure "AddThermalZones"
-
-            jFile.AddMeasure "DetectingExternalZones"
-
-        End If
-
-        ''''''''''''''''''''''''''''''' internal load measure (schedules)
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-        If Not bBuildingSim Then
-            Range("LoadStatus") = "Deaktiviert"
-        Else
-
-            Range("LoadStatus") = "Start ..."
-
-            Dim nrf_bgf As Double
-            Dim isCustom As Boolean
-            Dim selected As String
-
-            If bGeneric Then
-                nrf_bgf = Range("BGF_zu_NRF")
-                isCustom = ddRatio1.Value = 1
-                selected = ddRatio1.List(ddRatio1.Value)
-            Else
-                nrf_bgf = Range("BGF_zu_NRF_import")
-                isCustom = ddRatio2.Value = 1
-                selected = ddRatio2.List(ddRatio2.Value)
-            End If
-
-            jFile.AddArgument "ElectricEquipmentPowerPerFloorArea", Range("Electric") * nrf_bgf
-            jFile.AddArgument "LightingPowerPerFloorArea", Range("Lights") * nrf_bgf
-            jFile.AddArgument "PeoplePerFloorArea", 1 / Range("People") * nrf_bgf
-            jFile.AddSchedule "ElectricEquipmentSchedule", Range("ElectricWD")
-            jFile.AddSchedule "LightSchedule", Range("LightWD")
-            jFile.AddSchedule "PeopleSchedule", Range("PeopleWD")
-            jFile.AddSchedule "PeopleActivitySchedule", Range("PeopleActivityWD")
-            jFile.AddHolidays "Holidays", Range("Feiertage")
-            
-            If (bDoCustomExport) Then
-                jFile.AddArgument "area_bgf_import", Range("BldgArea_import")
-                jFile.AddArgument "NRF/BGF", CStr(nrf_bgf)
-                jFile.AddArgument "selected_ratio", selected
-                jFile.AddArgument "is_custom_ratio", IIf(isCustom, "true", "false")
-                jFile.AddArgument "is_imported", IIf(bGeneric, "false", "true")
-                jFile.AddArgument "ElectricEquipmentSchedule", dd23.List(dd23.Value)
-                jFile.AddArgument "LightSchedule", dd49.List(dd49.Value)
-                jFile.AddArgument "PeopleSchedule", dd50.List(dd50.Value)
-                jFile.AddArgument "PeopleActivitySchedule", dd51.List(dd51.Value)
-                jFile.AddArgument "is_custom_ElectricEquipment", IIf(dd23.Value > (dd23.ListCount - 2), "true", "false")
-                jFile.AddArgument "is_custom_Light", IIf(dd49.Value > (dd49.ListCount - 2), "true", "false")
-                jFile.AddArgument "is_custom_People", IIf(dd50.Value > (dd50.ListCount - 2), "true", "false")
-                jFile.AddArgument "is_custom_PeopleActivity", IIf(dd51.Value > (dd51.ListCount - 2), "true", "false")
-            End If
-
-            jFile.AddMeasure "AddingInternalLoads"
-            Range("LoadStatus") = "Definiert"
-        End If
-        DoEvents
-
-        '''''''''''''''' Calling Ideal loads measure
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-        If Not bBuildingSim Then
-            Range("IdealLoads") = "Deaktiviert"
-        Else
-
-            Range("IdealLoads") = "Start ..."
-                              
-            ' Pressure Rise
-            If Range("WRG") = "None" Then
-                PressureRise_ReturnFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
-                PressureRise_SupplyFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
-            Else
-                PressureRise_ReturnFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
-                PressureRise_SupplyFan = 750 ' Update 10.01.22 -> neue Norm DIN EN 16798-3 - SFP2
-            End If
-                      
-            'Korrektur der zu hohen Luftwechselrate, weil das konditionierte Raumvolumen um die Zwischendecken-Dicke zu groß ist
-            If Range("geometry_source") = 1 Then
-                FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight")
-            Else
-                FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight_import")
-            End If
-            
-            ' common arguments
-            jFile.AddArgument "wrg", Range("WRG")
-            jFile.AddArgument "latent", Range("LATENT")
-            jFile.AddArgument "sensible", Range("SENSIBLE")
-            jFile.AddArgument "ach", Range("ACH") * FloorHeight_Ratio * nrf_bgf 'Bugfix 01/22 : Korrektur kond. Raumhöhe sowie Korrektur NRF/BGF
-            jFile.AddSchedule "hvacSched", Range("HVACWD")
-            jFile.AddHolidays "Holidays", Range("Feiertage")
-            If (bDoCustomExport) Then
-               jFile.AddArgument "hvacSchedule", dd55.List(dd55.Value)
-               jFile.AddArgument "is_custom_hvac", IIf(dd55.Value > (dd55.ListCount - 2), "true", "false")
-            End If
-            
-            If bDetailedHVAC Then
-                jFile.AddSchedule "zoneHeatingTempSched", Range("HeatingWD")
-                jFile.AddSchedule "zoneCoolingTempSched", Range("CoolingWD")
-                jFile.AddArgument "hotWaterTempSetpoint", 82
-                jFile.AddArgument "hotWaterDeltaT", 11
-                jFile.AddArgument "coldWaterTempSetpoint", 10
-                jFile.AddArgument "coldWaterDeltaT", 5
-                jFile.AddArgument "fanPressureRiseSupply", CStr(PressureRise_SupplyFan)
-                jFile.AddArgument "fanPressureRiseReturn", CStr(PressureRise_ReturnFan)
-                jFile.AddArgument "system_type", Range("system_type")
-
-                jFile.AddMeasure "AddDetailedHVAC"
-            Else
-                jFile.AddMeasure "AddingIdealAirLoads"
-            End If
-            
-            Range("IdealLoads") = "Definiert"
-        End If
-        DoEvents
-
-        '''''''''''''''' Calling Shading Control measure
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-        If Not bBuildingSim Or Not cb_shadingcontrol.Value = 1 Then
-            Range("ShadingControl") = "Deaktiviert"
-        Else
-            Range("ShadingControl") = "Start ..."
-            jFile.AddArgument "SolarSetpoint", Range("SHCO_IRR")
-            jFile.AddMeasure "AddingShadingControls"
-            Range("ShadingControl") = "Definiert"
-        End If
-        DoEvents
-
-        '''''''''''''''' Calling infiltration measure
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-        If Not bBuildingSim Or Not cb_inf.Value = 1 Then
-            Range("Infiltration") = "Deaktiviert"
-        Else
-            Range("Infiltration") = "Start ..."
-            jFile.AddArgument "AirChangesPerHour", Range("INFIL") * FloorHeight_Ratio * nrf_bgf
-            jFile.AddMeasure "AddingInfiltration"
-            Range("Infiltration") = "Definiert"
-        End If
-        DoEvents
-
-        '''''''''''''''' Calling lighting control measure
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-        If Not bBuildingSim Or Not cb_lightingcontrol.Value = 1 Then
-            Range("LightingControl") = "Deaktiviert"
-        Else
-            Range("LightingControl") = "Start ..."
-            jFile.AddArgument "DaylightingSetpoint", Range("LC_LUX")
-            jFile.AddMeasure "AddingLightingControls"
-            Range("LightingControl") = "Definiert"
-        End If
-
-        '''''''''''''''' Calling Setpoint Measure loads measure
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-        If Not bBuildingSim Then
-            Range("TempSetpoint") = "Deaktiviert"
-        Else
-            If (bDoCustomExport) Then
-                jFile.AddArgument "heatingTemp", dd60.List(dd60.Value)
-                jFile.AddArgument "coolingTemp", dd86.List(dd86.Value)
-                jFile.AddArgument "is_custom_heating", IIf(dd60.Value > 3, "true", "false")  ' da bisher nur drei feste Profile zur Auswahl stehen
-                jFile.AddArgument "is_custom_cooling", IIf(dd86.Value > 3, "true", "false")
-            End If
-' _  DEBUGGING
-' _  SCHED durch SCHEDULE ersetzt, da beim 'ImportSchedule' abgefragt wird: scheduleName = "hvac" und entsprechend SCHEDULE und nicht SCHED zurück gegeben wird...
-'            jFile.AddSchedule "zoneHeatingTempSched", Range("HeatingWD")
-'            jFile.AddSchedule "zoneCoolingTempSched", Range("CoolingWD")
-            jFile.AddSchedule "zoneHeatingTempSchedule", Range("HeatingWD")
-            jFile.AddSchedule "zoneCoolingTempSchedule", Range("CoolingWD")
-            jFile.AddHolidays "Holidays", Range("Feiertage")
-            jFile.AddMeasure "AddingTemperatureSetpoints"
-            Range("TempSetpoint") = "Definiert"
-        End If
-
-    End If 'Not bBuildingSim
-
-    '''''''''''''''' Calling Photovoltaic Measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    If Not bPVSim Then
-        Range("Photovoltaic") = "Deaktiviert"
     Else
-        Range("Photovoltaic") = "Start ..."
-
-        If Range("azimuth") + dd2.List(dd2.Value) < 0 Then
-            jFile.AddArgument "Azimuth", Range("azimuth") + dd2.List(dd2.Value) + 360
-        Else
-            jFile.AddArgument "Azimuth", Range("azimuth") + dd2.List(dd2.Value)
-        End If
-        jFile.AddArgument "Slope", Range("slope")
-        jFile.AddArgument "CellEfficiency", Range("eff_PV")
-        jFile.AddArgument "InverterEfficiency", Range("eff_sys_PV")
-        jFile.AddArgument "FractionActiveSurfaceArea", 1
-        jFile.AddMeasure "AddingPhotovoltaic"
-        Range("Photovoltaic") = "Definiert"
+        Range("GeomStatus") = "Deaktiviert"
     End If
+    DoEvents
 
-    ' save in the resulting OSM for debugging with the SaveToModel measure
-    jFile.AddArgument "pathtosave", GetOutputFolder()
-    jFile.AddArgument "FileName", Range("FileName")
-    jFile.AddMeasure "SaveModel"
+    Range("UStatus") = "Start ..."
+    Call ExportAddMaterialsAndConstruction(jFile)
+    Range("UStatus") = "Definiert"
+    DoEvents
 
-    '''''''''''''''' Calling IDF window ventilation measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    If Not bGeneric Then Call ExportAddThermalZones(jFile)
+    Call ExportDetectExternalZones(jFile)
 
-    If Not bBuildingSim Or Not cb_windowvent.Value = 1 Then
+    Range("LoadStatus") = "Start ..."
+    Call ExportAddInternalLoads(jFile, bGeneric, nrf_bgf)
+    Range("LoadStatus") = "Definiert"
+    DoEvents
+
+    Range("IdealLoads") = "Start ..."
+    If bDetailedHVAC Then
+        Call ExportAddDetailedHVAC(jFile, nrf_bgf, FloorHeight_Ratio)
+    Else
+        Call ExportAddIdealLoads(jFile, nrf_bgf, FloorHeight_Ratio)
+    End If
+    Range("IdealLoads") = "Definiert"
+    DoEvents
+
+    If Not cb_shadingcontrol.Value = 1 Then
+        Range("ShadingControl") = "Deaktiviert"
+    Else
+        Range("ShadingControl") = "Start ..."
+        Call ExportAddShadingControls(jFile)
+        Range("ShadingControl") = "Definiert"
+    End If
+    DoEvents
+
+    If Not cb_inf.Value = 1 Then
+        Range("Infiltration") = "Deaktiviert"
+    Else
+        Range("Infiltration") = "Start ..."
+        Call ExportAddInfiltration(jFile, nrf_bgf, FloorHeight_Ratio)
+        Range("Infiltration") = "Definiert"
+    End If
+    DoEvents
+
+    If Not cb_lightingcontrol.Value = 1 Then
+        Range("LightingControl") = "Deaktiviert"
+    Else
+        Range("LightingControl") = "Start ..."
+        Call ExportAddLightingControls(jFile)
+        Range("LightingControl") = "Definiert"
+    End If
+    DoEvents
+
+    Range("TempSetpoint") = "Start ..."
+    Call ExportAddTemperatureSetpoints(jFile)
+    Range("TempSetpoint") = "Definiert"
+    DoEvents
+
+    Call ExportSaveModel(jFile)
+
+    If Not cb_windowvent.Value = 1 Then
         Range("window_ventilation") = "Deaktiviert"
     Else
         Range("window_ventilation") = "Start ..."
-        jFile.AddArgument "VentilationACH", Range("windowvent_ach")
-        jFile.AddArgument "MinIndoorTemperature", Range("windowvent_temp")
-        jFile.AddArgument "DeltaT", Range("windowvent_dt")
-        jFile.AddMeasure "InjectZoneVentilationIDF"
+        Call ExportInjectZoneVentilationIDF(jFile)
         Range("window_ventilation") = "Definiert"
     End If
+    DoEvents
 
-    '''''''''''''''' Calling IDF Ideal loads Measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    Range("IDFIdealLoads") = "Start ..."
+    Call ExportInjectIdealLoadParametersIDF(jFile, nrf_bgf, FloorHeight_Ratio)
+    Range("IDFIdealLoads") = "Definiert"
+    DoEvents
 
-    If Not bBuildingSim Then
-        Range("IDFIdealLoads") = "Deaktiviert"
-    Else
-        Range("IDFIdealLoads") = "Start ..."
-
-        jFile.AddArgument "HeatRecoveryType", Range("WRG")
-        jFile.AddArgument "SensibleEffectiveness", Range("SENSIBLE")
-        jFile.AddArgument "LatentEffectiveness", Range("LATENT")
-        jFile.AddArgument "ACH", Range("ACH") * FloorHeight_Ratio * nrf_bgf 'Bugfix 01/22 : Korrektur kond. Raumhöhe sowie Korrektur NRF/BGF
-        jFile.AddMeasure "InjectIdealLoadParametersIDF"
-        Range("IDFIdealLoads") = "Definiert"
-        ' update the progress messages
-        DoEvents
-    End If
-    
-    '''''''''''''''' Calling IDF Radiant Surface Measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    If Not bBuildingSim Then
-        'Range("IDFIdealLoads") = "Deaktiviert"
-    Else
-        If bDetailedHVAC Then
-        'Range("IDFIdealLoads") = "Start ..."
-
-        jFile.AddMeasure "InjectRadiantSurfacesIDF"
-        'Range("IDFIdealLoads") = "Definiert"
-
-        ' update the progress messages
-        DoEvents
-        End If
+    If bDetailedHVAC Then
+        Call ExportInjectRadiantSurfacesIDF(jFile)
     End If
 
-    '''''''''''''''' Calling IDF InjectHolidays Measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    Call ExportInjectHolidaysIDF(jFile)
+    Call ExportSetMetersIDF(jFile, NrOfTimesteps)
 
-    feiertage_active = 0
-    For r = 1 To 5
-        feiertage_active = feiertage_active + Range("Feiertage").Offset(r - 1, 0) + Range("Feiertage").Offset(r - 1, 1)
-    Next
-
-    If feiertage_active > 0 Then
-        jFile.AddHolidays "Holidays", Range("Feiertage")
-        jFile.AddMeasure "InjectHolidays"
-    End If
-
-    '''''''''''''''' Calling IDF Set Meters Measure
-    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    jFile.AddArgument "Timestep", Timestep_s
-    jFile.AddArgument "DayToStartSimulation", Range("DayToStartSimulation")
-    jFile.AddArgument "HeatingSizingFactor", Range("HeatingSizingFactor")
-    jFile.AddArgument "CoolingSizingFactor", Range("CoolingSizingFactor")
-    jFile.AddMeasure "SetMeters"
-
-    ' save the JSON file
     jFile.Save sFilename
 End Sub
 
@@ -610,16 +681,12 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
     Dim wrgVal As String
 
     Select Case item("measure_dir_name")
-        Case "CustomExportParams":
-            Dim cb_buildingSim As CheckBox
-            Set cb_buildingSim = Sheets("HAUPTSEITE").CheckBoxes("checkbox_buildingsim")
-            Dim cb_pvSim As CheckBox
-            Set cb_pvSim = Sheets("HAUPTSEITE").CheckBoxes("checkbox_pvsim")
+        Case "custom_export_params":
             Dim cb_zoneDetails As CheckBox
             Set cb_zoneDetails = Sheets("Parameter").CheckBoxes("checkbox_ZoneDetails")
             Dim cb_detailedHVAC As CheckBox
             Set cb_detailedHVAC = Sheets("Parameter").CheckBoxes("checkbox_hvac")
-            
+
             Dim cb_shadingcontrol As CheckBox
             Set cb_shadingcontrol = Sheets("HAUPTSEITE").CheckBoxes("checkbox_shadingcontrol")
             Dim cb_inf As CheckBox
@@ -628,50 +695,42 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             Set cb_lightingcontrol = Sheets("HAUPTSEITE").CheckBoxes("checkbox lightingcontrol")
             Dim cb_windowvent As CheckBox
             Set cb_windowvent = Sheets("HAUPTSEITE").CheckBoxes("Checkbox_windowvent")
-                
+
             Dim dd_lueftung As DropDown 'Lüftungsanlage Typ
             Set dd_lueftung = Sheets("HAUPTSEITE").DropDowns("dd_lueftung")
-            
+
             'Parameter Modell
-            If args.Exists("buildingSim") Then cb_buildingSim.Value = args("buildingSim")
-            If args.Exists("pvSim") Then cb_pvSim.Value = args("pvSim")
-            If args.Exists("zoneDetails") Then cb_zoneDetails.Value = args("zoneDetails")
-            If args.Exists("detailedHVAC") Then cb_detailedHVAC.Value = args("detailedHVAC")
-            If args.Exists("ventilation_type") Then dd_lueftung.Value = args("ventilation_type")
+            If args.Exists("include_zone_details") Then cb_zoneDetails.Value = GetArgument(args, "include_zone_details")
+            If args.Exists("include_detailed_hvac") Then cb_detailedHVAC.Value = GetArgument(args, "include_detailed_hvac")
+            If args.Exists("ventilation_type") Then dd_lueftung.Value = GetArgument(args, "ventilation_type")
             Call dropdown_Lueftung
-            
-            'Parameter Geometrie, die nicht für Modellerzeugung benötigt werden
-            If args.Exists("floor_length") Then Range("LAENGE") = args("floor_length")
-            If args.Exists("floor_width") Then Range("BREITE") = args("floor_width")
-            If args.Exists("NRF_BGF") Then Range("BGF_zu_NRF") = args("NRF_BGF")
-            If args.Exists("ratio_NRF_BGF") Then DDFindAndSetValue ddRatio1, args("ratio_NRF_BGF")  'dd oben deklariert
-            Call DropDown_BGF_NRF_Generisch
-            
+
             'Lüftungsanlage
-            If args.Exists("vorlauf_Luft") Then Range("Vorlauf_Lüftung") = args("vorlauf_Luft")
-            If args.Exists("nachlauf_Luft") Then Range("Nachlauf_Lüftung") = args("nachlauf_Luft")
-            
+            If args.Exists("ventilation_lead_time") Then Range("Vorlauf_Lüftung") = GetArgument(args, "ventilation_lead_time")
+            If args.Exists("ventilation_follow_up_time") Then Range("Nachlauf_Lüftung") = GetArgument(args, "ventilation_follow_up_time")
+
             'Weiteres
-            If args.Exists("Shadingcontrol") Then cb_shadingcontrol.Value = args("Shadingcontrol")
-            If args.Exists("Infiltration") Then cb_inf.Value = args("Infiltration")
-            If args.Exists("Lightingcontrol") Then cb_lightingcontrol.Value = args("Lightingcontrol")
-            If args.Exists("Windowvent") Then cb_windowvent.Value = args("Windowvent")
-            
+            If args.Exists("include_shading_control") Then cb_shadingcontrol.Value = GetArgument(args, "include_shading_control")
+            If args.Exists("include_infiltration") Then cb_inf.Value = GetArgument(args, "include_infiltration")
+            If args.Exists("include_lighting_control") Then cb_lightingcontrol.Value = GetArgument(args, "include_lighting_control")
+            If args.Exists("include_window_ventilation") Then cb_windowvent.Value = GetArgument(args, "include_window_ventilation")
+
             'Geometrie Generisch/Importiert
-            If args.Exists("genGeom") Then Range("geometry_source") = args("genGeom")
+            If args.Exists("generate_geometry_selection") Then Range("geometry_source") = GetArgument(args, "generate_geometry_selection")
             Call label_geom
 
             'Nutzung - Feiertage
             Dim datum() As String
             Dim iEntry  As Integer
             iEntry = 0
-            
+
             'Lüftung
-             If args.Exists("FloorHeight_kond") Then Range("FloorHeight_kond") = args("FloorHeight_kond")
-             If args.Exists("FloorHeight_import") Then Range("FloorHeight_import") = args("FloorHeight_import")
-             If args.Exists("ACH_Input_Parameter") Then Range("ACH") = args("ACH_Input_Parameter") 'hier wird durch unveränderte Eingabeparameter zurückgeschrieben (ohne Berücksichtigung FloorHeightRation und NRF/BGF)
-            If args.Exists("Holidays") Then
-                datum = Split(args("Holidays"), ";")
+            If args.Exists("conditioned_floor_height") Then Range("FloorHeight_kond") = GetArgument(args, "conditioned_floor_height")
+            If args.Exists("imported_floor_height") Then Range("FloorHeight_import") = GetArgument(args, "imported_floor_height")
+            'hier wird durch unveränderte Eingabeparameter zurückgeschrieben (ohne Berücksichtigung FloorHeightRation und NRF/BGF)
+            If args.Exists("air_changes_input") Then Range("ACH") = GetArgument(args, "air_changes_input")
+            If args.Exists("holidays") Then
+                datum = Split(GetArgument(args, "holidays", True), ";")
                 DatesCount = UBound(datum())
 
                 Do While iEntry <= (DatesCount / 2 - 1)
@@ -680,242 +739,232 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
                     iEntry = iEntry + 1
                 Loop
             End If
-            
-        Case "SetWeatherAxisTimestep":
-            If args.Exists("WeatherFilePath") Then
+
+        Case "set_weather_axis_timestep":
+            If args.Exists("weather_file_path") Then
                 Dim parts() As String
-                parts = Split(args("WeatherFilePath"), "\")
+                parts = Split(args("weather_file_path"), "\")
                 If parts(UBound(parts)) <> "" Then
                     Dim dd1 As DropDown: Set dd1 = Sheets("HAUPTSEITE").DropDowns("DropDown1")
                     DDFindAndSetValue dd1, parts(UBound(parts))
                 End If
             End If
 
-            If args.Exists("NorthAxis") Then
-                DDFindAndSetValue dd2, args("NorthAxis")
+            If args.Exists("north_axis") Then
+                DDFindAndSetValue dd2, GetArgument(args, "north_axis")
             End If
 
-            If args.Exists("Timestep") Then
+            If args.Exists("time_step") Then
                 Dim dd_timestep As DropDown
                 Set dd_timestep = Sheets("Hauptseite").DropDowns("dropdown_timestep")
-                dd_timestep.Value = IIf(args("Timestep") = 4, 1, 2)
+                dd_timestep.Value = IIf(GetArgument(args, "time_step") = 4, 1, 2)
             End If
 
-        Case "BarAspectRatioStudy":
+        Case "add_geometry":
             Dim dd42 As DropDown: Set dd42 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_n")
             Dim dd43 As DropDown: Set dd43 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_o")
             Dim dd44 As DropDown: Set dd44 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_s")
             Dim dd45 As DropDown: Set dd45 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_w")
             Dim dd46 As DropDown: Set dd46 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_d")
             Dim dd47 As DropDown: Set dd47 = Sheets("HAUPTSEITE").DropDowns("dropdown_adiabat_b")
-           ' Dim ddRatio1 As DropDown: Set ddRatio1 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF")         ' oben deklariert, sonst doppelt
 
-            If args.Exists("number_of_stories") Then Range("NoFloors") = args("number_of_stories")
-            If args.Exists("floor_to_floor_height") Then Range("FloorHeight") = args("floor_to_floor_height")
-            If args.Exists("window_to_wall_ratio_north") Then Range("WWRN") = args("window_to_wall_ratio_north")
-            If args.Exists("window_to_wall_ratio_east") Then Range("WWRO") = args("window_to_wall_ratio_east")
-            If args.Exists("window_to_wall_ratio_south") Then Range("WWRS") = args("window_to_wall_ratio_south")
-            If args.Exists("window_to_wall_ratio_west") Then Range("WWRW") = args("window_to_wall_ratio_west")
+            If args.Exists("building_length") Then Range("LAENGE") = GetArgument(args, "building_length")
+            If args.Exists("building_width") Then Range("BREITE") = GetArgument(args, "building_width")
+            If args.Exists("number_of_stories") Then Range("NoFloors") = GetArgument(args, "number_of_stories")
+            If args.Exists("floor_to_floor_height") Then Range("FloorHeight") = GetArgument(args, "floor_to_floor_height")
+            If args.Exists("window_to_wall_ratio_north") Then Range("WWRN") = GetArgument(args, "window_to_wall_ratio_north")
+            If args.Exists("window_to_wall_ratio_east") Then Range("WWRO") = GetArgument(args, "window_to_wall_ratio_east")
+            If args.Exists("window_to_wall_ratio_south") Then Range("WWRS") = GetArgument(args, "window_to_wall_ratio_south")
+            If args.Exists("window_to_wall_ratio_west") Then Range("WWRW") = GetArgument(args, "window_to_wall_ratio_west")
 
-            If args.Exists("AdiabaticNorth") Then DDFindAndSetValue dd42, IIf(args("AdiabaticNorth") = "true", "Ja", "Nein")
-            If args.Exists("AdiabaticEast") Then DDFindAndSetValue dd43, IIf(args("AdiabaticEast") = "true", "Ja", "Nein")
-            If args.Exists("AdiabaticSouth") Then DDFindAndSetValue dd44, IIf(args("AdiabaticSouth") = "true", "Ja", "Nein")
-            If args.Exists("AdiabaticWest") Then DDFindAndSetValue dd45, IIf(args("AdiabaticWest") = "true", "Ja", "Nein")
-            If args.Exists("AdiabaticRoof") Then DDFindAndSetValue dd46, IIf(args("AdiabaticRoof") = "true", "Ja", "Nein")
-            If args.Exists("AdiabaticFloor") Then DDFindAndSetValue dd47, IIf(args("AdiabaticFloor") = "true", "Ja", "Nein")
+            If args.Exists("adiabatic_north") Then DDFindAndSetValue dd42, GetArgument(args, "adiabatic_north")
+            If args.Exists("adiabatic_east") Then DDFindAndSetValue dd43, GetArgument(args, "adiabatic_east")
+            If args.Exists("adiabatic_south") Then DDFindAndSetValue dd44, GetArgument(args, "adiabatic_south")
+            If args.Exists("adiabatic_west") Then DDFindAndSetValue dd45, GetArgument(args, "adiabatic_west")
+            If args.Exists("adiabatic_roof") Then DDFindAndSetValue dd46, GetArgument(args, "adiabatic_roof")
+            If args.Exists("adiabatic_floor") Then DDFindAndSetValue dd47, GetArgument(args, "adiabatic_floor")
 
-            If args.Exists("perimeterdepth") Then Range("PerimeterDepth") = args("perimeterdepth")
+            If args.Exists("perimeter_depth") Then Range("PerimeterDepth") = GetArgument(args, "perimeter_depth")
 
-        Case "AddingMaterialsAndConstructions":
+        Case "add_materials_and_construction":
             Dim dd21 As DropDown: Set dd21 = Sheets("HAUPTSEITE").DropDowns("Dropdown21")
             Dim dd22 As DropDown: Set dd22 = Sheets("HAUPTSEITE").DropDowns("Dropdown22")
 
-            If args.Exists("is_custom_standard") And args.Exists("selected_standard") Then
-
-                If args("is_custom_standard") = "true" Then
+            If args.Exists("is_custom_standard") And args.Exists("construction_standard_selection") Then
+                If GetArgument(args, "is_custom_standard") = "Ja" Then
                     Dim i, j, k As Integer
                     Dim nrOfLayers As Integer: nrOfLayers = 4
-                    Dim names(1 To 4) As String: names(1) = "ExternalWallMat": names(2) = "RoofMat"
-                        names(3) = "SlabMat": names(4) = "InteriorSlabs"
-                    Dim attrs(1 To 5) As String: attrs(1) = "Name": attrs(2) = "Thickness"
-                        attrs(3) = "Conductivity": attrs(4) = "Density": attrs(5) = "SpecificHeat"
+                    Dim names(1 To 4) As String: names(1) = "external_wall": names(2) = "roof"
+                        names(3) = "base_plate": names(4) = "interior_slab"
+                    Dim attrs(1 To 5) As String: attrs(1) = "name": attrs(2) = "thickness"
+                        attrs(3) = "conductivity": attrs(4) = "density": attrs(5) = "heat_capacity"
                     Dim rangeAttrs As Variant: rangeAttrs = Sheets("EIGENE BAUTEILE").Range("C8:V11")
                     Dim rangeWindows As Variant: rangeWindows = Sheets("EIGENE BAUTEILE").Range("B13:D13")
 
                     For idx_name = 1 To UBound(names)
                         For idx_layer = 1 To nrOfLayers
                             For idx_attr = 1 To UBound(attrs)
-                                'And Not Abfrage ergänzt
-                                '       - Wenn kein Bauteil Name eingetragen ist, dann sollen die Nullen der folgenden 'attrs'
-                                '       (Thickness, Conductivity, Density, SpecificHeat)
-                                '       nicht geschrieben, sondern übersprungen werden ...
-                                If args.Exists(names(idx_name) & idx_layer & attrs(idx_attr)) And Not args(names(idx_name) & idx_layer & attrs(1)) = "" Then
+                                ' Wenn kein Bauteil Name eingetragen ist, dann sollen die Nullen der folgenden 'attrs'
+                                ' (Thickness, Conductivity, Density, SpecificHeat)
+                                ' nicht geschrieben, sondern übersprungen werden ...
+                                If args.Exists(names(idx_name) & "_" & idx_layer & "_" & attrs(idx_attr)) _
+                                    And Not GetArgument(args, names(idx_name) & "_" & idx_layer & "_" & attrs(1)) = "" _
+                                Then
                                     rangeAttrs(idx_name, (idx_layer - 1) * UBound(attrs) + idx_attr) = _
-                                        args(names(idx_name) & idx_layer & attrs(idx_attr))
+                                        GetArgument(args, names(idx_name) & "_" & idx_layer & "_" & attrs(idx_attr))
                                 End If
                             Next
                         Next
                     Next
 
-                    If args.Exists("WindowsUValue") Then rangeWindows(1, 1) = args("WindowsUValue")
-                    If args.Exists("WindowsName") Then rangeWindows(1, 2) = args("WindowsName")
-                    If args.Exists("WindowsSHGC") Then rangeWindows(1, 3) = args("WindowsSHGC")
+                    If args.Exists("windows_u_value") Then rangeWindows(1, 1) = GetArgument(args, "windows_u_value")
+                    If args.Exists("windows_name") Then rangeWindows(1, 2) = GetArgument(args, "windows_name")
+                    If args.Exists("windows_shgc") Then rangeWindows(1, 3) = GetArgument(args, "windows_shgc")
 
-                    Sheets("EIGENE BAUTEILE").Range("B6") = args("selected_standard")
+                    Sheets("EIGENE BAUTEILE").Range("B6") = GetArgument(args, "construction_standard_selection")
                     Sheets("EIGENE BAUTEILE").Range("C8:V11") = rangeAttrs
                     Sheets("EIGENE BAUTEILE").Range("B13:D13") = rangeWindows
 
                 End If
             End If
 
-            If args.Exists("selected_standard") Then DDFindAndSetValue dd21, args("selected_standard")
-            If args.Exists("selected_masses") Then DDFindAndSetValue dd22, args("selected_masses")
+            If args.Exists("construction_standard_selection") Then DDFindAndSetValue dd21, GetArgument(args, "construction_standard_selection")
+            If args.Exists("inner_masses_selection") Then DDFindAndSetValue dd22, GetArgument(args, "inner_masses_selection")
 
-        Case "AddingInternalLoads":
-            If args.Exists("NRF/BGF") And args.Exists("ElectricEquipmentPowerPerFloorArea") Then
-                Range("Electric") = val(args("ElectricEquipmentPowerPerFloorArea")) / val(args("NRF/BGF"))
+        Case "add_internal_loads":
+            If args.Exists("electric_equipment_power_per_floor_area") Then
+                Range("Electric") = GetArgument(args, "electric_equipment_power_per_floor_area")
             End If
-            If args.Exists("NRF/BGF") And args.Exists("LightingPowerPerFloorArea") Then
-                Range("Lights") = val(args("LightingPowerPerFloorArea")) / val(args("NRF/BGF"))
+            If args.Exists("lighting_power_per_floor_area") Then
+                Range("Lights") = GetArgument(args, "lighting_power_per_floor_area")
             End If
-            If args.Exists("NRF/BGF") And args.Exists("PeoplePerFloorArea") Then
-                Range("People") = 1# / (val(args("PeoplePerFloorArea")) / val(args("NRF/BGF")))
+            If args.Exists("floor_area_per_person") Then
+                Range("People") = GetArgument(args, "floor_area_per_person")
             End If
 
-            If args.Exists("is_imported") And args.Exists("is_custom_ratio") Then
-    '            Dim ddRatio1 As DropDown: Set ddRatio1 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF")            'auskommentiert, wegen doppelter Deklaration
+            If args.Exists("is_imported_model") And args.Exists("is_custom_ratio") Then
                 Dim ddRatio2 As DropDown: Set ddRatio2 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF_Import")
 
-                If args("is_imported") = "true" Then
-                    If args.Exists("selected_ratio") Then DDFindAndSetValue ddRatio2, args("selected_ratio")
+                If GetArgument(args, "is_imported_model") = "Ja" Then
+                    If args.Exists("nfa_gfa_ratio_selection") Then DDFindAndSetValue ddRatio2, GetArgument(args, "nfa_gfa_ratio_selection")
                     Call DropDown_BGF_NRF_Geometrie_Import
-                    If args("is_custom_ratio") = "true" Then Range("BGF_zu_NRF_import") = args("NRF/BGF")
-                    If args.Exists("area_bgf_import") Then Range("BldgArea_import") = args("area_bgf_import")
+                    If GetArgument(args, "is_custom_ratio") = "Ja" Then Range("BGF_zu_NRF_import") = GetArgument(args, "nfa_gfa_ratio")
+                    If args.Exists("area_gfa_import") Then Range("BldgArea_import") = GetArgument(args, "area_gfa_import")
                 Else
-                    If args.Exists("selected_ratio") Then DDFindAndSetValue ddRatio1, args("selected_ratio")
-                    If args("is_custom_ratio") = "true" Then Range("BGF_zu_NRF") = args("NRF/BGF")
+                    If args.Exists("nfa_gfa_ratio_selection") Then DDFindAndSetValue ddRatio1, GetArgument(args, "nfa_gfa_ratio_selection")
+                    Call DropDown_BGF_NRF_Generisch
+                    If GetArgument(args, "is_custom_ratio") = "Ja" Then Range("BGF_zu_NRF") = GetArgument(args, "nfa_gfa_ratio")
                 End If
             End If
-            
-            If args.Exists("ElectricEquipmentSchedule") And args.Exists("is_custom_ElectricEquipment") Then _
-                ImportSchedule args, "ElectricEquipment", "B10:B105", "B8"
-            If args.Exists("LightSchedule") And args.Exists("is_custom_Light") Then _
-                ImportSchedule args, "Light", "J10:J105", "J8"
-            If args.Exists("PeopleSchedule") And args.Exists("is_custom_People") Then _
-                ImportSchedule args, "People", "R10:R105", "R8"
-            If args.Exists("PeopleActivitySchedule") And args.Exists("is_custom_PeopleActivity") Then _
-                ImportSchedule args, "PeopleActivity", "Z10:Z105", "Z8"
 
-            If args.Exists("ElectricEquipmentSchedule") Then
+            If args.Exists("electric_equipment_sched_selection") And args.Exists("is_custom_electric_equipment") Then _
+                ImportSchedule args, "electric_equipment", "B10:B105", "B8"
+            If args.Exists("lighting_sched_selection") And args.Exists("is_custom_lighting") Then _
+                ImportSchedule args, "lighting", "J10:J105", "J8"
+            If args.Exists("people_sched_selection") And args.Exists("is_custom_people") Then _
+                ImportSchedule args, "people", "R10:R105", "R8"
+            If args.Exists("people_activity_sched_selection") And args.Exists("is_custom_people_activity") Then _
+                ImportSchedule args, "people_activity", "Z10:Z105", "Z8"
+
+            DoEvents
+
+            If args.Exists("electric_equipment_sched_selection") Then
                 Dim dd23 As DropDown: Set dd23 = Sheets("HAUPTSEITE").DropDowns("Dropdown23")
-                DDFindAndSetValue dd23, args("ElectricEquipmentSchedule")
+                DDFindAndSetValue dd23, GetArgument(args, "electric_equipment_sched_selection")
             End If
-            If args.Exists("LightSchedule") Then
+            If args.Exists("lighting_sched_selection") Then
                 Dim dd49 As DropDown: Set dd49 = Sheets("HAUPTSEITE").DropDowns("Dropdown49")
-                DDFindAndSetValue dd49, args("LightSchedule")
+                DDFindAndSetValue dd49, GetArgument(args, "lighting_sched_selection")
             End If
-            If args.Exists("PeopleSchedule") Then
+            If args.Exists("people_sched_selection") Then
                 Dim dd50 As DropDown: Set dd50 = Sheets("HAUPTSEITE").DropDowns("Dropdown50")
-                DDFindAndSetValue dd50, args("PeopleSchedule")
+                DDFindAndSetValue dd50, GetArgument(args, "people_sched_selection")
             End If
-            If args.Exists("PeopleActivitySchedule") Then
+            If args.Exists("people_activity_sched_selection") Then
                 Dim dd51 As DropDown: Set dd51 = Sheets("HAUPTSEITE").DropDowns("Dropdown51")
-                DDFindAndSetValue dd51, args("PeopleActivitySchedule")
+                DDFindAndSetValue dd51, GetArgument(args, "people_activity_sched_selection")
             End If
 
-        Case "AddingIdealAirLoads":
-            'Dim dd33 As DropDown: Set dd33 = Sheets("HAUPTSEITE").DropDowns("Dropdown33")
-            'Dim dd55 As DropDown: Set dd55 = Sheets("HAUPTSEITE").DropDowns("Dropdown55")
-    
-            If args.Exists("wrg") Then
-            '    Dim wrgVal As String
-                wrgVal = IIf(args("wrg") = "None", "Keine", IIf(args("wrg") = "Sensible", "Sensibel", "Latent"))
+        Case "add_ideal_loads":
+            If args.Exists("heat_recovery_method") Then
+                wrgVal = IIf(GetArgument(args, "heat_recovery_method") = "None", "Keine", IIf(GetArgument(args, "heat_recovery_method") = "Sensible", "Sensibel", "Latent"))
                 DDFindAndSetValue dd33, wrgVal
             End If
 
-            If args.Exists("hvacSchedule") And args.Exists("is_custom_hvac") Then _
+            If args.Exists("hvac_sched_selection") And args.Exists("is_custom_hvac") Then _
                 ImportSchedule args, "hvac", "AH10:AH105", "AH8"
 
-            If args.Exists("hvacSchedule") Then
-                DDFindAndSetValue dd55, args("hvacSchedule")
-            End If
-            
-            If args.Exists("latent") Then Range("LATENT") = args("latent")
-            If args.Exists("sensible") Then Range("SENSIBLE") = args("sensible")
-        
-        Case "AddDetailedHVAC":                                                                 'Doppelpunkt hat gefehlt?!
-            'Dim dd33 As DropDown: Set dd33 = Sheets("HAUPTSEITE").DropDowns("Dropdown33")
-            'Dim dd55 As DropDown: Set dd55 = Sheets("HAUPTSEITE").DropDowns("Dropdown55")
+            DoEvents
 
-            If args.Exists("wrg") Then
-            '    Dim wrgVal As String
-                wrgVal = IIf(args("wrg") = "None", "Keine", IIf(args("wrg") = "Sensible", "Sensibel", "Latent"))
+            If args.Exists("hvac_sched_selection") Then
+                DDFindAndSetValue dd55, GetArgument(args, "hvac_sched_selection")
+            End If
+
+            If args.Exists("latent_efficiency") Then Range("LATENT") = GetArgument(args, "latent_efficiency")
+            If args.Exists("sensible_efficiency") Then Range("SENSIBLE") = GetArgument(args, "sensible_efficiency")
+
+        Case "add_detailed_hvac":
+            If args.Exists("heat_recovery_method") Then
+                wrgVal = IIf(GetArgument(args, "heat_recovery_method") = "None", "Keine", IIf(GetArgument(args, "heat_recovery_method") = "Sensible", "Sensibel", "Latent"))
                 DDFindAndSetValue dd33, wrgVal
             End If
 
-            If args.Exists("hvacSchedule") And args.Exists("is_custom_hvac") Then _
+            If args.Exists("hvac_sched_selection") And args.Exists("is_custom_hvac") Then _
                 ImportSchedule args, "hvac", "AH10:AH105", "AH8"
 
-            If args.Exists("hvacSchedule") Then
-                DDFindAndSetValue dd55, args("hvacSchedule")
+            DoEvents
+
+            If args.Exists("hvac_sched_selection") Then
+                DDFindAndSetValue dd55, GetArgument(args, "hvac_sched_selection")
             End If
-        
-            If args.Exists("latent") Then Range("LATENT") = args("latent")
-            If args.Exists("sensible") Then Range("SENSIBLE") = args("sensible")
 
-        Case "AddingShadingControls":
-            If args.Exists("SolarSetpoint") Then Range("SHCO_IRR") = args("SolarSetpoint")
+            If args.Exists("latent_efficiency") Then Range("LATENT") = GetArgument(args, "latent_efficiency")
+            If args.Exists("sensible_efficiency") Then Range("SENSIBLE") = GetArgument(args, "sensible_efficiency")
 
-        Case "AddingInfiltration":
-            If args.Exists("AirChangesPerHour") Then Range("INFIL") = args("AirChangesPerHour")
+        Case "add_shading_controls":
+            If args.Exists("solar_setpoint") Then Range("SHCO_IRR") = GetArgument(args, "solar_setpoint")
 
-        Case "AddingLightingControls":
-            If args.Exists("DaylightingSetpoint") Then Range("LC_LUX") = args("DaylightingSetpoint")
+        Case "add_infiltration":
+            If args.Exists("air_changes") Then Range("INFIL") = GetArgument(args, "air_changes")
 
-        Case "AddingTemperatureSetpoints":
-            If args.Exists("heatingTemp") And args.Exists("is_custom_heating") Then _
-                ImportSchedule args, "zoneHeatingTemp", "AP10:AP105", "AP8"
-            If args.Exists("coolingTemp") And args.Exists("is_custom_cooling") Then _
-                ImportSchedule args, "zoneCoolingTemp", "AX10:AX105", "AX8"
+        Case "add_lighting_controls":
+            If args.Exists("daylighting_setpoint") Then Range("LC_LUX") = GetArgument(args, "daylighting_setpoint")
 
-            If args.Exists("heatingTemp") Then
-                Sheets("EIGENE NUTZUNGSPROFILE").Range("AP8") = args("heatingTemp")  ' NEU
+        Case "add_temperature_setpoints":
+            If args.Exists("heating_temp_selection") And args.Exists("is_custom_heating") Then _
+                ImportSchedule args, "zone_heating_temp", "AP10:AP105", "AP8"
+            If args.Exists("cooling_temp_selection") And args.Exists("is_custom_cooling") Then _
+                ImportSchedule args, "zone_cooling_temp", "AX10:AX105", "AX8"
+
+            DoEvents
+
+            If args.Exists("heating_temp_selection") Then
+                Sheets("EIGENE NUTZUNGSPROFILE").Range("AP8") = GetArgument(args, "heating_temp_selection")
                 Dim dd60 As DropDown: Set dd60 = Sheets("HAUPTSEITE").DropDowns("Dropdown60")
-                DDFindAndSetValue dd60, args("heatingTemp")
+                DDFindAndSetValue dd60, GetArgument(args, "heating_temp_selection")
             End If
-            If args.Exists("coolingTemp") Then
-                Sheets("EIGENE NUTZUNGSPROFILE").Range("AX8") = args("coolingTemp")  'NEU
+            If args.Exists("cooling_temp_selection") Then
+                Sheets("EIGENE NUTZUNGSPROFILE").Range("AX8") = GetArgument(args, "cooling_temp_selection")
                 Dim dd86 As DropDown: Set dd86 = Sheets("HAUPTSEITE").DropDowns("Dropdown86")
-                DDFindAndSetValue dd86, args("coolingTemp")
+                DDFindAndSetValue dd86, GetArgument(args, "cooling_temp_selection")
             End If
 
-            If args.Exists("HeatingTemperatureSetpoint") Then Range("HeatingSetpTemp") = args("HeatingTemperatureSetpoint") ' WOZU GEHÖRT DIESE RANGE ???
-            If args.Exists("CoolingTemperatureSetpoint") Then Range("CoolingSetTemp") = args("CoolingTemperatureSetpoint")
+        Case "save_model":
+            If args.Exists("file_name") Then Range("FileName") = GetArgument(args, "file_name")
 
-        Case "AddingPhotovoltaic":
-            If args.Exists("Azimuth") Then Range("azimuth") = args("Azimuth") - dd2.List(dd2.Value)
+        Case "inject_zone_ventilation_idf":
+            If args.Exists("air_changes") Then Range("windowvent_ach") = GetArgument(args, "air_changes")
+            If args.Exists("min_indoor_temperature") Then Range("windowvent_temp") = GetArgument(args, "min_indoor_temperature")
+            If args.Exists("temperature_difference") Then Range("windowvent_dt") = GetArgument(args, "temperature_difference")
 
-            If args.Exists("Slope") Then Range("slope") = args("Slope")
-            If args.Exists("CellEfficiency") Then Range("eff_PV") = args("CellEfficiency")
-            If args.Exists("InverterEfficiency") Then Range("eff_sys_PV") = args("InverterEfficiency")
-
-        Case "SaveModel":
-            If args.Exists("FileName") Then Range("FileName") = args("FileName")
-
-        Case "InjectZoneVentilationIDF":
-
-            If args.Exists("VentilationACH") Then Range("windowvent_ach") = args("VentilationACH")
-            If args.Exists("MinIndoorTemperature") Then Range("windowvent_temp") = args("MinIndoorTemperature")
-            If args.Exists("DeltaT") Then Range("windowvent_dt") = args("DeltaT")
-
-        Case "InjectIdealLoadParametersIDF":
+        Case "inject_ideal_load_parameters_idf":
             'Already handled in AddingIdealAirLoads
 
-        Case "InjectHolidays":
+        Case "inject_holidays_idf":
             'Holidays igored for now
             '@TODO Add import when holiday functionality is implemented
 
-        Case "SetMeters":
+        Case "set_meters_idf":
             Dim dd80 As DropDown: Set dd80 = Sheets("HAUPTSEITE").DropDowns("Dropdown80")
             Dim translate As Scripting.Dictionary: Set translate = New Scripting.Dictionary
             translate.Add "Monday", "Montag"
@@ -927,9 +976,9 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             translate.Add "Sunday", "Sonntag"
             translate.Add "UseWeatherFile", "Nach Wetterdaten"
 
-            If args.Exists("DayToStartSimulation") Then
-                If translate.Exists(args("DayToStartSimulation")) Then
-                    DDFindAndSetValue dd80, translate(args("DayToStartSimulation"))
+            If args.Exists("day_to_start_simulation") Then
+                If translate.Exists(args("day_to_start_simulation")) Then
+                    DDFindAndSetValue dd80, translate(GetArgument(args, "day_to_start_simulation"))
                 End If
             End If
 
@@ -942,25 +991,9 @@ End Sub
 ' @param dd DropDown ByRef The dropdown
 ' @param val Variant ByVal The value to look for
 Sub DDFindAndSetValue(ByRef dd As DropDown, ByVal val As Variant)
-' ----- Sonderzeichen, Umlaute usw. die im ows/json file umgeschrieben wurden, müssen wieder 'zurück übersetzt' werden
-' ----- siehe Export: JSONFile-Sub 'AddArgument'
-    If InStr(val, ".") Then            '   Braucht es die Umwandlung '.' - ','  ???        TODO: Testen!!!!
-        val = Replace(val, ".", ",")
-    End If
-    If InStr(val, "ae") Then
-        val = Replace(val, "ae", "ä")
-    End If
-    If InStr(val, "ue") Then
-        val = Replace(val, "ue", "ü")
-    End If
-    If InStr(val, "oe") Then
-        val = Replace(val, "oe", "ö")
-    End If
-
-
     Dim i As Integer
     For i = 1 To dd.ListCount
-        If dd.List(i) = val Then dd.Value = i
+        If Trim(dd.List(i)) = Trim(val) Then dd.Value = i
     Next
 End Sub
 
@@ -975,19 +1008,44 @@ End Sub
 ' @param rangeName String ByRef The range where the data is written
 ' @param schedNameRange String ByRef The range where the name is written
 Sub ImportSchedule(ByRef args As Scripting.Dictionary, ByRef scheduleName As String, ByRef rangeName As String, ByRef schedNameRange As String)
-    If args("is_custom_" & scheduleName) = "false" Then Exit Sub
+    If GetArgument(args, "is_custom_" & scheduleName) = "Nein" Then Exit Sub
 
     Dim values As Variant
-    Dim bs As String: bs = IIf(scheduleName = "hvac", "Sched", "Schedule")
+    Dim bs As String: bs = "_sched_"
 
-    values = Split(Trim(args(scheduleName & bs & "Werktag")), ";")
+    values = Split(Trim(GetArgument(args, scheduleName & bs & "weekday")), ";")
     Sheets("EIGENE NUTZUNGSPROFILE").Range(rangeName).Offset(0, 0) = Application.Transpose(values)
-    values = Split(Trim(args(scheduleName & bs & "Samstag")), ";")
+    values = Split(Trim(GetArgument(args, scheduleName & bs & "saturday")), ";")
     Sheets("EIGENE NUTZUNGSPROFILE").Range(rangeName).Offset(0, 1) = Application.Transpose(values)
-    values = Split(Trim(args(scheduleName & bs & "Sonntag")), ";")
+    values = Split(Trim(GetArgument(args, scheduleName & bs & "sunday")), ";")
     Sheets("EIGENE NUTZUNGSPROFILE").Range(rangeName).Offset(0, 2) = Application.Transpose(values)
-    values = Split(Trim(args(scheduleName & bs & "Feiertag")), ";")
+    values = Split(Trim(GetArgument(args, scheduleName & bs & "holiday")), ";")
     Sheets("EIGENE NUTZUNGSPROFILE").Range(rangeName).Offset(0, 3) = Application.Transpose(values)
 
-    Sheets("EIGENE NUTZUNGSPROFILE").Range(schedNameRange) = args(scheduleName & "Schedule")
+    Sheets("EIGENE NUTZUNGSPROFILE").Range(schedNameRange) = GetArgument(args, scheduleName & "_sched_selection")
 End Sub
+
+Private Function GetArgument( _
+    oDict As Dictionary, sArgName As String, _
+    Optional forceCommaReplace As Boolean = False _
+) As String
+    Dim sArg As String: sArg = oDict(sArgName)
+
+    If sArg = "true" Then
+        GetArgument = "Ja"
+    ElseIf sArg = "false" Then
+        GetArgument = "Nein"
+    ElseIf forceCommaReplace Or IsNumeric(sArg) Then
+        GetArgument = Replace(sArg, ".", ",")
+    Else
+        sArg = Replace(sArg, "$ae$", "ä")
+        sArg = Replace(sArg, "$oe$", "ö")
+        sArg = Replace(sArg, "$ue$", "ü")
+        sArg = Replace(sArg, "$AE$", "Ä")
+        sArg = Replace(sArg, "$OE$", "Ö")
+        sArg = Replace(sArg, "$UE$", "Ü")
+        sArg = Replace(sArg, "$ss$", "ß")
+        sArg = Replace(sArg, "$deg$", "°")
+        GetArgument = sArg
+    End If
+End Function

@@ -25,23 +25,25 @@ Public Sub CreateFile(sOSMPathName As String, sEPWFileName As String)
     Set JSONArgs = New Dictionary
 End Sub
 
-Public Sub AddArgument(sArgName As String, sArg As String)
+Public Sub AddArgument( _
+    sArgName As String, sArg As String, _
+    Optional forceCommaReplace As Boolean = False _
+)
     If sArg = "Ja" Then
         JSONArgs.Add sArgName, "true"
     ElseIf sArg = "Nein" Then
         JSONArgs.Add sArgName, "false"
-    ElseIf InStr(sArg, ",") Then
+    ElseIf forceCommaReplace Or IsNumeric(Replace(sArg, ",", ".")) Then
         JSONArgs.Add sArgName, Replace(sArg, ",", ".")
     Else
-        If InStr(sArg, "ä") Then
-            sArg = Replace(sArg, "ä", "ae")
-        End If
-        If InStr(sArg, "ü") Then
-            sArg = Replace(sArg, "ü", "ue")
-        End If
-        If InStr(sArg, "ö") Then
-            sArg = Replace(sArg, "ö", "oe")
-        End If
+        sArg = Replace(sArg, "ä", "$ae$")
+        sArg = Replace(sArg, "ö", "$oe$")
+        sArg = Replace(sArg, "ü", "$ue$")
+        sArg = Replace(sArg, "Ä", "$AE$")
+        sArg = Replace(sArg, "Ö", "$OE$")
+        sArg = Replace(sArg, "Ü", "$UE$")
+        sArg = Replace(sArg, "ß", "$ss$")
+        sArg = Replace(sArg, "°", "$deg$")
         JSONArgs.Add sArgName, sArg
     End If
 End Sub
@@ -49,22 +51,22 @@ End Sub
 Public Sub AddInternalSourceConstruction(sMatPrefix As String, iLayer As String, iTempCalc As String, iCTF As String, dSpacing As String, r As Range, iCount As Integer)
     Dim iCounter As Integer
     iCounter = 0
-    AddArgument sMatPrefix + "SourceLayer", iLayer
-    AddArgument sMatPrefix + "TempCalcLayer", iTempCalc
-    AddArgument sMatPrefix + "DimCTF", iCTF
-    AddArgument sMatPrefix + "TubeSpacing", dSpacing
+    AddArgument sMatPrefix + "_source_layer", iLayer
+    AddArgument sMatPrefix + "_temp_calc_layer", iTempCalc
+    AddArgument sMatPrefix + "_dim_ctf", iCTF
+    AddArgument sMatPrefix + "_tube_spacing", dSpacing
     For iItem = 1 To iCount
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "Name", r.Offset(0, iCounter)
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_name", r.Offset(0, iCounter)
         If r.Offset(0, iCounter) = "" Then
-            AddArgument sMatPrefix + Trim(Str(iItem)) + "Thickness", 0
-            AddArgument sMatPrefix + Trim(Str(iItem)) + "Conductivity", 0
-            AddArgument sMatPrefix + Trim(Str(iItem)) + "Density", 0
-            AddArgument sMatPrefix + Trim(Str(iItem)) + "SpecificHeat", 0
+            AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_thickness", 0
+            AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_conductivity", 0
+            AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_density", 0
+            AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_heat_capacity", 0
         Else
-            AddArgument sMatPrefix + Trim(Str(iItem)) + "Thickness", r.Offset(0, iCounter + 1)
-            AddArgument sMatPrefix + Trim(Str(iItem)) + "Conductivity", r.Offset(0, iCounter + 2)
-            AddArgument sMatPrefix + Trim(Str(iItem)) + "Density", r.Offset(0, iCounter + 3)
-            AddArgument sMatPrefix + Trim(Str(iItem)) + "SpecificHeat", r.Offset(0, iCounter + 4)
+            AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_thickness", r.Offset(0, iCounter + 1)
+            AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_conductivity", r.Offset(0, iCounter + 2)
+            AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_density", r.Offset(0, iCounter + 3)
+            AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_heat_capacity", r.Offset(0, iCounter + 4)
         End If
         iCounter = iCounter + 5
     Next
@@ -73,76 +75,71 @@ End Sub
 Public Sub AddInternalSourceConstructionHardcoded(sMatPrefix As String, iLayer As String, iTempCalc As String, iCTF As String, dSpacing As String, r As Range, iCount As Integer)
     Dim iCounter As Integer
     iCounter = 0
-    AddArgument sMatPrefix + "SourceLayer", iLayer
-    AddArgument sMatPrefix + "TempCalcLayer", iTempCalc
-    AddArgument sMatPrefix + "DimCTF", iCTF
-    AddArgument sMatPrefix + "TubeSpacing", dSpacing
- '   iItem = 1
- '       AddArgument sMatPrefix + Trim(Str(iItem)) + "Name", "Metal"
- '       AddArgument sMatPrefix + Trim(Str(iItem)) + "Thickness", 0.002
- '       AddArgument sMatPrefix + Trim(Str(iItem)) + "Conductivity", 45
- '       AddArgument sMatPrefix + Trim(Str(iItem)) + "Density", 7824
- '       AddArgument sMatPrefix + Trim(Str(iItem)) + "SpecificHeat", 800
+    AddArgument sMatPrefix + "_source_layer", iLayer
+    AddArgument sMatPrefix + "_temp_calc_layer", iTempCalc
+    AddArgument sMatPrefix + "_dim_ctf", iCTF
+    AddArgument sMatPrefix + "_tube_spacing", dSpacing
+
     iItem = 1
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "Name", "I01 25mm insulation board"
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "Thickness", 0.0254
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "Conductivity", 0.03
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "Density", 43
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "SpecificHeat", 1210
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_name", "I01 25mm insulation board"
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_thickness", 0.0254
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_conductivity", 0.03
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_density", 43
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_heat_capacity", 1210
     iItem = 2
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "Name", "Metal"
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "Thickness", 0.01
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "Conductivity", 45
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "Density", 7824
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "SpecificHeat", 800
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_name", "Metal"
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_thickness", 0.01
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_conductivity", 45
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_density", 7824
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_heat_capacity", 800
     iItem = 3
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "Name", ""
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "Thickness", 0
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "Conductivity", 0
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "Density", 0
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "SpecificHeat", 0
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_name", ""
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_thickness", 0
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_conductivity", 0
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_density", 0
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_heat_capacity", 0
     iItem = 4
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "Name", ""
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "Thickness", 0
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "Conductivity", 0
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "Density", 0
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "SpecificHeat", 0
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_name", ""
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_thickness", 0
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_conductivity", 0
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_density", 0
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_heat_capacity", 0
 End Sub
 
 Public Sub AddConstruction(sMatPrefix As String, r As Range, iCount As Integer)
     Dim iCounter As Integer
     iCounter = 0
     For iItem = 1 To iCount
-        AddArgument sMatPrefix + Trim(Str(iItem)) + "Name", r.Offset(0, iCounter)
+        AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_name", r.Offset(0, iCounter)
         If r.Offset(0, iCounter) = "" Then
-            AddArgument sMatPrefix + Trim(Str(iItem)) + "Thickness", 0
-            AddArgument sMatPrefix + Trim(Str(iItem)) + "Conductivity", 0
-            AddArgument sMatPrefix + Trim(Str(iItem)) + "Density", 0
-            AddArgument sMatPrefix + Trim(Str(iItem)) + "SpecificHeat", 0
+            AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_thickness", 0
+            AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_conductivity", 0
+            AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_density", 0
+            AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_heat_capacity", 0
         Else
-            AddArgument sMatPrefix + Trim(Str(iItem)) + "Thickness", r.Offset(0, iCounter + 1)
-            AddArgument sMatPrefix + Trim(Str(iItem)) + "Conductivity", r.Offset(0, iCounter + 2)
-            AddArgument sMatPrefix + Trim(Str(iItem)) + "Density", r.Offset(0, iCounter + 3)
-            AddArgument sMatPrefix + Trim(Str(iItem)) + "SpecificHeat", r.Offset(0, iCounter + 4)
+            AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_thickness", r.Offset(0, iCounter + 1)
+            AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_conductivity", r.Offset(0, iCounter + 2)
+            AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_density", r.Offset(0, iCounter + 3)
+            AddArgument sMatPrefix + "_" + Trim(Str(iItem)) + "_heat_capacity", r.Offset(0, iCounter + 4)
         End If
         iCounter = iCounter + 5
     Next
 End Sub
 
 Public Sub AddWindowConstruction(sMatPrefix As String, name As String, uValue As String, shgc As String)
-    AddArgument sMatPrefix + "Name", name
-    AddArgument sMatPrefix + "UValue", uValue
-    AddArgument sMatPrefix + "SHGC", shgc
+    AddArgument sMatPrefix + "_name", name
+    AddArgument sMatPrefix + "_u_value", uValue
+    AddArgument sMatPrefix + "_shgc", shgc
 End Sub
 
 Public Sub AddSchedule(sArgName As String, r As Range)
-    AddOneSchedule sArgName + "Werktag", r
-    AddOneSchedule sArgName + "Samstag", r.Offset(0, 1)
-    AddOneSchedule sArgName + "Sonntag", r.Offset(0, 2)
+    AddOneSchedule sArgName + "_weekday", r
+    AddOneSchedule sArgName + "_saturday", r.Offset(0, 1)
+    AddOneSchedule sArgName + "_sunday", r.Offset(0, 2)
     If IsEmpty(r.Offset(0, 3)) Then
-        AddOneSchedule sArgName + "Feiertag", r.Offset(0, 2)
+        AddOneSchedule sArgName + "_holiday", r.Offset(0, 2)
     Else
-        AddOneSchedule sArgName + "Feiertag", r.Offset(0, 3)
+        AddOneSchedule sArgName + "_holiday", r.Offset(0, 3)
     End If
 End Sub
 
@@ -153,7 +150,7 @@ Private Sub AddOneSchedule(sArgName As String, r As Range)
     For i = 1 To iCells - 1
         strArg = strArg + ";" + CStr(r.Offset(i, 0))
     Next i
-    AddArgument sArgName, strArg
+    AddArgument sArgName, strArg, True
 End Sub
 
 
@@ -208,27 +205,25 @@ Public Sub ParseOutputFile(sFilename As String)
     Dim step As Dictionary
     For Each step In Parsed("steps")
         Dim result As Dictionary
-        If step("measure_dir_name") = "BarAspectRatioStudy" Then
+        If step("measure_dir_name") = "add_geometry" Then
             Range("GeomStatus") = GetStepStatus(step)
-        ElseIf step("measure_dir_name") = "AddingMaterialsAndConstructions" Then
+        ElseIf step("measure_dir_name") = "add_materials_and_construction" Then
             Range("UStatus") = GetStepStatus(step)
-        ElseIf step("measure_dir_name") = "AddingInternalLoads" Then
+        ElseIf step("measure_dir_name") = "add_internal_loads" Then
             Range("LoadStatus") = GetStepStatus(step)
-        ElseIf step("measure_dir_name") = "AddingIdealAirLoads" Then
+        ElseIf step("measure_dir_name") = "add_ideal_loads" Then
             Range("IdealLoads") = GetStepStatus(step)
-        ElseIf step("measure_dir_name") = "AddingShadingControls" Then
+        ElseIf step("measure_dir_name") = "add_shading_controls" Then
             Range("ShadingControl") = GetStepStatus(step)
-        ElseIf step("measure_dir_name") = "AddingInfiltration" Then
+        ElseIf step("measure_dir_name") = "add_infiltration" Then
             Range("Infiltration") = GetStepStatus(step)
-        ElseIf step("measure_dir_name") = "AddingLightingControls" Then
+        ElseIf step("measure_dir_name") = "add_lighting_controls" Then
             Range("LightingControl") = GetStepStatus(step)
-        ElseIf step("measure_dir_name") = "AddingTemperatureSetpoints" Then
+        ElseIf step("measure_dir_name") = "add_temperature_setpoints" Then
             Range("TempSetpoint") = GetStepStatus(step)
-        ElseIf step("measure_dir_name") = "AddingPhotovoltaic" Then
-            Range("Photovoltaic") = GetStepStatus(step)
-        ElseIf step("measure_dir_name") = "InjectZoneVentilationIDF" Then
+        ElseIf step("measure_dir_name") = "inject_zone_ventilation_idf" Then
             Range("window_ventilation") = GetStepStatus(step)
-        ElseIf step("measure_dir_name") = "InjectIdealLoadParametersIDF" Then
+        ElseIf step("measure_dir_name") = "inject_ideal_load_parameters_idf" Then
             Range("IDFIdealLoads") = GetStepStatus(step)
         End If
     Next step

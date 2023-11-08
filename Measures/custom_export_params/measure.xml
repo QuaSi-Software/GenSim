@@ -1,0 +1,167 @@
+<measure>
+  <schema_version>3.0</schema_version>
+  <name>custom_export_params</name>
+  <uid>28949d7c-e721-4d6c-9784-0d9840672a49</uid>
+  <version_id>4f79e078-37f3-4584-938a-c628749f7f44</version_id>
+  <version_modified>20230823T085111Z</version_modified>
+  <xml_checksum>2AF3A68E</xml_checksum>
+  <class_name>CustomExportParams</class_name>
+  <display_name>CustomExportParams</display_name>
+  <description>A dummy measure to contain custom parameters</description>
+  <modeler_description>A dummy measure to contain custom parameters</modeler_description>
+  <arguments>
+    <argument>
+      <name>include_zone_details</name>
+      <display_name>Has zone details</display_name>
+      <type>Integer</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>include_detailed_hvac</name>
+      <display_name>With detailed HVAC</display_name>
+      <type>Integer</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>ventilation_type</name>
+      <display_name>Ventilation type</display_name>
+      <type>Integer</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>holidays</name>
+      <display_name>Definition of holidays</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>ventilation_lead_time</name>
+      <display_name>Lead time of ventilation</display_name>
+      <type>Integer</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>ventilation_follow_up_time</name>
+      <display_name>Follow-up time of ventilation</display_name>
+      <type>Integer</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>include_shading_control</name>
+      <display_name>Calculate shading</display_name>
+      <type>Integer</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>include_infiltration</name>
+      <display_name>Calculate infiltration</display_name>
+      <type>Integer</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>include_lighting_control</name>
+      <display_name>Calculate lighting</display_name>
+      <type>Integer</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>include_window_ventilation</name>
+      <display_name>Calculate window ventilation</display_name>
+      <type>Integer</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>generate_geometry_selection</name>
+      <display_name>Generic geometry selection value</display_name>
+      <type>Integer</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>conditioned_floor_height</name>
+      <display_name>Conditioned floor height</display_name>
+      <type>Double</type>
+      <units>m</units>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>imported_floor_height</name>
+      <display_name>Imported floor height</display_name>
+      <type>Double</type>
+      <units>m</units>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>air_changes_input</name>
+      <display_name>Air changes input parameter</display_name>
+      <type>Double</type>
+      <units>h^-1</units>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+  </arguments>
+  <outputs/>
+  <provenances/>
+  <tags>
+    <tag>Envelope.Form</tag>
+  </tags>
+  <attributes>
+    <attribute>
+      <name>Measure Type</name>
+      <value>ModelMeasure</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>Apply Measure Now</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>OpenStudio Application</value>
+      <datatype>string</datatype>
+    </attribute>
+    <attribute>
+      <name>Intended Software Tool</name>
+      <value>Parametric Analysis Tool</value>
+      <datatype>string</datatype>
+    </attribute>
+  </attributes>
+  <files>
+    <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
+    </file>
+    <file>
+      <filename>custom_export_params_test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>7BA10FA8</checksum>
+    </file>
+    <file>
+      <version>
+        <software_program>OpenStudio</software_program>
+        <identifier>2.7.0</identifier>
+        <min_compatible>2.7.0</min_compatible>
+      </version>
+      <filename>measure.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>script</usage_type>
+      <checksum>B5D07874</checksum>
+    </file>
+  </files>
+</measure>

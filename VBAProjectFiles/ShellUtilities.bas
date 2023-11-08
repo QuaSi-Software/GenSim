@@ -13,7 +13,9 @@ Attribute VB_Name = "ShellUtilities"
 ' Copyright 2015 User 'Brian Burns'
 ' Released under Creative Commons Attribution-ShareAlike 3.0 Unported
 ' Full text of license available here: https://creativecommons.org/licenses/by-sa/3.0/legalcode
-Option Explicit
+
+' The following line commented out for reasons explained in function ExecCmd
+' Option Explicit
 
 Private Type STARTUPINFO
     cb As Long
@@ -66,7 +68,10 @@ Private Const INFINITE = -1&
 Public Function ExecCmd(cmdline$)
     Dim proc As PROCESS_INFORMATION
     Dim start As STARTUPINFO
-    Dim ret As LongPtr
+    ' Variable `ret` is undeclared to fix a problem with differing return value types in
+    ' different version of Excel. Without using `Option Explicit` we can assign a value
+    ' to `ret` without having it declared first
+    ' Dim ret As LongPtr
     Dim retval As Long
 
     ' Initialize the STARTUPINFO structure:
