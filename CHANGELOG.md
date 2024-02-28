@@ -1,4 +1,7 @@
-# Current version: 2.15
+# Current version: 2.15b
+
+## v2.15b
+* Add several building types as parameter sets for various types typically used to perform building energy simulations. These types are specific to Germany, but can also provide a general base from which to create a new building type or specific building.
 
 ## v2.15
 * Add the changelog. A list of all changes of older versions is unfortunately not available.
