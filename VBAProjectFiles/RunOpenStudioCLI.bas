@@ -1,14 +1,16 @@
 Attribute VB_Name = "RunOpenStudioCLI"
 Sub RunOpenStudioCLI()
     Dim Argument As String
+    Dim OutputFilePath As String
     Dim processMessage As String
 
     CreateEmptyOSMFile GetOutputFolder() & "\" + Range("FileName") + ".osm"
 
     Argument = Chr(34) & GetOpenStudioBinPath() & "\OpenStudio.exe" & Chr(34) & " --verbose run --workflow " & Chr(34) & GetOutputFolder() & "\" + Range("FileName") + ".osw" & Chr(34)
+    OutputFilePath = GetOutputFolder() & "\run\shellout.log"
 
     Sheets("Hauptseite").Select
-    retval = ExecCmd(Argument)
+    retval = RunAndCapture(Argument, OutputFilePath)
 
     Range("Status").Offset(1, 1) = "beendet (" & WorksheetFunction.Round((Time - Startzeit_indv) * 86400, 1) & " s)"
     Startzeit_indv = Time
@@ -19,7 +21,7 @@ Sub RunOpenStudioCLI()
     If retval > 0 Then
         MsgBox "Fehler waehrend der Simulation, Fehler Code: " & retval
         Range("SimStatus") = "Simulation nicht erfolgreich"
-     Exit Sub
+        Exit Sub
     Else
         Dim ErrorString As String
         ErrorString = IOFunctions.CheckErrFile(GetOutputFolder() & "\run\eplusout.err")
