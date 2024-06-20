@@ -260,11 +260,11 @@ class Results < OpenStudio::Measure::ReportingMeasure
    					end
    					output_timeseries[headers[-1]] << timeseries
 					if units == "J"
-						conversion_factors[headers[-1]] = 1 / 3600
+						conversion_factors[headers[-1]] = 1.0 / 3600
 					elsif units == "W"
-						conversion_factors[headers[-1]] = 1 / timestep
+						conversion_factors[headers[-1]] = 1.0 / timestep
 					else
-						conversion_factors[headers[-1]] = 1
+						conversion_factors[headers[-1]] = 1.0
 					end
    					if list_of_variables.include? variable_name.to_s
    						headers_filtered << "#{variable_name.to_s}[#{headerunits}]"
@@ -273,11 +273,11 @@ class Results < OpenStudio::Measure::ReportingMeasure
    						end
    						output_timeseries_filtered[headers_filtered[-1]] << timeseries
 						if units == "J"
-							conversion_factors_filtered[headers_filtered[-1]] = 1 / 3600
+							conversion_factors_filtered[headers_filtered[-1]] = 1.0 / 3600
 						elsif units == "W"
-							conversion_factors_filtered[headers_filtered[-1]] = 1 / timestep
+							conversion_factors_filtered[headers_filtered[-1]] = 1.0 / timestep
 						else
-							conversion_factors_filtered[headers_filtered[-1]] = 1
+							conversion_factors_filtered[headers_filtered[-1]] = 1.0
 						end
    					end
    					bInit = false
