@@ -83,10 +83,10 @@ class Results < OpenStudio::Measure::ReportingMeasure
 
 	def saveToCSVFile(runner, output_timeseries, headers, conversion_factors, area, csvFileName)
 		csv_array = []
-  		csv_array << headers
+  		csv_array << headers.uniq
 
 		csv_array_annual = []
-		csv_array_annual << headers.drop(1)
+		csv_array_annual << headers.drop(1).uniq
 
   		date_times = output_timeseries[output_timeseries.keys[0]][0].dateTimes
 
@@ -113,13 +113,18 @@ class Results < OpenStudio::Measure::ReportingMeasure
 			date_time = date_times[i]
 			row = []
 			row << date_time
+			last_key = ""
 			for key in headers[1..-1]
-				value = values[key][i]
-				if value.kind_of?(Array)
-					runner..registerInfo("Value is an array #{value}")
-				else
-					converted_value = value * conversion_factors[key] / area
-					row << converted_value
+				if last_key != key
+					last_key = key
+					runner.registerInfo("key (#{key})")
+					value = values[key][i]
+					if value.kind_of?(Array)
+						runner.registerInfo("Value is an array #{value}")
+					else
+						converted_value = value * conversion_factors[key] / area
+						row << converted_value
+					end
 				end
 			end
 			csv_array << row
@@ -208,6 +213,25 @@ class Results < OpenStudio::Measure::ReportingMeasure
 	list_of_variables << "Surface Outside Face Conduction Heat Gain Rate"
 	list_of_variables << "Surface Average Face Conduction Heat Gain Rate"
 	list_of_variables << "Surface Inside Face Conduction Heat Gain Rate"
+
+
+	# electricty
+	list_of_variables << "InteriorLights:Electricity"
+	list_of_variables << "InteriorEquipment:Electricity"
+	list_of_variables << "Fans:Electricity"
+	list_of_variables << "Pumps:Electricity"
+
+	# internal loads
+	list_of_variables << "METER INTERNAL LOADS HEATING ENERGY"
+	list_of_variables << "METER MECHANICAL VENTILATION GAIN"
+
+	list_of_variables << "Facility Heating Setpoint Not Met Time"
+	list_of_variables << "Facility Heating Setpoint Not Met While Occupied Time"
+	list_of_variables << "Facility Cooling Setpoint Not Met Time"
+	list_of_variables << "Facility Cooling Setpoint Not Met While Occupied Time"
+
+
+
 
 	sqlFile = getSQLFile(runner)
 

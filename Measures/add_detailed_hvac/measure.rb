@@ -21,7 +21,7 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
   end
 
   # define the arguments that the user will input
-  def arguments(_model)
+  def arguments(model)
     args = OpenStudio::Measure::OSArgumentVector.new
     heat_recovery_method = OpenStudio::Measure::OSArgument.makeStringArgument("heat_recovery_method", true)
     heat_recovery_method.setDisplayName("Heat recovery method")
@@ -166,12 +166,14 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
 
     system_OA = OpenStudio::Model::AirLoopHVACOutdoorAirSystem.new(model, controller_OA)
     air_loop_comps << system_OA
+    system_OA.outboardOANode.get.setName("Outside Air Node")
+    system_OA.outboardReliefNode.get.setName("Outside Relief Node")
     # for now no heating or cooling coils
 
     returnFan = OpenStudio::Model::FanConstantVolume.new(model, hvacSched)
     returnFan.setName("Return Fan")
     returnFan.setPressureRise(return_fan_pressure_rise)
-    returnFan.setFanEfficiency(1)
+	  returnFan.setFanEfficiency(1)
     air_loop_comps << returnFan
 
     if (heat_recovery_method == "Sensible") || (heat_recovery_method == "Enthalpy")
@@ -378,14 +380,12 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
       baseboard = OpenStudio::Model::ZoneHVACBaseboardConvectiveWater.new(model, model.alwaysOnDiscreteSchedule, heatingCoilBaseboard)
       # attach the zone to the baseboard
       baseboard.addToThermalZone(zone)
-      # add the baseboard to the plant loop
-      hotWaterPlant.addDemandBranchForComponent(baseboard.heatingCoil)
-
+      
       heatingCoilRadiant = OpenStudio::Model::CoilHeatingLowTempRadiantVarFlow.new(model, zoneHeatingTempSched)
       heatingCoilRadiant.setMaximumHotWaterFlow(0)
-      # heatingCoilRadiant.setHeatingDesignCapacity(0)
+      heatingCoilRadiant.setHeatingDesignCapacity(0)
       coolingCoilRadiant = OpenStudio::Model::CoilCoolingLowTempRadiantVarFlow.new(model, zoneCoolingTempSched)
-      #      coolingCoilRadiant.setMaximumColdWaterFlow(coldWaterFlowPerArea * zone.floorArea())
+      # coolingCoilRadiant.setMaximumColdWaterFlow(coldWaterFlowPerArea * zone.floorArea())
       # coolingCoilRadiant.setCoolingDesignCapacityMethod("CapacityPerFloorArea")
       # coolingCoilRadiant.setCoolingDesignCapacityPerFloorArea(100)
       # make an air terminal for the zone
@@ -395,11 +395,41 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
       # attach the zone to the baseboard
       radiantLowTVarFlow.addToThermalZone(zone)
       # add the baseboard to the plant loop
-      hotWaterPlant.addDemandBranchForComponent(radiantLowTVarFlow.heatingCoil)
-      chilledWaterPlant.addDemandBranchForComponent(radiantLowTVarFlow.coolingCoil)
+      # Get the OpenStudio version
+      version = OpenStudio.openStudioVersion.to_s
 
+      # Split the version into major, minor, and patch components
+      version_parts = version.split('.')
+
+      # Extract the major, minor, and patch components
+      major = version_parts[0].to_i
+      minor = version_parts[1].to_i
+      patch = version_parts[2].to_i
+
+      # Combine the components into a double number
+      # We can use the formula major + (minor / 100.0) + (patch / 10000.0)
+      # This ensures the minor and patch components are correctly represented as fractional parts of the version
+      version_double = major + (minor / 100.0) + (patch / 10000.0)
+      if version_double > 3.01
+        runner.registerInfo("Found version #{version_double} > 3.01")
+        if !hotWaterPlant.addDemandBranchForComponent(radiantLowTVarFlow.heatingCoil().get)
+          runner.registerWarning("Could not add heating coil radiant #{heatingCoilRadiant.name}")
+        end
+        if !chilledWaterPlant.addDemandBranchForComponent(radiantLowTVarFlow.coolingCoil().get)
+          runner.registerWarning("Could not add cooling coil radiant #{coolingCoilRadiant.name}")
+        end
+          # set parameters in 3.2
+        #heatingCoilRadiant.setHeatingDesignCapacityMethod("HeatingDesignCapacity")
+        #heatingCoilRadiant.autosizeHeatingDesignCapacity()
+        #coolingCoilRadiant.setCoolingDesignCapacityMethod("CoolingDesignCapacity")
+        #coolingCoilRadiant.autosizeCoolingDesignCapacity()
+      else
+        runner.registerInfo("Found version #{version_double} < 3.01")
+        hotWaterPlant.addDemandBranchForComponent(radiantLowTVarFlow.heatingCoil());
+        chilledWaterPlant.addDemandBranchForComponent(radiantLowTVarFlow.coolingCoil());
+      end  
       # automatically sets all surfaces with internal construction to the radiat device
-      radiantLowTVarFlow.setRadiantSurfaceType("Ceiling"); # Floors or Ceiling
+      radiantLowTVarFlow.setRadiantSurfaceType("Floor");  # Floors or Ceiling
 
       # we need to set the DOAS first, so the other components can react to the cooling/heating loads initiated by the DOAS
       zone.setCoolingPriority(baseboard, 3)
@@ -407,7 +437,10 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
       zone.setCoolingPriority(radiantLowTVarFlow, 2)
       zone.setHeatingPriority(radiantLowTVarFlow, 3)
 
-      runner.registerInfo("#{zone.name} zone has #{radiantLowTVarFlow.surfaces.size} ceiling surfaces with internal contructions.")
+      # add the baseboard to the plant loop
+      hotWaterPlant.addDemandBranchForComponent(baseboard.heatingCoil())
+
+      runner.registerInfo("#{zone.name()} zone has #{radiantLowTVarFlow.surfaces().size()} ceiling surfaces with internal contructions.")
     end
 
     simulationControl = model.getSimulationControl
@@ -424,3 +457,4 @@ end
 
 # register the measure to be used by the application
 AddDetailedHVAC.new.registerWithApplication
+
