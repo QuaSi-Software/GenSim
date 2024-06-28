@@ -208,7 +208,7 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
       day_sched_30 = OpenStudio::Model::ScheduleDay.new(model, 27)
       day_sched_30.setName("SAT Day Schedule 30 deg C")
       day_sched_10 = OpenStudio::Model::ScheduleDay.new(model, 18)
-      day_sched_30.setName("SAT Day Schedule 10 deg C")
+      day_sched_10.setName("SAT Day Schedule 10 deg C")
 
       week_sched_30 = OpenStudio::Model::ScheduleWeek.new(model)
       week_sched_30.setAllSchedules(day_sched_30)

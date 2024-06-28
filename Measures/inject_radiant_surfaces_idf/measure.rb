@@ -48,7 +48,22 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
     # get all zone objects in model
     zoneEquipLists = workspace.getObjectsByType("ZoneHVAC:EquipmentList".to_IddObjectType)
     
-
+    # fix strange issue with SAT schedule
+    weekSchedules = workspace.getObjectsByType("Schedule:Week:Daily".to_IddObjectType)
+    yearSchedules = workspace.getObjectsByType("Schedule:Year".to_IddObjectType)
+    yearSchedules.each do |yearSchedule|
+      if yearSchedule.getString(0).get == "SAT Year Schedule"
+        weekSchedules.each do |weekSchedule|
+          if weekSchedule.getString(0).get == "SAT Week Schedule 10 deg C"
+            yearSchedule.setString(2, "SAT Week Schedule 10 deg C")
+            yearSchedule.setDouble(3, 1)
+            yearSchedule.setDouble(4, 1)
+            yearSchedule.setDouble(5, 12)
+            yearSchedule.setDouble(6, 31)
+          end
+        end
+      end
+    end
 
     counter = 0
     # reporting initial condition of model
