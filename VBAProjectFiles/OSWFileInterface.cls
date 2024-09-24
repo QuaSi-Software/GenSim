@@ -460,6 +460,27 @@ Sub ExportSetMetersIDF( _
     jFile.AddMeasure "set_meters_idf"
 End Sub
 
+' Export method for measure Results.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param NrOfTimesteps As Integer ByVal Number of timesteps per hour.
+Sub ExportResults( _
+    ByRef jFile as JSONFile, _
+    ByVal nrf_bgf As Double, _
+    ByVal NrOfTimesteps As Integer _
+)
+    Dim gross_area As Double
+    gross_area = Range("BldgArea_import")
+
+    jFile.AddArgument "Timestep", CStr(NrOfTimesteps)
+    jFile.AddArgument "IntensityResultsGross", "true"
+    jFile.AddArgument "IntensityResultsNet", "true"
+    jFile.AddArgument "GrossArea", CStr(gross_area)
+    jFile.AddArgument "NetArea", CStr(gross_area * nrf_bgf)
+    jFile.AddArgument "Debug", "false"
+    jFile.AddMeasure "results"
+End Sub
+
 ' This class is intended to provide an interface for writing parameters to an
 ' OSW file or reading them from one. The import/export is not a simple 1-to-1
 ' match of ranges and values, thus the macros might take some time and needs
@@ -617,6 +638,7 @@ Sub ExportToOSW( _
 
     Call ExportInjectHolidaysIDF(jFile)
     Call ExportSetMetersIDF(jFile, NrOfTimesteps)
+    Call ExportResults(jFile, nrf_bgf, NrOfTimesteps)
 
     jFile.Save sFilename
 End Sub
@@ -982,6 +1004,8 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
                 End If
             End If
 
+        Case "results":
+            ' Nothing to do, the measure doesn't take user arguments
     End Select
 End Sub
 
