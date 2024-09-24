@@ -90,25 +90,36 @@ Public Function ExecCmd(cmdline$)
 End Function
 
 Public Function ShellRun(sCmd As String) As String
-    'Run a shell command, returning the output as a string
-    Dim oShell As WshShell
-    Set oShell = CreateObject("WScript.Shell")
+    Dim objShell As Object
+    Dim objExec As Object
+    Dim strOutput As String
 
-    'run command
-    Dim oExec As Object
-    Dim oOutput As Object
-    Set oExec = oShell.Exec(GetOpenStudioBinPath() & "\OpenStudio.exe")
-    Set oOutput = oExec.StdOut
-    oShell.SendKeys " --verbose run --workflow " & Chr(34) & GetOutputFolder() & "\" + Range("FileName") + ".osw", True
+    ' Create a WScript.Shell object
+    Set objShell = CreateObject("WScript.Shell")
 
-    'handle the results as they are written to and read from the StdOut object
-    Dim s As String
-    Dim sLine As String
-    While Not oOutput.AtEndOfStream
-        sLine = oOutput.ReadLine
-        If sLine <> "" Then s = s & sLine & vbCrLf
-    Wend
+    ' Run the command and capture the output
+    Set objExec = objShell.Exec(sCmd)
+    strOutput = objExec.StdOut.ReadAll
 
-    ShellRun = s
+    ' Close the Exec object
+    Set objExec = Nothing
+
+    ' Return the output
+    ShellRun = strOutput
 End Function
-    
+
+Public Function RunAndCapture(sCmd As String, sFilePath As String)
+    Dim sOutput As String
+    sOutput = ShellRun(sCmd)
+
+    Dim fso As Object
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    Dim oFile As Object
+    Set oFile = fso.CreateTextFile(sFilePath)
+    oFile.Write sOutput
+    oFile.Close
+    Set fso = Nothing
+    Set oFile = Nothing
+
+    RundAndCapture = 0
+End Function
