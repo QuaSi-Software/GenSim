@@ -1,6 +1,6 @@
 Attribute VB_Name = "IOFunctions"
 
-Dim constList(0 To 29) As String
+Dim constList(0 To 27) As String
 
 Const METER_HEATING = "DistrictHeating:Facility"
 Const METER_COOLING = "DistrictCooling:Facility"
@@ -30,9 +30,6 @@ Const METER_VENTILATION_HEAT_GAIN = "METER ZONE VENTILATION HEAT GAIN"
 'Mechanische Lüftung
 Const Zone_Mechanical_Ventilation_Cooling_Load_Increase_Energy = "METER MECHANICAL VENTILATION GAIN"
 Const Zone_Mechanical_Ventilation_No_Load_Heat_Removal_Energy = "METER MECHANICAL VENTILATION LOSS"
-
-Const METER_ELECTRICITY_PV = "Photovoltaic:ElectricityProduced"
-Const METER_ELECTRICITY_PRODUCED = "ElectricityProduced:Plant"
 
 Const FACILITY_HEATING_SEPOINT_NOT_MET = "Facility Heating Setpoint Not Met Time"
 Const FACILITY_HEATING_SEPOINT_NOT_MET_OCC = "Facility Heating Setpoint Not Met While Occupied Time"
@@ -77,10 +74,7 @@ Sub AssembleConstList()
     
     constList(Inc(i)) = Zone_Mechanical_Ventilation_Cooling_Load_Increase_Energy
     constList(Inc(i)) = Zone_Mechanical_Ventilation_No_Load_Heat_Removal_Energy
-    
-    constList(Inc(i)) = METER_ELECTRICITY_PV
-    constList(Inc(i)) = METER_ELECTRICITY_PRODUCED
-    
+
     constList(Inc(i)) = FACILITY_HEATING_SEPOINT_NOT_MET
     constList(Inc(i)) = FACILITY_HEATING_SEPOINT_NOT_MET_OCC
     constList(Inc(i)) = FACILITY_COOLING_SEPOINT_NOT_MET
@@ -295,8 +289,8 @@ Sub CreateResults()
             finished = True
         End If
     Loop
-    Sheets("pivot").Range("BZ1") = iMaxCol + 1
-    Sheets("pivot").Range("CA1") = iMaxCol + 2
+    Sheets("pivot").Range("BV1") = iMaxCol + 1
+    Sheets("pivot").Range("BW1") = iMaxCol + 2
     
     'iMaxRow
     Dim iMaxRow As Double
@@ -351,18 +345,14 @@ Sub CreateResults()
         For colIndex = 1 To iMaxCol
             If RawResults(1, colIndex) <> "" Then
                 If rwIndex = 1 Or colIndex = 1 Then     'IN ZEILE 1 ODER SPALTE 1 -> Beschriftung!!!
-                    If (InStr(RawResults(rwIndex, colIndex), "Plant")) Or (InStr(RawResults(rwIndex, colIndex), "Photovoltaic")) Then 'PV Spaltenbeschriftung
-                        Results(rwIndex, colIndex) = Replace(RawResults(rwIndex, colIndex), "[J](TimeStep)", "[Wh/m²PV]")
-                    ElseIf (InStr(RawResults(rwIndex, colIndex), "J")) Then
+                    If (InStr(RawResults(rwIndex, colIndex), "J")) Then
                         Results(rwIndex, colIndex) = Replace(RawResults(rwIndex, colIndex), "[J](TimeStep)", "[Wh/m²NRF]")    'alles weitere Spaltenbeschriftung
                     Else
                         Results(rwIndex, colIndex) = RawResults(rwIndex, colIndex) 'Datumsspalte komplett übernehmen
                     End If
                     If rwIndex = iMaxRow Then Results(rwIndex, colIndex) = "Jahressumme [Wh/m²a]" 'Letzte Zeile "Beschriftung"
                 Else                                    'IN ZEILE 2-X UND SPALTE 2-X
-                    If (InStr(RawResults(1, colIndex), "Plant")) Or (InStr(RawResults(1, colIndex), "Photovoltaic")) Then    'Wenn Spalte Photovoltaik Umrechnung von J in Wh
-                        Results(rwIndex, colIndex) = RawResults(rwIndex, colIndex) / 3600
-                    ElseIf InStr(RawResults(1, colIndex), "Temperature") Or InStr(RawResults(1, colIndex), "Not Met") Then 'Spalten Temperaturen oder Unmet Hours keine Umrechnung
+                    If InStr(RawResults(1, colIndex), "Temperature") Or InStr(RawResults(1, colIndex), "Not Met") Then 'Spalten Temperaturen oder Unmet Hours keine Umrechnung
                         Results(rwIndex, colIndex) = RawResults(rwIndex, colIndex)
                         'Temperatur Min/Max
                         If InStr(RawResults(1, colIndex), "Temperature") Then
@@ -416,11 +406,10 @@ Sub CreateResults()
     '-------------------------------------------------------------
     
     Dim Results_Nutzenergie  As Variant
-    ReDim Results_Nutzenergie(1 To iMaxRow + 1, 0 To 7)
+    ReDim Results_Nutzenergie(1 To iMaxRow + 1, 0 To 6)
     
     Dim Results_Nutzenergie_1h  As Variant
-    ReDim Results_Nutzenergie_1h(1 To iMaxRow + 1, 1 To 7)
-    'ReDim Results_Nutzenergie_1h(1 To 8760 + 1, 1 To 7)
+    ReDim Results_Nutzenergie_1h(1 To iMaxRow + 1, 1 To 6)
     
     '''''' Write selective Loadprofiles into Excel
     
@@ -430,7 +419,6 @@ Sub CreateResults()
         If (InStr(Results(1, colIndex), METER_COOLING)) Then col_cooling = colIndex
         If (InStr(Results(1, colIndex), METER_ELECTRICITY_LIGHTS)) Then col_lights = colIndex
         If (InStr(Results(1, colIndex), METER_ELECTRICITY_PLUGS)) Then col_elec = colIndex
-        If (InStr(Results(1, colIndex), METER_ELECTRICITY_PRODUCED)) Then col_pv = colIndex
         If (InStr(Results(1, colIndex), METER_ELECTRICITY_FANS)) Then col_fans = colIndex
         If (InStr(Results(1, colIndex), METER_ELECTRICITY_PUMPS)) Then col_pumps = colIndex
     Next
@@ -444,7 +432,6 @@ Sub CreateResults()
         If Not IsEmpty(col_elec) Then Results_Nutzenergie(rwIndex, 4) = Results(rwIndex, col_elec)
         If Not IsEmpty(col_fans) Then Results_Nutzenergie(rwIndex, 5) = Results(rwIndex, col_fans)
         If Not IsEmpty(col_pumps) Then Results_Nutzenergie(rwIndex, 6) = Results(rwIndex, col_pumps)
-        If Not IsEmpty(col_pv) Then Results_Nutzenergie(rwIndex, 7) = Results(rwIndex, col_pv)
     Next
     
     'Create Array with selected columns commulated in Wh/hour
@@ -457,12 +444,6 @@ Sub CreateResults()
         If Not IsEmpty(col_elec) Then Results_Nutzenergie_1h(rwIndex_1h + 1, 4) = Results_Nutzenergie_1h(rwIndex_1h + 1, 4) + Results(rwIndex + 1, col_elec)
         If Not IsEmpty(col_fans) Then Results_Nutzenergie_1h(rwIndex_1h + 1, 5) = Results_Nutzenergie_1h(rwIndex_1h + 1, 5) + Results(rwIndex + 1, col_fans)
         If Not IsEmpty(col_pumps) Then Results_Nutzenergie_1h(rwIndex_1h + 1, 6) = Results_Nutzenergie_1h(rwIndex_1h + 1, 6) + Results(rwIndex + 1, col_pumps)
-        If Not IsEmpty(col_pv) Then Results_Nutzenergie_1h(rwIndex_1h + 1, 7) = Results_Nutzenergie_1h(rwIndex_1h + 1, 7) + Results(rwIndex + 1, col_pv)
-
-'        If rwIndex - rwIndex_alt = (60 / Range("Timestep")) Then
-'            rwIndex_1h = rwIndex_1h + 1
-'            rwIndex_alt = rwIndex
-'        End If
 
         rwIndex_1h = rwIndex_1h + 1
     Next
@@ -485,24 +466,20 @@ Sub CreateResults()
     
     Results_Nutzenergie_1h(1, 6) = "Pumpenstrom [Wh/m²NRF]"
     Results_Nutzenergie(1, 6) = "Pumpenstrom [Wh/m²NRF]"
-    
-    Results_Nutzenergie_1h(1, 7) = "PV-Ertrag [Wh/m²PV]"
-    Results_Nutzenergie(1, 7) = "PV-Ertrag [Wh/m²PV]"
-    
-       
+
     'Write into Excel Sheet
     Sheets("NUTZENERGIE PROFILE").Range("A6:F" & 35100).ClearContents
-    Sheets("NUTZENERGIE PROFILE").Range("A6:H" & iMaxRow + 5) = Results_Nutzenergie
+    Sheets("NUTZENERGIE PROFILE").Range("A6:G" & iMaxRow + 5) = Results_Nutzenergie
     
-    Sheets("pivot").Range("D3:J" & 35100).ClearContents
-    Sheets("pivot").Range("D3:J" & iMaxRow + 5) = Results_Nutzenergie_1h
+    Sheets("pivot").Range("D3:I" & 35100).ClearContents
+    Sheets("pivot").Range("D3:I" & iMaxRow + 5) = Results_Nutzenergie_1h
     
     Sheets("HAUPTSEITE").Range("unmethours_h") = dAnnualResult(iMaxCol + 3)
     Sheets("HAUPTSEITE").Range("unmethours_c") = dAnnualResult(iMaxCol + 4)
     
     'Aggregierung in Pivot Table auf Summe ändern
     If Sheets("pivot").Range("A1") <> Energie Then
-        For i = 1 To 7
+        For i = 1 To 6
             For Each PivotField In Sheets("pivot").PivotTables("PivotTable" & i).DataFields
                 With PivotField
                     .Function = xlSum
@@ -530,9 +507,6 @@ Sub CreateResults()
     Range("lights_annual") = ""
     Range("equipment_annual") = ""
     
-    Range("pv_annual") = ""
-    Range("pv_annual_kWp") = ""
-    
     Range("pumps_annual") = ""
     Range("fans_annual") = ""
     
@@ -544,9 +518,6 @@ Sub CreateResults()
         If (InStr(Results(1, colIndex), METER_ELECTRICITY_PLUGS)) Then Range("equipment_annual") = Results(iMaxRow, colIndex)
         If (InStr(Results(1, colIndex), METER_ELECTRICITY_PUMPS)) Then Range("pumps_annual") = Results(iMaxRow, colIndex)
         If (InStr(Results(1, colIndex), METER_ELECTRICITY_FANS)) Then Range("fans_annual") = Results(iMaxRow, colIndex)
-        'PV
-        If (InStr(Results(1, colIndex), "Plant")) Then Range("pv_annual") = Results(iMaxRow, colIndex)
-        Range("pv_annual_kWp") = Range("pv_annual") / Range("eff_PV")
     Next
     
     '------ Liste Gebäudebilanz
@@ -597,7 +568,7 @@ Sub DiagLeistung(leistung As Boolean)
     'ReDim Results_Nutzenergie(0 To iMaxRow, 1 To 7)
     
     Dim Results_Nutzenergie_out  As Variant
-    ReDim Results_Nutzenergie_out(1 To iMaxRow, 1 To 7)
+    ReDim Results_Nutzenergie_out(1 To iMaxRow, 1 To 6)
     
     'Blattschutz und Excel-Berechnung
     TB_diag.Unprotect
@@ -610,12 +581,12 @@ Sub DiagLeistung(leistung As Boolean)
     If leistung And Sheets("pivot").Range("A1") = "Energie" Then
         'Umrechnung in Leistung [W]
         For rwIndex = 1 To iMaxRow
-            For colIndex = 1 To 7
+            For colIndex = 1 To 6
                 Results_Nutzenergie_out(rwIndex, colIndex) = Results_Nutzenergie(rwIndex, colIndex) / (Range("Timestep") / 60)
             Next
         Next
         'Aggregierung in Pivot Table auf Mitterlwert ändern
-        For i = 1 To 7
+        For i = 1 To 6
             For Each PivotField In TB_pivot.PivotTables("PivotTable" & i).DataFields
                 With PivotField
                     .Function = xlAverage
@@ -627,12 +598,12 @@ Sub DiagLeistung(leistung As Boolean)
     ElseIf Not leistung And Sheets("pivot").Range("A1") = "Leistung" Then
         'Umrechnung in Energie [Wh]
         For rwIndex = 1 To iMaxRow
-            For colIndex = 1 To 7
+            For colIndex = 1 To 6
                 Results_Nutzenergie_out(rwIndex, colIndex) = Results_Nutzenergie(rwIndex, colIndex) * (Range("Timestep") / 60)
             Next
         Next
         'Aggregierung in Pivot Table auf Summe ändern
-        For i = 1 To 7
+        For i = 1 To 6
             For Each PivotField In TB_pivot.PivotTables("PivotTable" & i).DataFields
                 With PivotField
                     .Function = xlSum

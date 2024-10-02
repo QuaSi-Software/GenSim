@@ -14,14 +14,13 @@ Sub ClearCells()
     Range("Infiltration").ClearContents
     Range("LightingControl").ClearContents
     Range("TempSetpoint").ClearContents
-    Range("Photovoltaic").ClearContents
     Range("window_ventilation").ClearContents
     Range("IDFIdealLoads").ClearContents
 
     Range("SimStatus").ClearContents
     Range("StatusEnergyPlusSimulation") = ""
 
-    Sheets("HAUPTSEITE").Range("M27:O32").ClearContents
+    Sheets("HAUPTSEITE").Range("N24:O29").ClearContents
 
 End Sub
 
@@ -79,10 +78,6 @@ Sub CreateWorkflowAndExecute()
         ' unmet Hours
         Range("unmethours_h") = "k.A."
         Range("unmethours_c") = "k.A."
-
-        'Photovoltaik
-        Range("pv_annual") = "k.A."
-        Range("pv_annual_kWp") = "k.A."
 
         'Sizing
         Range("SizingHeating") = "k.A."

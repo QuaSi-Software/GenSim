@@ -297,12 +297,6 @@ Sub Ansicht_Feiertage()
     Application.GoTo Reference:=Sheets("EIGENE NUTZUNGSPROFILE").Range("AH8"), Scroll:=True
 End Sub
 
-Sub Ansicht_Normen()
-    Sheets("HAUPTSEITE").Unprotect
-    Application.GoTo Reference:=Sheets("Referenzwerte Normen").Range("A1"), Scroll:=True
-    Sheets("HAUPTSEITE").Protect
-End Sub
-
 '**************************   Gruppieren: TB: CO2-Bilanz    ****************************
 
 Sub Diag_Monat()
@@ -418,16 +412,6 @@ End Sub
 Sub ExportOSWFile()
     Application.Calculation = xlCalculationManual
 
-    Dim cb_buildingSim As CheckBox
-    Set cb_buildingSim = Sheets("HAUPTSEITE").CheckBoxes("checkbox_buildingsim")
-    Dim cb_pvSim As CheckBox
-    Set cb_pvSim = Sheets("HAUPTSEITE").CheckBoxes("checkbox_pvsim")
-
-    If cb_pvSim.Value = 1 And Not cb_buildingSim.Value = 1 Then
-        MsgBox "Bei einer reinen PV-Simulation wird kein Export durchgeführt."
-        Exit Sub
-    End If
-
     Dim varResult As Variant
     'displays the save file dialog
     varResult = Application.GetSaveAsFilename(FileFilter:= _
@@ -533,14 +517,4 @@ End Sub
 Sub label_geom()
     ActiveSheet.Shapes.Range(Array("label_geom_gen")).Visible = Sheets("Wetterdateien").Range("geometry_source") = 2
     ActiveSheet.Shapes.Range(Array("label_geom_imp")).Visible = Sheets("Wetterdateien").Range("geometry_source") = 1
-End Sub
-
-Sub label_building_pv()
-    Dim cb_buildingSim As CheckBox
-    Set cb_buildingSim = Sheets("HAUPTSEITE").CheckBoxes("checkbox_buildingsim")
-    Dim cb_pvSim As CheckBox
-    Set cb_pvSim = Sheets("HAUPTSEITE").CheckBoxes("checkbox_pvsim")
-
-    ActiveSheet.Shapes.Range(Array("label_building")).Visible = cb_buildingSim.Value <> 1
-    ActiveSheet.Shapes.Range(Array("label_pv")).Visible = cb_pvSim.Value <> 1
 End Sub
