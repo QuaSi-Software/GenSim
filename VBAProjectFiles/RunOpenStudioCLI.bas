@@ -10,7 +10,11 @@ Sub RunOpenStudioCLI()
     OutputFilePath = GetOutputFolder() & "\run\shellout.log"
 
     Sheets("Hauptseite").Select
-    retval = RunAndCapture(Argument, OutputFilePath)
+    If Sheets("HAUPTSEITE").CheckBoxes("Pipe_OS_Output").Value = 1 Then
+        retval = RunAndCapture(Argument, OutputFilePath)
+    Else
+        retval = ExecCmd(Argument)
+    End If
 
     Range("Status").Offset(1, 1) = "beendet (" & WorksheetFunction.Round((Time - Startzeit_indv) * 86400, 1) & " s)"
     Startzeit_indv = Time

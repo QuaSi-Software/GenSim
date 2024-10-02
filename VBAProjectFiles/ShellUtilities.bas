@@ -110,7 +110,10 @@ End Function
 
 Public Function RunAndCapture(sCmd As String, sFilePath As String)
     Dim sOutput As String
-    sOutput = ShellRun(sCmd)
+    sOutput = "Running command: " & sCmd & vbCrLf & "Capturing into: " _
+        & sFilePath & vbCrLf & "-------------------------------------" & vbCrLf
+
+    sOutput = sOutput & ShellRun(sCmd)
 
     Dim fso As Object
     Set fso = CreateObject("Scripting.FileSystemObject")
