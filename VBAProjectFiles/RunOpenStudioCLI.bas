@@ -86,7 +86,7 @@ Sub CreateEmptyOSMFile(sOSMFilePath As String)
     Set oFile = fso.CreateTextFile(sOSMFilePath)
     oFile.WriteLine "OS:Version,"
     oFile.WriteLine "  {0f20289d-c9f3-4775-8548-e6b6a77e899a}, !- Handle"
-    oFile.WriteLine "  2.5.0;                                  !- Version Identifier"
+    oFile.WriteLine "  3.4.0;                                  !- Version Identifier"
     oFile.WriteLine ""
     ' should we include anything Else here To make it run smoother?
     oFile.Close

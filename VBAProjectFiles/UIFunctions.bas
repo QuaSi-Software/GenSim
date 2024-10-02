@@ -6,7 +6,7 @@ Dim strWeatherDir As String
 
 Function GetOpenStudioBinPath()
     If Range("DirOpenStudio") = "" Then
-        GetOpenStudioBinPath = "C:\OpenStudio-2.7.0\bin"
+        GetOpenStudioBinPath = "C:\openstudio-3.4.0\bin"
     Else
         GetOpenStudioBinPath = Range("DirOpenStudio") & "\bin"
     End If
@@ -14,7 +14,7 @@ End Function
 
 Function GetRubyExePath()
     If Range("DirOpenStudio") = "" Then
-        GetRubyExePath = "C:\openstudio-2.7.0\pat\ruby\bin\ruby.exe"
+        GetRubyExePath = "C:\openstudio-3.4.0\pat\ruby\bin\ruby.exe"
     Else
         GetRubyExePath = Range("DirOpenStudio") & "\pat\ruby\bin\ruby.exe"
     End If
@@ -136,7 +136,7 @@ Sub BrowseOpenStudioInstallationDir()
     Sheets("Installation").Unprotect
     
     If Range("DirOpenStudio") = "" Then
-        strOpenStudioDir = "C:\Program Files\OpenStudio 1.12.4"
+        strOpenStudioDir = "C:\openstudio-3.4.0\"
     Else
         strOpenStudioDir = Range("DirOpenStudio")
     End If
