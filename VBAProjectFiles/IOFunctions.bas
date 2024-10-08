@@ -162,27 +162,57 @@ Function ConvertESOFile(filePath As String) As Boolean
     End If
 End Function
 
-Function ImportCSVFileNEW(filePath As String) As Boolean
+Function GetCSVResultFilesNames() As Collection
+    Dim files As Collection
+    Set files = New Collection
+    files.Add Array("RawResults-gross-Sum", "results_report_variables_ZoneTimestep-gross-Sum.csv")
+    files.Add Array("RawResults-gross", "results_report_variables_ZoneTimestep-gross.csv")
+    files.Add Array("RawResults-net-Sum", "results_report_variables_ZoneTimestep-net-Sum.csv")
+    files.Add Array("RawResults-net", "results_report_variables_ZoneTimestep-net.csv")
+    files.Add Array("RawResults-Sum", "results_report_variables_ZoneTimestep-Sum.csv")
+    files.Add Array("RawResults", "results_report_variables_ZoneTimestep.csv")
+    Set GetCSVResultFilesNames = files
+End Function
 
-    Application.ScreenUpdating = False
-    
-    If CheckSheet("RawResults") Then
-        Application.DisplayAlerts = False
-        Worksheets("RawResults").Delete
-        Application.DisplayAlerts = True
-    End If
-    
+Sub DeleteResultSheets()
+    Application.DisplayAlerts = False
+
+    Dim file As Variant
+    For Each file In GetCSVResultFilesNames()
+        If CheckSheet(file(0)) Then
+            Worksheets(file(0)).Delete
+        End If
+    Next file
+
+    Application.DisplayAlerts = True
+End Sub
+
+Function ImportCSVFile(ByVal filePath As String, ByVal sheetName As String) As Boolean
     Workbooks.Open filename:=filePath, Local:=False
     ', Semicolon:=False, Comma:=True, DecimalSeparator:="."
     ActiveSheet.Move After:=ThisWorkbook.Sheets(ThisWorkbook.Sheets.Count)
-    ActiveSheet.name = "RawResults"
-          
+    ActiveSheet.name = sheetName
+
+    Worksheets(sheetName).Visible = False
+
+    ImportCSVFile = True
+End Function
+
+Function ImportCSVResultFiles(ByVal directory As String) As Boolean
+    Application.ScreenUpdating = False
+
+    Call DeleteResultSheets()
+
+    Dim file As Variant
+    For Each file In GetCSVResultFilesNames()
+        ImportCSVFile directory & "/" & file(1), file(0)
+    Next file
+
     Worksheets("HAUPTSEITE").Activate
-    Worksheets("RawResults").Visible = False
-    
+
     Application.ScreenUpdating = True
-    
-    ImportCSVFileNEW = True
+
+    ImportCSVResultFiles = True
 End Function
 
 Function ParseEIOFile(filePath As String) As Boolean

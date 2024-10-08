@@ -43,43 +43,29 @@ Sub RunOpenStudioCLI()
 
     DoEvents
     If Range("SimStatus") = "Erfolgreich" Then
-        Range("Status").Offset(3, 0) = "CSV Datei generieren"
-        If IOFunctions.ConvertESOFile(GetOutputFolder() & "\run\eplusout.eso") Then
-            Range("Status").Offset(3, 1) = "beendet (" & WorksheetFunction.Round((Time - Startzeit_indv) * 86400, 1) & " s)"
-            Startzeit_indv = Time
+        Range("Status").Offset(3, 0) = "CSV Dateien importieren"
+        IOFunctions.ImportCSVResultFiles GetOutputFolder() & "\reports\"
+        Range("Status").Offset(3, 1) = "beendet (" & WorksheetFunction.Round((Time - Startzeit_indv) * 86400, 1) & " s)"
+        Startzeit_indv = Time
 
-            DoEvents
+        DoEvents
 
-            Range("Status").Offset(4, 0) = "CSV Datei importieren"
-            IOFunctions.ImportCSVFileNEW GetOutputFolder() & "\run\eplusout.csv"
-            Range("Status").Offset(4, 1) = "beendet (" & WorksheetFunction.Round((Time - Startzeit_indv) * 86400, 1) & " s)"
-            Startzeit_indv = Time
+        Range("Status").Offset(4, 0) = "EIO Datei importieren"
+        IOFunctions.ParseEIOFile GetOutputFolder() & "\run\eplusout.eio"
+        Range("Status").Offset(4, 1) = "beendet (" & WorksheetFunction.Round((Time - Startzeit_indv) * 86400, 1) & " s)"
+        Startzeit_indv = Time
 
-            DoEvents
+        DoEvents
 
-            Range("Status").Offset(4, 0) = "EIO Datei importieren"
-            IOFunctions.ParseEIOFile GetOutputFolder() & "\run\eplusout.eio"
-            Range("Status").Offset(4, 1) = "beendet (" & WorksheetFunction.Round((Time - Startzeit_indv) * 86400, 1) & " s)"
-            Startzeit_indv = Time
-
-            DoEvents
-
-            Range("Status").Offset(5, 0) = "Profile/Jahreswerte bilden"
-            CreateResults
-            If Range("param_delete_sheet_rawresults") = "Ja" Then
-                Application.DisplayAlerts = False
-                Sheets("RawResults").Delete
-                Application.DisplayAlerts = True
-            End If
-            Range("Status").Offset(5, 1) = "beendet (" & WorksheetFunction.Round((Time - Startzeit_indv) * 86400, 1) & " s)"
-            Startzeit_indv = Time
-
-            DoEvents
-        Else
-            Range("Status").Offset(4, 0) = "Fehler bei generieren der CSV Datei"
-
-            DoEvents
+        Range("Status").Offset(5, 0) = "Profile/Jahreswerte bilden"
+        ' CreateResults
+        If Range("param_delete_sheet_rawresults") = "Ja" Then
+            Call DeleteResultSheets()
         End If
+        Range("Status").Offset(5, 1) = "beendet (" & WorksheetFunction.Round((Time - Startzeit_indv) * 86400, 1) & " s)"
+        Startzeit_indv = Time
+
+        DoEvents
     End If
 End Sub
 
