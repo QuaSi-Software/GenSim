@@ -58,7 +58,7 @@ Sub RunOpenStudioCLI()
         DoEvents
 
         Range("Status").Offset(5, 0) = "Profile/Jahreswerte bilden"
-        ' CreateResults
+        CreateResults
         If Range("param_delete_sheet_rawresults") = "Ja" Then
             Call DeleteResultSheets()
         End If

@@ -26,11 +26,8 @@ Const METER_INFILTRATION_HEAT_LOSS = "METER ZONE INFILTRATION HEAT LOSS"
 Const METER_INFILTRATION_HEAT_GAIN = "METER ZONE INFILTRATION HEAT GAIN"
 Const METER_VENTILATION_HEAT_LOSS = "METER ZONE VENTILATION HEAT LOSS"
 Const METER_VENTILATION_HEAT_GAIN = "METER ZONE VENTILATION HEAT GAIN"
-
-'Mechanische Lüftung
-Const Zone_Mechanical_Ventilation_Cooling_Load_Increase_Energy = "METER MECHANICAL VENTILATION GAIN"
-Const Zone_Mechanical_Ventilation_No_Load_Heat_Removal_Energy = "METER MECHANICAL VENTILATION LOSS"
-
+Const METER_MECHANICAL_VENTILATION_LOSS = "METER MECHANICAL VENTILATION LOSS"
+Const METER_MECHANICAL_VENTILATION_GAIN = "METER MECHANICAL VENTILATION GAIN"
 Const FACILITY_HEATING_SEPOINT_NOT_MET = "Facility Heating Setpoint Not Met Time"
 Const FACILITY_HEATING_SEPOINT_NOT_MET_OCC = "Facility Heating Setpoint Not Met While Occupied Time"
 Const FACILITY_COOLING_SEPOINT_NOT_MET = "Facility Cooling Setpoint Not Met Time"
@@ -299,19 +296,18 @@ End Function
 
 
 Sub CreateResults()
-    
     Dim cb_hvac As CheckBox
     Set cb_hvac = Sheets("Parameter").CheckBoxes("checkbox_hvac")
-    
+
     Application.ScreenUpdating = False
     Sheets("GEBÄUDEBILANZ").Unprotect
     Sheets("HAUPTSEITE").Unprotect
-    
+
     Dim sheet As Worksheet
     Set sheet = ThisWorkbook.Worksheets("RawResults")
     Dim j As Integer
     Dim iMaxCol As Integer
-    
+
     'determine the number of output variables (iMaxCol)
     Do While finished <> True
         If sheet.Cells(1, Inc(j)) = "" Then
@@ -321,192 +317,203 @@ Sub CreateResults()
     Loop
     Sheets("pivot").Range("BV1") = iMaxCol + 1
     Sheets("pivot").Range("BW1") = iMaxCol + 2
-    
+
     'iMaxRow
     Dim iMaxRow As Double
     iMaxRow = 60 / Range("Timestep") * 24 * 365 + 2
     'If cb_hvac.Value = 1 Then iMaxRow = iMaxRow + 3 * 24 * (60 / Range("Timestep")) 'bei Ideals Loads werden die DesignDays mit ausgegeben!
-    
-    Dim RawResults  As Variant
-    ReDim RawResults(1 To iMaxRow, 1 To iMaxCol)
-    Dim Results  As Variant
-    ReDim Results(1 To iMaxRow, 1 To iMaxCol + 2)
-    
-    'Quick and dirty Bugfix Designdays
-    If Left(Sheets("RawResults").Range("A2"), 6) <> " 01/01" Then
-        Do While Left(Sheets("RawResults").Range("A2"), 6) <> " 01/01"
-            Sheets("RawResults").Rows(2 & ":" & 24 * 60 / Range("Timestep") + 1).Delete
-        Loop
-    End If
-    
-    ''''''Read RawResults into Array
-    RawResults = Sheets("RawResults").Range(Sheets("RawResults").Cells(1, 1), Sheets("RawResults").Cells(iMaxRow, iMaxCol))
-    
+
+    Dim ResultsNFA  As Variant
+    ReDim ResultsNFA(1 To iMaxRow, 1 To iMaxCol)
+    Dim ResultsNFAAnnual  As Variant
+    ReDim ResultsNFAAnnual(1 To 2, 1 To iMaxCol)
+    ' Dim Results  As Variant
+    ' ReDim Results(1 To iMaxRow, 1 To iMaxCol + 2)
+
+    ' 'Quick and dirty Bugfix Designdays
+    ' If Left(Sheets("RawResults").Range("A2"), 6) <> " 01/01" Then
+    '     Do While Left(Sheets("RawResults").Range("A2"), 6) <> " 01/01"
+    '         Sheets("RawResults").Rows(2 & ":" & 24 * 60 / Range("Timestep") + 1).Delete
+    '     Loop
+    ' End If
+
+    'Read results into Array
+    ResultsNFA = Sheets("RawResults-net").Range( _
+        Sheets("RawResults-net").Cells(1, 1), _
+        Sheets("RawResults-net").Cells(iMaxRow, iMaxCol) _
+    )
+    ResultsNFAAnnual = Sheets("RawResults-net-Sum").Range( _
+        Sheets("RawResults-net-Sum").Cells(1, 1), _
+        Sheets("RawResults-net-Sum").Cells(2, iMaxCol) _
+    )
+
     '--------------------- ALLE PROFILE
     '-------------------------------------------------------------
-    
+
     ''''''Calculate Results in kWh/m
-    
-    ' NRF-Fläche
-    Dim dBldgArea_NRF As Double
-    Dim dBldgArea_BGF As Double
-    If Range("geometry_source") = 1 Then
-        dBldgArea_NRF = CDbl(Range("BldgArea_NRF"))
-        dBldgArea_BGF = Range("BldgArea")
-    Else
-        dBldgArea_NRF = CDbl(Range("BldgArea_NRF_import"))
-        dBldgArea_BGF = CDbl(Range("BldgArea_import"))
-    End If
-        
-    Dim dAnnualResult() As Double
-    ReDim dAnnualResult(iMaxCol + 4) As Double
-    
-    For rwIndex = 1 To iMaxRow
-    
-'        'Überspringen von 3 Design Days bei IdealsLoads! (UNVOLLSTÄNDIG)
-'        If cb_hvac.Value = 1 Then
-'            If rwIndex = 1 Then
-'                rwIndex_rawresults = 1
-'            Else
-'                rwIndex_rawresults = rwIndex + 3 * 24 * (60 / Range("Timestep"))
-'            End If
-'        End If
-    
-        For colIndex = 1 To iMaxCol
-            If RawResults(1, colIndex) <> "" Then
-                If rwIndex = 1 Or colIndex = 1 Then     'IN ZEILE 1 ODER SPALTE 1 -> Beschriftung!!!
-                    If (InStr(RawResults(rwIndex, colIndex), "J")) Then
-                        Results(rwIndex, colIndex) = Replace(RawResults(rwIndex, colIndex), "[J](TimeStep)", "[Wh/m²NRF]")    'alles weitere Spaltenbeschriftung
-                    Else
-                        Results(rwIndex, colIndex) = RawResults(rwIndex, colIndex) 'Datumsspalte komplett übernehmen
-                    End If
-                    If rwIndex = iMaxRow Then Results(rwIndex, colIndex) = "Jahressumme [Wh/m²a]" 'Letzte Zeile "Beschriftung"
-                Else                                    'IN ZEILE 2-X UND SPALTE 2-X
-                    If InStr(RawResults(1, colIndex), "Temperature") Or InStr(RawResults(1, colIndex), "Not Met") Then 'Spalten Temperaturen oder Unmet Hours keine Umrechnung
-                        Results(rwIndex, colIndex) = RawResults(rwIndex, colIndex)
-                        'Temperatur Min/Max
-                        If InStr(RawResults(1, colIndex), "Temperature") Then
-                            Results(rwIndex, iMaxCol + 1) = WorksheetFunction.Max(RawResults(rwIndex, colIndex), Results(rwIndex, iMaxCol + 1))
-                            If Results(rwIndex, iMaxCol + 2) = 0 Then
-                                Results(rwIndex, iMaxCol + 2) = RawResults(rwIndex, colIndex)
-                            Else
-                                Results(rwIndex, iMaxCol + 2) = WorksheetFunction.Min(RawResults(rwIndex, colIndex), Results(rwIndex, iMaxCol + 2))
-                            End If
-                        End If
-                    'ElseIf InStr(RawResults(1, colIndex), "Fans") Then
-                        'Results(rwIndex, colIndex) = RawResults(rwIndex, colIndex) / 3600 / dBldgArea_BGF    'Ventilatorstrom muss auf BGF bezogen werden!!!
-                    Else
-                        Results(rwIndex, colIndex) = RawResults(rwIndex, colIndex) / 3600 / dBldgArea_NRF    'alles weitere Umrechnung von J in Wh/m²NRF
-                    End If
-                    
-                    'Jahressummen
-                    dAnnualResult(colIndex) = dAnnualResult(colIndex) + Results(rwIndex, colIndex) / 1000 ' Jahressumme und Umrechnung von Wh/m² in kWh/m²
-                    If rwIndex = iMaxRow Then
-                        Results(rwIndex, colIndex) = dAnnualResult(colIndex)  'in die letzte Zeile die Jahressumme schreiben!
-                    Else
-                        'Transmission -> LOSS/GAIN
-                        If (InStr(RawResults(1, colIndex), "CONDUCTION HEAT TRANSFER ENERGY ")) Then
-                            If Results(rwIndex, colIndex) < 0 Then
-                                dAnnualResult(iMaxCol + 1) = dAnnualResult(iMaxCol + 1) + Results(rwIndex, colIndex) / 1000
-                            Else
-                                dAnnualResult(iMaxCol + 2) = dAnnualResult(iMaxCol + 2) + Results(rwIndex, colIndex) / 1000
-                            End If
-                        End If
-                        
-                        'UnmetHours Jahreswerte
-                        If (InStr(RawResults(1, colIndex), "Facility Heating Setpoint Not Met While")) Then
-                            dAnnualResult(iMaxCol + 3) = dAnnualResult(iMaxCol + 3) + Results(rwIndex, colIndex)
-                        ElseIf (InStr(RawResults(1, colIndex), "Facility Cooling Setpoint Not Met While")) Then
-                            dAnnualResult(iMaxCol + 4) = dAnnualResult(iMaxCol + 4) + Results(rwIndex, colIndex)
-                        End If
-                    End If
-                    
-                End If 'Beschriftung oder Daten
-            Else 'RawResults(1, colINdex) <> ""
-                Results(rwIndex, colIndex) = ""
-            End If
-        Next 'col
-    Next 'row
-    
-    ''''''Write Loadprofils into Excel
+
+    ' ' NRF-Fläche
+    ' Dim dBldgArea_NRF As Double
+    ' Dim dBldgArea_BGF As Double
+    ' If Range("geometry_source") = 1 Then
+    '     dBldgArea_NRF = CDbl(Range("BldgArea_NRF"))
+    '     dBldgArea_BGF = Range("BldgArea")
+    ' Else
+    '     dBldgArea_NRF = CDbl(Range("BldgArea_NRF_import"))
+    '     dBldgArea_BGF = CDbl(Range("BldgArea_import"))
+    ' End If
+
+    ' Dim dAnnualResult() As Double
+    ' ReDim dAnnualResult(iMaxCol + 4) As Double
+
+    ' For rwIndex = 1 To iMaxRow
+    '     For colIndex = 1 To iMaxCol
+    '         If RawResults(1, colIndex) <> "" Then
+    '             If rwIndex = 1 Or colIndex = 1 Then     'IN ZEILE 1 ODER SPALTE 1 -> Beschriftung!!!
+    '                 If (InStr(RawResults(rwIndex, colIndex), "J")) Then
+    '                     Results(rwIndex, colIndex) = Replace(RawResults(rwIndex, colIndex), "[J](TimeStep)", "[Wh/m²NRF]")    'alles weitere Spaltenbeschriftung
+    '                 Else
+    '                     Results(rwIndex, colIndex) = RawResults(rwIndex, colIndex) 'Datumsspalte komplett übernehmen
+    '                 End If
+    '                 If rwIndex = iMaxRow Then Results(rwIndex, colIndex) = "Jahressumme [Wh/m²a]" 'Letzte Zeile "Beschriftung"
+    '             Else                                    'IN ZEILE 2-X UND SPALTE 2-X
+    '                 If InStr(RawResults(1, colIndex), "Temperature") Or InStr(RawResults(1, colIndex), "Not Met") Then 'Spalten Temperaturen oder Unmet Hours keine Umrechnung
+    '                     Results(rwIndex, colIndex) = RawResults(rwIndex, colIndex)
+    '                     'Temperatur Min/Max
+    '                     If InStr(RawResults(1, colIndex), "Temperature") Then
+    '                         Results(rwIndex, iMaxCol + 1) = WorksheetFunction.Max(RawResults(rwIndex, colIndex), Results(rwIndex, iMaxCol + 1))
+    '                         If Results(rwIndex, iMaxCol + 2) = 0 Then
+    '                             Results(rwIndex, iMaxCol + 2) = RawResults(rwIndex, colIndex)
+    '                         Else
+    '                             Results(rwIndex, iMaxCol + 2) = WorksheetFunction.Min(RawResults(rwIndex, colIndex), Results(rwIndex, iMaxCol + 2))
+    '                         End If
+    '                     End If
+    '                 'ElseIf InStr(RawResults(1, colIndex), "Fans") Then
+    '                     'Results(rwIndex, colIndex) = RawResults(rwIndex, colIndex) / 3600 / dBldgArea_BGF    'Ventilatorstrom muss auf BGF bezogen werden!!!
+    '                 Else
+    '                     Results(rwIndex, colIndex) = RawResults(rwIndex, colIndex) / 3600 / dBldgArea_NRF    'alles weitere Umrechnung von J in Wh/m²NRF
+    '                 End If
+
+    '                 'Jahressummen
+    '                 dAnnualResult(colIndex) = dAnnualResult(colIndex) + Results(rwIndex, colIndex) / 1000 ' Jahressumme und Umrechnung von Wh/m² in kWh/m²
+    '                 If rwIndex = iMaxRow Then
+    '                     Results(rwIndex, colIndex) = dAnnualResult(colIndex)  'in die letzte Zeile die Jahressumme schreiben!
+    '                 Else
+    '                     'Transmission -> LOSS/GAIN
+    '                     If (InStr(RawResults(1, colIndex), "CONDUCTION HEAT TRANSFER ENERGY ")) Then
+    '                         If Results(rwIndex, colIndex) < 0 Then
+    '                             dAnnualResult(iMaxCol + 1) = dAnnualResult(iMaxCol + 1) + Results(rwIndex, colIndex) / 1000
+    '                         Else
+    '                             dAnnualResult(iMaxCol + 2) = dAnnualResult(iMaxCol + 2) + Results(rwIndex, colIndex) / 1000
+    '                         End If
+    '                     End If
+
+    '                     'UnmetHours Jahreswerte
+    '                     If (InStr(RawResults(1, colIndex), "Facility Heating Setpoint Not Met While")) Then
+    '                         dAnnualResult(iMaxCol + 3) = dAnnualResult(iMaxCol + 3) + Results(rwIndex, colIndex)
+    '                     ElseIf (InStr(RawResults(1, colIndex), "Facility Cooling Setpoint Not Met While")) Then
+    '                         dAnnualResult(iMaxCol + 4) = dAnnualResult(iMaxCol + 4) + Results(rwIndex, colIndex)
+    '                     End If
+    '                 End If
+
+    '             End If 'Beschriftung oder Daten
+    '         Else 'RawResults(1, colINdex) <> ""
+    '             Results(rwIndex, colIndex) = ""
+    '         End If
+    '     Next 'col
+    ' Next 'row
+
+    ' Copy profiles into user-visible sheet
     Sheets("e+ Outputs").Range("A1:ZZ35100").Offset(5, 0).ClearContents
-    Sheets("e+ Outputs").Range(Sheets("e+ Outputs").Cells(1, 1), Sheets("e+ Outputs").Cells(iMaxRow, iMaxCol + 2)).Offset(5, 0) = Results
-    
+    Sheets("e+ Outputs").Range( _
+            Sheets("e+ Outputs").Cells(1, 1), _
+            Sheets("e+ Outputs").Cells(iMaxRow, iMaxCol) _
+        ).Offset(5, 0) = ResultsNFA
+    ' Sheets("e+ Outputs").Range( _
+    '         Sheets("e+ Outputs").Cells(iMaxRow + 1, 1), _
+    '         Sheets("e+ Outputs").Cells(iMaxRow + 1, iMaxCol) _
+    '     ).Offset(5, 0) = ResultsNFAAnnual(2, 1 To iMaxCol)
+    For colIndex = 2 To iMaxCol
+        Sheets("e+ Outputs").Cells(iMaxRow + 5, colIndex) = ResultsNFAAnnual(2, colIndex - 1)
+    Next
+
     '--------------------- NUTZENERGIE PROFILE
     '-------------------------------------------------------------
-    
+
     Dim Results_Nutzenergie  As Variant
     ReDim Results_Nutzenergie(1 To iMaxRow + 1, 0 To 6)
-    
+
     Dim Results_Nutzenergie_1h  As Variant
     ReDim Results_Nutzenergie_1h(1 To iMaxRow + 1, 1 To 6)
-    
+
     '''''' Write selective Loadprofiles into Excel
-    
+
     'Find colums
     For colIndex = 1 To iMaxCol
-        If (InStr(Results(1, colIndex), METER_HEATING)) Then col_heating = colIndex
-        If (InStr(Results(1, colIndex), METER_COOLING)) Then col_cooling = colIndex
-        If (InStr(Results(1, colIndex), METER_ELECTRICITY_LIGHTS)) Then col_lights = colIndex
-        If (InStr(Results(1, colIndex), METER_ELECTRICITY_PLUGS)) Then col_elec = colIndex
-        If (InStr(Results(1, colIndex), METER_ELECTRICITY_FANS)) Then col_fans = colIndex
-        If (InStr(Results(1, colIndex), METER_ELECTRICITY_PUMPS)) Then col_pumps = colIndex
+        If (InStr(ResultsNFA(1, colIndex), METER_HEATING)) Then col_heating = colIndex
+        If (InStr(ResultsNFA(1, colIndex), METER_COOLING)) Then col_cooling = colIndex
+        If (InStr(ResultsNFA(1, colIndex), METER_ELECTRICITY_LIGHTS)) Then col_lights = colIndex
+        If (InStr(ResultsNFA(1, colIndex), METER_ELECTRICITY_PLUGS)) Then col_elec = colIndex
+        If (InStr(ResultsNFA(1, colIndex), METER_ELECTRICITY_FANS)) Then col_fans = colIndex
+        If (InStr(ResultsNFA(1, colIndex), METER_ELECTRICITY_PUMPS)) Then col_pumps = colIndex
+        If (InStr(ResultsNFA(1, colIndex), FACILITY_HEATING_SEPOINT_NOT_MET_OCC)) Then col_unmet_h = colIndex
+        If (InStr(ResultsNFA(1, colIndex), FACILITY_COOLING_SEPOINT_NOT_MET_OCC)) Then col_unmet_c = colIndex
     Next
-    
+
     'Create Array with selected columns and the original timestep
     For rwIndex = 2 To (iMaxRow - 1)
-        Results_Nutzenergie(rwIndex, 0) = Results(rwIndex, 1)
-        If Not IsEmpty(col_heating) Then Results_Nutzenergie(rwIndex, 1) = Results(rwIndex, col_heating)
-        If Not IsEmpty(col_cooling) Then Results_Nutzenergie(rwIndex, 2) = Results(rwIndex, col_cooling)
-        If Not IsEmpty(col_lights) Then Results_Nutzenergie(rwIndex, 3) = Results(rwIndex, col_lights)
-        If Not IsEmpty(col_elec) Then Results_Nutzenergie(rwIndex, 4) = Results(rwIndex, col_elec)
-        If Not IsEmpty(col_fans) Then Results_Nutzenergie(rwIndex, 5) = Results(rwIndex, col_fans)
-        If Not IsEmpty(col_pumps) Then Results_Nutzenergie(rwIndex, 6) = Results(rwIndex, col_pumps)
+        Results_Nutzenergie(rwIndex, 0) = ResultsNFA(rwIndex, 1)
+        If Not IsEmpty(col_heating) Then Results_Nutzenergie(rwIndex, 1) = ResultsNFA(rwIndex, col_heating)
+        If Not IsEmpty(col_cooling) Then Results_Nutzenergie(rwIndex, 2) = ResultsNFA(rwIndex, col_cooling)
+        If Not IsEmpty(col_lights) Then Results_Nutzenergie(rwIndex, 3) = ResultsNFA(rwIndex, col_lights)
+        If Not IsEmpty(col_elec) Then Results_Nutzenergie(rwIndex, 4) = ResultsNFA(rwIndex, col_elec)
+        If Not IsEmpty(col_fans) Then Results_Nutzenergie(rwIndex, 5) = ResultsNFA(rwIndex, col_fans)
+        If Not IsEmpty(col_pumps) Then Results_Nutzenergie(rwIndex, 6) = ResultsNFA(rwIndex, col_pumps)
     Next
-    
+
     'Create Array with selected columns commulated in Wh/hour
     '[ACHTUNG : NICHT MEHR AGGREGIERT ]
     rwIndex_1h = 1
     For rwIndex = 1 To (iMaxRow - 2)
-        If Not IsEmpty(col_heating) Then Results_Nutzenergie_1h(rwIndex_1h + 1, 1) = Results_Nutzenergie_1h(rwIndex_1h + 1, 1) + Results(rwIndex + 1, col_heating)
-        If Not IsEmpty(col_cooling) Then Results_Nutzenergie_1h(rwIndex_1h + 1, 2) = Results_Nutzenergie_1h(rwIndex_1h + 1, 2) + Results(rwIndex + 1, col_cooling)
-        If Not IsEmpty(col_lights) Then Results_Nutzenergie_1h(rwIndex_1h + 1, 3) = Results_Nutzenergie_1h(rwIndex_1h + 1, 3) + Results(rwIndex + 1, col_lights)
-        If Not IsEmpty(col_elec) Then Results_Nutzenergie_1h(rwIndex_1h + 1, 4) = Results_Nutzenergie_1h(rwIndex_1h + 1, 4) + Results(rwIndex + 1, col_elec)
-        If Not IsEmpty(col_fans) Then Results_Nutzenergie_1h(rwIndex_1h + 1, 5) = Results_Nutzenergie_1h(rwIndex_1h + 1, 5) + Results(rwIndex + 1, col_fans)
-        If Not IsEmpty(col_pumps) Then Results_Nutzenergie_1h(rwIndex_1h + 1, 6) = Results_Nutzenergie_1h(rwIndex_1h + 1, 6) + Results(rwIndex + 1, col_pumps)
+        If Not IsEmpty(col_heating) Then Results_Nutzenergie_1h(rwIndex_1h + 1, 1) = Results_Nutzenergie_1h(rwIndex_1h + 1, 1) + ResultsNFA(rwIndex + 1, col_heating)
+        If Not IsEmpty(col_cooling) Then Results_Nutzenergie_1h(rwIndex_1h + 1, 2) = Results_Nutzenergie_1h(rwIndex_1h + 1, 2) + ResultsNFA(rwIndex + 1, col_cooling)
+        If Not IsEmpty(col_lights) Then Results_Nutzenergie_1h(rwIndex_1h + 1, 3) = Results_Nutzenergie_1h(rwIndex_1h + 1, 3) + ResultsNFA(rwIndex + 1, col_lights)
+        If Not IsEmpty(col_elec) Then Results_Nutzenergie_1h(rwIndex_1h + 1, 4) = Results_Nutzenergie_1h(rwIndex_1h + 1, 4) + ResultsNFA(rwIndex + 1, col_elec)
+        If Not IsEmpty(col_fans) Then Results_Nutzenergie_1h(rwIndex_1h + 1, 5) = Results_Nutzenergie_1h(rwIndex_1h + 1, 5) + ResultsNFA(rwIndex + 1, col_fans)
+        If Not IsEmpty(col_pumps) Then Results_Nutzenergie_1h(rwIndex_1h + 1, 6) = Results_Nutzenergie_1h(rwIndex_1h + 1, 6) + ResultsNFA(rwIndex + 1, col_pumps)
 
         rwIndex_1h = rwIndex_1h + 1
     Next
-    
+
     'Names first row
     Results_Nutzenergie_1h(1, 1) = "Heizenergie [Wh/m²NRF]"
     Results_Nutzenergie(1, 1) = "Heizenergie [Wh/m²NRF]"
-    
+
     Results_Nutzenergie_1h(1, 2) = "Kühlenergie [Wh/m²NRF]"
     Results_Nutzenergie(1, 2) = "Kühlenergie [Wh/m²NRF]"
-    
+
     Results_Nutzenergie_1h(1, 3) = "Beleuchtung [Wh/m²NRF]"
     Results_Nutzenergie(1, 3) = "Beleuchtung [Wh/m²NRF]"
-    
+
     Results_Nutzenergie_1h(1, 4) = "Elektrische Geräte [Wh/m²NRF]"
     Results_Nutzenergie(1, 4) = "Elektrische Geräte [Wh/m²NRF]"
-    
+
     Results_Nutzenergie_1h(1, 5) = "Lüftungsstrom [Wh/m²NRF]"
     Results_Nutzenergie(1, 5) = "Lüftungsstrom [Wh/m²NRF]"
-    
+
     Results_Nutzenergie_1h(1, 6) = "Pumpenstrom [Wh/m²NRF]"
     Results_Nutzenergie(1, 6) = "Pumpenstrom [Wh/m²NRF]"
 
     'Write into Excel Sheet
     Sheets("NUTZENERGIE PROFILE").Range("A6:F" & 35100).ClearContents
     Sheets("NUTZENERGIE PROFILE").Range("A6:G" & iMaxRow + 5) = Results_Nutzenergie
-    
+
     Sheets("pivot").Range("D3:I" & 35100).ClearContents
     Sheets("pivot").Range("D3:I" & iMaxRow + 5) = Results_Nutzenergie_1h
-    
-    Sheets("HAUPTSEITE").Range("unmethours_h") = dAnnualResult(iMaxCol + 3)
-    Sheets("HAUPTSEITE").Range("unmethours_c") = dAnnualResult(iMaxCol + 4)
-    
+
+    Sheets("HAUPTSEITE").Range("unmethours_h") = ResultsNFAAnnual(2, col_unmet_h)
+    Sheets("HAUPTSEITE").Range("unmethours_c") = ResultsNFAAnnual(2, col_unmet_c)
+
     'Aggregierung in Pivot Table auf Summe ändern
     If Sheets("pivot").Range("A1") <> Energie Then
         For i = 1 To 6
@@ -527,60 +534,58 @@ Sub CreateResults()
         Sheets("ANSICHT PROFILE").Protect
         Sheets("pivot").Range("A1") = "Energie"
     End If
-    
-    '--------------------- Übersicht Gebäudebilanz
-    '-------------------------------------------------------------
-    
-    'Reset
-    Range("heating_annual") = ""
-    Range("cooling_annual") = ""
-    Range("lights_annual") = ""
-    Range("equipment_annual") = ""
-    
-    Range("pumps_annual") = ""
-    Range("fans_annual") = ""
-    
+
+    ' '--------------------- Übersicht Gebäudebilanz
+    ' '-------------------------------------------------------------
+
+    Range("heating_annual") = "0"
+    Range("cooling_annual") = "0"
+    Range("lights_annual") = "0"
+    Range("equipment_annual") = "0"
+    Range("pumps_annual") = "0"
+    Range("fans_annual") = "0"
+
     For colIndex = 1 To iMaxCol
         'Basic Output
-        If (InStr(Results(1, colIndex), METER_HEATING)) Then Range("heating_annual") = Results(iMaxRow, colIndex)
-        If (InStr(Results(1, colIndex), METER_COOLING)) Then Range("cooling_annual") = Results(iMaxRow, colIndex)
-        If (InStr(Results(1, colIndex), METER_ELECTRICITY_LIGHTS)) Then Range("lights_annual") = Results(iMaxRow, colIndex)
-        If (InStr(Results(1, colIndex), METER_ELECTRICITY_PLUGS)) Then Range("equipment_annual") = Results(iMaxRow, colIndex)
-        If (InStr(Results(1, colIndex), METER_ELECTRICITY_PUMPS)) Then Range("pumps_annual") = Results(iMaxRow, colIndex)
-        If (InStr(Results(1, colIndex), METER_ELECTRICITY_FANS)) Then Range("fans_annual") = Results(iMaxRow, colIndex)
+        If (InStr(ResultsNFAAnnual(1, colIndex), METER_HEATING)) Then Range("heating_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), METER_COOLING)) Then Range("cooling_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), METER_ELECTRICITY_LIGHTS)) Then Range("lights_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), METER_ELECTRICITY_PLUGS)) Then Range("equipment_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), METER_ELECTRICITY_PUMPS)) Then Range("pumps_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), METER_ELECTRICITY_FANS)) Then Range("fans_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
     Next
-    
+
     '------ Liste Gebäudebilanz
-    
-    Sheets("GEBÄUDEBILANZ").Range("N10:N13") = ""
-    Sheets("GEBÄUDEBILANZ").Range("N18:N24") = ""
-    
+
+    Sheets("GEBÄUDEBILANZ").Range("N10:N14") = Array(0,0,0,0,0)
+    Sheets("GEBÄUDEBILANZ").Range("N18:N25") = Array(0,0,0,0,0,0,0,0)
+
     For colIndex = 1 To iMaxCol
         'Verluste
-        If (InStr(Results(1, colIndex), METER_WINDOW_SURFACE_HEAT_LOSS)) Then Sheets("GEBÄUDEBILANZ").Range("N11") = Results(iMaxRow, colIndex) * -1
-        If (InStr(Results(1, colIndex), METER_INFILTRATION_HEAT_LOSS)) Then Sheets("GEBÄUDEBILANZ").Range("N12") = Results(iMaxRow, colIndex) * -1
-        If (InStr(Results(1, colIndex), METER_VENTILATION_HEAT_LOSS)) Then Sheets("GEBÄUDEBILANZ").Range("N13") = Results(iMaxRow, colIndex) * -1
-        'If (InStr(Results(1, colIndex), "MECHANISCHE LÜFTUNG")) Then Sheets("GEBÄUDEBILANZ").Range("N14") = Results(iMaxRow, colIndex) * -1
-        
+        If (InStr(ResultsNFAAnnual(1, colIndex), METER_WINDOW_SURFACE_HEAT_LOSS)) Then Sheets("GEBÄUDEBILANZ").Range("N11") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), METER_INFILTRATION_HEAT_LOSS)) Then Sheets("GEBÄUDEBILANZ").Range("N12") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), METER_VENTILATION_HEAT_LOSS)) Then Sheets("GEBÄUDEBILANZ").Range("N13") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), METER_MECHANICAL_VENTILATION_LOSS)) Then Sheets("GEBÄUDEBILANZ").Range("N14") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
+
         'Gewinne
-        If (InStr(Results(1, colIndex), METER_WINDOW_SURFACE_HEAT_GAIN)) Then Sheets("GEBÄUDEBILANZ").Range("N19") = Results(iMaxRow, colIndex)
-        If (InStr(Results(1, colIndex), METER_INFILTRATION_HEAT_GAIN)) Then Sheets("GEBÄUDEBILANZ").Range("N20") = Results(iMaxRow, colIndex)
-        If (InStr(Results(1, colIndex), METER_VENTILATION_HEAT_GAIN)) Then Sheets("GEBÄUDEBILANZ").Range("N21") = Results(iMaxRow, colIndex)
-        If (InStr(Results(1, colIndex), METER_ZONE_PLUGS)) Then Sheets("GEBÄUDEBILANZ").Range("N22") = Results(iMaxRow, colIndex)
-        If (InStr(Results(1, colIndex), METER_ZONE_LIGHTS)) Then Sheets("GEBÄUDEBILANZ").Range("N23") = Results(iMaxRow, colIndex)
-        If (InStr(Results(1, colIndex), METER_ZONE_PEOPLE)) Then Sheets("GEBÄUDEBILANZ").Range("N24") = Results(iMaxRow, colIndex)
+        If (InStr(ResultsNFAAnnual(1, colIndex), METER_WINDOW_SURFACE_HEAT_GAIN)) Then Sheets("GEBÄUDEBILANZ").Range("N19") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), METER_INFILTRATION_HEAT_GAIN)) Then Sheets("GEBÄUDEBILANZ").Range("N20") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), METER_VENTILATION_HEAT_GAIN)) Then Sheets("GEBÄUDEBILANZ").Range("N21") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), METER_ZONE_PLUGS)) Then Sheets("GEBÄUDEBILANZ").Range("N22") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), METER_ZONE_LIGHTS)) Then Sheets("GEBÄUDEBILANZ").Range("N23") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), METER_ZONE_PEOPLE)) Then Sheets("GEBÄUDEBILANZ").Range("N24") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), METER_MECHANICAL_VENTILATION_GAIN)) Then Sheets("GEBÄUDEBILANZ").Range("N25") = ResultsNFAAnnual(2, colIndex) * 0.001
     Next
-    
-    'Transmission Wände
-    Sheets("GEBÄUDEBILANZ").Range("N10") = dAnnualResult(iMaxCol + 1) 'loss
-    Sheets("GEBÄUDEBILANZ").Range("N18") = dAnnualResult(iMaxCol + 2) 'gain
-    
-    
+
+    ' 'Transmission Wände
+    ' Sheets("GEBÄUDEBILANZ").Range("N10") = dAnnualResult(iMaxCol + 1) 'loss
+    ' Sheets("GEBÄUDEBILANZ").Range("N18") = dAnnualResult(iMaxCol + 2) 'gain
+
     '------------------------
     Sheets("GEBÄUDEBILANZ").Protect
     Application.ScreenUpdating = True
-    
 End Sub
+
 Sub DiagLeistung(leistung As Boolean)
 
     'Diagramme
