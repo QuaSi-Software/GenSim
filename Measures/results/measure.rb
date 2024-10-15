@@ -179,6 +179,7 @@ class Results < OpenStudio::Measure::ReportingMeasure
     list_of_variables << "DistrictHeating:Facility"
 
     # HEAT LOSS
+    list_of_variables << "METER SURFACE AVERAGE FACE CONDUCTION HEAT TRANSFER ENERGY"
     list_of_variables << "METER SURFACE AVERAGE FACE CONDUCTION HEAT LOSS RATE"
     list_of_variables << "METER SURFACE WINDOW HEAT LOSS ENERGY"
     # NEW VARIABLES

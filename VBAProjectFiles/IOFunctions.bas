@@ -347,6 +347,30 @@ Sub CreateResults()
         Sheets("RawResults-net-Sum").Cells(2, iMaxCol) _
     )
 
+    'Find colums for faster indexing
+    For colIndex = 1 To iMaxCol
+        If (InStr(ResultsNFA(1, colIndex), METER_HEATING)) Then col_heating = colIndex
+        If (InStr(ResultsNFA(1, colIndex), METER_COOLING)) Then col_cooling = colIndex
+        If (InStr(ResultsNFA(1, colIndex), METER_ELECTRICITY_LIGHTS)) Then col_lights = colIndex
+        If (InStr(ResultsNFA(1, colIndex), METER_ELECTRICITY_PLUGS)) Then col_elec = colIndex
+        If (InStr(ResultsNFA(1, colIndex), METER_ELECTRICITY_FANS)) Then col_fans = colIndex
+        If (InStr(ResultsNFA(1, colIndex), METER_ELECTRICITY_PUMPS)) Then col_pumps = colIndex
+        If (InStr(ResultsNFA(1, colIndex), FACILITY_HEATING_SEPOINT_NOT_MET_OCC)) Then col_unmet_h = colIndex
+        If (InStr(ResultsNFA(1, colIndex), FACILITY_COOLING_SEPOINT_NOT_MET_OCC)) Then col_unmet_c = colIndex
+        If (InStr(ResultsNFA(1, colIndex), METER_SURFACE_FACE_CONDUCTION_TOTAL)) Then col_conduction_total = colIndex
+    Next
+
+    ' Split conduction heat transfer into two sums for gains and losses
+    Dim conduction_totals() As Double
+    ReDim conduction_totals(2) As Double
+    For rwIndex = 2 To iMaxRow
+        If ResultsNFA(rwIndex, col_conduction_total) <= 0 Then
+            conduction_totals(0) = conduction_totals(0) + ResultsNFA(rwIndex, col_conduction_total) / 1000
+        Else
+            conduction_totals(1) = conduction_totals(1) + ResultsNFA(rwIndex, col_conduction_total) / 1000
+        End If
+    Next
+
     '--------------------- ALLE PROFILE
     '-------------------------------------------------------------
 
@@ -447,18 +471,6 @@ Sub CreateResults()
     ReDim Results_Nutzenergie_1h(1 To iMaxRow + 1, 1 To 6)
 
     '''''' Write selective Loadprofiles into Excel
-
-    'Find colums
-    For colIndex = 1 To iMaxCol
-        If (InStr(ResultsNFA(1, colIndex), METER_HEATING)) Then col_heating = colIndex
-        If (InStr(ResultsNFA(1, colIndex), METER_COOLING)) Then col_cooling = colIndex
-        If (InStr(ResultsNFA(1, colIndex), METER_ELECTRICITY_LIGHTS)) Then col_lights = colIndex
-        If (InStr(ResultsNFA(1, colIndex), METER_ELECTRICITY_PLUGS)) Then col_elec = colIndex
-        If (InStr(ResultsNFA(1, colIndex), METER_ELECTRICITY_FANS)) Then col_fans = colIndex
-        If (InStr(ResultsNFA(1, colIndex), METER_ELECTRICITY_PUMPS)) Then col_pumps = colIndex
-        If (InStr(ResultsNFA(1, colIndex), FACILITY_HEATING_SEPOINT_NOT_MET_OCC)) Then col_unmet_h = colIndex
-        If (InStr(ResultsNFA(1, colIndex), FACILITY_COOLING_SEPOINT_NOT_MET_OCC)) Then col_unmet_c = colIndex
-    Next
 
     'Create Array with selected columns and the original timestep
     For rwIndex = 2 To (iMaxRow - 1)
@@ -577,9 +589,9 @@ Sub CreateResults()
         If (InStr(ResultsNFAAnnual(1, colIndex), METER_MECHANICAL_VENTILATION_GAIN)) Then Sheets("GEBÄUDEBILANZ").Range("N25") = ResultsNFAAnnual(2, colIndex) * 0.001
     Next
 
-    ' 'Transmission Wände
-    ' Sheets("GEBÄUDEBILANZ").Range("N10") = dAnnualResult(iMaxCol + 1) 'loss
-    ' Sheets("GEBÄUDEBILANZ").Range("N18") = dAnnualResult(iMaxCol + 2) 'gain
+    ' Conduction losses/gains
+    Sheets("GEBÄUDEBILANZ").Range("N10") = conduction_totals(0) 'loss
+    Sheets("GEBÄUDEBILANZ").Range("N18") = conduction_totals(1) 'gain
 
     '------------------------
     Sheets("GEBÄUDEBILANZ").Protect
