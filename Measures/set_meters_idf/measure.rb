@@ -34,6 +34,35 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     return args
   end
 
+  def create_variable(variable_name, reportingInterval, workspace)
+    var = OpenStudio::IdfObject.new("Output:Variable".to_IddObjectType)
+    var.setString(0, "*")
+    var.setString(1, variable_name)
+    var.setString(2, reportingInterval)
+    workspace.insertObject(var)
+  end
+
+  def create_variable_with_key(key_name, variable_name, reportingInterval, workspace)
+    var = OpenStudio::IdfObject.new("Output:Variable".to_IddObjectType)
+    var.setString(0, key_name)
+    var.setString(1, variable_name)
+    var.setString(2, reportingInterval)
+    workspace.insertObject(var)
+  end
+
+  def create_meter(meter_name, reportingInterval, workspace)
+    meterCustom = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
+    meterCustom.setString(0, "Meter " + meter_name)
+    meterCustom.setString(1, "Generic")
+    meterCustom.setString(2, "*")
+    meterCustom.setString(3, meter_name)
+    workspace.insertObject(meterCustom)
+    meter = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
+    meter.setString(0, "Meter " + meter_name)
+    meter.setString(1, reportingInterval)
+    workspace.insertObject(meter)
+  end
+
   # define what happens when the measure is run
   def run(workspace, runner, user_arguments)
     super(workspace, runner, user_arguments)
@@ -282,6 +311,53 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     meterMechVentLoss.setString(1, reportingInterval)
     workspace.insertObject(meterMechVentLoss)
 
+    eplusVariables = [
+      "Zone Mechanical Ventilation No Load Heat Removal Energy",
+      "Zone Mechanical Ventilation Cooling Load Increase Energy",
+      "Zone Mechanical Ventilation Cooling Load Increase Due to Overheating Energy",
+      "Zone Mechanical Ventilation Cooling Load Decrease Energy" ,
+      "Zone Mechanical Ventilation No Load Heat Addition Energy",
+      "Zone Mechanical Ventilation Heating Load Increase Energy",
+      "Zone Mechanical Ventilation Heating Load Increase Due to Overcooling Energy",
+      "Zone Mechanical Ventilation Heating Load Decrease Energy" ,
+      "Air System Heat Exchanger Total Heating Energy",
+      "Air System Heat Exchanger Total Cooling Energy",
+      "Zone Windows Total Transmitted Solar Radiation Energy",
+      "Zone Windows Total Heat Gain Energy",
+      "Zone Windows Total Heat Loss Energy",
+      "Surface Average Face Conduction Heat Gain Rate",
+      "Surface Average Face Conduction Heat Loss Rate",
+      "Surface Outside Face Conduction Heat Gain Rate",
+      "Surface Outside Face Conduction Heat Loss Rate",
+      "Surface Inside Face Conduction Heat Gain Rate",
+      "Surface Inside Face Conduction Heat Loss Rate",
+      "Surface Outside Face Convection Heat Gain Rate",
+      "Surface Inside Face Convection Heat Gain Rate",
+      "Zone Air Heat Balance Internal Convective Heat Gain Rate",
+      "Zone Air Heat Balance Surface Convection Rate",
+      "Zone Air Heat Balance Interzone Air Transfer Rate",
+      "Zone Air Heat Balance Outdoor Air Transfer Rate",
+      "Zone Air Heat Balance System Air Transfer Rate",
+      "Zone Air Heat Balance System Convective Heat Gain Rate",
+      "Zone Air Heat Balance Air Energy Storage Rate",
+      "Zone Air Heat Balance Deviation Rate"
+    ]
+    eplusVariables.each{ |name|
+      create_variable(name, reportingInterval, workspace)
+      create_meter(name, reportingInterval, workspace)
+    }
+
+    create_variable_with_key("Outside Air Node", "System Node Temperature", reportingInterval, workspace)
+    create_variable_with_key("Outside Air Node", "System Node Mass Flow Rate", reportingInterval, workspace)
+    create_variable_with_key("Outside Air Node", "System Node Specific Heat", reportingInterval, workspace)
+    create_variable_with_key("Outside Air Node", "System Node Enthalpy", reportingInterval, workspace)
+    create_variable_with_key("Outside Relief Node", "System Node Temperature", reportingInterval, workspace)
+    create_variable_with_key("Outside Relief Node", "System Node Mass Flow Rate", reportingInterval, workspace)
+    create_variable_with_key("Outside Relief Node", "System Node Specific Heat", reportingInterval, workspace)
+    create_variable_with_key("Outside Relief Node", "System Node Enthalpy", reportingInterval, workspace)
+
+    create_variable("Zone Mechanical Ventilation Mass Flow Rate", reportingInterval, workspace)
+
     # make new string
     new_diagnostic_string = "
       Output:Diagnostics,
@@ -395,9 +471,9 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
 
     # make new string
     new_reporting_string = "
-    	OutputControl:ReportingTolerances,
-      	1,
-				1;"
+      OutputControl:ReportingTolerances,
+        1,
+        1;"
 
     # make new object from string
     idfObject = OpenStudio::IdfObject.load(new_reporting_string)
