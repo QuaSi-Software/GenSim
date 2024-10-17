@@ -128,16 +128,16 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
     # SlabMat
     argumentName = "base_plate_"
     for i in 1..MatLayerCount
-      args << OpenStudio::Measure::OSArgument.makeStringArgument(argumentName + i.to_s + "_name", true)
-      args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_thickness", true)
-      args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_conductivity", true)
-      args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_density", true)
-      args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_heat_capacity", true)
+      args << OpenStudio::Measure::OSArgument.makeStringArgument(argumentName + i.to_s + "_name", i == 1)
+      args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_thickness", i == 1)
+      args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_conductivity", i == 1)
+      args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_density", i == 1)
+      args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_heat_capacity", i == 1)
     end
 
     # Massen
     argumentName = "inner_masses_"
-    for i in 1..3
+    for i in 1..MatLayerCount
       args << OpenStudio::Measure::OSArgument.makeStringArgument(argumentName + i.to_s + "_name", i == 1)
       args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_thickness", i == 1)
       args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_conductivity", i == 1)
@@ -161,7 +161,7 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
     args << OpenStudio::Measure::OSArgument.makeIntegerArgument(argumentName + "temp_calc_layer", true)
     args << OpenStudio::Measure::OSArgument.makeIntegerArgument(argumentName + "dim_ctf", true)
     args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + "tube_spacing", true)
-    for i in 1..4
+    for i in 1..MatLayerCount
       args << OpenStudio::Measure::OSArgument.makeStringArgument(argumentName + i.to_s + "_name", i == 1)
       args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_thickness", i == 1)
       args << OpenStudio::Measure::OSArgument.makeDoubleArgument(argumentName + i.to_s + "_conductivity", i == 1)
@@ -186,6 +186,33 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
     return args
   end
 
+  # parses a material definition from the arguments
+  def getMaterialFromArguments(prefix, nr, as_optional, runner, user_arguments)
+    if as_optional
+      name = runner.getOptionalStringArgumentValue(prefix + nr.to_s + "_name", user_arguments)
+      if name.empty?
+        return false
+      end
+
+      return Material.new(
+        name.get(),
+        runner.getOptionalDoubleArgumentValue(prefix + nr.to_s + "_thickness", user_arguments).get(),
+        runner.getOptionalDoubleArgumentValue(prefix + nr.to_s + "_conductivity", user_arguments).get(),
+        runner.getOptionalDoubleArgumentValue(prefix + nr.to_s + "_density", user_arguments).get(),
+        runner.getOptionalDoubleArgumentValue(prefix + nr.to_s + "_heat_capacity", user_arguments).get()
+      )
+
+    else
+      return Material.new(
+        runner.getStringArgumentValue(prefix + nr.to_s + "_name", user_arguments),
+        runner.getDoubleArgumentValue(prefix + nr.to_s + "_thickness", user_arguments),
+        runner.getDoubleArgumentValue(prefix + nr.to_s + "_conductivity", user_arguments),
+        runner.getDoubleArgumentValue(prefix + nr.to_s + "_density", user_arguments),
+        runner.getDoubleArgumentValue(prefix + nr.to_s + "_heat_capacity", user_arguments)
+      )
+    end
+  end
+
   # define what happens when the measure is run
   def run(model, runner, user_arguments)
     super(model, runner, user_arguments)
@@ -193,120 +220,60 @@ class AddMaterialsAndConstruction < OpenStudio::Measure::ModelMeasure
     # use the built-in error checking
     return false unless runner.validateUserArguments(arguments(model), user_arguments)
 
-    mats = []
-    argumentName = "external_wall_"
-    # assign the user inputs to variables
-    for i in 1..MatLayerCount
-      mats << Material.new(
-        runner.getStringArgumentValue(argumentName + i.to_s + "_name", user_arguments),
-        runner.getDoubleArgumentValue(argumentName + i.to_s + "_thickness", user_arguments),
-        runner.getDoubleArgumentValue(argumentName + i.to_s + "_conductivity", user_arguments),
-        runner.getDoubleArgumentValue(argumentName + i.to_s + "_density", user_arguments),
-        runner.getDoubleArgumentValue(argumentName + i.to_s + "_heat_capacity", user_arguments)
-      )
-    end
-    # external wall
-    constrExtWall = CreateConstruction(model, "ExternalWallConstruction", mats)
-    # echo back to the user
-    runner.registerInfo("Construction #{constrExtWall.name} was added.")
+    # create constructions from user inputs. each construction must consist of at least one
+    # fully specified material layer.
+    constructions = {}
+    construction_names = {
+      "external_wall" => "ExternalWallConstruction",
+      "roof" => "RoofConstruction",
+      "base_plate" => "SlabConstruction",
+      "inner_masses" => "InteriorConstruction",
+      "interior_slab" => "InteriorSlabConstruction",
+    }
 
-    mats = []
-    argumentName = "roof_"
-    # assign the user inputs to variables
-    for i in 1..MatLayerCount
-      mats << Material.new(
-        runner.getStringArgumentValue(argumentName + i.to_s + "_name", user_arguments),
-        runner.getDoubleArgumentValue(argumentName + i.to_s + "_thickness", user_arguments),
-        runner.getDoubleArgumentValue(argumentName + i.to_s + "_conductivity", user_arguments),
-        runner.getDoubleArgumentValue(argumentName + i.to_s + "_density", user_arguments),
-        runner.getDoubleArgumentValue(argumentName + i.to_s + "_heat_capacity", user_arguments)
-      )
-    end
-    # external wall
-    constrRoof = CreateConstruction(model, "RoofConstruction", mats)
-    # echo back to the user
-    runner.registerInfo("Construction #{constrRoof.name} was added.")
+    construction_names.each{ |mat_prefix, constrName|
+      mats = []
+      for i in 1..MatLayerCount
+        mat = getMaterialFromArguments(mat_prefix + "_", i, i > 1, runner, user_arguments)
+        if not mat
+          break
+        end
+        mats << mat
+      end
 
-    mats = []
-    argumentName = "base_plate_"
-    # assign the user inputs to variables
-    for i in 1..MatLayerCount
-      mats << Material.new(
-        runner.getStringArgumentValue(argumentName + i.to_s + "_name", user_arguments),
-        runner.getDoubleArgumentValue(argumentName + i.to_s + "_thickness", user_arguments),
-        runner.getDoubleArgumentValue(argumentName + i.to_s + "_conductivity", user_arguments),
-        runner.getDoubleArgumentValue(argumentName + i.to_s + "_density", user_arguments),
-        runner.getDoubleArgumentValue(argumentName + i.to_s + "_heat_capacity", user_arguments)
-      )
-    end
-    # external wall
-    constrSlab = CreateConstruction(model, "SlabConstruction", mats)
-    # echo back to the user
-    runner.registerInfo("Construction #{constrSlab.name} was added.")
+      constructions[constrName] = CreateConstruction(model, constrName, mats)
+      runner.registerInfo("#{constrName} was added.")
+    }
 
-    mats = []
-    argumentName = "inner_masses_"
-    # assign the user inputs to variables
-    for i in 1..3
-      mats << Material.new(
-        runner.getStringArgumentValue(argumentName + i.to_s + "_name", user_arguments),
-        runner.getDoubleArgumentValue(argumentName + i.to_s + "_thickness", user_arguments),
-        runner.getDoubleArgumentValue(argumentName + i.to_s + "_conductivity", user_arguments),
-        runner.getDoubleArgumentValue(argumentName + i.to_s + "_density", user_arguments),
-        runner.getDoubleArgumentValue(argumentName + i.to_s + "_heat_capacity", user_arguments)
-      )
-    end
-    # external wall
-    constrInternal = CreateConstruction(model, "InteriorConstruction", mats)
-    # echo back to the user
-    runner.registerInfo("Construction #{constrInternal.name} was added.")
-
-    mats = []
-    argumentName = "interior_slab_"
-    # assign the user inputs to variables
-    for i in 1..MatLayerCount
-      mats << Material.new(
-        runner.getStringArgumentValue(argumentName + i.to_s + "_name", user_arguments),
-        runner.getDoubleArgumentValue(argumentName + i.to_s + "_thickness", user_arguments),
-        runner.getDoubleArgumentValue(argumentName + i.to_s + "_conductivity", user_arguments),
-        runner.getDoubleArgumentValue(argumentName + i.to_s + "_density", user_arguments),
-        runner.getDoubleArgumentValue(argumentName + i.to_s + "_heat_capacity", user_arguments)
-      )
-    end
-    # external wall
-    interiorConstrSlab = CreateConstruction(model, "InteriorSlabConstruction", mats)
-    # echo back to the user
-    runner.registerInfo("Construction #{interiorConstrSlab.name} was added.")
-
-    argumentName = "windows_"
-    constrWindow = CreateWindowConstruction(
+    # windows construction requires different arguments and doesn't consist of layers
+    constructions["WindowsConstruction"] = CreateWindowConstruction(
       model,
       "WindowsConstruction",
-      runner.getStringArgumentValue(argumentName + "name", user_arguments),
-      runner.getDoubleArgumentValue(argumentName + "u_value", user_arguments),
-      runner.getDoubleArgumentValue(argumentName + "shgc", user_arguments)
+      runner.getStringArgumentValue("windows_name", user_arguments),
+      runner.getDoubleArgumentValue("windows_u_value", user_arguments),
+      runner.getDoubleArgumentValue("windows_shgc", user_arguments)
     )
-    # echo back to the user
-    runner.registerInfo("Construction #{constrWindow.name} was added.")
+    runner.registerInfo("WindowsConstruction was added.")
 
+    # now add the constructions to surfaces, depending on the type of surface
     model.getSurfaces.each do |surface|
       surfaceType = surface.surfaceType.upcase
       if (surface.outsideBoundaryCondition == "Ground") && (surfaceType == "FLOOR")
-        surface.setConstruction(constrSlab)
+        surface.setConstruction(constructions["SlabConstruction"])
       elsif (surface.outsideBoundaryCondition == "Outdoors") && (surfaceType == "WALL")
-        surface.setConstruction(constrExtWall)
+        surface.setConstruction(constructions["ExternalWallConstruction"])
       elsif (surface.outsideBoundaryCondition == "Outdoors") && (surfaceType == "ROOFCEILING")
-        surface.setConstruction(constrRoof)
+        surface.setConstruction(constructions["RoofConstruction"])
       elsif surfaceType == "FLOOR"
-        surface.setConstruction(interiorConstrSlab)
+        surface.setConstruction(constructions["InteriorSlabConstruction"])
       elsif surfaceType == "ROOFCEILING"
-        surface.setConstruction(interiorConstrSlab)
+        surface.setConstruction(constructions["InteriorSlabConstruction"])
       else
-        surface.setConstruction(constrInternal)
+        surface.setConstruction(constructions["InteriorConstruction"])
       end
       # iterate over the subsurfaces to assign the window construction
       surface.subSurfaces.each do |subSurface|
-        subSurface.setConstruction(constrWindow)
+        subSurface.setConstruction(constructions["WindowsConstruction"])
       end
     end
 
