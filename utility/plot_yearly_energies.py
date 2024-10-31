@@ -12,7 +12,7 @@ def read_csv(filename):
 
 def j_to_kwh(x):
     """Convert J to kWh."""
-    return x * 0.001 / 3600
+    return x / 3600000
 
 def j_to_mwh(x):
     """Convert J to MWh."""
@@ -26,21 +26,29 @@ def w_to_mwh(x):
     """Convert W to MWh, using an implicit time of 1 h."""
     return w_to_kwh(x) * 0.001
 
+def wh_to_mwh(x):
+    """Convert Wh to MWh."""
+    return x * 0.000001
+
 def convert_units(df):
     """Convert the units in the given data frame to MWh for units J and W."""
     for column in df.columns:
         if "[J]" in column:
             df[column] = df[column].apply(j_to_mwh)
+        elif "[Wh]" in column:
+            df[column] = df[column].apply(wh_to_mwh)
         elif "[W]" in column:
             # conversion from power to energy works only with implicit time step of 1 h
             df[column] = df[column].apply(w_to_mwh)
 
     df.rename(columns=lambda c: c.replace('[J]', ''), inplace=True)
     df.rename(columns=lambda c: c.replace('[W]', ''), inplace=True)
+    df.rename(columns=lambda c: c.replace('[Wh]', ''), inplace=True)
+    df.rename(columns=lambda c: c.replace('[hr]', ''), inplace=True)
 
 
 def create_barchart(
-    title_name, mechanical_ventilation_losses, mechanical_ventilation_gains,
+    title_name, block, mechanical_ventilation_losses, mechanical_ventilation_gains,
     transmission_trans_losses, transmission_opqaue_losses, transmission_trans_gains,
     transmission_opqaue_gains, infiltration_losses, infiltration_gains, window_ventilation_losses,
     window_ventilation_gains, solar_gains, internal_gains, heating_gains, cooling_losses
@@ -99,13 +107,14 @@ def create_barchart(
     ax.set_title(title_name)
     ax.set_ylabel("MWh")
     plt.tight_layout()
-    plt.show()
+    plt.show(block=block)
 
 def try_first(df, key):
     """Returns the first value of the given column, if it exists, with 0 otherwise."""
-    if key in df:
-        return df[key][0]
-    else:
+    try:
+        val = df.at[0, key]
+        return val
+    except KeyError:
         return 0
 
 def create_plot(df):
@@ -134,11 +143,11 @@ def create_plot(df):
     heating_gains = try_first(df, "DistrictHeating:Facility")
     cooling_losses = try_first(df, "DistrictCooling:Facility")
 
-    create_barchart("Old Mapping", mechanical_ventilation_losses, mechanical_ventilation_gains,
-        transmission_trans_losses, transmission_opaque_losses, transmission_trans_gains,
-        transmission_opaque_gains, infiltration_losses, infiltration_gains,
-        window_ventilation_losses, window_ventilation_gains, solar_gains, internal_gains,
-        heating_gains, cooling_losses
+    create_barchart("Old Mapping", False, mechanical_ventilation_losses,
+        mechanical_ventilation_gains, transmission_trans_losses, transmission_opaque_losses,
+        transmission_trans_gains, transmission_opaque_gains, infiltration_losses,
+        infiltration_gains, window_ventilation_losses, window_ventilation_gains, solar_gains,
+        internal_gains, heating_gains, cooling_losses
     )
 
     # new mapping
@@ -159,11 +168,11 @@ def create_plot(df):
     heating_gains = try_first(df, "DistrictHeating:Facility")
     cooling_losses = try_first(df, "DistrictCooling:Facility")
 
-    create_barchart("New Mapping", mechanical_ventilation_losses, mechanical_ventilation_gains,
-        transmission_trans_losses, transmission_opaque_losses, transmission_trans_gains,
-        transmission_opaque_gains, infiltration_losses, infiltration_gains,
-        window_ventilation_losses, window_ventilation_gains, solar_gains, internal_gains,
-        heating_gains, cooling_losses
+    create_barchart("New Mapping", True, mechanical_ventilation_losses,
+        mechanical_ventilation_gains, transmission_trans_losses, transmission_opaque_losses,
+        transmission_trans_gains, transmission_opaque_gains, infiltration_losses,
+        infiltration_gains, window_ventilation_losses, window_ventilation_gains, solar_gains,
+        internal_gains, heating_gains, cooling_losses
     )
 
 def main():
