@@ -130,10 +130,15 @@ class Results < OpenStudio::Measure::ReportingMeasure
     end
 
     row_annual = []
-    for key in headers[1..-1]
+    for key in headers.uniq[1..-1]
       sum = 0
       for i in 0..num_times
-        sum += values[key][i]
+        value = values[key][i]
+        if value.kind_of?(Array)
+          sum += sum(value) / value.length
+        else
+          sum += value
+        end
       end
       row_annual << sum * conversion_factors[key] / area
     end
