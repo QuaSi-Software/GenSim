@@ -361,7 +361,8 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     # make new string
     new_diagnostic_string = "
       Output:Diagnostics,
-        DisplayAllWarnings;    !- Key 1
+        DisplayAllWarnings,
+        DisplayAdvancedReportVariables;    !- Key 1
         "
 
     # adding here the meters again, not sure why this is not working from the CreateEmptyModel Measure
