@@ -21,6 +21,8 @@ Const METER_WINDOW_SURFACE_HEAT_LOSS = "METER SURFACE WINDOW HEAT LOSS ENERGY"
 Const METER_INTERNAL_LOADS = "METER INTERNAL LOADS HEATING ENERGY"
 
 Const METER_SURFACE_FACE_CONDUCTION_TOTAL = "METER SURFACE AVERAGE FACE CONDUCTION HEAT TRANSFER ENERGY"
+Const METER_SURFACE_FACE_CONDUCTION_LOSS = "Surface Inside Face Conduction Heat Loss Rate"
+Const METER_SURFACE_FACE_CONDUCTION_GAIN = "Surface Inside Face Conduction Heat Gain Rate"
 
 Const METER_INFILTRATION_HEAT_LOSS = "METER ZONE INFILTRATION HEAT LOSS"
 Const METER_INFILTRATION_HEAT_GAIN = "METER ZONE INFILTRATION HEAT GAIN"
@@ -63,6 +65,8 @@ Sub AssembleConstList()
     constList(Inc(i)) = METER_INTERNAL_LOADS
     
     constList(Inc(i)) = METER_SURFACE_FACE_CONDUCTION_TOTAL
+    constList(Inc(i)) = METER_SURFACE_FACE_CONDUCTION_LOSS
+    constList(Inc(i)) = METER_SURFACE_FACE_CONDUCTION_GAIN
     
     constList(Inc(i)) = METER_INFILTRATION_HEAT_LOSS
     constList(Inc(i)) = METER_INFILTRATION_HEAT_GAIN
@@ -357,19 +361,18 @@ Sub CreateResults()
         If (InStr(ResultsNFA(1, colIndex), METER_ELECTRICITY_PUMPS)) Then col_pumps = colIndex
         If (InStr(ResultsNFA(1, colIndex), FACILITY_HEATING_SEPOINT_NOT_MET_OCC)) Then col_unmet_h = colIndex
         If (InStr(ResultsNFA(1, colIndex), FACILITY_COOLING_SEPOINT_NOT_MET_OCC)) Then col_unmet_c = colIndex
-        If (InStr(ResultsNFA(1, colIndex), METER_SURFACE_FACE_CONDUCTION_TOTAL)) Then col_conduction_total = colIndex
     Next
 
-    ' Split conduction heat transfer into two sums for gains and losses
-    Dim conduction_totals() As Double
-    ReDim conduction_totals(2) As Double
-    For rwIndex = 2 To iMaxRow
-        If ResultsNFA(rwIndex, col_conduction_total) <= 0 Then
-            conduction_totals(0) = conduction_totals(0) + ResultsNFA(rwIndex, col_conduction_total) / 1000
-        Else
-            conduction_totals(1) = conduction_totals(1) + ResultsNFA(rwIndex, col_conduction_total) / 1000
-        End If
-    Next
+    ' ' Split conduction heat transfer into two sums for gains and losses
+    ' Dim conduction_totals() As Double
+    ' ReDim conduction_totals(2) As Double
+    ' For rwIndex = 2 To iMaxRow
+    '     If ResultsNFA(rwIndex, col_conduction_total) <= 0 Then
+    '         conduction_totals(0) = conduction_totals(0) + ResultsNFA(rwIndex, col_conduction_total) / 1000
+    '     Else
+    '         conduction_totals(1) = conduction_totals(1) + ResultsNFA(rwIndex, col_conduction_total) / 1000
+    '     End If
+    ' Next
 
     '--------------------- ALLE PROFILE
     '-------------------------------------------------------------
@@ -574,12 +577,14 @@ Sub CreateResults()
 
     For colIndex = 1 To iMaxCol
         'Verluste
+        If (InStr(ResultsNFAAnnual(1, colIndex), METER_SURFACE_FACE_CONDUCTION_LOSS)) Then Sheets("GEB훃DEBILANZ").Range("N10") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), METER_WINDOW_SURFACE_HEAT_LOSS)) Then Sheets("GEB훃DEBILANZ").Range("N11") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), METER_INFILTRATION_HEAT_LOSS)) Then Sheets("GEB훃DEBILANZ").Range("N12") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), METER_VENTILATION_HEAT_LOSS)) Then Sheets("GEB훃DEBILANZ").Range("N13") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), METER_MECHANICAL_VENTILATION_LOSS)) Then Sheets("GEB훃DEBILANZ").Range("N14") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
 
         'Gewinne
+        If (InStr(ResultsNFAAnnual(1, colIndex), METER_SURFACE_FACE_CONDUCTION_GAIN)) Then Sheets("GEB훃DEBILANZ").Range("N18") = ResultsNFAAnnual(2, colIndex) * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), METER_WINDOW_SURFACE_HEAT_GAIN)) Then Sheets("GEB훃DEBILANZ").Range("N19") = ResultsNFAAnnual(2, colIndex) * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), METER_INFILTRATION_HEAT_GAIN)) Then Sheets("GEB훃DEBILANZ").Range("N20") = ResultsNFAAnnual(2, colIndex) * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), METER_VENTILATION_HEAT_GAIN)) Then Sheets("GEB훃DEBILANZ").Range("N21") = ResultsNFAAnnual(2, colIndex) * 0.001
@@ -590,8 +595,8 @@ Sub CreateResults()
     Next
 
     ' Conduction losses/gains
-    Sheets("GEB훃DEBILANZ").Range("N10") = conduction_totals(0) 'loss
-    Sheets("GEB훃DEBILANZ").Range("N18") = conduction_totals(1) 'gain
+    ' Sheets("GEB훃DEBILANZ").Range("N10") = conduction_totals(0) 'loss
+    ' Sheets("GEB훃DEBILANZ").Range("N18") = conduction_totals(1) 'gain
 
     '------------------------
     Sheets("GEB훃DEBILANZ").Protect

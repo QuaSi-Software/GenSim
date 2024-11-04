@@ -183,15 +183,23 @@ class Results < OpenStudio::Measure::ReportingMeasure
     list_of_variables << "DistrictCooling:Facility"
     list_of_variables << "DistrictHeating:Facility"
 
-    # HEAT LOSS
+    # HEAT CONDUCTION WALLS
     list_of_variables << "METER SURFACE AVERAGE FACE CONDUCTION HEAT TRANSFER ENERGY"
     list_of_variables << "METER SURFACE AVERAGE FACE CONDUCTION HEAT LOSS RATE"
-    list_of_variables << "METER SURFACE WINDOW HEAT LOSS ENERGY"
-    # NEW VARIABLES
+    list_of_variables << "METER SURFACE AVERAGE FACE CONDUCTION HEAT GAIN RATE"
     list_of_variables << "METER SURFACE OUTSIDE FACE CONDUCTION HEAT LOSS RATE"
+    list_of_variables << "METER SURFACE OUTSIDE FACE CONDUCTION HEAT GAIN RATE"
     list_of_variables << "Surface Outside Face Conduction Heat Loss Rate"
+    list_of_variables << "Surface Outside Face Conduction Heat Gain Rate"
     list_of_variables << "Surface Average Face Conduction Heat Loss Rate"
+    list_of_variables << "Surface Average Face Conduction Heat Gain Rate"
     list_of_variables << "Surface Inside Face Conduction Heat Loss Rate"
+    list_of_variables << "Surface Inside Face Conduction Heat Gain Rate"
+
+    # HEAT CONDUCTION WINDOWS AND SOLAR GAINS
+    list_of_variables << "METER SURFACE WINDOW HEAT LOSS ENERGY"
+    list_of_variables << "METER SURFACE WINDOW HEAT GAIN ENERGY"
+    list_of_variables << "METER ZONE WINDOWS TOTAL TRANSMITTED SOLAR RADIATION ENERGY"
 
     # INFILTRATION AND VENTILATION
     list_of_variables << "METER ZONE INFILTRATION HEAT LOSS"
@@ -199,38 +207,32 @@ class Results < OpenStudio::Measure::ReportingMeasure
     list_of_variables << "METER ZONE VENTILATION HEAT LOSS"
     list_of_variables << "METER ZONE VENTILATION HEAT GAIN"
 
-    # MECH LOSS
+    # MECHANICAL VENTILATION
     list_of_variables << "METER MECHANICAL VENTILATION LOSS"
+    list_of_variables << "METER MECHANICAL VENTILATION GAIN"
 
-    # HEAT GAIN
-    list_of_variables << "METER SURFACE AVERAGE FACE CONDUCTION HEAT GAIN RATE"
-    list_of_variables << "METER SURFACE WINDOW HEAT GAIN ENERGY"
-    # INFILTRATION AND VENTILATION
-    list_of_variables << "METER ZONE ELECTRIC EQUIPMENT TOTAL HEATING ENERGY"
-    list_of_variables << "METER ZONE LIGHTS TOTAL HEATING ENERGY"
-    list_of_variables << "METER PEOPLE TOTAL HEATING ENERGY"
-    # new variables
-    list_of_variables << "METER SURFACE OUTSIDE FACE CONDUCTION HEAT GAIN RATE"
-    list_of_variables << "METER MECHANICAL VENTILATION GAIN'"
-    list_of_variables << "METER ZONE WINDOWS TOTAL TRANSMITTED SOLAR RADIATION ENERGY"
-    list_of_variables << "Surface Outside Face Conduction Heat Gain Rate"
-    list_of_variables << "Surface Average Face Conduction Heat Gain Rate"
-    list_of_variables << "Surface Inside Face Conduction Heat Gain Rate"
-
-    # electricty
+    # ELECTRICITY
     list_of_variables << "InteriorLights:Electricity"
     list_of_variables << "InteriorEquipment:Electricity"
     list_of_variables << "Fans:Electricity"
     list_of_variables << "Pumps:Electricity"
 
-    # internal loads
+    # INTERNAL LOADS
     list_of_variables << "METER INTERNAL LOADS HEATING ENERGY"
-    list_of_variables << "METER MECHANICAL VENTILATION GAIN"
-
+    list_of_variables << "METER ZONE ELECTRIC EQUIPMENT TOTAL HEATING ENERGY"
+    list_of_variables << "METER ZONE LIGHTS TOTAL HEATING ENERGY"
+    list_of_variables << "METER PEOPLE TOTAL HEATING ENERGY"
     list_of_variables << "Facility Heating Setpoint Not Met Time"
     list_of_variables << "Facility Heating Setpoint Not Met While Occupied Time"
     list_of_variables << "Facility Cooling Setpoint Not Met Time"
     list_of_variables << "Facility Cooling Setpoint Not Met While Occupied Time"
+
+    # ZONE SPECIFIC INFORMATION
+    list_of_variables << "Zone Mean Air Temperature"
+    list_of_variables << "Zone Heating Setpoint Not Met Time"
+    list_of_variables << "Zone Heating Setpoint Not Met While Occupied Time"
+    list_of_variables << "Zone Cooling Setpoint Not Met Time"
+    list_of_variables << "Zone Cooling Setpoint Not Met While Occupied Time"
 
     sqlFile = getSQLFile(runner)
 
