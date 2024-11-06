@@ -50,13 +50,24 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     workspace.insertObject(var)
   end
 
-  def create_meter(meter_name, reportingInterval, workspace)
+  def create_meter(constituents, reportingInterval, workspace)
+    meter_name = constituents[0]
     meterCustom = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
     meterCustom.setString(0, "Meter " + meter_name)
     meterCustom.setString(1, "Generic")
-    meterCustom.setString(2, "*")
-    meterCustom.setString(3, meter_name)
+
+    nr = 2
+    idx = constituents.length == 1 ? 0 : 1
+    while idx < constituents.length
+      meterCustom.setString(nr, "*")
+      nr += 1
+      meterCustom.setString(nr, constituents[idx])
+      nr += 1
+      idx += 1
+    end
+
     workspace.insertObject(meterCustom)
+
     meter = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
     meter.setString(0, "Meter " + meter_name)
     meter.setString(1, reportingInterval)
@@ -111,205 +122,94 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
       workspace.removeObject(outputvariable.idfObject.handle)
       outputvariable.remove
     end
-    #-----conduction exterial walls (Total)
-    customMeterConductionExtSurf = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
-    customMeterConductionExtSurf.setString(0, "Meter Surface Average Face Conduction Heat Transfer Energy")
-    customMeterConductionExtSurf.setString(1, "Generic")
-    customMeterConductionExtSurf.setString(2, "*")
-    customMeterConductionExtSurf.setString(3, "Surface Average Face Conduction Heat Transfer Energy")
-    workspace.insertObject(customMeterConductionExtSurf)
-    meterConductionExtSurf = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
-    meterConductionExtSurf.setString(0, "Meter Surface Average Face Conduction Heat Transfer Energy")
-    meterConductionExtSurf.setString(1, reportingInterval)
-    workspace.insertObject(meterConductionExtSurf)
 
-    customMeterConductionExtSurfGainRATE = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
-    customMeterConductionExtSurfGainRATE.setString(0, "Meter Surface Average Face Conduction Heat Gain Rate")
-    customMeterConductionExtSurfGainRATE.setString(1, "Generic")
-    customMeterConductionExtSurfGainRATE.setString(2, "*")
-    customMeterConductionExtSurfGainRATE.setString(3, "Surface Average Face Conduction Heat Gain Rate")
-    workspace.insertObject(customMeterConductionExtSurfGainRATE)
-    meterConductionExtSurfGainRATE = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
-    meterConductionExtSurfGainRATE.setString(0, "Meter Surface Average Face Conduction Heat Gain Rate")
-    meterConductionExtSurfGainRATE.setString(1, reportingInterval)
-    workspace.insertObject(meterConductionExtSurfGainRATE)
+    custom_meters = [
+      #-----conduction opaque surfaces
+      [
+        "Wall Conduction Heat Transfer",
+        "Surface Average Face Conduction Heat Transfer Energy"
+      ],
+      [
+        "Wall Conduction Heat Gain",
+        "Surface Average Face Conduction Heat Gain Rate"
+      ],
+      [
+        "Wall Conduction Heat Loss",
+        "Surface Average Face Conduction Heat Loss Rate"
+      ],
 
-    customMeterConductionExtSurfLOSSRATE = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
-    customMeterConductionExtSurfLOSSRATE.setString(0, "Meter Surface Average Face Conduction Heat Loss Rate")
-    customMeterConductionExtSurfLOSSRATE.setString(1, "Generic")
-    customMeterConductionExtSurfLOSSRATE.setString(2, "*")
-    customMeterConductionExtSurfLOSSRATE.setString(3, "Surface Average Face Conduction Heat Loss Rate")
-    workspace.insertObject(customMeterConductionExtSurfLOSSRATE)
-    meterConductionExtSurfLOSSRATE = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
-    meterConductionExtSurfLOSSRATE.setString(0, "Meter Surface Average Face Conduction Heat Loss Rate")
-    meterConductionExtSurfLOSSRATE.setString(1, reportingInterval)
-    workspace.insertObject(meterConductionExtSurfLOSSRATE)
+      #-----windows (solar gains only, no radiative losses)
+      [
+        "Window Total Heat Gain",
+        "Zone Windows Total Heat Gain Energy"
+      ],
+      [
+        "Window Conduction Heat Gain",
+        "Surface Window Heat Gain Energy"
+      ],
+      [
+        "Window Conduction Heat Loss",
+        "Surface Window Heat Loss Energy"
+      ],
 
-    #-----conduction windows (losses)
-    # Const METER_TRANSMISSION_HEAT_LOSS = "SURFACE WINDOW HEAT LOSS ENERGY"
-    customMeterConductionWindowsLoss = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
-    customMeterConductionWindowsLoss.setString(0, "Meter Surface Window Heat Loss Energy")
-    customMeterConductionWindowsLoss.setString(1, "Generic")
-    customMeterConductionWindowsLoss.setString(2, "*")
-    customMeterConductionWindowsLoss.setString(3, "Surface Window Heat Loss Energy")
-    workspace.insertObject(customMeterConductionWindowsLoss)
-    meterConductionWindowsLoss = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
-    meterConductionWindowsLoss.setString(0, "Meter Surface Window Heat Loss Energy")
-    meterConductionWindowsLoss.setString(1, reportingInterval)
-    workspace.insertObject(meterConductionWindowsLoss)
+      #-----ventilation - windows
+      [
+        "Window Ventilation Heat Gain",
+        "Zone Ventilation Total Heat Gain Energy"
+      ],
+      [
+        "Window Ventilation Heat Loss",
+        "Zone Ventilation Total Heat Loss Energy"
+      ],
 
-    #-----windows (solar gains)
-    # Const METER_WINDOW_HEAT_GAIN = "ZONE WINDOWS TOTAL HEAT GAIN ENERGY"
-    customMeterConductionWindowsGain = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
-    customMeterConductionWindowsGain.setString(0, "Meter Zone Windows Total Heat Gain Energy")
-    customMeterConductionWindowsGain.setString(1, "Generic")
-    customMeterConductionWindowsGain.setString(2, "*")
-    customMeterConductionWindowsGain.setString(3, "Zone Windows Total Heat Gain Energy")
-    workspace.insertObject(customMeterConductionWindowsGain)
-    meterConductionWindowsGain = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
-    meterConductionWindowsGain.setString(0, "Meter Zone Windows Total Heat Gain Energy")
-    meterConductionWindowsGain.setString(1, reportingInterval)
-    workspace.insertObject(meterConductionWindowsGain)
+      #-----infiltration
+      [
+        "Infiltration Heat Gain",
+        "Zone Infiltration Total Heat Gain Energy"
+      ],
+      [
+        "Infiltration Heat Loss",
+        "Zone Infiltration Total Heat Loss Energy"
+      ],
 
-    # Const METER_WINDOW_SURFACE_HEAT_GAIN = "SURFACE WINDOW HEAT GAIN ENERGY"
-    customMeterSolarGain = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
-    customMeterSolarGain.setString(0, "Meter Surface Window Heat Gain Energy")
-    customMeterSolarGain.setString(1, "Generic")
-    customMeterSolarGain.setString(2, "*")
-    customMeterSolarGain.setString(3, "Surface Window Heat Gain Energy")
-    workspace.insertObject(customMeterSolarGain)
-    meterSolarGain = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
-    meterSolarGain.setString(0, "Meter Surface Window Heat Gain Energy")
-    meterSolarGain.setString(1, reportingInterval)
-    workspace.insertObject(meterSolarGain)
+      #-----internal loads (Equipment, Lights People)
+      [
+        "Electric Equipment Heat Gain",
+        "Zone Electric Equipment Total Heating Energy"
+      ],
+      [
+        "Lights Heat Gain",
+        "Zone Lights Total Heating Energy"
+      ],
+      [
+        "People Heat Gain",
+        "People Total Heating Energy"
+      ],
+      [
+        "Internal Loads Heat Gain",
+        "Zone Electric Equipment Total Heating Energy",
+        "Zone Lights Total Heating Energy",
+        "People Total Heating Energy"
+      ],
 
-    #-----ventilation - windows (gains and losses)
-    # Const METER_VENTILATION_HEAT_LOSS = "ZONE VENTILATION HEAT GAIN"
-    customMeterVentilationGain = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
-    customMeterVentilationGain.setString(0, "Meter Zone Ventilation Heat Gain")
-    customMeterVentilationGain.setString(1, "Generic")
-    customMeterVentilationGain.setString(2, "*")
-    customMeterVentilationGain.setString(3, "Zone Ventilation Total Heat Gain Energy")
-    workspace.insertObject(customMeterVentilationGain)
-    meterVentilationGain = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
-    meterVentilationGain.setString(0, "Meter Zone Ventilation Heat Gain")
-    meterVentilationGain.setString(1, reportingInterval)
-    workspace.insertObject(meterVentilationGain)
+      #-----mechanical Ventilation
+      [
+        "Mechanical Ventilation Heat Gain",
+        "Zone Mechanical Ventilation Cooling Load Increase Energy"
+      ],
+      [
+        "Mechanical Ventilation Heat Loss",
+        "Zone Mechanical Ventilation No Load Heat Removal Energy"
+      ]
+    ]
 
-    # Const METER_VENTILATION_HEAT_GAIN = "ZONE VENTILATION HEAT LOSS"
-    customMeterVentilationLoss = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
-    customMeterVentilationLoss.setString(0, "Meter Zone Ventilation Heat Loss")
-    customMeterVentilationLoss.setString(1, "Generic")
-    customMeterVentilationLoss.setString(2, "*")
-    customMeterVentilationLoss.setString(3, "Zone Ventilation Total Heat Loss Energy")
-    workspace.insertObject(customMeterVentilationLoss)
-    meterVentilationLoss = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
-    meterVentilationLoss.setString(0, "Meter Zone Ventilation Heat Loss")
-    meterVentilationLoss.setString(1, reportingInterval)
-    workspace.insertObject(meterVentilationLoss)
-
-    #-----infiltration (gains and losses)
-    # Const METER_INFILTRATION_HEAT_LOSS = "ZONE INFILTRATION HEAT GAIN"
-    customMeterInfiltrationGain = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
-    customMeterInfiltrationGain.setString(0, "Meter Zone Infiltration Heat Gain")
-    customMeterInfiltrationGain.setString(1, "Generic")
-    customMeterInfiltrationGain.setString(2, "*")
-    customMeterInfiltrationGain.setString(3, "Zone Infiltration Total Heat Gain Energy")
-    workspace.insertObject(customMeterInfiltrationGain)
-    meterInfiltrationGain = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
-    meterInfiltrationGain.setString(0, "Meter Zone Infiltration Heat Gain")
-    meterInfiltrationGain.setString(1, reportingInterval)
-    workspace.insertObject(meterInfiltrationGain)
-
-    # Const METER_INFILTRATION_HEAT_GAIN = "ZONE INFILTRATION HEAT LOSS"
-    customMeterInfiltrationLoss = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
-    customMeterInfiltrationLoss.setString(0, "Meter Zone Infiltration Heat Loss")
-    customMeterInfiltrationLoss.setString(1, "Generic")
-    customMeterInfiltrationLoss.setString(2, "*")
-    customMeterInfiltrationLoss.setString(3, "Zone Infiltration Total Heat Loss Energy")
-    workspace.insertObject(customMeterInfiltrationLoss)
-    meterInfiltrationLoss = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
-    meterInfiltrationLoss.setString(0, "Meter Zone Infiltration Heat Loss")
-    meterInfiltrationLoss.setString(1, reportingInterval)
-    workspace.insertObject(meterInfiltrationLoss)
-
-    #-----internal loads (Equipment, Lights People)
-    # Const METER_INTERNAL_LOADS = "INTERNAL LOADS HEATING ENERGY"
-    customMeterInternalLoads = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
-    customMeterInternalLoads.setString(0, "Meter Internal Loads Heating Energy")
-    customMeterInternalLoads.setString(1, "Generic")
-    customMeterInternalLoads.setString(2, "*")
-    customMeterInternalLoads.setString(3, "Zone Electric Equipment Total Heating Energy")
-    customMeterInternalLoads.setString(4, "*")
-    customMeterInternalLoads.setString(5, "Zone Lights Total Heating Energy")
-    customMeterInternalLoads.setString(6, "*")
-    customMeterInternalLoads.setString(7, "People Total Heating Energy")
-    workspace.insertObject(customMeterInternalLoads)
-    meterInternalLoads = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
-    meterInternalLoads.setString(0, "Meter Internal Loads Heating Energy")
-    meterInternalLoads.setString(1, reportingInterval)
-    workspace.insertObject(meterInternalLoads)
-
-    # Const METER_ZONE_PLUGS = "ZONE ELECTRIC EQUIPMENT TOTAL HEATING ENERGY"
-    customMeterInternalLoadsElectric = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
-    customMeterInternalLoadsElectric.setString(0, "Meter Zone Electric Equipment Total Heating Energy")
-    customMeterInternalLoadsElectric.setString(1, "Generic")
-    customMeterInternalLoadsElectric.setString(2, "*")
-    customMeterInternalLoadsElectric.setString(3, "Zone Electric Equipment Total Heating Energy")
-    workspace.insertObject(customMeterInternalLoadsElectric)
-    meterInternalLoadsElectric = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
-    meterInternalLoadsElectric.setString(0, "Meter Zone Electric Equipment Total Heating Energy")
-    meterInternalLoadsElectric.setString(1, reportingInterval)
-    workspace.insertObject(meterInternalLoadsElectric)
-
-    # Const METER_ZONE_LIGHTS = "ZONE LIGHTS TOTAL HEATING ENERGY"
-    customMeterInternalLoadsLights = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
-    customMeterInternalLoadsLights.setString(0, "Meter Zone Lights Total Heating Energy")
-    customMeterInternalLoadsLights.setString(1, "Generic")
-    customMeterInternalLoadsLights.setString(2, "*")
-    customMeterInternalLoadsLights.setString(3, "Zone Lights Total Heating Energy")
-    workspace.insertObject(customMeterInternalLoadsLights)
-    meterInternalLoadsLights = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
-    meterInternalLoadsLights.setString(0, "Meter Zone Lights Total Heating Energy")
-    meterInternalLoadsLights.setString(1, reportingInterval)
-    workspace.insertObject(meterInternalLoadsLights)
-
-    # Const METER_ZONE_PEOPLE = "PEOPLE TOTAL HEATING ENERGY"
-    customMeterInternalLoadsPeople = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
-    customMeterInternalLoadsPeople.setString(0, "Meter People Total Heating Energy")
-    customMeterInternalLoadsPeople.setString(1, "Generic")
-    customMeterInternalLoadsPeople.setString(2, "*")
-    customMeterInternalLoadsPeople.setString(3, "People Total Heating Energy")
-    workspace.insertObject(customMeterInternalLoadsPeople)
-    meterInternalLoadsPeople = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
-    meterInternalLoadsPeople.setString(0, "Meter People Total Heating Energy")
-    meterInternalLoadsPeople.setString(1, reportingInterval)
-    workspace.insertObject(meterInternalLoadsPeople)
-
-    #-----Mechanical Ventilation (gains and losses)
-    # Const Zone_Mechanical_Ventilation_Cooling_Load_Increase_Energy = "METER MECHANICAL VENTILATION GAIN"
-    customMeterMechVentGain = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
-    customMeterMechVentGain.setString(0, "Meter Mechanical Ventilation Gain")
-    customMeterMechVentGain.setString(1, "Generic")
-    customMeterMechVentGain.setString(2, "*")
-    customMeterMechVentGain.setString(3, "Zone Mechanical Ventilation Cooling Load Increase Energy")
-    workspace.insertObject(customMeterMechVentGain)
-    meterMechVentGain = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
-    meterMechVentGain.setString(0, "Meter Mechanical Ventilation Gain")
-    meterMechVentGain.setString(1, reportingInterval)
-    workspace.insertObject(meterMechVentGain)
-
-    # Const Zone_Mechanical_Ventilation_No_Load_Heat_Removal_Energy = "METER MECHANICAL VENTILATION LOSS"
-    customMeterMechVentLoss = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
-    customMeterMechVentLoss.setString(0, "Meter Mechanical Ventilation Loss")
-    customMeterMechVentLoss.setString(1, "Generic")
-    customMeterMechVentLoss.setString(2, "*")
-    customMeterMechVentLoss.setString(3, "Zone Mechanical Ventilation No Load Heat Removal Energy")
-    workspace.insertObject(customMeterMechVentLoss)
-    meterMechVentLoss = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
-    meterMechVentLoss.setString(0, "Meter Mechanical Ventilation Loss")
-    meterMechVentLoss.setString(1, reportingInterval)
-    workspace.insertObject(meterMechVentLoss)
+    custom_meters.each do |names|
+      if names.kind_of?(Array)
+        create_meter(names, reportingInterval, workspace)
+      else
+        create_meter([names], reportingInterval, workspace)
+      end
+    end
 
     eplusVariables = [
       "Zone Mechanical Ventilation No Load Heat Removal Energy",
@@ -344,7 +244,7 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     ]
     eplusVariables.each{ |name|
       create_variable(name, reportingInterval, workspace)
-      create_meter(name, reportingInterval, workspace)
+      create_meter([name], reportingInterval, workspace)
     }
 
     create_variable_with_key("Outside Air Node", "System Node Temperature", reportingInterval, workspace)

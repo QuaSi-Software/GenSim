@@ -123,12 +123,12 @@ def create_plot(df):
     convert_units(df)
 
     # old mapping
-    mechanical_ventilation_losses = try_first(df, "METER MECHANICAL VENTILATION LOSS")
+    mechanical_ventilation_losses = try_first(df, "METER MECHANICAL VENTILATION HEAT LOSS")
     mechanical_ventilation_gains = 0
-    transmission_trans_losses = try_first(df, "METER SURFACE WINDOW HEAT LOSS ENERGY")
+    transmission_trans_losses = try_first(df, "METER WINDOW CONDUCTION HEAT LOSS")
     transmission_opaque_losses = try_first(df,
         "METER SURFACE AVERAGE FACE CONDUCTION HEAT LOSS RATE")
-    transmission_trans_gains = try_first(df, "METER SURFACE WINDOW HEAT GAIN ENERGY")
+    transmission_trans_gains = try_first(df, "METER WINDOW CONDUCTION HEAT GAIN")
     transmission_opaque_gains = try_first(df,
         "METER SURFACE AVERAGE FACE CONDUCTION HEAT GAIN RATE")
     infiltration_losses = 0
@@ -136,10 +136,10 @@ def create_plot(df):
     window_ventilation_losses = 0
     window_ventilation_gains = 0
     solar_gains = (try_first(df, "METER ZONE WINDOWS TOTAL TRANSMITTED SOLAR RADIATION ENERGY")
-        - try_first(df, "METER SURFACE WINDOW HEAT GAIN ENERGY"))
-    internal_gains = (try_first(df, "METER PEOPLE TOTAL HEATING ENERGY")
-        + try_first(df, "METER ZONE LIGHTS TOTAL HEATING ENERGY")
-        + try_first(df, "METER PEOPLE TOTAL HEATING ENERGY"))
+        - try_first(df, "METER WINDOW CONDUCTION HEAT GAIN"))
+    internal_gains = (try_first(df, "METER PEOPLE HEAT GAIN")
+        + try_first(df, "METER LIGHTS HEAT GAIN")
+        + try_first(df, "METER PEOPLE HEAT GAIN"))
     heating_gains = try_first(df, "DistrictHeating:Facility")
     cooling_losses = try_first(df, "DistrictCooling:Facility")
 
@@ -151,20 +151,20 @@ def create_plot(df):
     )
 
     # new mapping
-    mechanical_ventilation_losses = try_first(df, "METER MECHANICAL VENTILATION LOSS")
+    mechanical_ventilation_losses = try_first(df, "METER MECHANICAL VENTILATION HEAT LOSS")
     mechanical_ventilation_gains = 0
-    transmission_trans_losses = try_first(df, "METER SURFACE WINDOW HEAT LOSS ENERGY")
-    transmission_opaque_losses = try_first(df, "Surface Inside Face Conduction Heat Loss Rate")
+    transmission_trans_losses = try_first(df, "METER WINDOW CONDUCTION HEAT LOSS")
+    transmission_opaque_losses = try_first(df, "METER WALL CONDUCTION HEAT LOSS")
     transmission_trans_gains = 0
-    transmission_opaque_gains = try_first(df, "Surface Inside Face Conduction Heat Gain Rate")
-    infiltration_losses = try_first(df, "METER ZONE INFILTRATION HEAT LOSS")
-    infiltration_gains = try_first(df, "METER ZONE INFILTRATION HEAT GAIN")
-    window_ventilation_losses = try_first(df, "METER ZONE VENTILATION HEAT LOSS")
-    window_ventilation_gains = try_first(df, "METER ZONE VENTILATION HEAT GAIN")
-    solar_gains = try_first(df, "METER SURFACE WINDOW HEAT GAIN ENERGY")
-    internal_gains = (try_first(df, "METER PEOPLE TOTAL HEATING ENERGY")
-        + try_first(df, "METER ZONE LIGHTS TOTAL HEATING ENERGY")
-        + try_first(df, "METER ZONE ELECTRIC EQUIPMENT TOTAL HEATING ENERGY"))
+    transmission_opaque_gains = try_first(df, "METER WALL CONDUCTION HEAT GAIN")
+    infiltration_losses = try_first(df, "METER INFILTRATION HEAT LOSS")
+    infiltration_gains = try_first(df, "METER INFILTRATION HEAT GAIN")
+    window_ventilation_losses = try_first(df, "METER WINDOW VENTILATION HEAT LOSS")
+    window_ventilation_gains = try_first(df, "METER WINDOW VENTILATION HEAT GAIN")
+    solar_gains = try_first(df, "METER WINDOW TOTAL HEAT GAIN")
+    internal_gains = (try_first(df, "METER PEOPLE HEAT GAIN")
+        + try_first(df, "METER LIGHTS HEAT GAIN")
+        + try_first(df, "METER ELECTRIC EQUIPMENT HEAT GAIN"))
     heating_gains = try_first(df, "DistrictHeating:Facility")
     cooling_losses = try_first(df, "DistrictCooling:Facility")
 
