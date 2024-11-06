@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'json'
 
 # start the measure
 class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
@@ -50,27 +51,28 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     workspace.insertObject(var)
   end
 
-  def create_meter(constituents, reportingInterval, workspace)
-    meter_name = constituents[0]
-    meterCustom = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
-    meterCustom.setString(0, "Meter " + meter_name)
-    meterCustom.setString(1, "Generic")
+  def create_custom_meter(name, constituents, workspace)
+    meter = OpenStudio::IdfObject.new("Meter:Custom".to_IddObjectType)
+    meter.setString(0, "Meter " + name)
+    meter.setString(1, "Generic")
 
     nr = 2
-    idx = constituents.length == 1 ? 0 : 1
+    idx = 0
     while idx < constituents.length
-      meterCustom.setString(nr, "*")
+      meter.setString(nr, "*")
       nr += 1
-      meterCustom.setString(nr, constituents[idx])
+      meter.setString(nr, constituents[idx])
       nr += 1
       idx += 1
     end
 
-    workspace.insertObject(meterCustom)
+    workspace.insertObject(meter)
+  end
 
+  def create_output_meter(name, reporting_interval, workspace)
     meter = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
-    meter.setString(0, "Meter " + meter_name)
-    meter.setString(1, reportingInterval)
+    meter.setString(0, "Meter " + name)
+    meter.setString(1, reporting_interval)
     workspace.insertObject(meter)
   end
 
@@ -123,91 +125,15 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
       outputvariable.remove
     end
 
-    custom_meters = [
-      #-----conduction opaque surfaces
-      [
-        "Wall Conduction Heat Transfer",
-        "Surface Average Face Conduction Heat Transfer Energy"
-      ],
-      [
-        "Wall Conduction Heat Gain",
-        "Surface Average Face Conduction Heat Gain Rate"
-      ],
-      [
-        "Wall Conduction Heat Loss",
-        "Surface Average Face Conduction Heat Loss Rate"
-      ],
+    file_content = File.read('../../../Measures/set_meters_idf/output_variables.json')
+    variable_definitions = JSON.parse(file_content)
 
-      #-----windows (solar gains only, no radiative losses)
-      [
-        "Window Total Heat Gain",
-        "Zone Windows Total Heat Gain Energy"
-      ],
-      [
-        "Window Conduction Heat Gain",
-        "Surface Window Heat Gain Energy"
-      ],
-      [
-        "Window Conduction Heat Loss",
-        "Surface Window Heat Loss Energy"
-      ],
-
-      #-----ventilation - windows
-      [
-        "Window Ventilation Heat Gain",
-        "Zone Ventilation Total Heat Gain Energy"
-      ],
-      [
-        "Window Ventilation Heat Loss",
-        "Zone Ventilation Total Heat Loss Energy"
-      ],
-
-      #-----infiltration
-      [
-        "Infiltration Heat Gain",
-        "Zone Infiltration Total Heat Gain Energy"
-      ],
-      [
-        "Infiltration Heat Loss",
-        "Zone Infiltration Total Heat Loss Energy"
-      ],
-
-      #-----internal loads (Equipment, Lights People)
-      [
-        "Electric Equipment Heat Gain",
-        "Zone Electric Equipment Total Heating Energy"
-      ],
-      [
-        "Lights Heat Gain",
-        "Zone Lights Total Heating Energy"
-      ],
-      [
-        "People Heat Gain",
-        "People Total Heating Energy"
-      ],
-      [
-        "Internal Loads Heat Gain",
-        "Zone Electric Equipment Total Heating Energy",
-        "Zone Lights Total Heating Energy",
-        "People Total Heating Energy"
-      ],
-
-      #-----mechanical Ventilation
-      [
-        "Mechanical Ventilation Heat Gain",
-        "Zone Mechanical Ventilation Cooling Load Increase Energy"
-      ],
-      [
-        "Mechanical Ventilation Heat Loss",
-        "Zone Mechanical Ventilation No Load Heat Removal Energy"
-      ]
-    ]
-
-    custom_meters.each do |names|
-      if names.kind_of?(Array)
-        create_meter(names, reportingInterval, workspace)
-      else
-        create_meter([names], reportingInterval, workspace)
+    variable_definitions.each do |var_def|
+      if var_def["create_custom_meter"]
+        create_custom_meter(var_def["name"], var_def["eplus_variables"], workspace)
+      end
+      if var_def["create_output_meter"]
+        create_output_meter(var_def["name"], reportingInterval, workspace)
       end
     end
 
@@ -244,7 +170,8 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     ]
     eplusVariables.each{ |name|
       create_variable(name, reportingInterval, workspace)
-      create_meter([name], reportingInterval, workspace)
+      create_custom_meter(name, [name], workspace)
+      create_output_meter(name, reportingInterval, workspace)
     }
 
     create_variable_with_key("Outside Air Node", "System Node Temperature", reportingInterval, workspace)
