@@ -1,4 +1,5 @@
 require 'erb'
+require 'json'
 
 # start the measure
 class Results < OpenStudio::Measure::ReportingMeasure
@@ -169,80 +170,19 @@ class Results < OpenStudio::Measure::ReportingMeasure
 
     reporting_frequency = "All"
 
-    list_of_variables = [
-      # CUSTOM METERS
-      "METER WALL CONDUCTION HEAT TRANSFER",
-      "METER WALL CONDUCTION HEAT GAIN",
-      "METER WALL CONDUCTION HEAT LOSS",
-      "METER WINDOW TOTAL HEAT GAIN",
-      "METER WINDOW CONDUCTION HEAT GAIN",
-      "METER WINDOW CONDUCTION HEAT LOSS",
-      "METER WINDOW VENTILATION HEAT GAIN",
-      "METER WINDOW VENTILATION HEAT LOSS",
-      "METER INFILTRATION HEAT GAIN",
-      "METER INFILTRATION HEAT LOSS",
-      "METER ELECTRIC EQUIPMENT HEAT GAIN",
-      "METER LIGHTS HEAT GAIN",
-      "METER PEOPLE HEAT GAIN",
-      "METER INTERNAL LOADS HEAT GAIN",
-      "METER MECHANICAL VENTILATION HEAT GAIN",
-      "METER MECHANICAL VENTILATION HEAT LOSS",
+    # read list of output variables and meters from data file
+    file_content = File.read('../../../Measures/set_meters_idf/output_variables.json')
+    variable_definitions = JSON.parse(file_content)
 
-      # HEATING / COOLING
-      "DistrictCooling:Facility",
-      "DistrictHeating:Facility",
-
-      # HEAT CONDUCTION WALLS
-      "METER SURFACE AVERAGE FACE CONDUCTION HEAT TRANSFER ENERGY",
-      "METER SURFACE AVERAGE FACE CONDUCTION HEAT LOSS RATE",
-      "METER SURFACE AVERAGE FACE CONDUCTION HEAT GAIN RATE",
-      "METER SURFACE OUTSIDE FACE CONDUCTION HEAT LOSS RATE",
-      "METER SURFACE OUTSIDE FACE CONDUCTION HEAT GAIN RATE",
-      "Surface Outside Face Conduction Heat Loss Rate",
-      "Surface Outside Face Conduction Heat Gain Rate",
-      "Surface Average Face Conduction Heat Loss Rate",
-      "Surface Average Face Conduction Heat Gain Rate",
-      "Surface Inside Face Conduction Heat Loss Rate",
-      "Surface Inside Face Conduction Heat Gain Rate",
-
-      # HEAT CONDUCTION WINDOWS AND SOLAR GAINS
-      "METER SURFACE WINDOW HEAT LOSS ENERGY",
-      "METER SURFACE WINDOW HEAT GAIN ENERGY",
-      "METER ZONE WINDOWS TOTAL TRANSMITTED SOLAR RADIATION ENERGY",
-
-      # INFILTRATION AND VENTILATION
-      "METER ZONE INFILTRATION TOTAL HEAT LOSS ENERGY",
-      "METER ZONE INFILTRATION TOTAL HEAT GAIN ENERGY",
-      "METER ZONE VENTILATION TOTAL HEAT LOSS ENERGY",
-      "METER ZONE VENTILATION TOTAL HEAT GAIN ENERGY",
-
-      # MECHANICAL VENTILATION
-      "METER MECHANICAL VENTILATION LOSS",
-      "METER MECHANICAL VENTILATION GAIN",
-
-      # ELECTRICITY
-      "InteriorLights:Electricity",
-      "InteriorEquipment:Electricity",
-      "Fans:Electricity",
-      "Pumps:Electricity",
-
-      # INTERNAL LOADS
-      "METER INTERNAL LOADS HEATING ENERGY",
-      "METER ZONE ELECTRIC EQUIPMENT TOTAL HEATING ENERGY",
-      "METER ZONE LIGHTS TOTAL HEATING ENERGY",
-      "METER PEOPLE TOTAL HEATING ENERGY",
-      "Facility Heating Setpoint Not Met Time",
-      "Facility Heating Setpoint Not Met While Occupied Time",
-      "Facility Cooling Setpoint Not Met Time",
-      "Facility Cooling Setpoint Not Met While Occupied Time",
-
-      # ZONE SPECIFIC INFORMATION
-      "Zone Mean Air Temperature",
-      "Zone Heating Setpoint Not Met Time",
-      "Zone Heating Setpoint Not Met While Occupied Time",
-      "Zone Cooling Setpoint Not Met Time",
-      "Zone Cooling Setpoint Not Met While Occupied Time"
-    ]
+    list_of_variables = []
+    variable_definitions.each do |var_def|
+      if var_def["create_output_variable"]
+        list_of_variables << var_def["name"]
+      end
+      if var_def["create_output_meter"]
+        list_of_variables << ("Meter " + var_def["name"]).upcase
+      end
+    end
 
     sqlFile = getSQLFile(runner)
 
