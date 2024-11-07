@@ -83,7 +83,7 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     # use the built-in error checking
     return false unless runner.validateUserArguments(arguments(workspace), user_arguments)
 
-    # assign the user inputs to variables
+    # read parameters
     timestep = runner.getIntegerArgumentValue("time_step", user_arguments)
     heatingSizingFactor = runner.getDoubleArgumentValue("heating_sizing_factor", user_arguments)
     coolingSizingFactor = runner.getDoubleArgumentValue("cooling_sizing_factor", user_arguments)
@@ -92,13 +92,14 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     customMeters = workspace.getObjectsByType("Meter:Custom".to_IddObjectType)
     runner.registerInitialCondition("The building started with #{customMeters.size} Custom Meters with version #{workspace.version.str}.")
 
+    # set sizing factors from input parameters
     sizingParams = workspace.getObjectsByType("Sizing:Parameters".to_IddObjectType)
     sizingParams.each do |sizingParam|
       sizingParam.setDouble(0, heatingSizingFactor)
       sizingParam.setDouble(1, coolingSizingFactor)
     end
 
-    # fix the schedule bug!!!
+    # fixes a bug with schedules
     schedules = workspace.getObjectsByType("Schedule:Year".to_IddObjectType)
     schedules.each do |schedule|
       runner.registerInfo("Procesing schedule #{schedule.name}")
@@ -110,14 +111,11 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
       workspace.insertObject(schedule)
     end
 
-    #----------custom meters
-    #-------------------------------------------------------
-
     reportingInterval = "Hourly"
     reportingInterval = "Timestep" if timestep < 60
 
+    # delete existing Output:Variable objects
     runner.registerInfo("Trying to remove variables")
-    # delete the output:variables we do not need them and did not ask for them!!!
     outputvariables = workspace.getObjectsByType("Output:Variable".to_IddObjectType)
     outputvariables.each do |outputvariable|
       runner.registerInfo("The following variable was removed: " + outputvariable.getString(0).to_s)
@@ -125,6 +123,7 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
       outputvariable.remove
     end
 
+    # read variable and meter definitions from data file and create the objects
     file_content = File.read('../../../Measures/set_meters_idf/output_variables.json')
     variable_definitions = JSON.parse(file_content)
 
@@ -149,26 +148,23 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
       end
     end
 
-    # make new string
+    # set diagnostics to display all warnings and report on all variables
     new_diagnostic_string = "
       Output:Diagnostics,
         DisplayAllWarnings,
         DisplayAdvancedReportVariables;    !- Key 1
         "
+    idfObject = OpenStudio::IdfObject.load(new_diagnostic_string)
+    workspace.addObject(idfObject.get)
 
+    # edit ideal loads objects to set the timestep
     newTimesteps = workspace.getObjectsByType("Timestep".to_IddObjectType)
-    # edit ideal loads objects
     newTimesteps.each do |newTimestep|
       newTimestep.setInt(0, timestep)
       workspace.insertObject(newTimestep)
     end
 
-    # sizingParams = workspace.getObjectsByType("Sizing:Parameters".to_IddObjectType)
-    # sizingParams.each do |sizingParam|
-    #  sizingParam.setDouble(0,2)
-    #  workspace.insertObject(sizingParam)
-    # end
-
+    # set parameters of sizing calculation
     sizingZones = workspace.getObjectsByType("Sizing:Zone".to_IddObjectType)
     sizingZones.each do |sizingZone|
       # sizingZone.setDouble(11, 2) # Zone Cooling Sizing Factor
@@ -179,19 +175,16 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
       workspace.insertObject(sizingZone)
     end
 
-    # make new string
+    # set reporting for tolerances
     new_reporting_string = "
       OutputControl:ReportingTolerances,
         1,
         1;"
-
-    # make new object from string
     idfObject = OpenStudio::IdfObject.load(new_reporting_string)
-    object = idfObject.get
-    workspace.addObject(object)
+    workspace.addObject(idfObject.get)
 
+    # edit ideal loads objects to set starting day of simulation
     newRunPeriods = workspace.getObjectsByType("RunPeriod".to_IddObjectType)
-    # edit ideal loads objects
     newRunPeriods.each do |newRunPeriod|
       if workspace.version >= OpenStudio::VersionString.new(9, 0, 0)
         newRunPeriod.setString(7, dayToStartSimulation)
@@ -203,12 +196,6 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
       workspace.insertObject(newRunPeriod)
     end
 
-    # make new object from string
-    idfObject = OpenStudio::IdfObject.load(new_diagnostic_string)
-    object = idfObject.get
-    workspace.addObject(object)
-
-    # idealloads = workspace.getObjectsByType("HVACTemplate:Zone:IdealLoadsAirSystem".to_IddObjectType)
     customMeters = workspace.getObjectsByType("Meter:Custom".to_IddObjectType)
     runner.registerFinalCondition("The building finished with #{customMeters.size} Custom Meters with version #{workspace.version.str}.")
 
