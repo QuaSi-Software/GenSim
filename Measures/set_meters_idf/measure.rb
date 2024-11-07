@@ -129,6 +129,18 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     variable_definitions = JSON.parse(file_content)
 
     variable_definitions.each do |var_def|
+      if var_def["create_output_variable"]
+        if var_def["node_reference"] == ""
+          create_variable(var_def["name"], reportingInterval, workspace)
+        else
+          create_variable_with_key(
+            var_def["node_reference"],
+            var_def["name"],
+            reportingInterval,
+            workspace
+          )
+        end
+      end
       if var_def["create_custom_meter"]
         create_custom_meter(var_def["name"], var_def["eplus_variables"], workspace)
       end
@@ -137,142 +149,12 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
       end
     end
 
-    eplusVariables = [
-      "Zone Mechanical Ventilation No Load Heat Removal Energy",
-      "Zone Mechanical Ventilation Cooling Load Increase Energy",
-      "Zone Mechanical Ventilation Cooling Load Increase Due to Overheating Energy",
-      "Zone Mechanical Ventilation Cooling Load Decrease Energy" ,
-      "Zone Mechanical Ventilation No Load Heat Addition Energy",
-      "Zone Mechanical Ventilation Heating Load Increase Energy",
-      "Zone Mechanical Ventilation Heating Load Increase Due to Overcooling Energy",
-      "Zone Mechanical Ventilation Heating Load Decrease Energy" ,
-      "Air System Heat Exchanger Total Heating Energy",
-      "Air System Heat Exchanger Total Cooling Energy",
-      "Zone Windows Total Transmitted Solar Radiation Energy",
-      "Zone Windows Total Heat Gain Energy",
-      "Zone Windows Total Heat Loss Energy",
-      "Surface Average Face Conduction Heat Gain Rate",
-      "Surface Average Face Conduction Heat Loss Rate",
-      "Surface Outside Face Conduction Heat Gain Rate",
-      "Surface Outside Face Conduction Heat Loss Rate",
-      "Surface Inside Face Conduction Heat Gain Rate",
-      "Surface Inside Face Conduction Heat Loss Rate",
-      "Surface Outside Face Convection Heat Gain Rate",
-      "Surface Inside Face Convection Heat Gain Rate",
-      "Zone Air Heat Balance Internal Convective Heat Gain Rate",
-      "Zone Air Heat Balance Surface Convection Rate",
-      "Zone Air Heat Balance Interzone Air Transfer Rate",
-      "Zone Air Heat Balance Outdoor Air Transfer Rate",
-      "Zone Air Heat Balance System Air Transfer Rate",
-      "Zone Air Heat Balance System Convective Heat Gain Rate",
-      "Zone Air Heat Balance Air Energy Storage Rate",
-      "Zone Air Heat Balance Deviation Rate"
-    ]
-    eplusVariables.each{ |name|
-      create_variable(name, reportingInterval, workspace)
-      create_custom_meter(name, [name], workspace)
-      create_output_meter(name, reportingInterval, workspace)
-    }
-
-    create_variable_with_key("Outside Air Node", "System Node Temperature", reportingInterval, workspace)
-    create_variable_with_key("Outside Air Node", "System Node Mass Flow Rate", reportingInterval, workspace)
-    create_variable_with_key("Outside Air Node", "System Node Specific Heat", reportingInterval, workspace)
-    create_variable_with_key("Outside Air Node", "System Node Enthalpy", reportingInterval, workspace)
-    create_variable_with_key("Outside Relief Node", "System Node Temperature", reportingInterval, workspace)
-    create_variable_with_key("Outside Relief Node", "System Node Mass Flow Rate", reportingInterval, workspace)
-    create_variable_with_key("Outside Relief Node", "System Node Specific Heat", reportingInterval, workspace)
-    create_variable_with_key("Outside Relief Node", "System Node Enthalpy", reportingInterval, workspace)
-
-    create_variable("Zone Mechanical Ventilation Mass Flow Rate", reportingInterval, workspace)
-
     # make new string
     new_diagnostic_string = "
       Output:Diagnostics,
         DisplayAllWarnings,
         DisplayAdvancedReportVariables;    !- Key 1
         "
-
-    # adding here the meters again, not sure why this is not working from the CreateEmptyModel Measure
-    meters = []
-    meters << "DistrictHeating:Facility"
-    meters << "DistrictCooling:Facility"
-    meters << "InteriorLights:Electricity"
-    meters << "InteriorEquipment:Electricity"
-    meters << "ElectricityProduced:Plant"
-    meters << "Electricity:Facility"
-    meters << "Photovoltaic:ElectricityProduced"
-    meters << "Fans:Electricity"
-    meters << "Pumps:Electricity"
-    # add meters
-    meters.each do |meter|
-      newMeter = OpenStudio::IdfObject.new("Output:Meter".to_IddObjectType)
-      newMeter.setString(0, meter)
-      newMeter.setString(1, reportingInterval)
-      workspace.insertObject(newMeter)
-    end
-
-    # Report Variable "Zone Mean Air Temperature"
-    varZoneMeanAirTemp = OpenStudio::IdfObject.new("Output:Variable".to_IddObjectType)
-    varZoneMeanAirTemp.setString(0, "*")
-    varZoneMeanAirTemp.setString(1, "Zone Mean Air Temperature")
-    varZoneMeanAirTemp.setString(2, reportingInterval)
-    workspace.insertObject(varZoneMeanAirTemp)
-
-    # Report Variable "Zone Heating Setpoint Not Met Time"
-    varZoneMeanAirTemp = OpenStudio::IdfObject.new("Output:Variable".to_IddObjectType)
-    varZoneMeanAirTemp.setString(0, "*")
-    varZoneMeanAirTemp.setString(1, "Zone Heating Setpoint Not Met Time")
-    varZoneMeanAirTemp.setString(2, reportingInterval)
-    workspace.insertObject(varZoneMeanAirTemp)
-
-    # Report Variable "Zone Heating Setpoint Not Met While Occupied Time"
-    varZoneMeanAirTemp = OpenStudio::IdfObject.new("Output:Variable".to_IddObjectType)
-    varZoneMeanAirTemp.setString(0, "*")
-    varZoneMeanAirTemp.setString(1, "Zone Heating Setpoint Not Met While Occupied Time")
-    varZoneMeanAirTemp.setString(2, reportingInterval)
-    workspace.insertObject(varZoneMeanAirTemp)
-
-    # Report Variable "Zone Cooling Setpoint Not Met Time"
-    varZoneMeanAirTemp = OpenStudio::IdfObject.new("Output:Variable".to_IddObjectType)
-    varZoneMeanAirTemp.setString(0, "*")
-    varZoneMeanAirTemp.setString(1, "Zone Cooling Setpoint Not Met Time")
-    varZoneMeanAirTemp.setString(2, reportingInterval)
-    workspace.insertObject(varZoneMeanAirTemp)
-
-    # Report Variable "Zone Cooling Setpoint Not Met While Occupied Time"
-    varZoneMeanAirTemp = OpenStudio::IdfObject.new("Output:Variable".to_IddObjectType)
-    varZoneMeanAirTemp.setString(0, "*")
-    varZoneMeanAirTemp.setString(1, "Zone Cooling Setpoint Not Met While Occupied Time")
-    varZoneMeanAirTemp.setString(2, reportingInterval)
-    workspace.insertObject(varZoneMeanAirTemp)
-
-    # Report Variable "Facility Heating Setpoint Not Met Time"
-    varZoneMeanAirTemp = OpenStudio::IdfObject.new("Output:Variable".to_IddObjectType)
-    varZoneMeanAirTemp.setString(0, "*")
-    varZoneMeanAirTemp.setString(1, "Facility Heating Setpoint Not Met Time")
-    varZoneMeanAirTemp.setString(2, reportingInterval)
-    workspace.insertObject(varZoneMeanAirTemp)
-
-    # Report Variable "Facility Heating Setpoint Not Met While Occupied Time"
-    varZoneMeanAirTemp = OpenStudio::IdfObject.new("Output:Variable".to_IddObjectType)
-    varZoneMeanAirTemp.setString(0, "*")
-    varZoneMeanAirTemp.setString(1, "Facility Heating Setpoint Not Met While Occupied Time")
-    varZoneMeanAirTemp.setString(2, reportingInterval)
-    workspace.insertObject(varZoneMeanAirTemp)
-
-    # Report Variable "Facility Cooling Setpoint Not Met Time"
-    varZoneMeanAirTemp = OpenStudio::IdfObject.new("Output:Variable".to_IddObjectType)
-    varZoneMeanAirTemp.setString(0, "*")
-    varZoneMeanAirTemp.setString(1, "Facility Cooling Setpoint Not Met Time")
-    varZoneMeanAirTemp.setString(2, reportingInterval)
-    workspace.insertObject(varZoneMeanAirTemp)
-
-    # Report Variable "Facility Cooling Setpoint Not Met While Occupied Time"
-    varZoneMeanAirTemp = OpenStudio::IdfObject.new("Output:Variable".to_IddObjectType)
-    varZoneMeanAirTemp.setString(0, "*")
-    varZoneMeanAirTemp.setString(1, "Facility Cooling Setpoint Not Met While Occupied Time")
-    varZoneMeanAirTemp.setString(2, reportingInterval)
-    workspace.insertObject(varZoneMeanAirTemp)
 
     newTimesteps = workspace.getObjectsByType("Timestep".to_IddObjectType)
     # edit ideal loads objects
