@@ -140,8 +140,8 @@ def create_plot(df):
     internal_gains = (try_first(df, "METER PEOPLE HEAT GAIN")
         + try_first(df, "METER LIGHTS HEAT GAIN")
         + try_first(df, "METER PEOPLE HEAT GAIN"))
-    heating_gains = try_first(df, "DistrictHeating:Facility")
-    cooling_losses = try_first(df, "DistrictCooling:Facility")
+    heating_gains = try_first(df, "DISTRICTHEATING:FACILITY")
+    cooling_losses = try_first(df, "DISTRICTCOOLING:FACILITY")
 
     create_barchart("Old Mapping", False, mechanical_ventilation_losses,
         mechanical_ventilation_gains, transmission_trans_losses, transmission_opaque_losses,
@@ -165,8 +165,8 @@ def create_plot(df):
     internal_gains = (try_first(df, "METER PEOPLE HEAT GAIN")
         + try_first(df, "METER LIGHTS HEAT GAIN")
         + try_first(df, "METER ELECTRIC EQUIPMENT HEAT GAIN"))
-    heating_gains = try_first(df, "DistrictHeating:Facility")
-    cooling_losses = try_first(df, "DistrictCooling:Facility")
+    heating_gains = try_first(df, "DISTRICTHEATING:FACILITY")
+    cooling_losses = try_first(df, "DISTRICTCOOLING:FACILITY")
 
     create_barchart("New Mapping", True, mechanical_ventilation_losses,
         mechanical_ventilation_gains, transmission_trans_losses, transmission_opaque_losses,
