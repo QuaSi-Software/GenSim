@@ -107,14 +107,13 @@ class Results < OpenStudio::Measure::ReportingMeasure
       for key in headers[1..-1]
         if last_key != key
           last_key = key
-          runner.registerInfo("key (#{key})")
           value = values[key][i]
           if value.kind_of?(Array)
-            runner.registerInfo("Value is an array #{value}")
+            converted_value = sum(value) * conversion_factors[key] / area
           else
             converted_value = value * conversion_factors[key] / area
-            row << converted_value
           end
+          row << converted_value
         end
       end
       csv_array << row
@@ -174,13 +173,13 @@ class Results < OpenStudio::Measure::ReportingMeasure
     file_content = File.read('../../../Measures/set_meters_idf/output_variables.json')
     variable_definitions = JSON.parse(file_content)
 
-    list_of_variables = []
+    list_of_variables = {}
     variable_definitions.each do |var_def|
       if var_def["create_output_variable"]
-        list_of_variables << var_def["name"]
+        list_of_variables[var_def["name"]] = true
       end
       if var_def["create_output_meter"]
-        list_of_variables << ("Meter " + var_def["name"]).upcase
+        list_of_variables[("Meter " + var_def["name"]).upcase] = true
       end
     end
 
@@ -213,52 +212,51 @@ class Results < OpenStudio::Measure::ReportingMeasure
       variable_names.each do |variable_name|
         puts "****************************"
         puts "Variable Name = #{variable_name}"
-        key_values = sqlFile.availableKeyValues(ann_env_pd, reporting_frequency, variable_name.to_s)
-        if key_values.size == 0
-          runner.registerError("Timeseries for #{variable_name} did not have any key values. No timeseries available.")
-        end
 
         bInit = true
-        key_values.each do |key_value|
-          puts "Key = #{key_value}"
-          timeseries = sqlFile.timeSeries(ann_env_pd, reporting_frequency, variable_name.to_s, key_value.to_s)
-          if !timeseries.empty?
-            timeseries = timeseries.get
-            units = timeseries.units
-            headerunits = units
-            if (units == "J") or (units == "W")
-              headerunits = "Wh"
-            end
-            headers << "#{variable_name.to_s}[#{headerunits}]"
-            if bInit
-              output_timeseries[headers[-1]] = []
-            end
-            output_timeseries[headers[-1]] << timeseries
-            if units == "J"
-              conversion_factors[headers[-1]] = 1.0 / 3600
-            elsif units == "W"
-              conversion_factors[headers[-1]] = 1.0 / timestep
-            else
-              conversion_factors[headers[-1]] = 1.0
-            end
-            if list_of_variables.include? variable_name.to_s
-              headers_filtered << "#{variable_name.to_s}[#{headerunits}]"
-              if bInit
-                output_timeseries_filtered[headers_filtered[-1]] = []
-              end
-              output_timeseries_filtered[headers_filtered[-1]] << timeseries
-              if units == "J"
-                conversion_factors_filtered[headers_filtered[-1]] = 1.0 / 3600
-              elsif units == "W"
-                conversion_factors_filtered[headers_filtered[-1]] = 1.0 / timestep
-              else
-                conversion_factors_filtered[headers_filtered[-1]] = 1.0
-              end
-            end
-            bInit = false
-          else
-            runner.registerWarning("Timeseries for #{key_value} #{variable_name} is empty.")
+        time_series_vec = sqlFile.timeSeries(ann_env_pd, reporting_frequency, variable_name.to_s)
+        if time_series_vec.empty?
+          runner.registerWarning("Time series for #{variable_name} is empty.")
+          next
+        end
+
+        time_series_vec.each do |time_series|
+          units = time_series.units
+          headerunits = units
+          if (units == "J") or (units == "W")
+            headerunits = "Wh"
           end
+          headers << "#{variable_name.to_s}[#{headerunits}]"
+
+          if bInit
+            output_timeseries[headers[-1]] = []
+          end
+          output_timeseries[headers[-1]] << time_series
+
+          if units == "J"
+            conversion_factors[headers[-1]] = 1.0 / 3600
+          elsif units == "W"
+            conversion_factors[headers[-1]] = 1.0 / timestep
+          else
+            conversion_factors[headers[-1]] = 1.0
+          end
+
+          if list_of_variables.include? variable_name.to_s
+            headers_filtered << "#{variable_name.to_s}[#{headerunits}]"
+            if bInit
+              output_timeseries_filtered[headers_filtered[-1]] = []
+            end
+            output_timeseries_filtered[headers_filtered[-1]] << time_series
+            if units == "J"
+              conversion_factors_filtered[headers_filtered[-1]] = 1.0 / 3600
+            elsif units == "W"
+              conversion_factors_filtered[headers_filtered[-1]] = 1.0 / timestep
+            else
+              conversion_factors_filtered[headers_filtered[-1]] = 1.0
+            end
+          end
+
+          bInit = false
         end
       end
 
