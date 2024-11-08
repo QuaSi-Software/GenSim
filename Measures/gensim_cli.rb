@@ -38,12 +38,20 @@ class GenSimCLI < Thor
   desc "run_workflow --os_bin_path=/os/openstudio.exe WORKFLOW_FILE", "Execute the given workflow"
   option :os_bin_path, :required => true
   option :output_folder, :required => true, :default => "./Output"
+  option :debug, :type => :boolean, :required => false, :default => false
   def run_workflow(workflow_file="Model.osw")
     arguments = [
       options["os_bin_path"],
-      "--verbose", "run", "--workflow",
-      File.join(options["output_folder"], workflow_file)
+      "--verbose", "run"
     ]
+
+    if options["debug"]
+      arguments << "--debug"
+    end
+
+    arguments << "--workflow"
+    arguments << File.join(options["output_folder"], workflow_file)
+
     system(arguments.join(" "))
   end
 
