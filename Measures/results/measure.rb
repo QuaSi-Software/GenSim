@@ -197,9 +197,9 @@ class Results < OpenStudio::Measure::ReportingMeasure
     end
 
     reporting_frequencies.each do |reporting_frequency|
-      puts "***********************************************"
-      puts "***********************************************"
-      puts "Reporting Frequency = #{reporting_frequency}"
+      runner.registerInfo("***********************************************")
+      runner.registerInfo("***********************************************")
+      runner.registerInfo("Reporting Frequency = #{reporting_frequency}")
 
       headers = ["#{reporting_frequency}"]
       headers_filtered = ["#{reporting_frequency}"]
@@ -210,8 +210,8 @@ class Results < OpenStudio::Measure::ReportingMeasure
 
       variable_names = sqlFile.availableVariableNames(ann_env_pd, reporting_frequency)
       variable_names.each do |variable_name|
-        puts "****************************"
-        puts "Variable Name = #{variable_name}"
+        runner.registerInfo("****************************")
+        runner.registerInfo("Variable Name = #{variable_name}")
 
         bInit = true
         time_series_vec = sqlFile.timeSeries(ann_env_pd, reporting_frequency, variable_name.to_s)
@@ -261,7 +261,7 @@ class Results < OpenStudio::Measure::ReportingMeasure
       end
 
       if output_timeseries.empty?
-        puts "No output variables found at reporting frequency = #{reporting_frequency}"
+        runner.registerInfo("No output variables found at reporting frequency = #{reporting_frequency}")
         next
       end
 
@@ -277,7 +277,7 @@ class Results < OpenStudio::Measure::ReportingMeasure
       end
 
       if output_timeseries_filtered.empty?
-        puts "No filtered output variables found at reporting frequency = #{reporting_frequency}"
+        runner.registerInfo("No filtered output variables found at reporting frequency = #{reporting_frequency}")
         next
       end
 
