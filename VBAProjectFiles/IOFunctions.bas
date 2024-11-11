@@ -353,14 +353,14 @@ Sub CreateResults()
 
     'Find colums for faster indexing
     For colIndex = 1 To iMaxCol
-        If (InStr(ResultsNFA(1, colIndex), METER_HEATING)) Then col_heating = colIndex
-        If (InStr(ResultsNFA(1, colIndex), METER_COOLING)) Then col_cooling = colIndex
-        If (InStr(ResultsNFA(1, colIndex), METER_ELECTRICITY_LIGHTS)) Then col_lights = colIndex
-        If (InStr(ResultsNFA(1, colIndex), METER_ELECTRICITY_PLUGS)) Then col_elec = colIndex
-        If (InStr(ResultsNFA(1, colIndex), METER_ELECTRICITY_FANS)) Then col_fans = colIndex
-        If (InStr(ResultsNFA(1, colIndex), METER_ELECTRICITY_PUMPS)) Then col_pumps = colIndex
-        If (InStr(ResultsNFA(1, colIndex), FACILITY_HEATING_SEPOINT_NOT_MET_OCC)) Then col_unmet_h = colIndex
-        If (InStr(ResultsNFA(1, colIndex), FACILITY_COOLING_SEPOINT_NOT_MET_OCC)) Then col_unmet_c = colIndex
+        If (InStr(ResultsNFA(1, colIndex), "METER HEATING")) Then col_heating = colIndex
+        If (InStr(ResultsNFA(1, colIndex), "METER COOLING")) Then col_cooling = colIndex
+        If (InStr(ResultsNFA(1, colIndex), "METER LIGHTS ELECTRICITY")) Then col_lights = colIndex
+        If (InStr(ResultsNFA(1, colIndex), "METER PLUGS ELECTRICITY")) Then col_elec = colIndex
+        If (InStr(ResultsNFA(1, colIndex), "METER FANS ELECTRICITY")) Then col_fans = colIndex
+        If (InStr(ResultsNFA(1, colIndex), "METER PUMPS ELECTRICITY")) Then col_pumps = colIndex
+        If (InStr(ResultsNFA(1, colIndex), "Facility Heating Setpoint Not Met While Occupied Time")) Then col_unmet_h = colIndex
+        If (InStr(ResultsNFA(1, colIndex), "Facility Cooling Setpoint Not Met While Occupied Time")) Then col_unmet_c = colIndex
     Next
 
     ' ' Split conduction heat transfer into two sums for gains and losses
@@ -562,12 +562,12 @@ Sub CreateResults()
 
     For colIndex = 1 To iMaxCol
         'Basic Output
-        If (InStr(ResultsNFAAnnual(1, colIndex), METER_HEATING)) Then Range("heating_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), METER_COOLING)) Then Range("cooling_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), METER_ELECTRICITY_LIGHTS)) Then Range("lights_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), METER_ELECTRICITY_PLUGS)) Then Range("equipment_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), METER_ELECTRICITY_PUMPS)) Then Range("pumps_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), METER_ELECTRICITY_FANS)) Then Range("fans_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER HEATING")) Then Range("heating_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER_COOLING")) Then Range("cooling_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER LIGHTS ELECTRICITY")) Then Range("lights_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER PLUGS ELECTRICITY")) Then Range("equipment_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER PUMPS ELECTRICITY")) Then Range("pumps_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER FANS ELECTRICITY")) Then Range("fans_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
     Next
 
     '------ Liste Gebäudebilanz
@@ -577,21 +577,21 @@ Sub CreateResults()
 
     For colIndex = 1 To iMaxCol
         'Verluste
-        If (InStr(ResultsNFAAnnual(1, colIndex), METER_SURFACE_FACE_CONDUCTION_LOSS)) Then Sheets("GEBÄUDEBILANZ").Range("N10") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), METER_WINDOW_SURFACE_HEAT_LOSS)) Then Sheets("GEBÄUDEBILANZ").Range("N11") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), METER_INFILTRATION_HEAT_LOSS)) Then Sheets("GEBÄUDEBILANZ").Range("N12") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), METER_VENTILATION_HEAT_LOSS)) Then Sheets("GEBÄUDEBILANZ").Range("N13") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), METER_MECHANICAL_VENTILATION_LOSS)) Then Sheets("GEBÄUDEBILANZ").Range("N14") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER WALL CONDUCTION HEAT LOSS")) Then Sheets("GEBÄUDEBILANZ").Range("N10") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER WINDOW CONDUCTION HEAT LOSS")) Then Sheets("GEBÄUDEBILANZ").Range("N11") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER INFILTRATION HEAT LOSS")) Then Sheets("GEBÄUDEBILANZ").Range("N12") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER WINDOW VENTILATION HEAT LOSS")) Then Sheets("GEBÄUDEBILANZ").Range("N13") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER MECHANICAL VENTILATION HEAT LOSS")) Then Sheets("GEBÄUDEBILANZ").Range("N14") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
 
         'Gewinne
-        If (InStr(ResultsNFAAnnual(1, colIndex), METER_SURFACE_FACE_CONDUCTION_GAIN)) Then Sheets("GEBÄUDEBILANZ").Range("N18") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), METER_WINDOW_SURFACE_HEAT_GAIN)) Then Sheets("GEBÄUDEBILANZ").Range("N19") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), METER_INFILTRATION_HEAT_GAIN)) Then Sheets("GEBÄUDEBILANZ").Range("N20") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), METER_VENTILATION_HEAT_GAIN)) Then Sheets("GEBÄUDEBILANZ").Range("N21") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), METER_ZONE_PLUGS)) Then Sheets("GEBÄUDEBILANZ").Range("N22") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), METER_ZONE_LIGHTS)) Then Sheets("GEBÄUDEBILANZ").Range("N23") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), METER_ZONE_PEOPLE)) Then Sheets("GEBÄUDEBILANZ").Range("N24") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), METER_MECHANICAL_VENTILATION_GAIN)) Then Sheets("GEBÄUDEBILANZ").Range("N25") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER WALL CONDUCTION HEAT GAIN")) Then Sheets("GEBÄUDEBILANZ").Range("N18") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER WINDOW TOTAL HEAT GAIN")) Then Sheets("GEBÄUDEBILANZ").Range("N19") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER INFILTRATION HEAT GAIN")) Then Sheets("GEBÄUDEBILANZ").Range("N20") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER WINDOW VENTILATION HEAT GAIN")) Then Sheets("GEBÄUDEBILANZ").Range("N21") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER ELECTRIC EQUIPMENT HEAT GAIN")) Then Sheets("GEBÄUDEBILANZ").Range("N22") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER LIGHTS HEAT GAIN")) Then Sheets("GEBÄUDEBILANZ").Range("N23") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER PEOPLE HEAT GAIN")) Then Sheets("GEBÄUDEBILANZ").Range("N24") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER MECHANICAL VENTILATION HEAT GAIN")) Then Sheets("GEBÄUDEBILANZ").Range("N25") = ResultsNFAAnnual(2, colIndex) * 0.001
     Next
 
     ' Conduction losses/gains

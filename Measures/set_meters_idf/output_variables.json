@@ -436,75 +436,75 @@
         "create_output_meter": false
     },
     {
-        "name": "DistrictHeating:Facility",
+        "name": "Heating",
         "eplus_variables": ["DistrictHeating:Facility"],
         "node_reference": "",
         "create_output_variable": false,
-        "create_custom_meter": false,
+        "create_custom_meter": true,
         "create_output_meter": true
     },
     {
-        "name": "DistrictCooling:Facility",
+        "name": "Cooling",
         "eplus_variables": ["DistrictCooling:Facility"],
         "node_reference": "",
         "create_output_variable": false,
-        "create_custom_meter": false,
+        "create_custom_meter": true,
         "create_output_meter": true
     },
     {
-        "name": "InteriorLights:Electricity",
+        "name": "Lights Electricity",
         "eplus_variables": ["InteriorLights:Electricity"],
         "node_reference": "",
         "create_output_variable": false,
-        "create_custom_meter": false,
+        "create_custom_meter": true,
         "create_output_meter": true
     },
     {
-        "name": "InteriorEquipment:Electricity",
+        "name": "Plugs Electricity",
         "eplus_variables": ["InteriorEquipment:Electricity"],
         "node_reference": "",
         "create_output_variable": false,
-        "create_custom_meter": false,
+        "create_custom_meter": true,
         "create_output_meter": true
     },
     {
-        "name": "ElectricityProduced:Plant",
+        "name": "Plant Electricity",
         "eplus_variables": ["ElectricityProduced:Plant"],
         "node_reference": "",
         "create_output_variable": false,
-        "create_custom_meter": false,
+        "create_custom_meter": true,
         "create_output_meter": true
     },
     {
-        "name": "Electricity:Facility",
+        "name": "Facility Electricity",
         "eplus_variables": ["Electricity:Facility"],
         "node_reference": "",
         "create_output_variable": false,
-        "create_custom_meter": false,
+        "create_custom_meter": true,
         "create_output_meter": true
     },
     {
-        "name": "Photovoltaic:ElectricityProduced",
+        "name": "Photovoltaic Electricity",
         "eplus_variables": ["Photovoltaic:ElectricityProduced"],
         "node_reference": "",
         "create_output_variable": false,
-        "create_custom_meter": false,
+        "create_custom_meter": true,
         "create_output_meter": true
     },
     {
-        "name": "Fans:Electricity",
+        "name": "Fans Electricity",
         "eplus_variables": ["Fans:Electricity"],
         "node_reference": "",
         "create_output_variable": false,
-        "create_custom_meter": false,
+        "create_custom_meter": true,
         "create_output_meter": true
     },
     {
-        "name": "Pumps:Electricity",
+        "name": "Pumps Electricity",
         "eplus_variables": ["Pumps:Electricity"],
         "node_reference": "",
         "create_output_variable": false,
-        "create_custom_meter": false,
+        "create_custom_meter": true,
         "create_output_meter": true
     },
     {
