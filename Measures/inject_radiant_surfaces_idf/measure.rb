@@ -68,22 +68,12 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
     counter = 0
     # reporting initial condition of model
     runner.registerInitialCondition("The building started with #{lowTempRadiants.size} Low Temp Radiant objects and #{internalMasses.size} Internal Masses.")
-    # Get the OpenStudio version
-    version = OpenStudio.openStudioVersion.to_s
 
-    # Split the version into major, minor, and patch components
-    version_parts = version.split('.')
+    current_version = OpenStudio::VersionString.new(OpenStudio.openStudioVersion())
+    required_version = OpenStudio::VersionString.new(3,2,0)
 
-    # Extract the major, minor, and patch components
-    major = version_parts[0].to_i
-    minor = version_parts[1].to_i
-    patch = version_parts[2].to_i
-
-    # Combine the components into a double number
-    # We can use the formula major + (minor / 100.0) + (patch / 10000.0)
-    # This ensures the minor and patch components are correctly represented as fractional parts of the version
-    version_double = major + (minor / 100.0) + (patch / 10000.0)
-    if version_double > 3.01
+    if current_version >= required_version
+      runner.registerInfo("Found version #{current_version.to_s()} >= 3.2.0")
       # since version 3.2 the low temp radiant object do not get propertly converted into IDF so this code will fix it
       # init the dictionary
       list_branches_chilled = []
@@ -232,6 +222,7 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
 '''
 
     else
+      runner.registerInfo("Found version #{current_version.to_s()} < 3.2.0")
       # this is the old way of adjusting the low temperature components, by just adding the related internal mass object
       lowTempRadiants.each do |lowTempRadiant|
         runner.registerInfo("LowTempZoneName: #{lowTempRadiant.getString(2)}")
