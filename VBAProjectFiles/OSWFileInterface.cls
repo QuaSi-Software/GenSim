@@ -466,18 +466,27 @@ End Sub
 ' @param NrOfTimesteps As Integer ByVal Number of timesteps per hour.
 Sub ExportResults( _
     ByRef jFile as JSONFile, _
+    ByVal bGeneric As Boolean, _
     ByVal nrf_bgf As Double, _
     ByVal NrOfTimesteps As Integer _
 )
     Dim gross_area As Double
-    gross_area = Range("BldgArea_import")
 
     jFile.AddArgument "Timestep", CStr(NrOfTimesteps)
     jFile.AddArgument "IntensityResultsGross", "true"
     jFile.AddArgument "IntensityResultsNet", "true"
-    jFile.AddArgument "GrossArea", CStr(gross_area)
-    jFile.AddArgument "NetArea", CStr(gross_area * nrf_bgf)
     jFile.AddArgument "Debug", "false"
+
+    if bGeneric Then
+        gross_area = Range("BldgArea")
+        jFile.AddArgument "GrossArea", CStr(gross_area)
+        jFile.AddArgument "NetArea", CStr(gross_area * nrf_bgf)
+    Else
+        gross_area = Range("BldgArea_import")
+        jFile.AddArgument "GrossArea", CStr(gross_area)
+        jFile.AddArgument "NetArea", CStr(gross_area * nrf_bgf)
+    End If
+
     jFile.AddMeasure "results"
 End Sub
 
@@ -638,7 +647,7 @@ Sub ExportToOSW( _
 
     Call ExportInjectHolidaysIDF(jFile)
     Call ExportSetMetersIDF(jFile, NrOfTimesteps)
-    Call ExportResults(jFile, nrf_bgf, NrOfTimesteps)
+    Call ExportResults(jFile, bGeneric, nrf_bgf, NrOfTimesteps)
 
     jFile.Save sFilename
 End Sub
