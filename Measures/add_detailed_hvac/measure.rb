@@ -380,14 +380,10 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
       baseboard = OpenStudio::Model::ZoneHVACBaseboardConvectiveWater.new(model, model.alwaysOnDiscreteSchedule, heatingCoilBaseboard)
       # attach the zone to the baseboard
       baseboard.addToThermalZone(zone)
-      
+      # create radiant objects
       heatingCoilRadiant = OpenStudio::Model::CoilHeatingLowTempRadiantVarFlow.new(model, zoneHeatingTempSched)
       heatingCoilRadiant.setMaximumHotWaterFlow(0)
-      heatingCoilRadiant.setHeatingDesignCapacity(0)
       coolingCoilRadiant = OpenStudio::Model::CoilCoolingLowTempRadiantVarFlow.new(model, zoneCoolingTempSched)
-      # coolingCoilRadiant.setMaximumColdWaterFlow(coldWaterFlowPerArea * zone.floorArea())
-      # coolingCoilRadiant.setCoolingDesignCapacityMethod("CapacityPerFloorArea")
-      # coolingCoilRadiant.setCoolingDesignCapacityPerFloorArea(100)
       # make an air terminal for the zone
       radiantLowTVarFlow = OpenStudio::Model::ZoneHVACLowTempRadiantVarFlow.new(model, model.alwaysOnDiscreteSchedule, heatingCoilRadiant, coolingCoilRadiant)
       radiantLowTVarFlow.setNumberofCircuits("CalculateFromCircuitLength")
@@ -406,11 +402,15 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
         if !chilledWaterPlant.addDemandBranchForComponent(radiantLowTVarFlow.coolingCoil().get)
           runner.registerWarning("Could not add cooling coil radiant #{coolingCoilRadiant.name}")
         end
-        # set parameters in 3.2
-        #heatingCoilRadiant.setHeatingDesignCapacityMethod("HeatingDesignCapacity")
-        #heatingCoilRadiant.autosizeHeatingDesignCapacity()
-        #coolingCoilRadiant.setCoolingDesignCapacityMethod("CoolingDesignCapacity")
-        #coolingCoilRadiant.autosizeCoolingDesignCapacity()
+        # set design capacity for heating and cooling
+        # heatingCoilRadiant.setHeatingDesignCapacity(0)
+        heatingCoilRadiant.setHeatingDesignCapacityMethod("HeatingDesignCapacity")
+        heatingCoilRadiant.autosizeHeatingDesignCapacity()
+        coolingCoilRadiant.setCoolingDesignCapacityMethod("CoolingDesignCapacity")
+        coolingCoilRadiant.autosizeCoolingDesignCapacity()
+        # coolingCoilRadiant.setMaximumColdWaterFlow(coldWaterFlowPerArea * zone.floorArea())
+        # coolingCoilRadiant.setCoolingDesignCapacityMethod("CapacityPerFloorArea")
+        # coolingCoilRadiant.setCoolingDesignCapacityPerFloorArea(100)
       else
         runner.registerInfo("Found version #{current_version.to_s()} < 3.2.0")
         hotWaterPlant.addDemandBranchForComponent(radiantLowTVarFlow.heatingCoil());

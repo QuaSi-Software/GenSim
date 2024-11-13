@@ -48,22 +48,24 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
     # get all zone objects in model
     zoneEquipLists = workspace.getObjectsByType("ZoneHVAC:EquipmentList".to_IddObjectType)
     
-    # fix strange issue with SAT schedule
-    weekSchedules = workspace.getObjectsByType("Schedule:Week:Daily".to_IddObjectType)
-    yearSchedules = workspace.getObjectsByType("Schedule:Year".to_IddObjectType)
-    yearSchedules.each do |yearSchedule|
-      if yearSchedule.getString(0).get == "SAT Year Schedule"
-        weekSchedules.each do |weekSchedule|
-          if weekSchedule.getString(0).get == "SAT Week Schedule 10 deg C"
-            yearSchedule.setString(2, "SAT Week Schedule 10 deg C")
-            yearSchedule.setDouble(3, 1)
-            yearSchedule.setDouble(4, 1)
-            yearSchedule.setDouble(5, 12)
-            yearSchedule.setDouble(6, 31)
-          end
-        end
-      end
-    end
+    # the following fixes an issue with the SAT schedule. however in versions prior to 3.x (TODO)
+    # it introduces a problem instead, in that the schedule appears double, causing E+ to crash
+
+    # weekSchedules = workspace.getObjectsByType("Schedule:Week:Daily".to_IddObjectType)
+    # yearSchedules = workspace.getObjectsByType("Schedule:Year".to_IddObjectType)
+    # yearSchedules.each do |yearSchedule|
+    #   if yearSchedule.getString(0).get == "SAT Year Schedule"
+    #     weekSchedules.each do |weekSchedule|
+    #       if weekSchedule.getString(0).get == "SAT Week Schedule 10 deg C"
+    #         yearSchedule.setString(2, "SAT Week Schedule 10 deg C")
+    #         yearSchedule.setDouble(3, 1)
+    #         yearSchedule.setDouble(4, 1)
+    #         yearSchedule.setDouble(5, 12)
+    #         yearSchedule.setDouble(6, 31)
+    #       end
+    #     end
+    #   end
+    # end
 
     counter = 0
     # reporting initial condition of model
@@ -106,12 +108,10 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
       design_obj.setString(5, "MeanAirTemperature")
       design_obj.setString(6, "HalfFlowPower")
       design_obj.setString(7, "HeatingDesignCapacity")
-      
 
       design_obj.setDouble(10, 0.5)
       design_obj.setString(11, "ZoneHeatingTempSched")
       design_obj.setString(12, "CoolingDesignCapacity")
-      
 
       design_obj.setDouble(15, 0.5)
       design_obj.setString(16, "ZoneCoolingTempSched")
@@ -132,8 +132,6 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
             related_internal_mass = internalMass.getString(0).get
           end
         end
-
-        
 
         comp = OpenStudio::IdfObject.new("ZoneHVAC:LowTemperatureRadiant:VariableFlow".to_IddObjectType)
         comp.setString(0, comp_name)
@@ -186,7 +184,6 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
 
         i = i + 1
       end
-    
 
       '''
       ZoneHVAC:LowTemperatureRadiant:VariableFlow,
@@ -219,7 +216,7 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
       26  1,                                      !- Condensation Control Dewpoint Offset {C}
       27  CalculateFromCircuitLength,             !- Number of Circuits
       28  106.7;                                  !- Circuit Length {m}
-'''
+      '''
 
     else
       runner.registerInfo("Found version #{current_version.to_s()} < 3.2.0")

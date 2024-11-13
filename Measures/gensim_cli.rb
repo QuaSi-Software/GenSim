@@ -64,7 +64,7 @@ class GenSimCLI < Thor
     File.open(File.join(options["output_folder"], file_name), "w") do |file|
       file.write("OS:Version,\n")
       file.write("  {0f20289d-c9f3-4775-8548-e6b6a77e899a}, !- Handle\n")
-      file.write("  3.4.0;                                  !- Version Identifier\n")
+      file.write("  3.0.0;                                  !- Version Identifier\n")
       file.write("\n")
     end
   end
