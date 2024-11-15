@@ -353,8 +353,8 @@ Sub CreateResults()
 
     'Find colums for faster indexing
     For colIndex = 1 To iMaxCol
-        If (InStr(ResultsNFA(1, colIndex), "METER HEATING")) Then col_heating = colIndex
-        If (InStr(ResultsNFA(1, colIndex), "METER COOLING")) Then col_cooling = colIndex
+        If (InStr(ResultsNFA(1, colIndex), "METER TOTAL HEATING")) Then col_heating = colIndex
+        If (InStr(ResultsNFA(1, colIndex), "METER TOTAL COOLING")) Then col_cooling = colIndex
         If (InStr(ResultsNFA(1, colIndex), "METER LIGHTS ELECTRICITY")) Then col_lights = colIndex
         If (InStr(ResultsNFA(1, colIndex), "METER PLUGS ELECTRICITY")) Then col_elec = colIndex
         If (InStr(ResultsNFA(1, colIndex), "METER FANS ELECTRICITY")) Then col_fans = colIndex
@@ -557,8 +557,8 @@ Sub CreateResults()
 
     For colIndex = 1 To iMaxCol
         'Basic Output
-        If (InStr(ResultsNFAAnnual(1, colIndex), "METER HEATING")) Then Range("heating_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), "METER_COOLING")) Then Range("cooling_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER TOTAL HEATING")) Then Range("heating_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER TOTAL COOLING")) Then Range("cooling_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), "METER LIGHTS ELECTRICITY")) Then Range("lights_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), "METER PLUGS ELECTRICITY")) Then Range("equipment_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), "METER PUMPS ELECTRICITY")) Then Range("pumps_annual") = ResultsNFAAnnual(2, colIndex) * 0.001

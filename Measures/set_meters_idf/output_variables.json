@@ -436,7 +436,7 @@
         "create_output_meter": false
     },
     {
-        "name": "Heating",
+        "name": "Total Heating",
         "eplus_variables": ["DistrictHeating:Facility"],
         "node_reference": "",
         "create_output_variable": false,
@@ -444,7 +444,7 @@
         "create_output_meter": true
     },
     {
-        "name": "Cooling",
+        "name": "Total Cooling",
         "eplus_variables": ["DistrictCooling:Facility"],
         "node_reference": "",
         "create_output_variable": false,
