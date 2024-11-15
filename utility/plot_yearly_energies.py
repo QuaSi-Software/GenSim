@@ -123,12 +123,13 @@ def create_plot(df):
     convert_units(df)
 
     # old mapping
-    mechanical_ventilation_losses = try_first(df, "METER MECHANICAL VENTILATION HEAT LOSS")
+    mechanical_ventilation_losses = try_first(df,
+        "METER ZONE MECHANICAL VENTILATION NO LOAD HEAT REMOVAL ENERGY")
     mechanical_ventilation_gains = 0
-    transmission_trans_losses = try_first(df, "METER WINDOW CONDUCTION HEAT LOSS")
+    transmission_trans_losses = try_first(df, "METER SURFACE WINDOW HEAT LOSS ENERGY")
     transmission_opaque_losses = try_first(df,
         "METER SURFACE AVERAGE FACE CONDUCTION HEAT LOSS RATE")
-    transmission_trans_gains = try_first(df, "METER WINDOW CONDUCTION HEAT GAIN")
+    transmission_trans_gains = try_first(df, "METER SURFACE WINDOW HEAT GAIN ENERGY")
     transmission_opaque_gains = try_first(df,
         "METER SURFACE AVERAGE FACE CONDUCTION HEAT GAIN RATE")
     infiltration_losses = 0
@@ -136,7 +137,7 @@ def create_plot(df):
     window_ventilation_losses = 0
     window_ventilation_gains = 0
     solar_gains = (try_first(df, "METER ZONE WINDOWS TOTAL TRANSMITTED SOLAR RADIATION ENERGY")
-        - try_first(df, "METER WINDOW CONDUCTION HEAT GAIN"))
+        - try_first(df, "METER SURFACE WINDOW HEAT GAIN ENERGY"))
     internal_gains = (try_first(df, "METER PEOPLE HEAT GAIN")
         + try_first(df, "METER LIGHTS HEAT GAIN")
         + try_first(df, "METER PEOPLE HEAT GAIN"))
@@ -177,7 +178,7 @@ def create_plot(df):
 
 def main():
     """Entry point to the script."""
-    csv_filename = './Output/reports/results_report_variables_ZoneTimestep-Sum.csv'
+    csv_filename = './Output/reports/results_report_variables_ZoneTimestep-net-Sum.csv'
     frame = read_csv(csv_filename)
     create_plot(frame)
 
