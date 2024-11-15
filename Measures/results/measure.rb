@@ -80,6 +80,7 @@ class Results < OpenStudio::Measure::ReportingMeasure
 
     date_times = output_timeseries[output_timeseries.keys[0]][0].dateTimes
 
+    factors = {}
     values = {}
 
     for key in output_timeseries.keys
@@ -92,9 +93,15 @@ class Results < OpenStudio::Measure::ReportingMeasure
             value += timeseries.values
           end
         end
-        values[key] = value 
+        values[key] = value
       else
         values[key] = output_timeseries[key].values
+      end
+
+      if key.include?("[Wh]")
+        factors[key] = conversion_factors[key] / area
+      else
+        factors[key] = conversion_factors[key]
       end
     end
 
@@ -109,9 +116,9 @@ class Results < OpenStudio::Measure::ReportingMeasure
           last_key = key
           value = values[key][i]
           if value.kind_of?(Array)
-            converted_value = sum(value) * conversion_factors[key] / area
+            converted_value = sum(value) * factors[key]
           else
-            converted_value = value * conversion_factors[key] / area
+            converted_value = value * factors[key]
           end
           row << converted_value
         end
@@ -130,7 +137,7 @@ class Results < OpenStudio::Measure::ReportingMeasure
           sum += value
         end
       end
-      row_annual << sum * conversion_factors[key] / area
+      row_annual << sum * factors[key]
     end
     csv_array_annual << row_annual
 
