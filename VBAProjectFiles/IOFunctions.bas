@@ -359,8 +359,6 @@ Sub CreateResults()
         If (InStr(ResultsNFA(1, colIndex), "METER PLUGS ELECTRICITY")) Then col_elec = colIndex
         If (InStr(ResultsNFA(1, colIndex), "METER FANS ELECTRICITY")) Then col_fans = colIndex
         If (InStr(ResultsNFA(1, colIndex), "METER PUMPS ELECTRICITY")) Then col_pumps = colIndex
-        If (InStr(ResultsNFA(1, colIndex), "Facility Heating Setpoint Not Met While Occupied Time")) Then col_unmet_h = colIndex
-        If (InStr(ResultsNFA(1, colIndex), "Facility Cooling Setpoint Not Met While Occupied Time")) Then col_unmet_c = colIndex
     Next
 
     ' ' Split conduction heat transfer into two sums for gains and losses
@@ -526,9 +524,6 @@ Sub CreateResults()
     Sheets("pivot").Range("D3:I" & 35100).ClearContents
     Sheets("pivot").Range("D3:I" & iMaxRow + 5) = Results_Nutzenergie_1h
 
-    Sheets("HAUPTSEITE").Range("unmethours_h") = ResultsNFAAnnual(2, col_unmet_h)
-    Sheets("HAUPTSEITE").Range("unmethours_c") = ResultsNFAAnnual(2, col_unmet_c)
-
     'Aggregierung in Pivot Table auf Summe ändern
     If Sheets("pivot").Range("A1") <> Energie Then
         For i = 1 To 6
@@ -568,6 +563,8 @@ Sub CreateResults()
         If (InStr(ResultsNFAAnnual(1, colIndex), "METER PLUGS ELECTRICITY")) Then Range("equipment_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), "METER PUMPS ELECTRICITY")) Then Range("pumps_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), "METER FANS ELECTRICITY")) Then Range("fans_annual") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER HEATING SETPOINT NOT MET")) Then Sheets("HAUPTSEITE").Range("unmethours_h") = ResultsNFAAnnual(2, colIndex)
+        If (InStr(ResultsNFAAnnual(1, colIndex), "METER COOLING SETPOINT NOT MET")) Then Sheets("HAUPTSEITE").Range("unmethours_c") = ResultsNFAAnnual(2, colIndex)
     Next
 
     '------ Liste Gebäudebilanz

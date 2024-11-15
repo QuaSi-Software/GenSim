@@ -556,12 +556,12 @@
         "create_output_meter": false
     },
     {
-        "name": "Facility Heating Setpoint Not Met While Occupied Time",
+        "name": "Heating Setpoint Not Met",
         "eplus_variables": ["Facility Heating Setpoint Not Met While Occupied Time"],
         "node_reference": "",
-        "create_output_variable": true,
-        "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_variable": false,
+        "create_custom_meter": true,
+        "create_output_meter": true
     },
     {
         "name": "Facility Cooling Setpoint Not Met Time",
@@ -572,11 +572,11 @@
         "create_output_meter": false
     },
     {
-        "name": "Facility Cooling Setpoint Not Met While Occupied Time",
+        "name": "Cooling Setpoint Not Met",
         "eplus_variables": ["Facility Cooling Setpoint Not Met While Occupied Time"],
         "node_reference": "",
-        "create_output_variable": true,
-        "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_variable": false,
+        "create_custom_meter": true,
+        "create_output_meter": true
     }
 ]
