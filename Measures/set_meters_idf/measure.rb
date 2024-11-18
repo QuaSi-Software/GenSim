@@ -130,7 +130,9 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     variable_definitions.each do |var_def|
       if var_def["create_output_variable"]
         if var_def["node_reference"] == ""
-          create_variable(var_def["name"], reportingInterval, workspace)
+          var_def["eplus_variables"].each do |var_name|
+            create_variable(var_name, reportingInterval, workspace)
+          end
         else
           create_variable_with_key(
             var_def["node_reference"],
