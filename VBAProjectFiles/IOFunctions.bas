@@ -574,14 +574,14 @@ Sub CreateResults()
 
     For colIndex = 1 To iMaxCol
         'Verluste
-        If (InStr(ResultsNFAAnnual(1, colIndex), "METER WALL CONDUCTION HEAT LOSS")) Then Sheets("GEB훃DEBILANZ").Range("N10") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "Surface Inside Face Conduction Heat Loss Rate")) Then Sheets("GEB훃DEBILANZ").Range("N10") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), "METER WINDOW CONDUCTION HEAT LOSS")) Then Sheets("GEB훃DEBILANZ").Range("N11") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), "METER INFILTRATION HEAT LOSS")) Then Sheets("GEB훃DEBILANZ").Range("N12") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), "METER WINDOW VENTILATION HEAT LOSS")) Then Sheets("GEB훃DEBILANZ").Range("N13") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), "METER MECHANICAL VENTILATION HEAT LOSS")) Then Sheets("GEB훃DEBILANZ").Range("N14") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
 
         'Gewinne
-        If (InStr(ResultsNFAAnnual(1, colIndex), "METER WALL CONDUCTION HEAT GAIN")) Then Sheets("GEB훃DEBILANZ").Range("N18") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), "Surface Inside Face Conduction Heat Gain Rate")) Then Sheets("GEB훃DEBILANZ").Range("N18") = ResultsNFAAnnual(2, colIndex) * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), "METER WINDOW TOTAL HEAT GAIN")) Then Sheets("GEB훃DEBILANZ").Range("N19") = ResultsNFAAnnual(2, colIndex) * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), "METER INFILTRATION HEAT GAIN")) Then Sheets("GEB훃DEBILANZ").Range("N20") = ResultsNFAAnnual(2, colIndex) * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), "METER WINDOW VENTILATION HEAT GAIN")) Then Sheets("GEB훃DEBILANZ").Range("N21") = ResultsNFAAnnual(2, colIndex) * 0.001

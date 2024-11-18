@@ -1,31 +1,39 @@
 [
     {
         "name": "Wall Conduction Heat Transfer",
-        "eplus_variables": ["Surface Average Face Conduction Heat Transfer Energy"],
+        "eplus_variables": ["Surface Inside Face Conduction Heat Transfer Energy"],
         "node_reference": "",
         "create_output_variable": false,
-        "create_custom_meter": true,
-        "create_output_meter": true
+        "create_custom_meter": false,
+        "create_output_meter": false
     },
     {
         "name": "Wall Conduction Heat Gain",
-        "eplus_variables": ["Surface Average Face Conduction Heat Gain Rate"],
+        "eplus_variables": ["Surface Inside Face Conduction Heat Gain Rate"],
         "node_reference": "",
         "create_output_variable": false,
-        "create_custom_meter": true,
-        "create_output_meter": true
+        "create_custom_meter": false,
+        "create_output_meter": false
     },
     {
         "name": "Wall Conduction Heat Loss",
-        "eplus_variables": ["Surface Average Face Conduction Heat Loss Rate"],
+        "eplus_variables": ["Surface Inside Face Conduction Heat Loss Rate"],
         "node_reference": "",
         "create_output_variable": false,
-        "create_custom_meter": true,
-        "create_output_meter": true
+        "create_custom_meter": false,
+        "create_output_meter": false
     },
     {
         "name": "Window Total Heat Gain",
         "eplus_variables": ["Zone Windows Total Heat Gain Energy"],
+        "node_reference": "",
+        "create_output_variable": false,
+        "create_custom_meter": true,
+        "create_output_meter": true
+    },
+    {
+        "name": "Window Solar Heat Gain",
+        "eplus_variables": ["Zone Windows Total Transmitted Solar Radiation Energy"],
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
@@ -262,6 +270,14 @@
     {
         "name": "Surface Outside Face Conduction Heat Loss Rate",
         "eplus_variables": ["Surface Outside Face Conduction Heat Loss Rate"],
+        "node_reference": "",
+        "create_output_variable": true,
+        "create_custom_meter": true,
+        "create_output_meter": true
+    },
+    {
+        "name": "Surface Inside Face Conduction Heat Transfer Energy",
+        "eplus_variables": ["Surface Inside Face Conduction Heat Transfer Energy"],
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
