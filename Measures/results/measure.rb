@@ -23,22 +23,27 @@ class Results < OpenStudio::Measure::ReportingMeasure
   def arguments(model = nil)
     args = OpenStudio::Measure::OSArgumentVector.new
 
-    #make an argument for the reporting frequency
-    args << OpenStudio::Measure::OSArgument::makeIntegerArgument("Timestep",true)
-    gross = OpenStudio::Measure::OSArgument::makeBoolArgument("IntensityResultsGross",true)
-    gross.setDefaultValue(false)
-    args << gross
-    gross_area = OpenStudio::Measure::OSArgument::makeDoubleArgument("GrossArea",true)
+    args << OpenStudio::Measure::OSArgument::makeIntegerArgument("timestep", true)
+
+    as_gross = OpenStudio::Measure::OSArgument::makeBoolArgument("calculate_relative_gross", true)
+    as_gross.setDefaultValue(false)
+    args << as_gross
+
+    gross_area = OpenStudio::Measure::OSArgument::makeDoubleArgument("gross_area", true)
     gross_area.setDefaultValue(1)
     args << gross_area
-    netto = OpenStudio::Measure::OSArgument::makeBoolArgument("IntensityResultsNet",true)
-    netto.setDefaultValue(false)
-    args << netto
-    gross_net = OpenStudio::Measure::OSArgument::makeDoubleArgument("NetArea",true)
-    gross_net.setDefaultValue(1)
-    args << gross_net
-    debug = OpenStudio::Measure::OSArgument::makeBoolArgument("Debug",false)
+
+    as_net = OpenStudio::Measure::OSArgument::makeBoolArgument("calculate_relative_net", true)
+    as_net.setDefaultValue(false)
+    args << as_net
+
+    net_area = OpenStudio::Measure::OSArgument::makeDoubleArgument("net_area", true)
+    net_area.setDefaultValue(1)
+    args << net_area
+
+    debug = OpenStudio::Measure::OSArgument::makeBoolArgument("debug", false)
     debug.setDefaultValue(false)
+
     args << debug
 
     return args
@@ -167,12 +172,12 @@ class Results < OpenStudio::Measure::ReportingMeasure
     end
 
     #assign the user inputs to variables
-    timestep = runner.getIntegerArgumentValue("Timestep",user_arguments)
-    gross = runner.getBoolArgumentValue("IntensityResultsGross",user_arguments)
-    net = runner.getBoolArgumentValue("IntensityResultsNet",user_arguments)
-    gross_area = runner.getDoubleArgumentValue("GrossArea",user_arguments)
-    net_area = runner.getDoubleArgumentValue("NetArea",user_arguments)
-    debug = runner.getBoolArgumentValue("Debug",user_arguments)
+    timestep = runner.getIntegerArgumentValue("timestep", user_arguments)
+    gross = runner.getBoolArgumentValue("calculate_relative_gross", user_arguments)
+    net = runner.getBoolArgumentValue("calculate_relative_net", user_arguments)
+    gross_area = runner.getDoubleArgumentValue("gross_area", user_arguments)
+    net_area = runner.getDoubleArgumentValue("net_area", user_arguments)
+    debug = runner.getBoolArgumentValue("debug", user_arguments)
 
     reporting_frequency = "All"
 

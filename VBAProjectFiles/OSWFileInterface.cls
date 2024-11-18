@@ -472,19 +472,19 @@ Sub ExportResults( _
 )
     Dim gross_area As Double
 
-    jFile.AddArgument "Timestep", CStr(NrOfTimesteps)
-    jFile.AddArgument "IntensityResultsGross", "true"
-    jFile.AddArgument "IntensityResultsNet", "true"
-    jFile.AddArgument "Debug", "false"
+    jFile.AddArgument "timestep", CStr(NrOfTimesteps)
+    jFile.AddArgument "calculate_relative_gross", "true"
+    jFile.AddArgument "calculate_relative_net", "true"
+    jFile.AddArgument "debug", "false"
 
     if bGeneric Then
         gross_area = Range("BldgArea")
-        jFile.AddArgument "GrossArea", CStr(gross_area)
-        jFile.AddArgument "NetArea", CStr(gross_area * nrf_bgf)
+        jFile.AddArgument "gross_area", CStr(gross_area)
+        jFile.AddArgument "net_area", CStr(gross_area * nrf_bgf)
     Else
         gross_area = Range("BldgArea_import")
-        jFile.AddArgument "GrossArea", CStr(gross_area)
-        jFile.AddArgument "NetArea", CStr(gross_area * nrf_bgf)
+        jFile.AddArgument "gross_area", CStr(gross_area)
+        jFile.AddArgument "net_area", CStr(gross_area * nrf_bgf)
     End If
 
     jFile.AddMeasure "results"
