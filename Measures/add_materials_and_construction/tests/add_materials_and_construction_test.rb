@@ -18,7 +18,10 @@ class AddMaterialsAndConstructionTest < MiniTest::Test
     # get arguments with a new instance of the measure
     arguments = GetArguments(AddMaterialsAndConstruction.new, OpenStudio::Model::Model.new)
 
-    assert_equal(125, arguments.size)
+    # 3 selection box values (for importing between GUI and OSW), 3 window parameters, 4 for
+    # the chilled ceiling and 5 times the number of material layers (default 10) for 6
+    # different constructions, makes for 310 parameters
+    assert_equal(3 + 3 + 4 + 5 * 6 * 10, arguments.size)
     assert_equal("external_wall_1_name", arguments[0].name)
   end
 
