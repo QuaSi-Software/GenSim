@@ -25,13 +25,20 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     args << OpenStudio::Measure::OSArgument.makeIntegerArgument("time_step", true)
     dtsS = OpenStudio::Measure::OSArgument.makeStringArgument("day_to_start_simulation", false)
     dtsS.setDefaultValue("UseWeatherFile")
+
     args << dtsS
     sizingHeatingFactor = OpenStudio::Measure::OSArgument.makeDoubleArgument("heating_sizing_factor", false)
     sizingHeatingFactor.setDefaultValue("1.25")
     args << sizingHeatingFactor
+
     sizingCoolingFactor = OpenStudio::Measure::OSArgument.makeDoubleArgument("cooling_sizing_factor", false)
     sizingCoolingFactor.setDefaultValue("1.15")
     args << sizingCoolingFactor
+
+    outputLevel = OpenStudio::Measure::OSArgument.makeStringArgument("output_level", false)
+    outputLevel.setDefaultValue("Normal")
+    args << outputLevel
+
     return args
   end
 
@@ -88,6 +95,7 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     heatingSizingFactor = runner.getDoubleArgumentValue("heating_sizing_factor", user_arguments)
     coolingSizingFactor = runner.getDoubleArgumentValue("cooling_sizing_factor", user_arguments)
     dayToStartSimulation = runner.getStringArgumentValue("day_to_start_simulation", user_arguments)
+    outputLevel = runner.getStringArgumentValue("output_level", user_arguments)
 
     customMeters = workspace.getObjectsByType("Meter:Custom".to_IddObjectType)
     runner.registerInitialCondition("The building started with #{customMeters.size} Custom Meters with version #{workspace.version.str}.")
@@ -128,6 +136,10 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     variable_definitions = JSON.parse(file_content)
 
     variable_definitions.each do |var_def|
+      if !var_def["output_levels"].include?(outputLevel)
+        next
+      end
+
       if var_def["create_output_variable"]
         if var_def["node_reference"] == ""
           var_def["eplus_variables"].each do |var_name|

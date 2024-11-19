@@ -41,10 +41,10 @@ class Results < OpenStudio::Measure::ReportingMeasure
     net_area.setDefaultValue(1)
     args << net_area
 
-    debug = OpenStudio::Measure::OSArgument::makeBoolArgument("debug", false)
-    debug.setDefaultValue(false)
+    output_level = OpenStudio::Measure::OSArgument::makeStringArgument("output_level", false)
+    output_level.setDefaultValue("Normal")
 
-    args << debug
+    args << output_level
 
     return args
   end
@@ -171,15 +171,24 @@ class Results < OpenStudio::Measure::ReportingMeasure
       return false
     end
 
-    #assign the user inputs to variables
+    # read parameter values
     timestep = runner.getIntegerArgumentValue("timestep", user_arguments)
     gross = runner.getBoolArgumentValue("calculate_relative_gross", user_arguments)
     net = runner.getBoolArgumentValue("calculate_relative_net", user_arguments)
     gross_area = runner.getDoubleArgumentValue("gross_area", user_arguments)
     net_area = runner.getDoubleArgumentValue("net_area", user_arguments)
-    debug = runner.getBoolArgumentValue("debug", user_arguments)
+    output_level = runner.getStringArgumentValue("output_level", user_arguments)
 
+    # reporting frequencies should probably be a parameter, but there is little reason to
+    # not check all channels. however only "Zone Timestep" seems to contain any data at all
     reporting_frequency = "All"
+    runner.registerInfo("Reporting frequency is #{reporting_frequency}")
+
+    if reporting_frequency == "All"
+      reporting_frequencies = ["Hourly", "Zone Timestep", "HVAC System Timestep"]
+    else
+      reporting_frequencies = [reporting_frequency]
+    end
 
     # read list of output variables and meters from data file
     file_content = File.read('../../../Measures/set_meters_idf/output_variables.json')
@@ -187,6 +196,9 @@ class Results < OpenStudio::Measure::ReportingMeasure
 
     list_of_variables = {}
     variable_definitions.each do |var_def|
+      if !var_def["output_levels"].include?(output_level)
+        next
+      end
       if var_def["create_output_variable"]
         list_of_variables[var_def["name"]] = true
       end
@@ -195,18 +207,9 @@ class Results < OpenStudio::Measure::ReportingMeasure
       end
     end
 
+    # now read the data from the SQLite database
     sqlFile = getSQLFile(runner)
-
     ann_env_pd = getEnvPeriod(runner, sqlFile)
-
-    runner.registerInfo("reporting frequency is #{reporting_frequency}")
-
-    reporting_frequencies = {}
-    if reporting_frequency == "All"
-      reporting_frequencies = ["Hourly","Zone Timestep","HVAC System Timestep"]
-    else
-      reporting_frequencies << reporting_frequency
-    end
 
     reporting_frequencies.each do |reporting_frequency|
       runner.registerInfo("***********************************************")
@@ -214,18 +217,19 @@ class Results < OpenStudio::Measure::ReportingMeasure
       runner.registerInfo("Reporting Frequency = #{reporting_frequency}")
 
       headers = ["#{reporting_frequency}"]
-      headers_filtered = ["#{reporting_frequency}"]
       output_timeseries = {}
-      output_timeseries_filtered = {}
       conversion_factors = {}
-      conversion_factors_filtered = {}
 
       variable_names = sqlFile.availableVariableNames(ann_env_pd, reporting_frequency)
       variable_names.each do |variable_name|
         runner.registerInfo("****************************")
         runner.registerInfo("Variable Name = #{variable_name}")
 
-        bInit = true
+        if !list_of_variables.include? variable_name.to_s
+          runner.registerInfo("Skipping variable due to output filtering")
+          next
+        end
+
         time_series_vec = sqlFile.timeSeries(ann_env_pd, reporting_frequency, variable_name.to_s)
         if time_series_vec.empty?
           runner.registerWarning("Time series for #{variable_name} is empty.")
@@ -238,37 +242,21 @@ class Results < OpenStudio::Measure::ReportingMeasure
           if (units == "J") or (units == "W")
             headerunits = "Wh"
           end
-          headers << "#{variable_name.to_s}[#{headerunits}]"
+          header = "#{variable_name.to_s}[#{headerunits}]"
+          headers << header
 
-          if bInit
-            output_timeseries[headers[-1]] = []
+          if !output_timeseries.include?(header)
+            output_timeseries[header] = []
           end
-          output_timeseries[headers[-1]] << time_series
+          output_timeseries[header] << time_series
 
           if units == "J"
-            conversion_factors[headers[-1]] = 1.0 / 3600
+            conversion_factors[header] = 1.0 / 3600
           elsif units == "W"
-            conversion_factors[headers[-1]] = 1.0 / timestep
+            conversion_factors[header] = 1.0 / timestep
           else
-            conversion_factors[headers[-1]] = 1.0
+            conversion_factors[header] = 1.0
           end
-
-          if list_of_variables.include? variable_name.to_s
-            headers_filtered << "#{variable_name.to_s}[#{headerunits}]"
-            if bInit
-              output_timeseries_filtered[headers_filtered[-1]] = []
-            end
-            output_timeseries_filtered[headers_filtered[-1]] << time_series
-            if units == "J"
-              conversion_factors_filtered[headers_filtered[-1]] = 1.0 / 3600
-            elsif units == "W"
-              conversion_factors_filtered[headers_filtered[-1]] = 1.0 / timestep
-            else
-              conversion_factors_filtered[headers_filtered[-1]] = 1.0
-            end
-          end
-
-          bInit = false
         end
       end
 
@@ -277,28 +265,20 @@ class Results < OpenStudio::Measure::ReportingMeasure
         next
       end
 
+      # write output for absolute values, and optionally relative to gross and net area
       csvFileName = reporting_frequency.delete(' ')
-      if debug
-        data = saveToCSVFile(runner, output_timeseries, headers, conversion_factors, 1, csvFileName + "Debug")
-        if gross
-          data = saveToCSVFile(runner, output_timeseries, headers, conversion_factors, gross_area, csvFileName + "Debug-gross")
-        end
-        if net
-          data = saveToCSVFile(runner, output_timeseries, headers, conversion_factors, net_area, csvFileName + "Debug-net")
-        end
-      end
-
-      if output_timeseries_filtered.empty?
-        runner.registerInfo("No filtered output variables found at reporting frequency = #{reporting_frequency}")
-        next
-      end
-
-      data_annual = saveToCSVFile(runner, output_timeseries_filtered, headers_filtered, conversion_factors_filtered, 1, csvFileName)
+      saveToCSVFile(runner, output_timeseries, headers, conversion_factors, 1, csvFileName)
       if gross
-        data = saveToCSVFile(runner, output_timeseries_filtered, headers_filtered, conversion_factors_filtered, gross_area, csvFileName + "-gross")
+        saveToCSVFile(
+          runner, output_timeseries, headers, conversion_factors,
+          gross_area, csvFileName + "-gross"
+        )
       end
       if net
-        data = saveToCSVFile(runner, output_timeseries_filtered, headers_filtered, conversion_factors_filtered, net_area, csvFileName + "-net")
+        saveToCSVFile(
+          runner, output_timeseries, headers, conversion_factors,
+          net_area, csvFileName + "-net"
+        )
       end
     end
 

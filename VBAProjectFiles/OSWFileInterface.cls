@@ -451,12 +451,14 @@ End Sub
 ' @param NrOfTimesteps As Integer ByVal Number of timesteps per hour.
 Sub ExportSetMetersIDF( _
     ByRef jFile As JSONFile, _
-    ByVal NrOfTimesteps As Integer _
+    ByVal NrOfTimesteps As Integer, _
+    ByVal outputLevel As String _
 )
     jFile.AddArgument "time_step", CStr(NrOfTimesteps)
     jFile.AddArgument "day_to_start_simulation", Range("DayToStartSimulation")
     jFile.AddArgument "heating_sizing_factor", Range("HeatingSizingFactor")
     jFile.AddArgument "cooling_sizing_factor", Range("CoolingSizingFactor")
+    jFile.AddArgument "output_level", outputLevel
     jFile.AddMeasure "set_meters_idf"
 End Sub
 
@@ -468,14 +470,15 @@ Sub ExportResults( _
     ByRef jFile as JSONFile, _
     ByVal bGeneric As Boolean, _
     ByVal nrf_bgf As Double, _
-    ByVal NrOfTimesteps As Integer _
+    ByVal NrOfTimesteps As Integer, _
+    ByVal outputLevel As String _
 )
     Dim gross_area As Double
 
     jFile.AddArgument "timestep", CStr(NrOfTimesteps)
     jFile.AddArgument "calculate_relative_gross", "true"
     jFile.AddArgument "calculate_relative_net", "true"
-    jFile.AddArgument "debug", "false"
+    jFile.AddArgument "output_level", outputLevel
 
     if bGeneric Then
         gross_area = Range("BldgArea")
@@ -542,6 +545,19 @@ Sub ExportToOSW( _
         nrf_bgf = Range("BGF_zu_NRF")
     Else
         nrf_bgf = Range("BGF_zu_NRF_import")
+    End If
+
+    'read level of detail for output variables and logging
+    '1 = reduced, 2 = normal, 3 = debug
+    Dim dd_output_level As DropDown
+    Set dd_output_level = Sheets("Hauptseite").DropDowns("dd_output_level")
+    Dim output_level As String
+    If dd_output_level.Value = 1 Then
+        output_level = "Reduced"
+    ElseIf dd_output_level.Value = 2 Then
+        output_level = "Normal"
+    Else
+        output_level = "Debug"
     End If
 
     'correction factor of parameters specific to the conditioned volume as false ceilings
@@ -646,8 +662,8 @@ Sub ExportToOSW( _
     End If
 
     Call ExportInjectHolidaysIDF(jFile)
-    Call ExportSetMetersIDF(jFile, NrOfTimesteps)
-    Call ExportResults(jFile, bGeneric, nrf_bgf, NrOfTimesteps)
+    Call ExportSetMetersIDF(jFile, NrOfTimesteps, output_level)
+    Call ExportResults(jFile, bGeneric, nrf_bgf, NrOfTimesteps, output_level)
 
     jFile.Save sFilename
 End Sub

@@ -5,7 +5,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_meter": false,
+        "output_levels": ["Debug", "Normal"]
     },
     {
         "name": "Wall Conduction Heat Gain",
@@ -13,7 +14,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_meter": false,
+        "output_levels": ["Debug", "Normal"]
     },
     {
         "name": "Wall Conduction Heat Loss",
@@ -21,7 +23,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_meter": false,
+        "output_levels": ["Debug", "Normal"]
     },
     {
         "name": "Window Total Heat Gain",
@@ -29,7 +32,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal"]
     },
     {
         "name": "Window Solar Heat Gain",
@@ -37,7 +41,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal"]
     },
     {
         "name": "Window Conduction Heat Gain",
@@ -45,7 +50,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal"]
     },
     {
         "name": "Window Conduction Heat Loss",
@@ -53,7 +59,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal"]
     },
     {
         "name": "Window Ventilation Heat Gain",
@@ -61,7 +68,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal"]
     },
     {
         "name": "Window Ventilation Heat Loss",
@@ -69,7 +77,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal"]
     },
     {
         "name": "Infiltration Heat Gain",
@@ -77,7 +86,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal"]
     },
     {
         "name": "Infiltration Heat Loss",
@@ -85,7 +95,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal"]
     },
     {
         "name": "Electric Equipment Heat Gain",
@@ -93,7 +104,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal"]
     },
     {
         "name": "Lights Heat Gain",
@@ -101,7 +113,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal"]
     },
     {
         "name": "People Heat Gain",
@@ -109,7 +122,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal"]
     },
     {
         "name": "Internal Loads Heat Gain",
@@ -121,7 +135,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal"]
     },
     {
         "name": "Mechanical Ventilation Heat Gain",
@@ -129,7 +144,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal"]
     },
     {
         "name": "Mechanical Ventilation Heat Loss",
@@ -137,7 +153,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal"]
     },
     {
         "name": "Zone Mechanical Ventilation No Load Heat Removal Energy",
@@ -145,7 +162,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Mechanical Ventilation Cooling Load Increase Energy",
@@ -153,7 +171,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Mechanical Ventilation Cooling Load Increase Due to Overheating Energy",
@@ -161,7 +180,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Mechanical Ventilation Cooling Load Decrease Energy",
@@ -169,7 +189,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Mechanical Ventilation No Load Heat Addition Energy",
@@ -177,7 +198,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Mechanical Ventilation Heating Load Increase Energy",
@@ -185,7 +207,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Mechanical Ventilation Heating Load Increase Due to Overcooling Energy",
@@ -193,7 +216,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Mechanical Ventilation Heating Load Decrease Energy",
@@ -201,7 +225,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Air System Heat Exchanger Total Heating Energy",
@@ -209,7 +234,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Air System Heat Exchanger Total Cooling Energy",
@@ -217,7 +243,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Windows Total Transmitted Solar Radiation Energy",
@@ -225,7 +252,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Windows Total Heat Gain Energy",
@@ -233,7 +261,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Windows Total Heat Loss Energy",
@@ -241,7 +270,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Surface Average Face Conduction Heat Gain Rate",
@@ -249,7 +279,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Surface Average Face Conduction Heat Loss Rate",
@@ -257,7 +288,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Surface Outside Face Conduction Heat Gain Rate",
@@ -265,7 +297,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Surface Outside Face Conduction Heat Loss Rate",
@@ -273,7 +306,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Surface Inside Face Conduction Heat Transfer Energy",
@@ -281,7 +315,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Surface Inside Face Conduction Heat Gain Rate",
@@ -289,7 +324,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal"]
     },
     {
         "name": "Surface Inside Face Conduction Heat Loss Rate",
@@ -297,7 +333,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal"]
     },
     {
         "name": "Surface Outside Face Convection Heat Gain Rate",
@@ -305,7 +342,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Surface Inside Face Convection Heat Gain Rate",
@@ -313,7 +351,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Air Heat Balance Internal Convective Heat Gain Rate",
@@ -321,7 +360,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Air Heat Balance Surface Convection Rate",
@@ -329,7 +369,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Air Heat Balance Interzone Air Transfer Rate",
@@ -337,7 +378,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Air Heat Balance Outdoor Air Transfer Rate",
@@ -345,7 +387,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Air Heat Balance System Air Transfer Rate",
@@ -353,7 +396,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Air Heat Balance System Convective Heat Gain Rate",
@@ -361,7 +405,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Air Heat Balance Air Energy Storage Rate",
@@ -369,7 +414,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Air Heat Balance Deviation Rate",
@@ -377,7 +423,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "System Node Temperature",
@@ -385,7 +432,8 @@
         "node_reference": "Outside Air Node",
         "create_output_variable": true,
         "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_meter": false,
+        "output_levels": ["Debug"]
     },
     {
         "name": "System Node Mass Flow Rate",
@@ -393,7 +441,8 @@
         "node_reference": "Outside Air Node",
         "create_output_variable": true,
         "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_meter": false,
+        "output_levels": ["Debug"]
     },
     {
         "name": "System Node Specific Heat",
@@ -401,7 +450,8 @@
         "node_reference": "Outside Air Node",
         "create_output_variable": true,
         "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_meter": false,
+        "output_levels": ["Debug"]
     },
     {
         "name": "System Node Enthalpy",
@@ -409,7 +459,8 @@
         "node_reference": "Outside Air Node",
         "create_output_variable": true,
         "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_meter": false,
+        "output_levels": ["Debug"]
     },
     {
         "name": "System Node Temperature",
@@ -417,7 +468,8 @@
         "node_reference": "Outside Relief Node",
         "create_output_variable": true,
         "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_meter": false,
+        "output_levels": ["Debug"]
     },
     {
         "name": "System Node Mass Flow Rate",
@@ -425,7 +477,8 @@
         "node_reference": "Outside Relief Node",
         "create_output_variable": true,
         "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_meter": false,
+        "output_levels": ["Debug"]
     },
     {
         "name": "System Node Specific Heat",
@@ -433,7 +486,8 @@
         "node_reference": "Outside Relief Node",
         "create_output_variable": true,
         "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_meter": false,
+        "output_levels": ["Debug"]
     },
     {
         "name": "System Node Enthalpy",
@@ -441,7 +495,8 @@
         "node_reference": "Outside Relief Node",
         "create_output_variable": true,
         "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_meter": false,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Mechanical Ventilation Mass Flow Rate",
@@ -449,7 +504,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_meter": false,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Total Heating",
@@ -457,7 +513,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal", "Reduced"]
     },
     {
         "name": "Total Cooling",
@@ -465,7 +522,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal", "Reduced"]
     },
     {
         "name": "Lights Electricity",
@@ -473,7 +531,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal", "Reduced"]
     },
     {
         "name": "Plugs Electricity",
@@ -481,7 +540,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal", "Reduced"]
     },
     {
         "name": "Plant Electricity",
@@ -489,7 +549,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Facility Electricity",
@@ -497,7 +558,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Photovoltaic Electricity",
@@ -505,7 +567,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Fans Electricity",
@@ -513,7 +576,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal", "Reduced"]
     },
     {
         "name": "Pumps Electricity",
@@ -521,7 +585,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal", "Reduced"]
     },
     {
         "name": "Zone Mean Air Temperature",
@@ -529,7 +594,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_meter": false,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Heating Setpoint Not Met Time",
@@ -537,7 +603,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_meter": false,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Heating Setpoint Not Met While Occupied Time",
@@ -545,7 +612,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_meter": false,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Cooling Setpoint Not Met Time",
@@ -553,7 +621,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_meter": false,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Zone Cooling Setpoint Not Met While Occupied Time",
@@ -561,7 +630,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_meter": false,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Facility Heating Setpoint Not Met Time",
@@ -569,7 +639,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_meter": false,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Heating Setpoint Not Met",
@@ -577,7 +648,8 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal", "Reduced"]
     },
     {
         "name": "Facility Cooling Setpoint Not Met Time",
@@ -585,7 +657,8 @@
         "node_reference": "",
         "create_output_variable": true,
         "create_custom_meter": false,
-        "create_output_meter": false
+        "create_output_meter": false,
+        "output_levels": ["Debug"]
     },
     {
         "name": "Cooling Setpoint Not Met",
@@ -593,6 +666,7 @@
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,
-        "create_output_meter": true
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal", "Reduced"]
     }
 ]
