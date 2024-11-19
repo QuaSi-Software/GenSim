@@ -166,12 +166,17 @@ End Function
 Function GetCSVResultFilesNames() As Collection
     Dim files As Collection
     Set files = New Collection
-    files.Add Array("RawResults-gross-Sum", "results_report_variables_ZoneTimestep-gross-Sum.csv")
-    files.Add Array("RawResults-gross", "results_report_variables_ZoneTimestep-gross.csv")
+    ' the Results measure gives us six different files with results pre-calculated relative
+    ' to different areas and summed up to annual values. however we only needs two of these
+    ' and importing all of them results in poor performance
+
+    ' files.Add Array("RawResults-gross-Sum", "results_report_variables_ZoneTimestep-gross-Sum.csv")
+    ' files.Add Array("RawResults-gross", "results_report_variables_ZoneTimestep-gross.csv")
     files.Add Array("RawResults-net-Sum", "results_report_variables_ZoneTimestep-net-Sum.csv")
     files.Add Array("RawResults-net", "results_report_variables_ZoneTimestep-net.csv")
-    files.Add Array("RawResults-Sum", "results_report_variables_ZoneTimestep-Sum.csv")
-    files.Add Array("RawResults", "results_report_variables_ZoneTimestep.csv")
+    ' files.Add Array("RawResults-Sum", "results_report_variables_ZoneTimestep-Sum.csv")
+    ' files.Add Array("RawResults", "results_report_variables_ZoneTimestep.csv")
+
     Set GetCSVResultFilesNames = files
 End Function
 
@@ -291,8 +296,6 @@ Function ParseEIOFile(filePath As String) As Boolean
     'Range("SizingHeating").Offset(0, 2) = dHeatingSystem
     
     Worksheets("HAUPTSEITE").Activate
-    Worksheets("RawResults").Visible = False
-    
     Application.ScreenUpdating = True
     
     ParseEIOFile = bFound
@@ -308,7 +311,7 @@ Sub CreateResults()
     Sheets("HAUPTSEITE").Unprotect
 
     Dim sheet As Worksheet
-    Set sheet = ThisWorkbook.Worksheets("RawResults")
+    Set sheet = ThisWorkbook.Worksheets("RawResults-net")
     Dim j As Integer
     Dim iMaxCol As Integer
 
@@ -335,9 +338,9 @@ Sub CreateResults()
     ' ReDim Results(1 To iMaxRow, 1 To iMaxCol + 2)
 
     ' 'Quick and dirty Bugfix Designdays
-    ' If Left(Sheets("RawResults").Range("A2"), 6) <> " 01/01" Then
-    '     Do While Left(Sheets("RawResults").Range("A2"), 6) <> " 01/01"
-    '         Sheets("RawResults").Rows(2 & ":" & 24 * 60 / Range("Timestep") + 1).Delete
+    ' If Left(Sheets("RawResults-net").Range("A2"), 6) <> " 01/01" Then
+    '     Do While Left(Sheets("RawResults-net").Range("A2"), 6) <> " 01/01"
+    '         Sheets("RawResults-net").Rows(2 & ":" & 24 * 60 / Range("Timestep") + 1).Delete
     '     Loop
     ' End If
 
