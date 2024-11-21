@@ -1037,12 +1037,17 @@ End Sub
 ' Searches through the given dropdown's list for the given value. If the value
 ' is found in the list, the selected value of the dropdown is set to this entry.
 '
+' If multiple entries with the same name exist, the first matching entry is selected.
+'
 ' @param dd DropDown ByRef The dropdown
 ' @param val Variant ByVal The value to look for
 Sub DDFindAndSetValue(ByRef dd As DropDown, ByVal val As Variant)
     Dim i As Integer
     For i = 1 To dd.ListCount
-        If Trim(dd.List(i)) = Trim(val) Then dd.Value = i
+        If Trim(dd.List(i)) = Trim(val) Then
+            dd.Value = i
+            Exit For
+        End If
     Next
 End Sub
 
