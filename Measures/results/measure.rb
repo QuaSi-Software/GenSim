@@ -1,5 +1,5 @@
 require 'erb'
-require 'json'
+require_relative '../output_variables'
 
 # start the measure
 class Results < OpenStudio::Measure::ReportingMeasure
@@ -190,15 +190,10 @@ class Results < OpenStudio::Measure::ReportingMeasure
       reporting_frequencies = [reporting_frequency]
     end
 
-    # read list of output variables and meters from data file
-    file_content = File.read('../../../Measures/set_meters_idf/output_variables.json')
-    variable_definitions = JSON.parse(file_content)
-
+    # read list of output variables and meters and set names (meters are all upper case
+    # for unknown reasons)
     list_of_variables = {}
-    variable_definitions.each do |var_def|
-      if !var_def["output_levels"].include?(output_level)
-        next
-      end
+    get_output_variables(output_level).each do |var_def|
       if var_def["create_output_variable"]
         list_of_variables[var_def["name"]] = true
       end

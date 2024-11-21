@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'json'
+require_relative '../output_variables'
 
 # start the measure
 class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
@@ -131,15 +131,8 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
       outputvariable.remove
     end
 
-    # read variable and meter definitions from data file and create the objects
-    file_content = File.read('../../../Measures/set_meters_idf/output_variables.json')
-    variable_definitions = JSON.parse(file_content)
-
-    variable_definitions.each do |var_def|
-      if !var_def["output_levels"].include?(outputLevel)
-        next
-      end
-
+    # create the output meters and variables from definitions
+    get_output_variables(outputLevel).each do |var_def|
       if var_def["create_output_variable"]
         if var_def["node_reference"] == ""
           var_def["eplus_variables"].each do |var_name|
