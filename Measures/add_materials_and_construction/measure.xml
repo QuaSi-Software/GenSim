@@ -1,9 +1,10 @@
+<?xml version="1.0"?>
 <measure>
   <schema_version>3.0</schema_version>
   <name>add_materials_and_construction</name>
   <uid>1ecb30ce-d614-4b9c-8a87-ae7d9a114685</uid>
-  <version_id>fcb4928b-86d6-4f87-9965-051deb48fd77</version_id>
-  <version_modified>20230814T134141Z</version_modified>
+  <version_id>7a3b93a3-305c-4299-89cc-6c23e63b5c9c</version_id>
+  <version_modified>20241121T085215Z</version_modified>
   <xml_checksum>0985D264</xml_checksum>
   <class_name>AddMaterialsAndConstruction</class_name>
   <display_name>AddMaterialsAndConstruction</display_name>
@@ -49,105 +50,315 @@
       <name>external_wall_2_name</name>
       <display_name>external_wall_2_name</display_name>
       <type>String</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>external_wall_2_thickness</name>
       <display_name>external_wall_2_thickness</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>external_wall_2_conductivity</name>
       <display_name>external_wall_2_conductivity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>external_wall_2_density</name>
       <display_name>external_wall_2_density</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>external_wall_2_heat_capacity</name>
       <display_name>external_wall_2_heat_capacity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>external_wall_3_name</name>
       <display_name>external_wall_3_name</display_name>
       <type>String</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>external_wall_3_thickness</name>
       <display_name>external_wall_3_thickness</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>external_wall_3_conductivity</name>
       <display_name>external_wall_3_conductivity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>external_wall_3_density</name>
       <display_name>external_wall_3_density</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>external_wall_3_heat_capacity</name>
       <display_name>external_wall_3_heat_capacity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>external_wall_4_name</name>
       <display_name>external_wall_4_name</display_name>
       <type>String</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>external_wall_4_thickness</name>
       <display_name>external_wall_4_thickness</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>external_wall_4_conductivity</name>
       <display_name>external_wall_4_conductivity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>external_wall_4_density</name>
       <display_name>external_wall_4_density</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>external_wall_4_heat_capacity</name>
       <display_name>external_wall_4_heat_capacity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_5_name</name>
+      <display_name>external_wall_5_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_5_thickness</name>
+      <display_name>external_wall_5_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_5_conductivity</name>
+      <display_name>external_wall_5_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_5_density</name>
+      <display_name>external_wall_5_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_5_heat_capacity</name>
+      <display_name>external_wall_5_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_6_name</name>
+      <display_name>external_wall_6_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_6_thickness</name>
+      <display_name>external_wall_6_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_6_conductivity</name>
+      <display_name>external_wall_6_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_6_density</name>
+      <display_name>external_wall_6_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_6_heat_capacity</name>
+      <display_name>external_wall_6_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_7_name</name>
+      <display_name>external_wall_7_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_7_thickness</name>
+      <display_name>external_wall_7_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_7_conductivity</name>
+      <display_name>external_wall_7_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_7_density</name>
+      <display_name>external_wall_7_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_7_heat_capacity</name>
+      <display_name>external_wall_7_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_8_name</name>
+      <display_name>external_wall_8_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_8_thickness</name>
+      <display_name>external_wall_8_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_8_conductivity</name>
+      <display_name>external_wall_8_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_8_density</name>
+      <display_name>external_wall_8_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_8_heat_capacity</name>
+      <display_name>external_wall_8_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_9_name</name>
+      <display_name>external_wall_9_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_9_thickness</name>
+      <display_name>external_wall_9_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_9_conductivity</name>
+      <display_name>external_wall_9_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_9_density</name>
+      <display_name>external_wall_9_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_9_heat_capacity</name>
+      <display_name>external_wall_9_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_10_name</name>
+      <display_name>external_wall_10_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_10_thickness</name>
+      <display_name>external_wall_10_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_10_conductivity</name>
+      <display_name>external_wall_10_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_10_density</name>
+      <display_name>external_wall_10_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>external_wall_10_heat_capacity</name>
+      <display_name>external_wall_10_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
@@ -189,105 +400,315 @@
       <name>roof_2_name</name>
       <display_name>roof_2_name</display_name>
       <type>String</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>roof_2_thickness</name>
       <display_name>roof_2_thickness</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>roof_2_conductivity</name>
       <display_name>roof_2_conductivity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>roof_2_density</name>
       <display_name>roof_2_density</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>roof_2_heat_capacity</name>
       <display_name>roof_2_heat_capacity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>roof_3_name</name>
       <display_name>roof_3_name</display_name>
       <type>String</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>roof_3_thickness</name>
       <display_name>roof_3_thickness</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>roof_3_conductivity</name>
       <display_name>roof_3_conductivity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>roof_3_density</name>
       <display_name>roof_3_density</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>roof_3_heat_capacity</name>
       <display_name>roof_3_heat_capacity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>roof_4_name</name>
       <display_name>roof_4_name</display_name>
       <type>String</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>roof_4_thickness</name>
       <display_name>roof_4_thickness</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>roof_4_conductivity</name>
       <display_name>roof_4_conductivity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>roof_4_density</name>
       <display_name>roof_4_density</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>roof_4_heat_capacity</name>
       <display_name>roof_4_heat_capacity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_5_name</name>
+      <display_name>roof_5_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_5_thickness</name>
+      <display_name>roof_5_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_5_conductivity</name>
+      <display_name>roof_5_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_5_density</name>
+      <display_name>roof_5_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_5_heat_capacity</name>
+      <display_name>roof_5_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_6_name</name>
+      <display_name>roof_6_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_6_thickness</name>
+      <display_name>roof_6_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_6_conductivity</name>
+      <display_name>roof_6_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_6_density</name>
+      <display_name>roof_6_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_6_heat_capacity</name>
+      <display_name>roof_6_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_7_name</name>
+      <display_name>roof_7_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_7_thickness</name>
+      <display_name>roof_7_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_7_conductivity</name>
+      <display_name>roof_7_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_7_density</name>
+      <display_name>roof_7_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_7_heat_capacity</name>
+      <display_name>roof_7_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_8_name</name>
+      <display_name>roof_8_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_8_thickness</name>
+      <display_name>roof_8_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_8_conductivity</name>
+      <display_name>roof_8_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_8_density</name>
+      <display_name>roof_8_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_8_heat_capacity</name>
+      <display_name>roof_8_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_9_name</name>
+      <display_name>roof_9_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_9_thickness</name>
+      <display_name>roof_9_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_9_conductivity</name>
+      <display_name>roof_9_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_9_density</name>
+      <display_name>roof_9_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_9_heat_capacity</name>
+      <display_name>roof_9_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_10_name</name>
+      <display_name>roof_10_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_10_thickness</name>
+      <display_name>roof_10_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_10_conductivity</name>
+      <display_name>roof_10_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_10_density</name>
+      <display_name>roof_10_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>roof_10_heat_capacity</name>
+      <display_name>roof_10_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
@@ -329,105 +750,315 @@
       <name>base_plate_2_name</name>
       <display_name>base_plate_2_name</display_name>
       <type>String</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>base_plate_2_thickness</name>
       <display_name>base_plate_2_thickness</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>base_plate_2_conductivity</name>
       <display_name>base_plate_2_conductivity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>base_plate_2_density</name>
       <display_name>base_plate_2_density</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>base_plate_2_heat_capacity</name>
       <display_name>base_plate_2_heat_capacity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>base_plate_3_name</name>
       <display_name>base_plate_3_name</display_name>
       <type>String</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>base_plate_3_thickness</name>
       <display_name>base_plate_3_thickness</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>base_plate_3_conductivity</name>
       <display_name>base_plate_3_conductivity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>base_plate_3_density</name>
       <display_name>base_plate_3_density</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>base_plate_3_heat_capacity</name>
       <display_name>base_plate_3_heat_capacity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>base_plate_4_name</name>
       <display_name>base_plate_4_name</display_name>
       <type>String</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>base_plate_4_thickness</name>
       <display_name>base_plate_4_thickness</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>base_plate_4_conductivity</name>
       <display_name>base_plate_4_conductivity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>base_plate_4_density</name>
       <display_name>base_plate_4_density</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>base_plate_4_heat_capacity</name>
       <display_name>base_plate_4_heat_capacity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_5_name</name>
+      <display_name>base_plate_5_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_5_thickness</name>
+      <display_name>base_plate_5_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_5_conductivity</name>
+      <display_name>base_plate_5_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_5_density</name>
+      <display_name>base_plate_5_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_5_heat_capacity</name>
+      <display_name>base_plate_5_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_6_name</name>
+      <display_name>base_plate_6_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_6_thickness</name>
+      <display_name>base_plate_6_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_6_conductivity</name>
+      <display_name>base_plate_6_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_6_density</name>
+      <display_name>base_plate_6_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_6_heat_capacity</name>
+      <display_name>base_plate_6_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_7_name</name>
+      <display_name>base_plate_7_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_7_thickness</name>
+      <display_name>base_plate_7_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_7_conductivity</name>
+      <display_name>base_plate_7_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_7_density</name>
+      <display_name>base_plate_7_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_7_heat_capacity</name>
+      <display_name>base_plate_7_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_8_name</name>
+      <display_name>base_plate_8_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_8_thickness</name>
+      <display_name>base_plate_8_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_8_conductivity</name>
+      <display_name>base_plate_8_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_8_density</name>
+      <display_name>base_plate_8_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_8_heat_capacity</name>
+      <display_name>base_plate_8_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_9_name</name>
+      <display_name>base_plate_9_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_9_thickness</name>
+      <display_name>base_plate_9_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_9_conductivity</name>
+      <display_name>base_plate_9_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_9_density</name>
+      <display_name>base_plate_9_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_9_heat_capacity</name>
+      <display_name>base_plate_9_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_10_name</name>
+      <display_name>base_plate_10_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_10_thickness</name>
+      <display_name>base_plate_10_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_10_conductivity</name>
+      <display_name>base_plate_10_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_10_density</name>
+      <display_name>base_plate_10_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>base_plate_10_heat_capacity</name>
+      <display_name>base_plate_10_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
@@ -469,70 +1100,315 @@
       <name>inner_masses_2_name</name>
       <display_name>inner_masses_2_name</display_name>
       <type>String</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>inner_masses_2_thickness</name>
       <display_name>inner_masses_2_thickness</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>inner_masses_2_conductivity</name>
       <display_name>inner_masses_2_conductivity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>inner_masses_2_density</name>
       <display_name>inner_masses_2_density</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>inner_masses_2_heat_capacity</name>
       <display_name>inner_masses_2_heat_capacity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>inner_masses_3_name</name>
       <display_name>inner_masses_3_name</display_name>
       <type>String</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>inner_masses_3_thickness</name>
       <display_name>inner_masses_3_thickness</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>inner_masses_3_conductivity</name>
       <display_name>inner_masses_3_conductivity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>inner_masses_3_density</name>
       <display_name>inner_masses_3_density</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>inner_masses_3_heat_capacity</name>
       <display_name>inner_masses_3_heat_capacity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_4_name</name>
+      <display_name>inner_masses_4_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_4_thickness</name>
+      <display_name>inner_masses_4_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_4_conductivity</name>
+      <display_name>inner_masses_4_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_4_density</name>
+      <display_name>inner_masses_4_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_4_heat_capacity</name>
+      <display_name>inner_masses_4_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_5_name</name>
+      <display_name>inner_masses_5_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_5_thickness</name>
+      <display_name>inner_masses_5_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_5_conductivity</name>
+      <display_name>inner_masses_5_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_5_density</name>
+      <display_name>inner_masses_5_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_5_heat_capacity</name>
+      <display_name>inner_masses_5_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_6_name</name>
+      <display_name>inner_masses_6_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_6_thickness</name>
+      <display_name>inner_masses_6_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_6_conductivity</name>
+      <display_name>inner_masses_6_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_6_density</name>
+      <display_name>inner_masses_6_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_6_heat_capacity</name>
+      <display_name>inner_masses_6_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_7_name</name>
+      <display_name>inner_masses_7_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_7_thickness</name>
+      <display_name>inner_masses_7_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_7_conductivity</name>
+      <display_name>inner_masses_7_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_7_density</name>
+      <display_name>inner_masses_7_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_7_heat_capacity</name>
+      <display_name>inner_masses_7_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_8_name</name>
+      <display_name>inner_masses_8_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_8_thickness</name>
+      <display_name>inner_masses_8_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_8_conductivity</name>
+      <display_name>inner_masses_8_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_8_density</name>
+      <display_name>inner_masses_8_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_8_heat_capacity</name>
+      <display_name>inner_masses_8_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_9_name</name>
+      <display_name>inner_masses_9_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_9_thickness</name>
+      <display_name>inner_masses_9_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_9_conductivity</name>
+      <display_name>inner_masses_9_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_9_density</name>
+      <display_name>inner_masses_9_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_9_heat_capacity</name>
+      <display_name>inner_masses_9_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_10_name</name>
+      <display_name>inner_masses_10_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_10_thickness</name>
+      <display_name>inner_masses_10_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_10_conductivity</name>
+      <display_name>inner_masses_10_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_10_density</name>
+      <display_name>inner_masses_10_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>inner_masses_10_heat_capacity</name>
+      <display_name>inner_masses_10_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
@@ -574,105 +1450,315 @@
       <name>interior_slab_2_name</name>
       <display_name>interior_slab_2_name</display_name>
       <type>String</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>interior_slab_2_thickness</name>
       <display_name>interior_slab_2_thickness</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>interior_slab_2_conductivity</name>
       <display_name>interior_slab_2_conductivity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>interior_slab_2_density</name>
       <display_name>interior_slab_2_density</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>interior_slab_2_heat_capacity</name>
       <display_name>interior_slab_2_heat_capacity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>interior_slab_3_name</name>
       <display_name>interior_slab_3_name</display_name>
       <type>String</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>interior_slab_3_thickness</name>
       <display_name>interior_slab_3_thickness</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>interior_slab_3_conductivity</name>
       <display_name>interior_slab_3_conductivity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>interior_slab_3_density</name>
       <display_name>interior_slab_3_density</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>interior_slab_3_heat_capacity</name>
       <display_name>interior_slab_3_heat_capacity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>interior_slab_4_name</name>
       <display_name>interior_slab_4_name</display_name>
       <type>String</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>interior_slab_4_thickness</name>
       <display_name>interior_slab_4_thickness</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>interior_slab_4_conductivity</name>
       <display_name>interior_slab_4_conductivity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>interior_slab_4_density</name>
       <display_name>interior_slab_4_density</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>interior_slab_4_heat_capacity</name>
       <display_name>interior_slab_4_heat_capacity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_5_name</name>
+      <display_name>interior_slab_5_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_5_thickness</name>
+      <display_name>interior_slab_5_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_5_conductivity</name>
+      <display_name>interior_slab_5_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_5_density</name>
+      <display_name>interior_slab_5_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_5_heat_capacity</name>
+      <display_name>interior_slab_5_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_6_name</name>
+      <display_name>interior_slab_6_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_6_thickness</name>
+      <display_name>interior_slab_6_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_6_conductivity</name>
+      <display_name>interior_slab_6_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_6_density</name>
+      <display_name>interior_slab_6_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_6_heat_capacity</name>
+      <display_name>interior_slab_6_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_7_name</name>
+      <display_name>interior_slab_7_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_7_thickness</name>
+      <display_name>interior_slab_7_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_7_conductivity</name>
+      <display_name>interior_slab_7_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_7_density</name>
+      <display_name>interior_slab_7_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_7_heat_capacity</name>
+      <display_name>interior_slab_7_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_8_name</name>
+      <display_name>interior_slab_8_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_8_thickness</name>
+      <display_name>interior_slab_8_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_8_conductivity</name>
+      <display_name>interior_slab_8_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_8_density</name>
+      <display_name>interior_slab_8_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_8_heat_capacity</name>
+      <display_name>interior_slab_8_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_9_name</name>
+      <display_name>interior_slab_9_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_9_thickness</name>
+      <display_name>interior_slab_9_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_9_conductivity</name>
+      <display_name>interior_slab_9_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_9_density</name>
+      <display_name>interior_slab_9_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_9_heat_capacity</name>
+      <display_name>interior_slab_9_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_10_name</name>
+      <display_name>interior_slab_10_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_10_thickness</name>
+      <display_name>interior_slab_10_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_10_conductivity</name>
+      <display_name>interior_slab_10_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_10_density</name>
+      <display_name>interior_slab_10_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>interior_slab_10_heat_capacity</name>
+      <display_name>interior_slab_10_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
@@ -742,105 +1828,315 @@
       <name>chilled_ceiling_2_name</name>
       <display_name>chilled_ceiling_2_name</display_name>
       <type>String</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>chilled_ceiling_2_thickness</name>
       <display_name>chilled_ceiling_2_thickness</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>chilled_ceiling_2_conductivity</name>
       <display_name>chilled_ceiling_2_conductivity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>chilled_ceiling_2_density</name>
       <display_name>chilled_ceiling_2_density</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>chilled_ceiling_2_heat_capacity</name>
       <display_name>chilled_ceiling_2_heat_capacity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>chilled_ceiling_3_name</name>
       <display_name>chilled_ceiling_3_name</display_name>
       <type>String</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>chilled_ceiling_3_thickness</name>
       <display_name>chilled_ceiling_3_thickness</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>chilled_ceiling_3_conductivity</name>
       <display_name>chilled_ceiling_3_conductivity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>chilled_ceiling_3_density</name>
       <display_name>chilled_ceiling_3_density</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>chilled_ceiling_3_heat_capacity</name>
       <display_name>chilled_ceiling_3_heat_capacity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>chilled_ceiling_4_name</name>
       <display_name>chilled_ceiling_4_name</display_name>
       <type>String</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>chilled_ceiling_4_thickness</name>
       <display_name>chilled_ceiling_4_thickness</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>chilled_ceiling_4_conductivity</name>
       <display_name>chilled_ceiling_4_conductivity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>chilled_ceiling_4_density</name>
       <display_name>chilled_ceiling_4_density</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
       <name>chilled_ceiling_4_heat_capacity</name>
       <display_name>chilled_ceiling_4_heat_capacity</display_name>
       <type>Double</type>
-      <required>true</required>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_5_name</name>
+      <display_name>chilled_ceiling_5_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_5_thickness</name>
+      <display_name>chilled_ceiling_5_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_5_conductivity</name>
+      <display_name>chilled_ceiling_5_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_5_density</name>
+      <display_name>chilled_ceiling_5_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_5_heat_capacity</name>
+      <display_name>chilled_ceiling_5_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_6_name</name>
+      <display_name>chilled_ceiling_6_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_6_thickness</name>
+      <display_name>chilled_ceiling_6_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_6_conductivity</name>
+      <display_name>chilled_ceiling_6_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_6_density</name>
+      <display_name>chilled_ceiling_6_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_6_heat_capacity</name>
+      <display_name>chilled_ceiling_6_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_7_name</name>
+      <display_name>chilled_ceiling_7_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_7_thickness</name>
+      <display_name>chilled_ceiling_7_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_7_conductivity</name>
+      <display_name>chilled_ceiling_7_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_7_density</name>
+      <display_name>chilled_ceiling_7_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_7_heat_capacity</name>
+      <display_name>chilled_ceiling_7_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_8_name</name>
+      <display_name>chilled_ceiling_8_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_8_thickness</name>
+      <display_name>chilled_ceiling_8_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_8_conductivity</name>
+      <display_name>chilled_ceiling_8_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_8_density</name>
+      <display_name>chilled_ceiling_8_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_8_heat_capacity</name>
+      <display_name>chilled_ceiling_8_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_9_name</name>
+      <display_name>chilled_ceiling_9_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_9_thickness</name>
+      <display_name>chilled_ceiling_9_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_9_conductivity</name>
+      <display_name>chilled_ceiling_9_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_9_density</name>
+      <display_name>chilled_ceiling_9_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_9_heat_capacity</name>
+      <display_name>chilled_ceiling_9_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_10_name</name>
+      <display_name>chilled_ceiling_10_name</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_10_thickness</name>
+      <display_name>chilled_ceiling_10_thickness</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_10_conductivity</name>
+      <display_name>chilled_ceiling_10_conductivity</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_10_density</name>
+      <display_name>chilled_ceiling_10_density</display_name>
+      <type>Double</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>chilled_ceiling_10_heat_capacity</name>
+      <display_name>chilled_ceiling_10_heat_capacity</display_name>
+      <type>Double</type>
+      <required>false</required>
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
@@ -896,8 +2192,8 @@
       <model_dependent>false</model_dependent>
     </argument>
   </arguments>
-  <outputs/>
-  <provenances/>
+  <outputs />
+  <provenances />
   <tags>
     <tag>Envelope.Construction Sets</tag>
   </tags>
@@ -921,6 +2217,12 @@
       <checksum>53D14E69</checksum>
     </file>
     <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
+    </file>
+    <file>
       <version>
         <software_program>OpenStudio</software_program>
         <identifier>2.5.0</identifier>
@@ -929,19 +2231,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>4F1E9A6F</checksum>
+      <checksum>449BCFFA</checksum>
     </file>
     <file>
       <filename>add_materials_and_construction_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>E2A30DCF</checksum>
-    </file>
-    <file>
-      <filename>LICENSE.md</filename>
-      <filetype>md</filetype>
-      <usage_type>license</usage_type>
-      <checksum>07A1DAC9</checksum>
+      <checksum>5B70ED3B</checksum>
     </file>
   </files>
 </measure>

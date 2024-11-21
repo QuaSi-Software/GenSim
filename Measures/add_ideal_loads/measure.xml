@@ -1,9 +1,10 @@
+<?xml version="1.0"?>
 <measure>
   <schema_version>3.0</schema_version>
   <name>add_ideal_loads</name>
   <uid>bad408fa-2a4e-46a2-84a4-eca24a8c4096</uid>
-  <version_id>b266be20-38e8-4ea7-af5c-5d4589258850</version_id>
-  <version_modified>20230814T134050Z</version_modified>
+  <version_id>468942d1-3d1e-4327-9218-cbddfb3eb5e8</version_id>
+  <version_modified>20241121T085209Z</version_modified>
   <xml_checksum>C49A7DAB</xml_checksum>
   <class_name>AddIdealLoads</class_name>
   <display_name>AddIdealLoads</display_name>
@@ -94,8 +95,8 @@
       <model_dependent>false</model_dependent>
     </argument>
   </arguments>
-  <outputs/>
-  <provenances/>
+  <outputs />
+  <provenances />
   <tags>
     <tag>HVAC.Whole System</tag>
   </tags>
@@ -129,6 +130,12 @@
       <checksum>EA03FC47</checksum>
     </file>
     <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
+    </file>
+    <file>
       <version>
         <software_program>OpenStudio</software_program>
         <identifier>2.5.0</identifier>
@@ -137,19 +144,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>BFA07D3B</checksum>
+      <checksum>3F29DAD5</checksum>
     </file>
     <file>
       <filename>add_ideal_loads_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>4A2D40C6</checksum>
-    </file>
-    <file>
-      <filename>LICENSE.md</filename>
-      <filetype>md</filetype>
-      <usage_type>license</usage_type>
-      <checksum>07A1DAC9</checksum>
+      <checksum>2CC90682</checksum>
     </file>
   </files>
 </measure>

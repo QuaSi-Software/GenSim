@@ -1,9 +1,10 @@
+<?xml version="1.0"?>
 <measure>
   <schema_version>3.0</schema_version>
   <name>add_shading_controls</name>
   <uid>020cd542-7e01-422a-becb-e32c0318f9d9</uid>
-  <version_id>be676dff-9271-4c9d-b4cf-b0b535b269d0</version_id>
-  <version_modified>20230814T140544Z</version_modified>
+  <version_id>eb29f9a2-fb35-461f-b0db-90e146806fbb</version_id>
+  <version_modified>20241121T085217Z</version_modified>
   <xml_checksum>2AF3A68E</xml_checksum>
   <class_name>AddShadingControls</class_name>
   <display_name>AddShadingControls</display_name>
@@ -19,8 +20,8 @@
       <default_value>180</default_value>
     </argument>
   </arguments>
-  <outputs/>
-  <provenances/>
+  <outputs />
+  <provenances />
   <tags>
     <tag>Envelope.Form</tag>
   </tags>
@@ -54,12 +55,6 @@
       <checksum>49A24D5A</checksum>
     </file>
     <file>
-      <filename>add_shading_controls_test.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>test</usage_type>
-      <checksum>D356E0B2</checksum>
-    </file>
-    <file>
       <version>
         <software_program>OpenStudio</software_program>
         <identifier>2.5.0</identifier>
@@ -75,6 +70,12 @@
       <filetype>md</filetype>
       <usage_type>license</usage_type>
       <checksum>07A1DAC9</checksum>
+    </file>
+    <file>
+      <filename>add_shading_controls_test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>5608E964</checksum>
     </file>
   </files>
 </measure>

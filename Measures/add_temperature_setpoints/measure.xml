@@ -1,9 +1,10 @@
+<?xml version="1.0"?>
 <measure>
   <schema_version>3.0</schema_version>
   <name>add_temperature_setpoints</name>
   <uid>3936e6f6-9ddd-4843-a654-c1c5de244216</uid>
-  <version_id>ea1d79c4-ff5d-4507-8949-cf5e6f69c131</version_id>
-  <version_modified>20230814T140547Z</version_modified>
+  <version_id>1028533b-bccd-4642-8d67-0b20017da2b6</version_id>
+  <version_modified>20241121T085219Z</version_modified>
   <xml_checksum>356BE47F</xml_checksum>
   <class_name>AddTemperatureSetpoints</class_name>
   <display_name>AddTemperatureSetpoints</display_name>
@@ -122,8 +123,8 @@
       <model_dependent>false</model_dependent>
     </argument>
   </arguments>
-  <outputs/>
-  <provenances/>
+  <outputs />
+  <provenances />
   <tags>
     <tag>HVAC.HVAC Controls</tag>
   </tags>
@@ -157,10 +158,16 @@
       <checksum>554D0F7D</checksum>
     </file>
     <file>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
+    </file>
+    <file>
       <filename>add_temperature_setpoints_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>C885517B</checksum>
+      <checksum>422BB913</checksum>
     </file>
     <file>
       <version>
@@ -171,13 +178,7 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>7CCD10D0</checksum>
-    </file>
-    <file>
-      <filename>LICENSE.md</filename>
-      <filetype>md</filetype>
-      <usage_type>license</usage_type>
-      <checksum>07A1DAC9</checksum>
+      <checksum>15F60910</checksum>
     </file>
   </files>
 </measure>

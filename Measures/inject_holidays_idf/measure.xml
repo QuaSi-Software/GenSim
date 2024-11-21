@@ -1,9 +1,10 @@
+<?xml version="1.0"?>
 <measure>
   <schema_version>3.0</schema_version>
   <name>inject_holidays_idf</name>
   <uid>3bdd4f5d-02e7-43ad-b151-9f781ef887b3</uid>
-  <version_id>cb8fdf2b-b1c8-4f38-96d7-ed9c85a6add3</version_id>
-  <version_modified>20230814T140559Z</version_modified>
+  <version_id>0c0698f0-2286-4b99-86c6-92f920d924e4</version_id>
+  <version_modified>20241121T085227Z</version_modified>
   <xml_checksum>0B6DEAE1</xml_checksum>
   <class_name>InjectHolidaysIDF</class_name>
   <display_name>InjectHolidaysIDF</display_name>
@@ -18,8 +19,8 @@
       <model_dependent>false</model_dependent>
     </argument>
   </arguments>
-  <outputs/>
-  <provenances/>
+  <outputs />
+  <provenances />
   <tags>
     <tag>Envelope.Form</tag>
   </tags>
@@ -48,17 +49,6 @@
       <checksum>5F902A67</checksum>
     </file>
     <file>
-      <version>
-        <software_program>OpenStudio</software_program>
-        <identifier>2.5.0</identifier>
-        <min_compatible>2.5.0</min_compatible>
-      </version>
-      <filename>measure.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>script</usage_type>
-      <checksum>DA152DC3</checksum>
-    </file>
-    <file>
       <filename>inject_holidays_idf_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
@@ -69,6 +59,17 @@
       <filetype>md</filetype>
       <usage_type>license</usage_type>
       <checksum>07A1DAC9</checksum>
+    </file>
+    <file>
+      <version>
+        <software_program>OpenStudio</software_program>
+        <identifier>2.5.0</identifier>
+        <min_compatible>2.5.0</min_compatible>
+      </version>
+      <filename>measure.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>script</usage_type>
+      <checksum>3F6719AC</checksum>
     </file>
   </files>
 </measure>

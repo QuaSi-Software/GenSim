@@ -1,9 +1,10 @@
+<?xml version="1.0"?>
 <measure>
   <schema_version>3.0</schema_version>
   <name>inject_ideal_load_parameters_idf</name>
   <uid>e3487a61-abd7-4f98-ae4f-c77301e48a4d</uid>
-  <version_id>f208a6b7-e8c9-4a7d-83af-2f4cb7211f20</version_id>
-  <version_modified>20230814T140601Z</version_modified>
+  <version_id>412cdf8c-b742-440e-9eb5-c8a872e66b19</version_id>
+  <version_modified>20241121T085229Z</version_modified>
   <xml_checksum>7DF45990</xml_checksum>
   <class_name>InjectIdealLoadParametersIDF</class_name>
   <display_name>InjectIdealLoadParametersIDF</display_name>
@@ -55,8 +56,8 @@
       <default_value>1</default_value>
     </argument>
   </arguments>
-  <outputs/>
-  <provenances/>
+  <outputs />
+  <provenances />
   <tags>
     <tag>HVAC.Whole System</tag>
   </tags>
@@ -85,17 +86,6 @@
       <checksum>81319CFD</checksum>
     </file>
     <file>
-      <version>
-        <software_program>OpenStudio</software_program>
-        <identifier>2.5.0</identifier>
-        <min_compatible>2.5.0</min_compatible>
-      </version>
-      <filename>measure.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>script</usage_type>
-      <checksum>0983C724</checksum>
-    </file>
-    <file>
       <filename>inject_ideal_loads_parameters_idf_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
@@ -106,6 +96,17 @@
       <filetype>md</filetype>
       <usage_type>license</usage_type>
       <checksum>07A1DAC9</checksum>
+    </file>
+    <file>
+      <version>
+        <software_program>OpenStudio</software_program>
+        <identifier>2.5.0</identifier>
+        <min_compatible>2.5.0</min_compatible>
+      </version>
+      <filename>measure.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>script</usage_type>
+      <checksum>A75165D7</checksum>
     </file>
   </files>
 </measure>

@@ -1,9 +1,10 @@
+<?xml version="1.0"?>
 <measure>
   <schema_version>3.0</schema_version>
   <name>add_detailed_hvac</name>
   <uid>75c17475-d6d2-4074-a097-0c2202206dab</uid>
-  <version_id>7c95c2eb-1be8-49b7-a354-3e684ce98ae9</version_id>
-  <version_modified>20230926T075422Z</version_modified>
+  <version_id>8f994bc9-14af-4070-b0f5-f3cfea6dd620</version_id>
+  <version_modified>20241121T085205Z</version_modified>
   <xml_checksum>C49A7DAB</xml_checksum>
   <class_name>AddDetailedHVAC</class_name>
   <display_name>AddDetailedHVAC</display_name>
@@ -230,8 +231,8 @@
       <default_value>1</default_value>
     </argument>
   </arguments>
-  <outputs/>
-  <provenances/>
+  <outputs />
+  <provenances />
   <tags>
     <tag>HVAC.Whole System</tag>
   </tags>
@@ -279,13 +280,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>65615429</checksum>
+      <checksum>CB123CE2</checksum>
     </file>
     <file>
       <filename>add_detailed_hvac_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>866CB8EA</checksum>
+      <checksum>F7926F03</checksum>
     </file>
   </files>
 </measure>
