@@ -340,9 +340,21 @@
             "time_step": "1",
             "day_to_start_simulation": "Sunday",
             "heating_sizing_factor": "1.25",
-            "cooling_sizing_factor": "1.15"
+            "cooling_sizing_factor": "1.15",
+            "output_level": "Normal"
          },
          "measure_dir_name": "set_meters_idf"
+      },
+      {
+         "arguments": {
+            "timestep": "1",
+            "calculate_relative_gross": "true",
+            "calculate_relative_net": "true",
+            "output_level": "Normal",
+            "gross_area": "1152",
+            "net_area": "1020.672"
+         },
+         "measure_dir_name": "results"
       }
    ]
 }
