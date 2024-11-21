@@ -11,10 +11,10 @@ Function CheckErrFile(filePath As String) As String
         CheckErrFile = "EnergyPlus did not run, no error file found!"
         Exit Function
     End If
-    
+
     Dim fso As FileSystemObject: Set fso = New FileSystemObject
     Set txtStream = fso.OpenTextFile(filePath, ForReading, False)
-    
+
     Dim line As String
     Do While Not txtStream.AtEndOfStream
         line = txtStream.ReadLine
@@ -92,19 +92,19 @@ End Function
 
 Function ParseEIOFile(filePath As String) As Boolean
     Application.ScreenUpdating = False
-    
+
     Range("SizingHeating") = ""
     Range("SizingCooling") = ""
     Dim FileNum As Integer
     Dim DataLine As String
-    
+
     FileNum = FreeFile()
     Open filePath For Input As #FileNum
-    
+
     Dim bFound As Boolean
     Dim splitarray() As String
     bFound = False
-    
+
     Dim dCoolingZone As Double: dCoolingZone = 0
     Dim dHeatingZone As Double: dHeatingZone = 0
     Dim dCoolingSystem As Double: dCoolingSystem = 0
@@ -130,7 +130,7 @@ Function ParseEIOFile(filePath As String) As Boolean
                 End If
             End If
         End If
-        
+
         If InStr(DataLine, "Zone Sizing Information") Then
             splitarray = Split(DataLine, ",")
             If InStr(splitarray(2), "Cooling") Then
@@ -150,7 +150,7 @@ Function ParseEIOFile(filePath As String) As Boolean
             End If
         End If
     Wend
-    
+
      ' NRF-Fläche
     Dim dBldgArea_NRF As Double
     If Range("geometry_source") = 1 Then
@@ -158,15 +158,13 @@ Function ParseEIOFile(filePath As String) As Boolean
     Else
         dBldgArea_NRF = CDbl(Range("BldgArea_NRF_import"))
     End If
-    
+
     Range("SizingCooling") = dCoolingZone / dBldgArea_NRF * 1000
     Range("SizingHeating") = dHeatingZone / dBldgArea_NRF * 1000
-    'Range("SizingCooling").Offset(0, 2) = dCoolingSystem
-    'Range("SizingHeating").Offset(0, 2) = dHeatingSystem
-    
+
     Worksheets("HAUPTSEITE").Activate
     Application.ScreenUpdating = True
-    
+
     ParseEIOFile = bFound
 End Function
 
@@ -194,26 +192,15 @@ Sub CreateResults()
     Sheets("pivot").Range("BV1") = iMaxCol + 1
     Sheets("pivot").Range("BW1") = iMaxCol + 2
 
-    'iMaxRow
+    'the number of rows depends only on the timestep
     Dim iMaxRow As Double
     iMaxRow = 60 / Range("Timestep") * 24 * 365 + 2
-    'If cb_hvac.Value = 1 Then iMaxRow = iMaxRow + 3 * 24 * (60 / Range("Timestep")) 'bei Ideals Loads werden die DesignDays mit ausgegeben!
 
+    'Read results into Array
     Dim ResultsNFA  As Variant
     ReDim ResultsNFA(1 To iMaxRow, 1 To iMaxCol)
     Dim ResultsNFAAnnual  As Variant
     ReDim ResultsNFAAnnual(1 To 2, 1 To iMaxCol)
-    ' Dim Results  As Variant
-    ' ReDim Results(1 To iMaxRow, 1 To iMaxCol + 2)
-
-    ' 'Quick and dirty Bugfix Designdays
-    ' If Left(Sheets("RawResults-net").Range("A2"), 6) <> " 01/01" Then
-    '     Do While Left(Sheets("RawResults-net").Range("A2"), 6) <> " 01/01"
-    '         Sheets("RawResults-net").Rows(2 & ":" & 24 * 60 / Range("Timestep") + 1).Delete
-    '     Loop
-    ' End If
-
-    'Read results into Array
     ResultsNFA = Sheets("RawResults-net").Range( _
         Sheets("RawResults-net").Cells(1, 1), _
         Sheets("RawResults-net").Cells(iMaxRow, iMaxCol) _
@@ -233,103 +220,13 @@ Sub CreateResults()
         If (InStr(ResultsNFA(1, colIndex), "METER PUMPS ELECTRICITY")) Then col_pumps = colIndex
     Next
 
-    ' ' Split conduction heat transfer into two sums for gains and losses
-    ' Dim conduction_totals() As Double
-    ' ReDim conduction_totals(2) As Double
-    ' For rwIndex = 2 To iMaxRow
-    '     If ResultsNFA(rwIndex, col_conduction_total) <= 0 Then
-    '         conduction_totals(0) = conduction_totals(0) + ResultsNFA(rwIndex, col_conduction_total) / 1000
-    '     Else
-    '         conduction_totals(1) = conduction_totals(1) + ResultsNFA(rwIndex, col_conduction_total) / 1000
-    '     End If
-    ' Next
-
-    '--------------------- ALLE PROFILE
-    '-------------------------------------------------------------
-
-    ''''''Calculate Results in kWh/m
-
-    ' ' NRF-Fläche
-    ' Dim dBldgArea_NRF As Double
-    ' Dim dBldgArea_BGF As Double
-    ' If Range("geometry_source") = 1 Then
-    '     dBldgArea_NRF = CDbl(Range("BldgArea_NRF"))
-    '     dBldgArea_BGF = Range("BldgArea")
-    ' Else
-    '     dBldgArea_NRF = CDbl(Range("BldgArea_NRF_import"))
-    '     dBldgArea_BGF = CDbl(Range("BldgArea_import"))
-    ' End If
-
-    ' Dim dAnnualResult() As Double
-    ' ReDim dAnnualResult(iMaxCol + 4) As Double
-
-    ' For rwIndex = 1 To iMaxRow
-    '     For colIndex = 1 To iMaxCol
-    '         If RawResults(1, colIndex) <> "" Then
-    '             If rwIndex = 1 Or colIndex = 1 Then     'IN ZEILE 1 ODER SPALTE 1 -> Beschriftung!!!
-    '                 If (InStr(RawResults(rwIndex, colIndex), "J")) Then
-    '                     Results(rwIndex, colIndex) = Replace(RawResults(rwIndex, colIndex), "[J](TimeStep)", "[Wh/m²NRF]")    'alles weitere Spaltenbeschriftung
-    '                 Else
-    '                     Results(rwIndex, colIndex) = RawResults(rwIndex, colIndex) 'Datumsspalte komplett übernehmen
-    '                 End If
-    '                 If rwIndex = iMaxRow Then Results(rwIndex, colIndex) = "Jahressumme [Wh/m²a]" 'Letzte Zeile "Beschriftung"
-    '             Else                                    'IN ZEILE 2-X UND SPALTE 2-X
-    '                 If InStr(RawResults(1, colIndex), "Temperature") Or InStr(RawResults(1, colIndex), "Not Met") Then 'Spalten Temperaturen oder Unmet Hours keine Umrechnung
-    '                     Results(rwIndex, colIndex) = RawResults(rwIndex, colIndex)
-    '                     'Temperatur Min/Max
-    '                     If InStr(RawResults(1, colIndex), "Temperature") Then
-    '                         Results(rwIndex, iMaxCol + 1) = WorksheetFunction.Max(RawResults(rwIndex, colIndex), Results(rwIndex, iMaxCol + 1))
-    '                         If Results(rwIndex, iMaxCol + 2) = 0 Then
-    '                             Results(rwIndex, iMaxCol + 2) = RawResults(rwIndex, colIndex)
-    '                         Else
-    '                             Results(rwIndex, iMaxCol + 2) = WorksheetFunction.Min(RawResults(rwIndex, colIndex), Results(rwIndex, iMaxCol + 2))
-    '                         End If
-    '                     End If
-    '                 'ElseIf InStr(RawResults(1, colIndex), "Fans") Then
-    '                     'Results(rwIndex, colIndex) = RawResults(rwIndex, colIndex) / 3600 / dBldgArea_BGF    'Ventilatorstrom muss auf BGF bezogen werden!!!
-    '                 Else
-    '                     Results(rwIndex, colIndex) = RawResults(rwIndex, colIndex) / 3600 / dBldgArea_NRF    'alles weitere Umrechnung von J in Wh/m²NRF
-    '                 End If
-
-    '                 'Jahressummen
-    '                 dAnnualResult(colIndex) = dAnnualResult(colIndex) + Results(rwIndex, colIndex) / 1000 ' Jahressumme und Umrechnung von Wh/m² in kWh/m²
-    '                 If rwIndex = iMaxRow Then
-    '                     Results(rwIndex, colIndex) = dAnnualResult(colIndex)  'in die letzte Zeile die Jahressumme schreiben!
-    '                 Else
-    '                     'Transmission -> LOSS/GAIN
-    '                     If (InStr(RawResults(1, colIndex), "CONDUCTION HEAT TRANSFER ENERGY ")) Then
-    '                         If Results(rwIndex, colIndex) < 0 Then
-    '                             dAnnualResult(iMaxCol + 1) = dAnnualResult(iMaxCol + 1) + Results(rwIndex, colIndex) / 1000
-    '                         Else
-    '                             dAnnualResult(iMaxCol + 2) = dAnnualResult(iMaxCol + 2) + Results(rwIndex, colIndex) / 1000
-    '                         End If
-    '                     End If
-
-    '                     'UnmetHours Jahreswerte
-    '                     If (InStr(RawResults(1, colIndex), "Facility Heating Setpoint Not Met While")) Then
-    '                         dAnnualResult(iMaxCol + 3) = dAnnualResult(iMaxCol + 3) + Results(rwIndex, colIndex)
-    '                     ElseIf (InStr(RawResults(1, colIndex), "Facility Cooling Setpoint Not Met While")) Then
-    '                         dAnnualResult(iMaxCol + 4) = dAnnualResult(iMaxCol + 4) + Results(rwIndex, colIndex)
-    '                     End If
-    '                 End If
-
-    '             End If 'Beschriftung oder Daten
-    '         Else 'RawResults(1, colINdex) <> ""
-    '             Results(rwIndex, colIndex) = ""
-    '         End If
-    '     Next 'col
-    ' Next 'row
-
     ' Copy profiles into user-visible sheet
     Sheets("e+ Outputs").Range("A1:ZZ35100").Offset(5, 0).ClearContents
     Sheets("e+ Outputs").Range( _
             Sheets("e+ Outputs").Cells(1, 1), _
             Sheets("e+ Outputs").Cells(iMaxRow, iMaxCol) _
         ).Offset(5, 0) = ResultsNFA
-    ' Sheets("e+ Outputs").Range( _
-    '         Sheets("e+ Outputs").Cells(iMaxRow + 1, 1), _
-    '         Sheets("e+ Outputs").Cells(iMaxRow + 1, iMaxCol) _
-    '     ).Offset(5, 0) = ResultsNFAAnnual(2, 1 To iMaxCol)
+
     For colIndex = 2 To iMaxCol
         Sheets("e+ Outputs").Cells(iMaxRow + 5, colIndex) = ResultsNFAAnnual(2, colIndex - 1)
     Next
@@ -463,10 +360,6 @@ Sub CreateResults()
         If (InStr(ResultsNFAAnnual(1, colIndex), "METER MECHANICAL VENTILATION HEAT GAIN")) Then Sheets("GEBÄUDEBILANZ").Range("N25") = ResultsNFAAnnual(2, colIndex) * 0.001
     Next
 
-    ' Conduction losses/gains
-    ' Sheets("GEBÄUDEBILANZ").Range("N10") = conduction_totals(0) 'loss
-    ' Sheets("GEBÄUDEBILANZ").Range("N18") = conduction_totals(1) 'gain
-
     '------------------------
     Sheets("GEBÄUDEBILANZ").Protect
     Application.ScreenUpdating = True
@@ -481,24 +374,24 @@ Sub DiagLeistung(leistung As Boolean)
     Dim TB_pivot As Worksheet: Set TB_pivot = Sheets("pivot")
     Dim pt As PivotTable
     Dim PivotField As PivotField
-    
+
     Dim iMaxRow As Double
     iMaxRow = 60 / Range("Timestep") * 24 * 365
-    
+
     Dim Results_Nutzenergie  As Variant
     'ReDim Results_Nutzenergie(0 To iMaxRow, 1 To 7)
-    
+
     Dim Results_Nutzenergie_out  As Variant
     ReDim Results_Nutzenergie_out(1 To iMaxRow, 1 To 6)
-    
+
     'Blattschutz und Excel-Berechnung
     TB_diag.Unprotect
     Application.Calculation = xlCalculationManual
-    
+
     Results_Nutzenergie = Sheets("pivot").Range("D4:J" & iMaxRow + 3)
-    
+
     berechnet = False
-    
+
     If leistung And Sheets("pivot").Range("A1") = "Energie" Then
         'Umrechnung in Leistung [W]
         For rwIndex = 1 To iMaxRow
@@ -534,7 +427,7 @@ Sub DiagLeistung(leistung As Boolean)
         Sheets("pivot").Range("A1") = "Energie"
         berechnet = True
     End If
-    
+
     If berechnet Then
         'Excel Tabelle schreiben
         Sheets("pivot").Range("D4:J" & iMaxRow + 3) = Results_Nutzenergie_out
@@ -555,11 +448,11 @@ Sub DiagLeistung(leistung As Boolean)
         'Pivot Table aktualisieren
         Call Aktualisieren_pivots
     End If
-    
+
     'Blattschutz und Excel-Berechnung
     TB_diag.Protect
     Application.Calculation = xlCalculationAutomatic
-    
+
 End Sub
 
 Function CheckSheet(ByVal sSheetName As String) As Boolean
