@@ -128,7 +128,6 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     outputvariables.each do |outputvariable|
       runner.registerInfo("The following variable was removed: " + outputvariable.getString(0).to_s)
       workspace.removeObject(outputvariable.idfObject.handle)
-      outputvariable.remove
     end
 
     # create the output meters and variables from definitions
