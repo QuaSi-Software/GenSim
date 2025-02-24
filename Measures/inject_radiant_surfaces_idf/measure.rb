@@ -51,21 +51,23 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
     # the following fixes an issue with the SAT schedule. however in versions prior to 3.x (TODO)
     # it introduces a problem instead, in that the schedule appears double, causing E+ to crash
 
-    # weekSchedules = workspace.getObjectsByType("Schedule:Week:Daily".to_IddObjectType)
-    # yearSchedules = workspace.getObjectsByType("Schedule:Year".to_IddObjectType)
-    # yearSchedules.each do |yearSchedule|
-    #   if yearSchedule.getString(0).get == "SAT Year Schedule"
-    #     weekSchedules.each do |weekSchedule|
-    #       if weekSchedule.getString(0).get == "SAT Week Schedule 10 deg C"
-    #         yearSchedule.setString(2, "SAT Week Schedule 10 deg C")
-    #         yearSchedule.setDouble(3, 1)
-    #         yearSchedule.setDouble(4, 1)
-    #         yearSchedule.setDouble(5, 12)
-    #         yearSchedule.setDouble(6, 31)
-    #       end
-    #     end
-    #   end
-    # end
+    weekSchedules = workspace.getObjectsByType("Schedule:Week:Daily".to_IddObjectType)
+    yearSchedules = workspace.getObjectsByType("Schedule:Year".to_IddObjectType)
+    yearSchedules.each do |yearSchedule|
+       if yearSchedule.getString(0).get == "SAT Year Schedule"
+          if !yearSchedule.getDouble(4).is_initialized
+            weekSchedules.each do |weekSchedule|
+            if weekSchedule.getString(0).get == "SAT Week Schedule 10 deg C"
+              yearSchedule.setString(2, "SAT Week Schedule 10 deg C")
+              yearSchedule.setDouble(3, 1)
+              yearSchedule.setDouble(4, 1)
+              yearSchedule.setDouble(5, 12)
+              yearSchedule.setDouble(6, 31)
+            end
+          end
+         end
+       end
+    end
 
     counter = 0
     # reporting initial condition of model
