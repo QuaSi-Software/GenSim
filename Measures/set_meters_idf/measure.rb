@@ -111,7 +111,7 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     schedules = workspace.getObjectsByType("Schedule:Year".to_IddObjectType)
     schedules.each do |schedule|
       runner.registerInfo("Procesing schedule #{schedule.name}")
-      next unless schedule.name.to_s != "SAT Year Schedule"
+      #next unless schedule.name.to_s != "SAT Year Schedule"
       next unless schedule.numFields > 7
       runner.registerInfo("  Replacing week schedule #{schedule.getString(3)} with  #{schedule.getString(7)}")
       schedule.setString(2, schedule.getString(7).to_s) # Correct schedule ref
