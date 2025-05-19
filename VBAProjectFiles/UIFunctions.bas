@@ -91,7 +91,7 @@ Sub ReadWeatherFiles()
     Set sht = ThisWorkbook.Worksheets("Wetterdateien")
     i = 0
     'loops through each file in the directory and prints their names and path
-    For Each objFile In objFolder.Files()
+    For Each objFile In objFolder.files()
         If StringEndsWith(objFile.name, ".epw") Then
             'print file name
             sht.Cells(i + 1, 1) = objFile.name
@@ -127,7 +127,7 @@ Function GetFolder(strTitle As String, strPath As String) As String
         If .Show <> -1 Then GoTo NextCode
         sItem = .SelectedItems(1)
     End With
-    NextCode:
+NextCode:
     GetFolder = sItem
     Set fldr = Nothing
 End Function
@@ -203,24 +203,49 @@ Function load_file_from_folder(filetype As String)
     Dim zipPath As Variant
     Dim isComplete As Boolean: isComplete = True
     Dim fileDialog As fileDialog: Set fileDialog = Application.fileDialog(msoFileDialogFilePicker)
-
+    
+    
     fileDialog.InitialFileName = Application.ActiveWorkbook.path
     fileDialog.ButtonName = "Speichern"
     fileDialog.Title = "Bitte Datei auswählen"
-    fileDialog.InitialFileName = Application.ActiveWorkbook.path & "\*." & filetype
     fileDialog.Filters.Clear
-    fileDialog.Filters.Add filetype & " Files", "*." & filetype, 1
+    
+    Dim parts() As String
+    If InStr(filetype, "-") > 0 Then
+        Dim firstPart As String
+        Dim secondPart As String
+        parts = Split(filetype, "-")
+        firstPart = parts(0)
+        secondPart = parts(1)
+        fileDialog.InitialFileName = Application.ActiveWorkbook.path & "\*." & firstPart
+        fileDialog.Filters.Add firstPart & " Files", "*." & firstPart, 1
+        fileDialog.Filters.Add secondPart & " Files", "*." & secondPart, 2
+    Else
+        fileDialog.InitialFileName = Application.ActiveWorkbook.path & "\*." & filetype
+        fileDialog.Filters.Add filetype & " Files", "*." & filetype, 1
+    End If
+    
     fileDialog.FilterIndex = 1
-
     result = fileDialog.Show
 
     If result <> 0 Then
         load_file_from_folder = fileDialog.SelectedItems(1)
+        If LCase(Right(load_file_from_folder, 4)) = ".idf" Then
+            RunMeasures.CreatePreWorkflowAndExecute (load_file_from_folder)
+            Dim osmPath As String
+            osmPath = Replace(LCase(load_file_from_folder), ".idf", ".osm")
+            If Dir(osmPath) <> "" Then
+                MsgBox "OSM file successfully generated: " & osmPath
+                load_file_from_folder = osmPath
+            Else
+                MsgBox "OSM file was not properly generated."
+            End If
+        End If
     End If
 End Function
 
 Sub import_geometry_osm()
-    path_osm = load_file_from_folder("osm")
+    path_osm = load_file_from_folder("osm-idf")
     If path_osm <> Empty Then
         Range("path_geometry_Import") = path_osm
     End If
@@ -447,24 +472,24 @@ End Sub
 
 Sub OpenErrorFile()
     Dim current As String
-    Dim filename As String
+    Dim FileName As String
     Dim result As Integer
     Dim last As String
     
     current = Dir(Application.ActiveWorkbook.path & "\Output\run\eplusout.err")
-    filename = current
+    FileName = current
     Do While Len(current) > 0
         last = current
         current = Dir
         If Len(current) > 0 Then
             If CompareTimestamps(current, last) > 0 Then
-                filename = current
+                FileName = current
             End If
         End If
     Loop
     
-    If (filename <> "") Then
-        result = Shell("notepad.exe " & Application.ActiveWorkbook.path & "\Output\run\" & filename, vbNormalFocus)
+    If (FileName <> "") Then
+        result = Shell("notepad.exe " & Application.ActiveWorkbook.path & "\Output\run\" & FileName, vbNormalFocus)
     End If
 End Sub
 

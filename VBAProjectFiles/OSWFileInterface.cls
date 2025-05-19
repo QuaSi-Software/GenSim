@@ -467,7 +467,7 @@ End Sub
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
 ' @param NrOfTimesteps As Integer ByVal Number of timesteps per hour.
 Sub ExportResults( _
-    ByRef jFile as JSONFile, _
+    ByRef jFile As JSONFile, _
     ByVal bGeneric As Boolean, _
     ByVal nrf_bgf As Double, _
     ByVal NrOfTimesteps As Integer, _
@@ -480,7 +480,7 @@ Sub ExportResults( _
     jFile.AddArgument "calculate_relative_net", "true"
     jFile.AddArgument "output_level", outputLevel
 
-    if bGeneric Then
+    If bGeneric Then
         gross_area = Range("BldgArea")
         jFile.AddArgument "gross_area", CStr(gross_area)
         jFile.AddArgument "net_area", CStr(gross_area * nrf_bgf)
@@ -668,6 +668,36 @@ Sub ExportToOSW( _
     jFile.Save sFilename
 End Sub
 
+Sub GenerateOSW( _
+    ByVal sFilename As String, _
+    ByVal bGeneric As Boolean, _
+    ByVal bCopyOSMFile As Boolean, _
+    ByVal bDetailedHVAC As Boolean _
+)
+    Dim jFile As New JSONFile
+
+
+    'correction factor of parameters specific to the conditioned volume as false ceilings
+    'are not considered conditioned
+    Dim FloorHeight_Ratio As Double
+    If Range("geometry_source") = 1 Then
+        FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight")
+    Else
+        FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight_import")
+    End If
+
+    Dim jFile As New JSONFile
+
+    If bGeneric Then
+        Call ExportCreateEmptyModel(jFile)
+    End If
+
+
+
+    jFile.Save sFilename
+End Sub
+
+
 ' Imports the OSW with the given filepath to the spreadsheet. This method is
 ' intended to be run on files that have been created with the method
 ' OSWFileInterface::ExportToOSW. It is not guarranteed that this method works
@@ -676,7 +706,7 @@ End Sub
 ' @see OSWFileInterface::ExportToOSW
 '
 ' @param filename String ByRef The filepath (and name) of the file to be imported
-Sub ImportFromOSW(ByRef filename As String)
+Sub ImportFromOSW(ByRef FileName As String)
     Sheets("HAUPTSEITE").Unprotect
 
     ' Read the given json file and parse it into a Dictionary/Collection
@@ -686,7 +716,7 @@ Sub ImportFromOSW(ByRef filename As String)
 
     stream.CharSet = "utf-8"
     stream.Open
-    stream.LoadFromFile (filename)
+    stream.LoadFromFile (FileName)
     text = stream.ReadText()
     stream.Close
 
@@ -1050,6 +1080,24 @@ Sub DDFindAndSetValue(ByRef dd As DropDown, ByVal val As Variant)
         End If
     Next
 End Sub
+
+
+' Export method for measure load_idf_modelC.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportLoadIdfModel(ByVal jFileName As String, ByVal idf_path As String)
+    Dim jFile As New JSONFile
+    
+    Dim dd1 As DropDown 'weather data
+    Set dd1 = Sheets("HAUPTSEITE").DropDowns("DropDown1")
+
+    jFile.CreateFile "", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
+    
+    jFile.AddArgument "idf_file_path", idf_path
+    jFile.AddMeasure "load_idf_modelC"
+    jFile.Save jFileName
+End Sub
+
 
 ' Imports the given schedule from the given argument dictionary to the given ranges.
 ' This method is intended to run on data used in the import/export methods.

@@ -3,7 +3,7 @@ Attribute VB_Name = "ShellUtilities"
 ' environment.
 '
 ' Sources:
-' 
+'
 ' https://stackoverflow.com/questions/68034191/waitforsingleobject-not-working-on-64-bit-vba
 ' Copyright 2021 User 'PEH'
 ' Released under Creative Commons Attribution-ShareAlike 4.0 International Public License
