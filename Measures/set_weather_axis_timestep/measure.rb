@@ -26,6 +26,9 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
     northaxis = OpenStudio::Measure::OSArgument.makeDoubleArgument("north_axis", true)
     northaxis.setDefaultValue(-9999)
     args << northaxis
+    replace_design_days = OpenStudio::Measure::OSArgument.makeBoolArgument("replace_design_days", true)
+    replace_design_days.setDefaultValue(true)  # <- this sets the default value
+    args << replace_design_days
     return args
   end
 
@@ -39,6 +42,7 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
     weatherFilePath = runner.getStringArgumentValue("weather_file_path", user_arguments)
     northAxis = runner.getDoubleArgumentValue("north_axis", user_arguments)
     timestep = runner.getIntegerArgumentValue("time_step", user_arguments)
+    replace_design_days = runner.getBoolArgumentValue("replace_design_days", user_arguments)
 
     # Add Weather File
     if File.exist?(weatherFilePath) && weatherFilePath.downcase.include?(".epw")
@@ -60,39 +64,51 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
 
       runner.registerInfo("Setting site data.")
 
-      # find the ddy files
-      ddy_file = "#{File.join(File.dirname(epw_file.path.to_s), File.basename(epw_file.path.to_s, '.*'))}.ddy"
-      runner.registerInfo("Looking for ddy file. #{ddy_file}")
-      unless File.exist? ddy_file
-        ddy_files = Dir["#{File.dirname(epw_file.path.to_s)}/*.ddy"]
-        if ddy_files.size > 1
-          runner.registerError("More than one ddy file in the EPW directory")
-          return false
-        end
-        if ddy_files.empty?
-          runner.registerError("could not find the ddy file in the EPW directory")
-          return false
-        end
+      if(!replace_design_days)
+          # find the ddy files
+          ddy_file = "#{File.join(File.dirname(epw_file.path.to_s), File.basename(epw_file.path.to_s, '.*'))}.ddy"
+          runner.registerInfo("Looking for ddy file. #{ddy_file}")
+          unless File.exist? ddy_file
+            ddy_files = Dir["#{File.dirname(epw_file.path.to_s)}/*.ddy"]
+            if ddy_files.size > 1
+              runner.registerError("More than one ddy file in the EPW directory")
+              return false
+            end
+            if ddy_files.empty?
+              runner.registerError("could not find the ddy file in the EPW directory")
+              return false
+            end
 
-        ddy_file = ddy_files.first
-      end
+            ddy_file = ddy_files.first
+          end
 
-      unless ddy_file
-        runner.registerError "Could not find DDY file for #{ddy_file}"
-        return error
-      end
+          unless ddy_file
+            runner.registerError "Could not find DDY file for #{ddy_file}"
+            return error
+          end
 
-      ddy_model = OpenStudio::EnergyPlus.loadAndTranslateIdf(ddy_file).get
-      ddy_model.getObjectsByType("OS:SizingPeriod:DesignDay".to_IddObjectType).each do |d|
-        # grab only the ones that matter
-        ddy_list = /(Htg 99.6)|(Clg .4)/
-        if d.name.get =~ ddy_list
-          runner.registerInfo("Adding object #{d.name}")
+          ddy_model = OpenStudio::EnergyPlus.loadAndTranslateIdf(ddy_file).get
+          ddy_model.getObjectsByType("OS:SizingPeriod:DesignDay".to_IddObjectType).each do |d|
+            # grab only the ones that matter
+            ddy_list = /(Htg 99.6)|(Clg .4)/
+            if d.name.get =~ ddy_list
+              runner.registerInfo("Adding object #{d.name}")
 
-          # add the object to the existing model
-          model.addObject(d.clone)
-          runner.registerInfo("Adding design day #{d.name}.")
-        end
+              # add the object to the existing model
+              model.addObject(d.clone)
+              runner.registerInfo("Adding design day #{d.name}.")
+            end
+          end
+      else
+            # Create Summer Extreme Sizing Period
+            summer_extreme = OpenStudio::Model::SizingPeriodWeatherFileConditionType.new("SummerExtreme")
+            summer_extreme.setName("Summer Extreme")
+            summer_extreme.setWeatherFileConditionType("SummerExtreme")
+
+            # Create Winter Extreme Sizing Period
+            winter_extreme = OpenStudio::Model::SizingPeriodWeatherFileConditionType.new(model)
+            winter_extreme.setName("Winter Extreme")
+            winter_extreme.setWeatherFileConditionType("WinterExtreme")
       end
     else
       runner.registerInfo("'#{weatherFilePath}' does not exist or is not an .epw file.")
