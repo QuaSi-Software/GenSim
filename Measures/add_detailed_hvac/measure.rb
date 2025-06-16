@@ -81,11 +81,11 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
     args << cold_water_temp_diff
     supply_fan_pressure_rise = OpenStudio::Measure::OSArgument.makeDoubleArgument("supply_fan_pressure_rise", true)
     supply_fan_pressure_rise.setDisplayName("Supply fan pressure rise")
-    supply_fan_pressure_rise.setDefaultValue(250)
+    supply_fan_pressure_rise.setDefaultValue(750)
     args << supply_fan_pressure_rise
     return_fan_pressure_rise = OpenStudio::Measure::OSArgument.makeDoubleArgument("return_fan_pressure_rise", true)
     return_fan_pressure_rise.setDisplayName("Return fan pressure rise")
-    return_fan_pressure_rise.setDefaultValue(250)
+    return_fan_pressure_rise.setDefaultValue(750)
     args << return_fan_pressure_rise
     system_type = OpenStudio::Measure::OSArgument.makeDoubleArgument("system_type", true)
     system_type.setDisplayName("Type of ventilation system")
