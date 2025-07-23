@@ -111,6 +111,15 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     schedules = workspace.getObjectsByType("Schedule:Year".to_IddObjectType)
     schedules.each do |schedule|
       runner.registerInfo("Procesing schedule #{schedule.name}")
+      if schedule.name.to_s == "SAT Year Schedule"
+        schedule.setString(2, "SAT Week Schedule 10 deg C") # Correct schedule ref
+        schedule.setDouble(3, 1)
+        schedule.setDouble(4, 1)
+        schedule.setDouble(5, 12)
+        schedule.setDouble(6, 31)
+        runner.registerInfo("Procesing schedule #{schedule.name}")
+        workspace.insertObject(schedule)
+      end  
       next unless schedule.name.to_s != "SAT Year Schedule"
       next unless schedule.numFields > 7
       runner.registerInfo("  Replacing week schedule #{schedule.getString(3)} with  #{schedule.getString(7)}")
