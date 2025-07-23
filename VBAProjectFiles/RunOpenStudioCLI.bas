@@ -31,7 +31,7 @@ Sub RunOpenStudioCLI()
         ErrorString = IOFunctions.CheckErrFile(GetOutputFolder() & "\run\eplusout.err")
         If InStr(ErrorString, "Fatal Error Detected") Then
             Range("SimStatus") = "mit Fehlern"
-        Elseif InStr(ErrorString, "Successfully") Then
+        ElseIf InStr(ErrorString, "Successfully") Then
             Range("SimStatus") = "Erfolgreich"
         Else
             Range("SimStatus") = "Unbekannt"
@@ -60,7 +60,7 @@ Sub RunOpenStudioCLI()
         Range("Status").Offset(5, 0) = "Profile/Jahreswerte bilden"
         CreateResults
         If Range("param_delete_sheet_rawresults") = "Ja" Then
-            Call DeleteResultSheets()
+            Call DeleteResultSheets
         End If
         Range("Status").Offset(5, 1) = "beendet (" & WorksheetFunction.Round((Time - Startzeit_indv) * 86400, 1) & " s)"
         Startzeit_indv = Time
@@ -82,4 +82,49 @@ Sub CreateEmptyOSMFile(sOSMFilePath As String)
     oFile.Close
     Set fso = Nothing
     Set oFile = Nothing
+End Sub
+
+
+Sub RunPreOpenStudioCLI()
+    Dim Argument As String
+    Dim OutputFilePath As String
+    Dim processMessage As String
+
+    Argument = Chr(34) & GetOpenStudioBinPath() & "\OpenStudio.exe" & Chr(34) & " --verbose run --workflow " & Chr(34) & GetOutputFolder() & "\" + "OSMConversionWorkflow.osw" & Chr(34)
+    OutputFilePath = GetOutputFolder() & "\run\shellout.log"
+
+    Sheets("Hauptseite").Select
+    If Sheets("HAUPTSEITE").CheckBoxes("Pipe_OS_Output").Value = 1 Then
+        retval = RunAndCapture(Argument, OutputFilePath)
+    Else
+        retval = ExecCmd(Argument)
+    End If
+
+    'Range("Status").Offset(1, 1) = "beendet (" & WorksheetFunction.Round((Time - Startzeit_indv) * 86400, 1) & " s)"
+    Startzeit_indv = Time
+
+    DoEvents
+
+    If retval > 0 Then
+        MsgBox "Fehler waehrend der Simulation, Fehler Code: " & retval
+     '   Range("SimStatus") = "Simulation nicht erfolgreich"
+        Exit Sub
+    Else
+        Dim ErrorString As String
+        ErrorString = IOFunctions.CheckErrFile(GetOutputFolder() & "\run\eplusout.err")
+        If InStr(ErrorString, "Fatal Error Detected") Then
+            Range("SimStatus") = "mit Fehlern"
+        ElseIf InStr(ErrorString, "Successfully") Then
+            Range("SimStatus") = "Erfolgreich"
+        Else
+            Range("SimStatus") = "Unbekannt"
+        End If
+        Range("StatusEnergyPlusSimulation") = ErrorString
+    End If
+ '   Range("Status").Offset(2, 1) = "beendet (" & WorksheetFunction.Round((Time - Startzeit_indv) * 86400, 1) & " s)"
+    Startzeit_indv = Time
+
+    DoEvents
+    If Range("SimStatus") = "Erfolgreich" Then
+    End If
 End Sub

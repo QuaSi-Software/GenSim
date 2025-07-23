@@ -112,3 +112,61 @@ Sub CreateWorkflowAndExecute()
         Application.Calculation = xlCalculationAutomatic
 
 End Sub
+
+Sub CreatePreWorkflowAndExecute(file_path As String)
+
+    Application.Calculation = xlCalculationManual
+
+    ' Set application path
+    SetApplicationPath
+
+    ' make the main sheet unprotected so we can read And write on it
+    Sheets("HAUPTSEITE").Unprotect
+
+    ' Set status cells empty
+ '   Call ClearCells
+
+ '   Range("Status").Offset(0, 0) = "OSW-file wird erzeugt"
+
+    ' execution time measurement
+    Startzeit = Time
+    Startzeit_indv = Time
+    DoEvents
+
+    If Dir(Range("DirOpenStudio"), vbDirectory) = "" Then
+        MsgBox ("OpenStudio directory Not found at: " & Range("DirOpenStudio") & "\nPlease change it on sheet 1 Or install a version of OpenStudio.")
+    End If
+
+    If Range("PerimeterDepth") * 2 > WorksheetFunction.Min(Range("LAENGE"), Range("BREITE")) - 1 Then MsgBox "Fehler in der Geometrie-Eingabe: 'Tiefe Auﬂenzonen' zu groﬂ!": Exit Sub
+
+        ' control flow variables
+
+        ' export steps, measures And parameters To OSW file
+        Dim interface As OSWFileInterface: Set interface = New OSWFileInterface
+        Call interface.ExportLoadIdfModel(GetOutputFolder() & "\OSMConversionWorkflow.osw", file_path)
+
+        ' status
+       ' Range("Status").Offset(0, 1) = "beendet (" & WorksheetFunction.Round((Time - Startzeit_indv) * 86400, 1) & " s)"
+        Startzeit_indv = Time
+
+        ' running the open studio CLI
+       ' Range("Status").Offset(1, 0) = "Modellerzeugung und Simulation"
+
+        ' execute the OpenStudio CLI
+        RunOpenStudioCLI.RunPreOpenStudioCLI
+
+        ' execution time measurement
+        Debug.Print Time
+        Endzeit = Time
+        'Ausgabe Simulationsdauer
+   '     Range("calc_time") = Round((Endzeit - Startzeit) * 86400, 1) & " s (" & Round((Endzeit - Startzeit) * 86400 / 60, 1) & " min)"
+   '     Range("sim_date") = Format(Now, "dd.mm.yyyy\ hh:mm")
+
+        ' update pivot tables
+    '    Call Aktualisieren_pivots
+
+     '   Sheets("HAUPTSEITE").Protect
+
+        Application.Calculation = xlCalculationAutomatic
+
+End Sub

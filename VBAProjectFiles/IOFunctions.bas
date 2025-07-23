@@ -63,7 +63,7 @@ Sub DeleteResultSheets()
 End Sub
 
 Function ImportCSVFile(ByVal filePath As String, ByVal sheetName As String) As Boolean
-    Workbooks.Open filename:=filePath, Local:=False
+    Workbooks.Open FileName:=filePath, Local:=False
     ', Semicolon:=False, Comma:=True, DecimalSeparator:="."
     ActiveSheet.Move After:=ThisWorkbook.Sheets(ThisWorkbook.Sheets.Count)
     ActiveSheet.name = sheetName
@@ -76,7 +76,7 @@ End Function
 Function ImportCSVResultFiles(ByVal directory As String) As Boolean
     Application.ScreenUpdating = False
 
-    Call DeleteResultSheets()
+    Call DeleteResultSheets
 
     Dim file As Variant
     For Each file In GetCSVResultFilesNames()
@@ -338,8 +338,8 @@ Sub CreateResults()
 
     '------ Liste Gebäudebilanz
 
-    Sheets("GEBÄUDEBILANZ").Range("N10:N14") = Array(0,0,0,0,0)
-    Sheets("GEBÄUDEBILANZ").Range("N18:N25") = Array(0,0,0,0,0,0,0,0)
+    Sheets("GEBÄUDEBILANZ").Range("N10:N14") = Array(0, 0, 0, 0, 0)
+    Sheets("GEBÄUDEBILANZ").Range("N18:N25") = Array(0, 0, 0, 0, 0, 0, 0, 0)
 
     For colIndex = 1 To iMaxCol
         'Verluste
