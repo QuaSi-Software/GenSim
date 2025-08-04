@@ -676,7 +676,6 @@ Sub GenerateOSW( _
 )
     Dim jFile As New JSONFile
 
-
     'correction factor of parameters specific to the conditioned volume as false ceilings
     'are not considered conditioned
     Dim FloorHeight_Ratio As Double
@@ -686,7 +685,6 @@ Sub GenerateOSW( _
         FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight_import")
     End If
 
-    Dim jFile As New JSONFile
 
     If bGeneric Then
         Call ExportCreateEmptyModel(jFile)

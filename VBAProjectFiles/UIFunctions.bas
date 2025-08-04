@@ -197,9 +197,10 @@ Sub BrowseWeatherDir()
     Range("WeatherDir") = strWeatherDir
 End Sub
 
-Function load_file_from_folder(filetype As String)
+Function load_file_from_folder(filetype As String, weatherfile As String)
     Dim result As Integer
     Dim selectedPath As String
+    Dim idf_file As String
     Dim zipPath As Variant
     Dim isComplete As Boolean: isComplete = True
     Dim fileDialog As fileDialog: Set fileDialog = Application.fileDialog(msoFileDialogFilePicker)
@@ -220,6 +221,9 @@ Function load_file_from_folder(filetype As String)
         fileDialog.InitialFileName = Application.ActiveWorkbook.path & "\*." & firstPart
         fileDialog.Filters.Add firstPart & " Files", "*." & firstPart, 1
         fileDialog.Filters.Add secondPart & " Files", "*." & secondPart, 2
+        If UBound(parts) >= 2 Then
+            fileDialog.Filters.Add parts(2) & " Files", "*." & parts(2), 3
+        End If
     Else
         fileDialog.InitialFileName = Application.ActiveWorkbook.path & "\*." & filetype
         fileDialog.Filters.Add filetype & " Files", "*." & filetype, 1
@@ -231,25 +235,181 @@ Function load_file_from_folder(filetype As String)
     If result <> 0 Then
         load_file_from_folder = fileDialog.SelectedItems(1)
         If LCase(Right(load_file_from_folder, 4)) = ".idf" Then
-            RunMeasures.CreatePreWorkflowAndExecute (load_file_from_folder)
-            Dim osmPath As String
-            osmPath = Replace(LCase(load_file_from_folder), ".idf", ".osm")
-            If Dir(osmPath) <> "" Then
-                MsgBox "OSM file successfully generated: " & osmPath
-                load_file_from_folder = osmPath
+            load_file_from_folder = RunIDFConversionScript(fileDialog.SelectedItems(1))
+        ElseIf LCase(Right(load_file_from_folder, 4)) = ".ifc" Then
+            idf_file = RunIFCConversionScript(fileDialog.SelectedItems(1), weatherfile)
+            If Len(idf_file) > 0 Then
+                load_file_from_folder = RunIDFConversionScript(idf_file)
             Else
-                MsgBox "OSM file was not properly generated."
+                MsgBox ("Error during conversion to IDF")
             End If
         End If
     End If
 End Function
 
 Sub import_geometry_osm()
-    path_osm = load_file_from_folder("osm-idf")
+    Dim file_types As String
+    Dim weather_file As String
+    file_types = "osm-idf"
+    If IsDockerInstalled() Then
+        file_types = "osm-idf-ifc"
+        If Not (IsDockerRunning()) Then
+            MsgBox ("Your Docker/Docker Desktop is not running, please start it.")
+            Exit Sub
+        End If
+    End If
+    weather_file = GetWeatherFilePath("TRY2015_Augsburg_Jahr.epw", GetWeatherFolder())
+    path_osm = load_file_from_folder(file_types, weather_file)
     If path_osm <> Empty Then
         Range("path_geometry_Import") = path_osm
     End If
 End Sub
+
+
+Function IsDockerRunning() As Boolean
+    Dim objWMIService As Object
+    Dim colProcesses As Object
+    Dim objProcess As Object
+
+    Set objWMIService = GetObject("winmgmts:\\.\root\cimv2")
+    Set colProcesses = objWMIService.ExecQuery("SELECT Name FROM Win32_Process WHERE Name = 'Docker Desktop.exe' OR Name = 'Docker.exe'")
+
+    IsDockerRunning = (colProcesses.Count > 0)
+End Function
+
+
+Function GetWeatherFilePath(defaultValue As String, weatherFolder As String) As String
+    Dim ws As Worksheet
+    Set ws = ThisWorkbook.Sheets("HAUPTSEITE")
+
+    Dim selectedItem As String
+    selectedItem = ""
+
+    On Error Resume Next
+
+    ' Try ActiveX ComboBox
+    Dim ddActiveX As Object
+    Set ddActiveX = ws.OLEObjects("dd1").Object
+    If Not ddActiveX Is Nothing Then
+        If ddActiveX.ListIndex <> -1 Then
+            selectedItem = ddActiveX.List(ddActiveX.ListIndex)
+        End If
+    End If
+
+    ' Try Form Control Dropdown (linked cell)
+    If selectedItem = "" Then
+        Dim linkedCell As Range
+        ' Replace "B3" with your actual linked cell if known
+        Set linkedCell = ws.Range("B9")
+        If Not linkedCell Is Nothing Then
+            selectedItem = linkedCell.Value
+        End If
+    End If
+
+    On Error GoTo 0 ' Reset error handling
+
+    ' Final fallback
+    If Trim(selectedItem) = "" Then
+        GetWeatherFilePath = weatherFolder & "\" & defaultValue
+    Else
+        GetWeatherFilePath = weatherFolder & "\" & selectedItem
+    End If
+End Function
+
+
+Function IsDockerInstalled() As Boolean
+    Dim objReg As Object
+    Dim subKeys As Variant
+    Dim subKey As Variant
+    Dim displayName As Variant
+    Dim rootKey As Long
+    Dim keyPath As String
+    Dim paths As Variant
+    Dim i As Integer
+
+    On Error GoTo ErrorHandler
+
+    ' Create registry object
+    Set objReg = GetObject("winmgmts:\\.\root\default:StdRegProv")
+
+    ' Constants
+    rootKey = &H80000002 ' HKEY_LOCAL_MACHINE
+
+    ' Registry paths to check
+    paths = Array( _
+        "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", _
+        "SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall" _
+    )
+
+    ' Loop through both registry paths
+    For i = LBound(paths) To UBound(paths)
+        keyPath = paths(i)
+        subKeys = Null
+        objReg.EnumKey rootKey, keyPath, subKeys
+
+        If Not IsNull(subKeys) Then
+            For Each subKey In subKeys
+                displayName = Null
+                objReg.GetStringValue rootKey, keyPath & "\" & subKey, "DisplayName", displayName
+                If Not IsNull(displayName) Then
+                    If InStr(1, displayName, "Docker", vbTextCompare) > 0 Then
+                        IsDockerInstalled = True
+                        Exit Function
+                    End If
+                End If
+            Next subKey
+        End If
+    Next i
+
+    MsgBox "Docker is not installed. Please go to docker.com and install Docker Desktop."
+    IsDockerInstalled = False
+    Exit Function
+
+ErrorHandler:
+    IsDockerInstalled = False
+End Function
+
+Function RunIDFConversionScript(idfPath As String) As String
+    RunMeasures.CreatePreWorkflowAndExecute (idfPath)
+    Dim osmPath As String
+    osmPath = Replace(LCase(idfPath), ".idf", ".osm")
+    If Dir(osmPath) <> "" Then
+        MsgBox "OSM file successfully generated: " & osmPath
+        RunIDFConversionScript = osmPath
+    Else
+        MsgBox "OSM file was not properly generated."
+    End If
+End Function
+
+
+Function RunIFCConversionScript(ifcPath As String, epwPath As String) As String
+    Dim batFilePath As String
+    Dim command As String
+    Dim eplusPath As String
+
+    ' Full path to your .bat file
+    batFilePath = "run_conversion.bat"
+
+    ' Input files
+    eplusPath = "/usr/local/EnergyPlus-9-4-0/"
+
+    ' Combine all arguments with quotes
+    command = """" & batFilePath & """ " & _
+              """" & ifcPath & """ " & _
+              """" & epwPath & """ " & _
+              """" & eplusPath & """"
+
+    ' Run batch file and wait
+    retval = ExecCmd(command)
+
+    If retval <> 0 Then
+        MsgBox "Fehler während der Konvertierung, Fehlercode: " & retval
+        RunIFCConversionScript = ""
+    Else
+        RunIFCConversionScript = Replace(LCase(ifcPath), ".ifc", ".idf")
+    End If
+End Function
+
 
 Sub DropDown1_Change()
     Sheets("HAUPTSEITE").Unprotect
