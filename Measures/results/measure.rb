@@ -210,6 +210,7 @@ class Results < OpenStudio::Measure::ReportingMeasure
       runner.registerInfo("***********************************************")
       runner.registerInfo("***********************************************")
       runner.registerInfo("Reporting Frequency = #{reporting_frequency}")
+      runner.registerInfo("Environmental Period = #{ann_env_pd}")
 
       headers = ["#{reporting_frequency}"]
       output_timeseries = {}

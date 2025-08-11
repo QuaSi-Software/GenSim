@@ -79,14 +79,14 @@ class LoadIDFModelC < OpenStudio::Measure::ModelMeasure
         #model.addObjects(model_idf.get.objects)
     end
 
-    #schedules = workspace.getObjectsByType("Schedule:Year".to_IddObjectType)
-    #schedules.each do |schedule|
-    #    if(schedule.getString(1).to_s.nil?)
-    #        runner.registerInfo("Schedule removed: " + schedule.getString(0).to_s)
-    #        workspace.removeObject(schedule.idfObject.handle)
-    #        schedule.remove
-    #    end
-    #end
+    schedules = workspace.getObjectsByType("Schedule:Year".to_IddObjectType)
+    schedules.each do |schedule|
+        if(schedule.getString(1).to_s.nil?)
+            runner.registerInfo("Schedule removed: " + schedule.getString(0).to_s)
+            workspace.removeObject(schedule.idfObject.handle)
+            schedule.remove
+        end
+    end
 
     #runner.registerInfo("Weather file status: #{model.getWeatherFile.empty? ? 'Not Found' : 'Found'}")
     # report initial condition of model

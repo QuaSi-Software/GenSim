@@ -83,6 +83,37 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     workspace.insertObject(meter)
   end
 
+  def find_references(workspace, target_schedule)
+    refs = []
+    workspace.objects.each do |obj|
+        obj.numFields.times do |i|
+        field = obj.getString(i, true)
+        if field.is_initialized && field.get == target_schedule.nameString
+            refs << obj
+            break
+        end
+        end
+    end
+    return refs
+  end
+
+  def find_references_by_handle(workspace, target_schedule)
+      refs = []
+      workspace.objects.each do |obj|
+        obj.numFields.times do |i|
+          ref = obj.getTarget(i)
+          if ref.is_initialized && ref.get.handle == target_schedule.handle
+            refs << obj
+            break
+          end
+        end
+      end
+      return refs
+  end
+
+
+
+
   # define what happens when the measure is run
   def run(workspace, runner, user_arguments)
     super(workspace, runner, user_arguments)
@@ -110,16 +141,24 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     # fixes a bug with schedules
     schedules = workspace.getObjectsByType("Schedule:Year".to_IddObjectType)
     schedules.each do |schedule|
-      runner.registerInfo("Procesing schedule #{schedule.name}")
-      if schedule.name.to_s == "SAT Year Schedule"
-        schedule.setString(2, "SAT Week Schedule 10 deg C") # Correct schedule ref
-        schedule.setDouble(3, 1)
-        schedule.setDouble(4, 1)
-        schedule.setDouble(5, 12)
-        schedule.setDouble(6, 31)
-        runner.registerInfo("Procesing schedule #{schedule.name}")
-        workspace.insertObject(schedule)
-      end  
+      runner.registerInfo("Procesing schedule #{schedule.name} Number of fields: #{schedule.numFields}")
+      refs = find_references_by_handle(workspace, schedule)
+      if refs.empty?
+        runner.registerInfo("Schedule #{schedule.nameString} is not used anywhere => delete it!")
+        workspace.removeObject(schedule.idfObject.handle)
+      else
+        runner.registerInfo("Schedule #{schedule.nameString} is used by:")
+        refs.each { |r| runner.registerInfo( "  #{r.nameString}") }
+      end
+      #if schedule.name.to_s == "SAT Year Schedule"
+      #  schedule.setString(2, "SAT Week Schedule 10 deg C") # Correct schedule ref
+      #  schedule.setDouble(3, 1)
+      #  schedule.setDouble(4, 1)
+      #  schedule.setDouble(5, 12)
+      #  schedule.setDouble(6, 31)
+      #  runner.registerInfo("Procesing schedule #{schedule.name}")
+      #  workspace.insertObject(schedule)
+      #end
       next unless schedule.name.to_s != "SAT Year Schedule"
       next unless schedule.numFields > 7
       runner.registerInfo("  Replacing week schedule #{schedule.getString(3)} with  #{schedule.getString(7)}")

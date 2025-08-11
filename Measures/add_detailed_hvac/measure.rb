@@ -437,6 +437,7 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
     simulationControl.setDoSystemSizingCalculation(true)
     simulationControl.setDoPlantSizingCalculation(true)
     simulationControl.setRunSimulationforSizingPeriods(false)
+    simulationControl.setRunSimulationforWeatherFileRunPeriods(true)
 
     runner.registerFinalCondition("In the final model #{thermalZones.size} zones are connected to the DOAS air loop.")
 
