@@ -79,15 +79,30 @@ if not defined GENSIM_DIR (
 set "IDF_CONTAINER_PATH=%GENSIM_DIR%/export/EnergyPlus/SimResults/%IFC_BASE%/%IFC_BASE%.idf"
 for %%F in ("%IFC_FILE%") do set "IFC_FOLDER=%%~dpF"
 set "LOCAL_IDF_PATH=%IFC_FOLDER%%IFC_BASE%.idf"
+set "LOCAL_LOGS_FOLDER=%IFC_FOLDER%logs"
+
+:: Ensure logs folder exists
+if not exist "%LOCAL_LOGS_FOLDER%" mkdir "%LOCAL_LOGS_FOLDER%"
 
 :: Copy IDF file back to host
 docker cp ep:%IDF_CONTAINER_PATH% "%LOCAL_IDF_PATH%" >> "%LOGFILE%" 2>&1 || (
     echo [ERROR] Failed to copy IDF file from container. >> "%LOGFILE%"
     exit /b 8
 )
-
 echo [INFO] IDF file copied to: %LOCAL_IDF_PATH% >> "%LOGFILE%"
+
+:: Copy all other files to logs folder
+docker cp ep:%GENSIM_DIR%/. "%LOCAL_LOGS_FOLDER%" >> "%LOGFILE%" 2>&1 || (
+    echo [WARNING] Failed to copy log files from container. >> "%LOGFILE%"
+)
+
+:: Delete gensim directory inside container
+docker exec ep sh -c "rm -rf %GENSIM_DIR%" >> "%LOGFILE%" 2>&1 || (
+    echo [WARNING] Failed to remove gensim directory in container. >> "%LOGFILE%"
+)
+
 echo [SUCCESS] Conversion completed. >> "%LOGFILE%"
+
 
 endlocal
 exit /b 0
