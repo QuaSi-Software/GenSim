@@ -51,6 +51,12 @@ if %ERRORLEVEL%==0 (
     )
 )
 
+:: Attempt to clean /tmp folder inside container (log errors but continue)
+docker exec ep sh -c "rm -rf /tmp/*" >> "%LOGFILE%" 2>&1
+if errorlevel 1 (
+    echo [WARN] Some files in /tmp could not be deleted. >> "%LOGFILE%"
+)
+
 :: Copy files into container
 docker cp "%IFC_FILE%" ep:/tmp/ >> "%LOGFILE%" 2>&1 || (
     echo [ERROR] Failed to copy IFC file. >> "%LOGFILE%"
