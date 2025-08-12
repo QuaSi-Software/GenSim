@@ -1,0 +1,5728 @@
+[
+    {
+        "name": "Stock: Highrise between 1958 and 1968",
+        "weight": 4100,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Plastic window with double-pane insulating glass",
+            "u_value": 3.0,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Plaster",
+                "layer_idx": 1,
+                "thickness": 0.015,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight concrete",
+                "layer_idx": 2,
+                "thickness": 0.5,
+                "heat_conductivity": 0.8,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 1,
+                "thickness": 0.02,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.05,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.2,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 4,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.18,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.01,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.022,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cast-in-place concrete",
+                "layer_idx": 3,
+                "thickness": 0.2,
+                "heat_conductivity": 1.51,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 4,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: Highrise between 1969 and 1978",
+        "weight": 4200,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Plastic window with double-pane insulating glass",
+            "u_value": 3.0,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Plaster",
+                "layer_idx": 1,
+                "thickness": 0.015,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight concrete",
+                "layer_idx": 2,
+                "thickness": 0.5,
+                "heat_conductivity": 0.8,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.05,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.25,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 4,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation fill EPS",
+                "layer_idx": 2,
+                "thickness": 0.026,
+                "heat_conductivity": 0.031,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.025,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.15,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 4,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: large multi-family house between 1958 and 1968",
+        "weight": 3900,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Plastic window with double-pane insulating glass",
+            "u_value": 3.0,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Plaster",
+                "layer_idx": 1,
+                "thickness": 0.015,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight concrete",
+                "layer_idx": 2,
+                "thickness": 0.5,
+                "heat_conductivity": 0.8,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 1,
+                "thickness": 0.02,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.05,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.2,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 4,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.02,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.022,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cast-in-place concrete",
+                "layer_idx": 3,
+                "thickness": 0.2,
+                "heat_conductivity": 1.51,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 4,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: large multi-family house between 1860 and 1918",
+        "weight": 3600,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 2.8,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Solid brick",
+                "layer_idx": 1,
+                "thickness": 0.31,
+                "heat_conductivity": 0.79,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime-cement plaster",
+                "layer_idx": 2,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Timber laths",
+                "layer_idx": 1,
+                "thickness": 0.024,
+                "heat_conductivity": 0.14,
+                "density": 470.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight panel from wooden wool",
+                "layer_idx": 2,
+                "thickness": 0.031,
+                "heat_conductivity": 0.08,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Plaster",
+                "layer_idx": 3,
+                "thickness": 0.015,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Stone floor on soil",
+                "layer_idx": 1,
+                "thickness": 0.25,
+                "heat_conductivity": 1.59,
+                "density": 2200.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 2,
+                "thickness": 0.06,
+                "heat_conductivity": 1.4,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Plank",
+                "layer_idx": 1,
+                "thickness": 0.025,
+                "heat_conductivity": 0.21,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Wooden beam",
+                "layer_idx": 2,
+                "thickness": 0.08,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: large multi-family house between 1919 and 1948",
+        "weight": 3700,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Plastic window with double-pane insulating glass",
+            "u_value": 3.0,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Lime-cement plaster",
+                "layer_idx": 1,
+                "thickness": 0.016,
+                "heat_conductivity": 0.87,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Solid brick",
+                "layer_idx": 2,
+                "thickness": 0.12,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Air gap",
+                "layer_idx": 3,
+                "thickness": 0.1,
+                "heat_conductivity": 0.873,
+                "density": 0.1,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Solid brick",
+                "layer_idx": 4,
+                "thickness": 0.12,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Wooden beam",
+                "layer_idx": 1,
+                "thickness": 0.14,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Timber frame, compartment (clay stone)",
+                "layer_idx": 2,
+                "thickness": 0.03,
+                "heat_conductivity": 0.52,
+                "density": 1500.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Cast-in-place concrete",
+                "layer_idx": 1,
+                "thickness": 0.12,
+                "heat_conductivity": 1.51,
+                "density": 2400.0,
+                "heat_capacity": 950.0
+            },
+            {
+                "name": "Battens",
+                "layer_idx": 2,
+                "thickness": 0.08,
+                "heat_conductivity": 0.14,
+                "density": 470.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Floorboard",
+                "layer_idx": 1,
+                "thickness": 0.025,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Wooden beam",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: large multi-family house between 1949 and 1957",
+        "weight": 3800,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Plastic window with double-pane insulating glass",
+            "u_value": 3.0,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Plaster",
+                "layer_idx": 1,
+                "thickness": 0.015,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight concrete",
+                "layer_idx": 2,
+                "thickness": 0.5,
+                "heat_conductivity": 0.8,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.012,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.15,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.015,
+                "heat_conductivity": 0.04,
+                "density": 470.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.015,
+                "heat_conductivity": 0.04,
+                "density": 470.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.15,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: large multi-family house between 1969 and 1978",
+        "weight": 4000,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Plastic window with double-pane insulating glass",
+            "u_value": 3.0,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Plaster",
+                "layer_idx": 1,
+                "thickness": 0.015,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight concrete",
+                "layer_idx": 2,
+                "thickness": 0.5,
+                "heat_conductivity": 0.8,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 1,
+                "thickness": 0.02,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 2,
+                "thickness": 0.03,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 3,
+                "thickness": 0.05,
+                "heat_conductivity": 0.037,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 4,
+                "thickness": 0.3,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation fill EPS",
+                "layer_idx": 2,
+                "thickness": 0.026,
+                "heat_conductivity": 0.031,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.025,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.15,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 4,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: multi-family house between 1860 and 1918",
+        "weight": 2500,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Box window: 2 panes in a wooden frame",
+            "u_value": 2.7,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Solid brick",
+                "layer_idx": 1,
+                "thickness": 0.21,
+                "heat_conductivity": 0.79,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime-cement plaster",
+                "layer_idx": 2,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Timber laths",
+                "layer_idx": 1,
+                "thickness": 0.024,
+                "heat_conductivity": 0.14,
+                "density": 470.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight panel from wooden wool",
+                "layer_idx": 2,
+                "thickness": 0.031,
+                "heat_conductivity": 0.08,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Plaster",
+                "layer_idx": 3,
+                "thickness": 0.015,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Stone floor on soil",
+                "layer_idx": 1,
+                "thickness": 0.25,
+                "heat_conductivity": 1.59,
+                "density": 2200.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 2,
+                "thickness": 0.06,
+                "heat_conductivity": 1.4,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Plank",
+                "layer_idx": 1,
+                "thickness": 0.025,
+                "heat_conductivity": 0.21,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Wooden beam",
+                "layer_idx": 2,
+                "thickness": 0.08,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: multi-family house between 1919 and 1948",
+        "weight": 2600,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Box window: 2 panes in a wooden frame",
+            "u_value": 2.7,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Lime-cement plaster",
+                "layer_idx": 1,
+                "thickness": 0.015,
+                "heat_conductivity": 0.87,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Solid brick",
+                "layer_idx": 2,
+                "thickness": 0.31,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Lightweight panel from wooden wool",
+                "layer_idx": 1,
+                "thickness": 0.035,
+                "heat_conductivity": 0.08,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Timber laths",
+                "layer_idx": 2,
+                "thickness": 0.024,
+                "heat_conductivity": 0.14,
+                "density": 470.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Plaster",
+                "layer_idx": 3,
+                "thickness": 0.015,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Solid brick cap ceiling",
+                "layer_idx": 1,
+                "thickness": 0.12,
+                "heat_conductivity": 0.79,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Bearing timbers",
+                "layer_idx": 2,
+                "thickness": 0.07,
+                "heat_conductivity": 0.18,
+                "density": 520.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Floorboard",
+                "layer_idx": 1,
+                "thickness": 0.025,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Wooden beam",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: multi-family house between 1949 and 1957",
+        "weight": 2700,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Plastic window with double-pane insulating glass",
+            "u_value": 3.0,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Plaster",
+                "layer_idx": 1,
+                "thickness": 0.015,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight concrete",
+                "layer_idx": 2,
+                "thickness": 0.5,
+                "heat_conductivity": 0.8,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.25,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.02,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.15,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.01,
+                "heat_conductivity": 0.04,
+                "density": 470.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.015,
+                "heat_conductivity": 0.04,
+                "density": 470.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.15,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: multi-family house between 1958 and 1968",
+        "weight": 2800,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Plastic window with double-pane insulating glass",
+            "u_value": 3.0,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Plaster",
+                "layer_idx": 1,
+                "thickness": 0.015,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight concrete",
+                "layer_idx": 2,
+                "thickness": 0.5,
+                "heat_conductivity": 0.8,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Insulation",
+                "layer_idx": 1,
+                "thickness": 0.05,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 2,
+                "thickness": 0.2,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.02,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.022,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cast-in-place concrete",
+                "layer_idx": 3,
+                "thickness": 0.2,
+                "heat_conductivity": 1.51,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 4,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: multi-family house between 1969 and 1978",
+        "weight": 2900,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Plastic window with double-pane insulating glass",
+            "u_value": 3.0,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Plaster",
+                "layer_idx": 1,
+                "thickness": 0.015,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight concrete",
+                "layer_idx": 2,
+                "thickness": 0.4,
+                "heat_conductivity": 0.5,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 1,
+                "thickness": 0.02,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 2,
+                "thickness": 0.03,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 3,
+                "thickness": 0.05,
+                "heat_conductivity": 0.037,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 4,
+                "thickness": 0.3,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation fill EPS",
+                "layer_idx": 2,
+                "thickness": 0.026,
+                "heat_conductivity": 0.031,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.025,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.15,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 4,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: multi-family house between 1979 and 1983",
+        "weight": 3000,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Plastic window with double-pane insulating glass",
+            "u_value": 3.0,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Plaster",
+                "layer_idx": 1,
+                "thickness": 0.04,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight concrete",
+                "layer_idx": 2,
+                "thickness": 0.3,
+                "heat_conductivity": 0.3,
+                "density": 800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 1,
+                "thickness": 0.03,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.06,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 3,
+                "thickness": 0.03,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.15,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation fill EPS",
+                "layer_idx": 2,
+                "thickness": 0.04,
+                "heat_conductivity": 0.031,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.03,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.03,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.04,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.15,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: multi-family house between 1984 and 1994",
+        "weight": 3100,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Plastic window with double-pane insulating glass",
+            "u_value": 3.0,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Plaster",
+                "layer_idx": 1,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight concrete",
+                "layer_idx": 2,
+                "thickness": 0.24,
+                "heat_conductivity": 0.16,
+                "density": 600.0,
+                "heat_capacity": 890.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 1,
+                "thickness": 0.03,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Insulation panels from reed",
+                "layer_idx": 2,
+                "thickness": 0.12,
+                "heat_conductivity": 0.06,
+                "density": 225.0,
+                "heat_capacity": 1200.0
+            },
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 3,
+                "thickness": 0.03,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 2,
+                "thickness": 0.06,
+                "heat_conductivity": 0.037,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.03,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.05,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.15,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: multi-family house between 1995 and 2001",
+        "weight": 3200,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Plastic window with double-pane insulating glass",
+            "u_value": 1.9,
+            "g_value": 0.6
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Solid brick",
+                "layer_idx": 1,
+                "thickness": 0.3,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 2,
+                "thickness": 0.08,
+                "heat_conductivity": 0.042,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.037,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 2,
+                "thickness": 0.08,
+                "heat_conductivity": 0.037,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.08,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.15,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: multi-family house between 2002 and 2009",
+        "weight": 3300,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Plastic window with double-pane insulating glass",
+            "u_value": 1.9,
+            "g_value": 0.6
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Solid brick",
+                "layer_idx": 1,
+                "thickness": 0.3,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 2,
+                "thickness": 0.14,
+                "heat_conductivity": 0.042,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 1,
+                "thickness": 0.18,
+                "heat_conductivity": 0.042,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 2,
+                "thickness": 0.05,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.03,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.037,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.14,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: multi-family house between 2010 and 2015",
+        "weight": 3400,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 1.3,
+            "g_value": 0.6
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 1,
+                "thickness": 0.12,
+                "heat_conductivity": 0.042,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Solid brick",
+                "layer_idx": 2,
+                "thickness": 0.3,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.03,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 2,
+                "thickness": 0.18,
+                "heat_conductivity": 0.042,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cast-in-place concrete",
+                "layer_idx": 3,
+                "thickness": 0.3,
+                "heat_conductivity": 1.51,
+                "density": 2400.0,
+                "heat_capacity": 950.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.22,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cast-in-place concrete",
+                "layer_idx": 1,
+                "thickness": 0.15,
+                "heat_conductivity": 1.51,
+                "density": 2400.0,
+                "heat_capacity": 950.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: multi-family house from 2016",
+        "weight": 3500,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Window with triple-pane thermal insulation glazing",
+            "u_value": 1.1,
+            "g_value": 0.5
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Insulation",
+                "layer_idx": 1,
+                "thickness": 0.11,
+                "heat_conductivity": 0.04,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Solid brick",
+                "layer_idx": 2,
+                "thickness": 0.3,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.03,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Insulation",
+                "layer_idx": 1,
+                "thickness": 0.14,
+                "heat_conductivity": 0.04,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 2,
+                "thickness": 0.04,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.25,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.12,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cast-in-place concrete",
+                "layer_idx": 1,
+                "thickness": 0.16,
+                "heat_conductivity": 1.51,
+                "density": 2400.0,
+                "heat_capacity": 950.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.12,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: multi-family house until 1859",
+        "weight": 2400,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 2.8,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Timber frame, compartment (clay stone)",
+                "layer_idx": 1,
+                "thickness": 0.15,
+                "heat_conductivity": 0.52,
+                "density": 1500.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Loam rendering",
+                "layer_idx": 2,
+                "thickness": 0.03,
+                "heat_conductivity": 0.73,
+                "density": 1500.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Battens",
+                "layer_idx": 1,
+                "thickness": 0.01,
+                "heat_conductivity": 0.18,
+                "density": 470.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Air gap",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.873,
+                "density": 0.1,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Timber laths",
+                "layer_idx": 3,
+                "thickness": 0.01,
+                "heat_conductivity": 0.18,
+                "density": 470.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Plaster",
+                "layer_idx": 4,
+                "thickness": 0.015,
+                "heat_conductivity": 0.8,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Stone floor on soil",
+                "layer_idx": 1,
+                "thickness": 0.25,
+                "heat_conductivity": 1.59,
+                "density": 2200.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Plank",
+                "layer_idx": 1,
+                "thickness": 0.02,
+                "heat_conductivity": 0.21,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Wooden beam",
+                "layer_idx": 2,
+                "thickness": 0.06,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            }
+        ]
+    },
+    {
+        "name": "New building: energy-efficiency house 40",
+        "weight": 4900,
+        "reference": "-",
+        "windows": {
+            "name": "Window with triple-pane thermal insulation glazing",
+            "u_value": 0.72,
+            "g_value": 0.5
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.18,
+                "heat_conductivity": 0.032,
+                "density": 30.0,
+                "heat_capacity": 1500.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 4,
+                "thickness": 0.005,
+                "heat_conductivity": 0.87,
+                "density": 1400.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Insulation",
+                "layer_idx": 1,
+                "thickness": 0.24,
+                "heat_conductivity": 0.032,
+                "density": 30.0,
+                "heat_capacity": 1500.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 2,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.005,
+                "heat_conductivity": 0.87,
+                "density": 1400.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.18,
+                "heat_conductivity": 0.04,
+                "density": 30.0,
+                "heat_capacity": 1500.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 4,
+                "thickness": 0.005,
+                "heat_conductivity": 0.87,
+                "density": 1400.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Insulation",
+                "layer_idx": 1,
+                "thickness": 0.1,
+                "heat_conductivity": 0.032,
+                "density": 20.0,
+                "heat_capacity": 1500.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 2,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ]
+    },
+    {
+        "name": "New building: energy-efficiency house 55",
+        "weight": 5000,
+        "reference": "-",
+        "windows": {
+            "name": "Window with triple-pane thermal insulation glazing",
+            "u_value": 0.9,
+            "g_value": 0.5
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.135,
+                "heat_conductivity": 0.032,
+                "density": 30.0,
+                "heat_capacity": 1500.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 4,
+                "thickness": 0.005,
+                "heat_conductivity": 0.87,
+                "density": 1400.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Insulation",
+                "layer_idx": 1,
+                "thickness": 0.18,
+                "heat_conductivity": 0.032,
+                "density": 30.0,
+                "heat_capacity": 1500.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 2,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.005,
+                "heat_conductivity": 0.87,
+                "density": 1400.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.145,
+                "heat_conductivity": 0.04,
+                "density": 30.0,
+                "heat_capacity": 1500.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 4,
+                "thickness": 0.005,
+                "heat_conductivity": 0.87,
+                "density": 1400.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Insulation",
+                "layer_idx": 1,
+                "thickness": 0.1,
+                "heat_conductivity": 0.032,
+                "density": 20.0,
+                "heat_capacity": 1500.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 2,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ]
+    },
+    {
+        "name": "New building: GEG (current German standard)",
+        "weight": 5100,
+        "reference": "-",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 1.2,
+            "g_value": 0.6
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.11,
+                "heat_conductivity": 0.032,
+                "density": 30.0,
+                "heat_capacity": 1500.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 4,
+                "thickness": 0.005,
+                "heat_conductivity": 0.87,
+                "density": 1400.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Insulation",
+                "layer_idx": 1,
+                "thickness": 0.14,
+                "heat_conductivity": 0.032,
+                "density": 30.0,
+                "heat_capacity": 1500.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 2,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.005,
+                "heat_conductivity": 0.87,
+                "density": 1400.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.131,
+                "heat_conductivity": 0.04,
+                "density": 30.0,
+                "heat_capacity": 1500.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 4,
+                "thickness": 0.005,
+                "heat_conductivity": 0.87,
+                "density": 1400.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Insulation",
+                "layer_idx": 1,
+                "thickness": 0.1,
+                "heat_conductivity": 0.032,
+                "density": 20.0,
+                "heat_capacity": 1500.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 2,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ]
+    },
+    {
+        "name": "New building: Passive house",
+        "weight": 4800,
+        "reference": "-",
+        "windows": {
+            "name": "Window with triple-pane thermal insulation glazing",
+            "u_value": 0.72,
+            "g_value": 0.5
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.24,
+                "heat_conductivity": 0.032,
+                "density": 30.0,
+                "heat_capacity": 1500.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 4,
+                "thickness": 0.005,
+                "heat_conductivity": 0.87,
+                "density": 1400.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Insulation",
+                "layer_idx": 1,
+                "thickness": 0.28,
+                "heat_conductivity": 0.032,
+                "density": 30.0,
+                "heat_capacity": 1500.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 2,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.005,
+                "heat_conductivity": 0.87,
+                "density": 1400.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.21,
+                "heat_conductivity": 0.04,
+                "density": 30.0,
+                "heat_capacity": 1500.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 4,
+                "thickness": 0.005,
+                "heat_conductivity": 0.87,
+                "density": 1400.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Insulation",
+                "layer_idx": 1,
+                "thickness": 0.1,
+                "heat_conductivity": 0.032,
+                "density": 20.0,
+                "heat_capacity": 1500.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 2,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: Non-residential building from 1919 until 1978",
+        "weight": 4400,
+        "reference": "BMVBS-Online-publication, No. 16/2011",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 2.9,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Solid brick",
+                "layer_idx": 1,
+                "thickness": 0.3,
+                "heat_conductivity": 0.68,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 2,
+                "thickness": 0.055,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Wooden beam",
+                "layer_idx": 1,
+                "thickness": 0.11,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight panel from wooden wool",
+                "layer_idx": 2,
+                "thickness": 0.01,
+                "heat_conductivity": 0.15,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Solid brick cap ceiling",
+                "layer_idx": 1,
+                "thickness": 0.12,
+                "heat_conductivity": 0.7,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Bearing timbers",
+                "layer_idx": 2,
+                "thickness": 0.07,
+                "heat_conductivity": 0.15,
+                "density": 520.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Floorboard",
+                "layer_idx": 1,
+                "thickness": 0.025,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Wooden beam",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: Non-residential building from 1979 until 1983",
+        "weight": 4500,
+        "reference": "BMVBS-Online-publication, No. 16/2011",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 2.9,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.1,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.06,
+                "heat_conductivity": 0.11,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Insulation",
+                "layer_idx": 1,
+                "thickness": 0.085,
+                "heat_conductivity": 0.042,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 2,
+                "thickness": 0.15,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.04,
+                "heat_conductivity": 0.045,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.04,
+                "heat_conductivity": 0.04,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: Non-residential building from 1984 until 1994",
+        "weight": 4600,
+        "reference": "BMVBS-Online-publication, No. 16/2011",
+        "windows": {
+            "name": "Aluminium window with double-pane thermal insulation glazing",
+            "u_value": 1.9,
+            "g_value": 0.6
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.1,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.06,
+                "heat_conductivity": 0.071,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.3,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Insulation",
+                "layer_idx": 1,
+                "thickness": 0.085,
+                "heat_conductivity": 0.03,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 2,
+                "thickness": 0.15,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.08,
+                "heat_conductivity": 0.04,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.06,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.06,
+                "heat_conductivity": 0.04,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: Non-residential building from 1995",
+        "weight": 4700,
+        "reference": "BMVBS-Online-publication, No. 16/2011",
+        "windows": {
+            "name": "Aluminium window with double-pane thermal insulation glazing",
+            "u_value": 1.3,
+            "g_value": 0.6
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.039,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Insulation",
+                "layer_idx": 1,
+                "thickness": 0.085,
+                "heat_conductivity": 0.03,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 2,
+                "thickness": 0.18,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.08,
+                "heat_conductivity": 0.04,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.06,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.08,
+                "heat_conductivity": 0.04,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: Non-residential building until 1918",
+        "weight": 4300,
+        "reference": "BMVBS-Online-publication, No. 16/2011",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 2.9,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Solid brick",
+                "layer_idx": 1,
+                "thickness": 0.3,
+                "heat_conductivity": 1.1,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 2,
+                "thickness": 0.055,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Wooden beam",
+                "layer_idx": 1,
+                "thickness": 0.11,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight panel from wooden wool",
+                "layer_idx": 2,
+                "thickness": 0.01,
+                "heat_conductivity": 0.15,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Solid brick cap ceiling",
+                "layer_idx": 1,
+                "thickness": 0.12,
+                "heat_conductivity": 0.7,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Bearing timbers",
+                "layer_idx": 2,
+                "thickness": 0.07,
+                "heat_conductivity": 0.15,
+                "density": 520.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Floorboard",
+                "layer_idx": 1,
+                "thickness": 0.025,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Wooden beam",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: single-family house between 1860 and 1918",
+        "weight": 200,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 2.8,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Lime-cement plaster",
+                "layer_idx": 1,
+                "thickness": 0.015,
+                "heat_conductivity": 0.87,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Solid brick",
+                "layer_idx": 2,
+                "thickness": 0.31,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Timber laths",
+                "layer_idx": 1,
+                "thickness": 0.024,
+                "heat_conductivity": 0.14,
+                "density": 470.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight panel from wooden wool",
+                "layer_idx": 2,
+                "thickness": 0.031,
+                "heat_conductivity": 0.08,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Plaster",
+                "layer_idx": 3,
+                "thickness": 0.015,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Stone floor on soil",
+                "layer_idx": 1,
+                "thickness": 0.25,
+                "heat_conductivity": 1.59,
+                "density": 2200.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 2,
+                "thickness": 0.06,
+                "heat_conductivity": 1.4,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Plank",
+                "layer_idx": 1,
+                "thickness": 0.025,
+                "heat_conductivity": 0.21,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Wooden beam",
+                "layer_idx": 2,
+                "thickness": 0.08,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: single-family house between 1919 and 1948",
+        "weight": 300,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 2.8,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Lime-cement plaster",
+                "layer_idx": 1,
+                "thickness": 0.015,
+                "heat_conductivity": 0.87,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Solid brick",
+                "layer_idx": 2,
+                "thickness": 0.31,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Timber laths",
+                "layer_idx": 1,
+                "thickness": 0.024,
+                "heat_conductivity": 0.14,
+                "density": 470.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight panel from wooden wool",
+                "layer_idx": 2,
+                "thickness": 0.028,
+                "heat_conductivity": 0.08,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Plaster",
+                "layer_idx": 3,
+                "thickness": 0.015,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Cast-in-place concrete",
+                "layer_idx": 1,
+                "thickness": 0.1,
+                "heat_conductivity": 1.51,
+                "density": 2400.0,
+                "heat_capacity": 950.0
+            },
+            {
+                "name": "Battens",
+                "layer_idx": 2,
+                "thickness": 0.09,
+                "heat_conductivity": 0.14,
+                "density": 470.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Floorboard",
+                "layer_idx": 1,
+                "thickness": 0.025,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Wooden beam",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: single-family house between 1949 and 1957",
+        "weight": 400,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 2.8,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Lime-cement plaster",
+                "layer_idx": 1,
+                "thickness": 0.016,
+                "heat_conductivity": 0.87,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Solid brick",
+                "layer_idx": 2,
+                "thickness": 0.12,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Air gap",
+                "layer_idx": 3,
+                "thickness": 0.1,
+                "heat_conductivity": 0.873,
+                "density": 0.1,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Solid brick",
+                "layer_idx": 4,
+                "thickness": 0.12,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 1,
+                "thickness": 0.012,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight panel from wooden wool",
+                "layer_idx": 2,
+                "thickness": 0.04,
+                "heat_conductivity": 0.09,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Cast-in-place concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 1.51,
+                "density": 2400.0,
+                "heat_capacity": 950.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.01,
+                "heat_conductivity": 0.04,
+                "density": 470.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Floorboard",
+                "layer_idx": 1,
+                "thickness": 0.02,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Wooden beam",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight panel from wooden wool",
+                "layer_idx": 3,
+                "thickness": 0.06,
+                "heat_conductivity": 0.07,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 4,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: single-family house between 1958 and 1968",
+        "weight": 500,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 2.8,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Plaster",
+                "layer_idx": 1,
+                "thickness": 0.015,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight concrete",
+                "layer_idx": 2,
+                "thickness": 0.5,
+                "heat_conductivity": 0.8,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Insulation",
+                "layer_idx": 1,
+                "thickness": 0.04,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 2,
+                "thickness": 0.02,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Cast-in-place concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 1.51,
+                "density": 2400.0,
+                "heat_capacity": 950.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.01,
+                "heat_conductivity": 0.04,
+                "density": 470.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Plank",
+                "layer_idx": 1,
+                "thickness": 0.02,
+                "heat_conductivity": 0.21,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 2,
+                "thickness": 0.15,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 3,
+                "thickness": 0.02,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: single-family house between 1969 and 1978",
+        "weight": 600,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 2.8,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Plaster",
+                "layer_idx": 1,
+                "thickness": 0.015,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight concrete",
+                "layer_idx": 2,
+                "thickness": 0.4,
+                "heat_conductivity": 0.5,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 1,
+                "thickness": 0.02,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.05,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.2,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 4,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation fill EPS",
+                "layer_idx": 2,
+                "thickness": 0.02,
+                "heat_conductivity": 0.031,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.03,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.03,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.025,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.15,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 4,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: single-family house between 1979 and 1983",
+        "weight": 700,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Metal-frame window with double-pane thermal insulation glazing",
+            "u_value": 4.3,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Plaster",
+                "layer_idx": 1,
+                "thickness": 0.04,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight concrete",
+                "layer_idx": 2,
+                "thickness": 0.3,
+                "heat_conductivity": 0.3,
+                "density": 800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 1,
+                "thickness": 0.03,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.06,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 3,
+                "thickness": 0.03,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.15,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation fill EPS",
+                "layer_idx": 2,
+                "thickness": 0.04,
+                "heat_conductivity": 0.031,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.03,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.03,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.04,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.15,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 4,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: single-family house between 1984 and 1994",
+        "weight": 800,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Aluminium window with thermal break and double-pane insulating glass",
+            "u_value": 3.2,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Solid brick",
+                "layer_idx": 1,
+                "thickness": 0.11,
+                "heat_conductivity": 0.81,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Aerated concrete",
+                "layer_idx": 2,
+                "thickness": 0.17,
+                "heat_conductivity": 0.1,
+                "density": 400.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 1,
+                "thickness": 0.03,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Insulation panels from reed",
+                "layer_idx": 2,
+                "thickness": 0.12,
+                "heat_conductivity": 0.06,
+                "density": 225.0,
+                "heat_capacity": 1200.0
+            },
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 3,
+                "thickness": 0.03,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 2,
+                "thickness": 0.06,
+                "heat_conductivity": 0.037,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.03,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.05,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.15,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: single-family house between 1995 and 2001",
+        "weight": 900,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Aluminium window with double-pane thermal insulation glazing",
+            "u_value": 1.9,
+            "g_value": 0.6
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Solid brick",
+                "layer_idx": 1,
+                "thickness": 0.31,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation panels from reed",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.042,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Solid brick",
+                "layer_idx": 3,
+                "thickness": 0.31,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Insulation panels from reed",
+                "layer_idx": 1,
+                "thickness": 0.14,
+                "heat_conductivity": 0.06,
+                "density": 225.0,
+                "heat_capacity": 1200.0
+            },
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 2,
+                "thickness": 0.04,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.16,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 2,
+                "thickness": 0.08,
+                "heat_conductivity": 0.037,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.08,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.15,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: single-family house between 2002 and 2009",
+        "weight": 1000,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Aluminium window with double-pane thermal insulation glazing",
+            "u_value": 1.4,
+            "g_value": 0.6
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Solid brick",
+                "layer_idx": 1,
+                "thickness": 0.31,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.042,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Solid brick",
+                "layer_idx": 3,
+                "thickness": 0.31,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Insulation panels from mineral wool",
+                "layer_idx": 1,
+                "thickness": 0.16,
+                "heat_conductivity": 0.045,
+                "density": 160.0,
+                "heat_capacity": 1800.0
+            },
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 2,
+                "thickness": 0.04,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.03,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.16,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation fill EPS",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.031,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.15,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: single-family house between 2010 and 2015",
+        "weight": 1100,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Window with double-pane thermal insulation glazing",
+            "u_value": 1.3,
+            "g_value": 0.6
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 1,
+                "thickness": 0.12,
+                "heat_conductivity": 0.042,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Solid brick",
+                "layer_idx": 2,
+                "thickness": 0.3,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.03,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Insulation panels from mineral wool",
+                "layer_idx": 1,
+                "thickness": 0.21,
+                "heat_conductivity": 0.045,
+                "density": 160.0,
+                "heat_capacity": 1800.0
+            },
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 2,
+                "thickness": 0.04,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.22,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cast-in-place concrete",
+                "layer_idx": 1,
+                "thickness": 0.15,
+                "heat_conductivity": 1.51,
+                "density": 2400.0,
+                "heat_capacity": 950.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: single-family house from 2016",
+        "weight": 1200,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Window with triple-pane thermal insulation glazing",
+            "u_value": 1.1,
+            "g_value": 0.5
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Insulation",
+                "layer_idx": 1,
+                "thickness": 0.21,
+                "heat_conductivity": 0.04,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Solid brick",
+                "layer_idx": 2,
+                "thickness": 0.3,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.03,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Insulation panels from mineral wool",
+                "layer_idx": 1,
+                "thickness": 0.27,
+                "heat_conductivity": 0.045,
+                "density": 160.0,
+                "heat_capacity": 1800.0
+            },
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 2,
+                "thickness": 0.04,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.22,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.22,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cast-in-place concrete",
+                "layer_idx": 1,
+                "thickness": 0.16,
+                "heat_conductivity": 1.51,
+                "density": 2400.0,
+                "heat_capacity": 950.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.2,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: single-family house until 1859",
+        "weight": 100,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 2.8,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Timber frame, compartment (clay stone)",
+                "layer_idx": 1,
+                "thickness": 0.15,
+                "heat_conductivity": 0.52,
+                "density": 1500.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Loam rendering",
+                "layer_idx": 2,
+                "thickness": 0.03,
+                "heat_conductivity": 0.73,
+                "density": 1500.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Battens",
+                "layer_idx": 1,
+                "thickness": 0.01,
+                "heat_conductivity": 0.18,
+                "density": 470.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Air gap",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.873,
+                "density": 0.1,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Timber laths",
+                "layer_idx": 3,
+                "thickness": 0.01,
+                "heat_conductivity": 0.18,
+                "density": 470.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Plaster",
+                "layer_idx": 4,
+                "thickness": 0.015,
+                "heat_conductivity": 0.8,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Stone floor on soil",
+                "layer_idx": 1,
+                "thickness": 0.25,
+                "heat_conductivity": 1.59,
+                "density": 2200.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Plank",
+                "layer_idx": 1,
+                "thickness": 0.02,
+                "heat_conductivity": 0.21,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Wooden beam",
+                "layer_idx": 2,
+                "thickness": 0.06,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: terraced house between 1860 and 1918",
+        "weight": 1300,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Box window: 2 panes in a wooden frame",
+            "u_value": 2.7,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Lime-cement plaster",
+                "layer_idx": 1,
+                "thickness": 0.015,
+                "heat_conductivity": 0.87,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Solid brick",
+                "layer_idx": 2,
+                "thickness": 0.31,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Wooden beam",
+                "layer_idx": 1,
+                "thickness": 0.09,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Plank",
+                "layer_idx": 2,
+                "thickness": 0.03,
+                "heat_conductivity": 0.21,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Stone floor on soil",
+                "layer_idx": 1,
+                "thickness": 0.25,
+                "heat_conductivity": 1.59,
+                "density": 2200.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 2,
+                "thickness": 0.06,
+                "heat_conductivity": 1.4,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Plank",
+                "layer_idx": 1,
+                "thickness": 0.025,
+                "heat_conductivity": 0.21,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Wooden beam",
+                "layer_idx": 2,
+                "thickness": 0.08,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: terraced house between 1919 and 1948",
+        "weight": 1400,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 2.8,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Lime-cement plaster",
+                "layer_idx": 1,
+                "thickness": 0.015,
+                "heat_conductivity": 0.87,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Solid brick",
+                "layer_idx": 2,
+                "thickness": 0.31,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Wooden beam",
+                "layer_idx": 1,
+                "thickness": 0.14,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Timber frame, compartment (clay stone)",
+                "layer_idx": 2,
+                "thickness": 0.03,
+                "heat_conductivity": 0.52,
+                "density": 1500.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Cast-in-place concrete",
+                "layer_idx": 1,
+                "thickness": 0.1,
+                "heat_conductivity": 1.51,
+                "density": 2400.0,
+                "heat_capacity": 950.0
+            },
+            {
+                "name": "Battens",
+                "layer_idx": 2,
+                "thickness": 0.08,
+                "heat_conductivity": 0.14,
+                "density": 470.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Floorboard",
+                "layer_idx": 1,
+                "thickness": 0.025,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Wooden beam",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: terraced house between 1949 and 1957",
+        "weight": 1500,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 2.8,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Plaster",
+                "layer_idx": 1,
+                "thickness": 0.015,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight concrete",
+                "layer_idx": 2,
+                "thickness": 0.5,
+                "heat_conductivity": 0.8,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 1,
+                "thickness": 0.015,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight panel from wooden wool",
+                "layer_idx": 2,
+                "thickness": 0.06,
+                "heat_conductivity": 0.09,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.03,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 4,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Cast-in-place concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 1.51,
+                "density": 2400.0,
+                "heat_capacity": 950.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.01,
+                "heat_conductivity": 0.04,
+                "density": 470.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Floorboard",
+                "layer_idx": 1,
+                "thickness": 0.015,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Wooden beam",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.14,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight panel from wooden wool",
+                "layer_idx": 3,
+                "thickness": 0.06,
+                "heat_conductivity": 0.07,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 4,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: terraced house between 1958 and 1968",
+        "weight": 1600,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 2.8,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Plaster",
+                "layer_idx": 1,
+                "thickness": 0.015,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight concrete",
+                "layer_idx": 2,
+                "thickness": 0.5,
+                "heat_conductivity": 0.8,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Insulation",
+                "layer_idx": 1,
+                "thickness": 0.05,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 2,
+                "thickness": 0.2,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Cast-in-place concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 1.51,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.02,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Plank",
+                "layer_idx": 1,
+                "thickness": 0.02,
+                "heat_conductivity": 0.21,
+                "density": 500.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 2,
+                "thickness": 0.15,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 3,
+                "thickness": 0.02,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: terraced house between 1969 and 1978",
+        "weight": 1700,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 2.8,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Plaster",
+                "layer_idx": 1,
+                "thickness": 0.015,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight concrete",
+                "layer_idx": 2,
+                "thickness": 0.4,
+                "heat_conductivity": 0.5,
+                "density": 1800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 1,
+                "thickness": 0.02,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 2,
+                "thickness": 0.03,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 3,
+                "thickness": 0.05,
+                "heat_conductivity": 0.037,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 4,
+                "thickness": 0.3,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation fill EPS",
+                "layer_idx": 2,
+                "thickness": 0.026,
+                "heat_conductivity": 0.031,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.025,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.15,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 4,
+                "thickness": 0.01,
+                "heat_conductivity": 0.7,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: terraced house between 1979 and 1983",
+        "weight": 1800,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Metal-frame window with double-pane thermal insulation glazing",
+            "u_value": 4.3,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Plaster",
+                "layer_idx": 1,
+                "thickness": 0.04,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight concrete",
+                "layer_idx": 2,
+                "thickness": 0.3,
+                "heat_conductivity": 0.3,
+                "density": 800.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 1,
+                "thickness": 0.03,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.06,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 3,
+                "thickness": 0.03,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.15,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation fill EPS",
+                "layer_idx": 2,
+                "thickness": 0.04,
+                "heat_conductivity": 0.031,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.03,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.03,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.04,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.15,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: terraced house between 1984 and 1994",
+        "weight": 1900,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 2.8,
+            "g_value": 0.75
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Plaster",
+                "layer_idx": 1,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight concrete",
+                "layer_idx": 2,
+                "thickness": 0.24,
+                "heat_conductivity": 0.16,
+                "density": 600.0,
+                "heat_capacity": 890.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 1,
+                "thickness": 0.03,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Insulation panels from reed",
+                "layer_idx": 2,
+                "thickness": 0.12,
+                "heat_conductivity": 0.06,
+                "density": 225.0,
+                "heat_capacity": 1200.0
+            },
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 3,
+                "thickness": 0.03,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 2,
+                "thickness": 0.06,
+                "heat_conductivity": 0.037,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.03,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.05,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.15,
+                "heat_conductivity": 1.05,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: terraced house between 1995 and 2001",
+        "weight": 2000,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 1.6,
+            "g_value": 0.6
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Plaster",
+                "layer_idx": 1,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1000.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lightweight concrete",
+                "layer_idx": 2,
+                "thickness": 0.24,
+                "heat_conductivity": 0.16,
+                "density": 600.0,
+                "heat_capacity": 890.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Insulation panels from reed",
+                "layer_idx": 1,
+                "thickness": 0.14,
+                "heat_conductivity": 0.06,
+                "density": 225.0,
+                "heat_capacity": 1200.0
+            },
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 2,
+                "thickness": 0.04,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.02,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.12,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 2,
+                "thickness": 0.08,
+                "heat_conductivity": 0.042,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.08,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.15,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: terraced house between 2002 and 2009",
+        "weight": 2100,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 1.3,
+            "g_value": 0.6
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Solid brick",
+                "layer_idx": 1,
+                "thickness": 0.31,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.042,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Solid brick",
+                "layer_idx": 3,
+                "thickness": 0.31,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 1,
+                "thickness": 0.18,
+                "heat_conductivity": 0.042,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 2,
+                "thickness": 0.04,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.03,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.16,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation fill EPS",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.031,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cement screed",
+                "layer_idx": 1,
+                "thickness": 0.04,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 3,
+                "thickness": 0.15,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: terraced house between 2010 and 2015",
+        "weight": 2200,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Wooden window with double-pane thermal insulation glazing",
+            "u_value": 1.3,
+            "g_value": 0.6
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Insulation panels from foam glass",
+                "layer_idx": 1,
+                "thickness": 0.12,
+                "heat_conductivity": 0.042,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Solid brick",
+                "layer_idx": 2,
+                "thickness": 0.3,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.03,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Insulation panels from mineral wool",
+                "layer_idx": 1,
+                "thickness": 0.18,
+                "heat_conductivity": 0.045,
+                "density": 160.0,
+                "heat_capacity": 1800.0
+            },
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 2,
+                "thickness": 0.07,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.2,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cast-in-place concrete",
+                "layer_idx": 1,
+                "thickness": 0.15,
+                "heat_conductivity": 1.51,
+                "density": 2400.0,
+                "heat_capacity": 950.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.1,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            }
+        ]
+    },
+    {
+        "name": "Stock: terraced house from 2016",
+        "weight": 2300,
+        "reference": "Residental building types according to IWU Tabula",
+        "windows": {
+            "name": "Window with triple-pane thermal insulation glazing",
+            "u_value": 1.1,
+            "g_value": 0.5
+        },
+        "exterior_wall_layers": [
+            {
+                "name": "Insulation",
+                "layer_idx": 1,
+                "thickness": 0.22,
+                "heat_conductivity": 0.04,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Solid brick",
+                "layer_idx": 2,
+                "thickness": 0.3,
+                "heat_conductivity": 0.79,
+                "density": 1600.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.03,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "roof_layers": [
+            {
+                "name": "Insulation",
+                "layer_idx": 1,
+                "thickness": 0.29,
+                "heat_conductivity": 0.04,
+                "density": 100.0,
+                "heat_capacity": 1000.0
+            },
+            {
+                "name": "Formwork with replacable faces",
+                "layer_idx": 2,
+                "thickness": 0.04,
+                "heat_conductivity": 0.14,
+                "density": 450.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Lime gypsum plaster",
+                "layer_idx": 3,
+                "thickness": 0.04,
+                "heat_conductivity": 1.0,
+                "density": 1400.0,
+                "heat_capacity": 1100.0
+            }
+        ],
+        "base_plate_layers": [
+            {
+                "name": "Reinforced concrete",
+                "layer_idx": 1,
+                "thickness": 0.25,
+                "heat_conductivity": 2.5,
+                "density": 2400.0,
+                "heat_capacity": 880.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.22,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            },
+            {
+                "name": "Cement screed",
+                "layer_idx": 3,
+                "thickness": 0.05,
+                "heat_conductivity": 1.4,
+                "density": 2000.0,
+                "heat_capacity": 1000.0
+            }
+        ],
+        "ceiling_layers": [
+            {
+                "name": "Cast-in-place concrete",
+                "layer_idx": 1,
+                "thickness": 0.16,
+                "heat_conductivity": 1.51,
+                "density": 2400.0,
+                "heat_capacity": 950.0
+            },
+            {
+                "name": "Insulation",
+                "layer_idx": 2,
+                "thickness": 0.21,
+                "heat_conductivity": 0.04,
+                "density": 460.0,
+                "heat_capacity": 1600.0
+            }
+        ]
+    }
+]

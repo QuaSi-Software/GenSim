@@ -1,0 +1,192 @@
+[
+    {
+        "name": "Special use type - Judicial buildings",
+        "value": 0.830,
+        "weight": 200
+    },
+    {
+        "name": "Special use type - Administrative buildings",
+        "value": 0.850,
+        "weight": 300
+    },
+    {
+        "name": "Special use type - Laboratories",
+        "value": 0.879,
+        "weight": 400
+    },
+    {
+        "name": "Special use type - Buildings of scientific education",
+        "value": 0.881,
+        "weight": 500
+    },
+    {
+        "name": "Special use type - Comprehensive school buildings",
+        "value": 0.889,
+        "weight": 600
+    },
+    {
+        "name": "Special use type - Day-care centers",
+        "value": 0.860,
+        "weight": 700
+    },
+    {
+        "name": "Special use type - Kindergardens",
+        "value": 0.861,
+        "weight": 800
+    },
+    {
+        "name": "Special use type - Sports halls and gymnastic facilities",
+        "value": 0.910,
+        "weight": 900
+    },
+    {
+        "name": "Special use type - Mixed use halls",
+        "value": 0.909,
+        "weight": 1000
+    },
+    {
+        "name": "Special use type - Hotels and other accommodations",
+        "value": 0.911,
+        "weight": 100
+    },
+    {
+        "name": "BKI type - Offices",
+        "value": 0.851,
+        "weight": 1200
+    },
+    {
+        "name": "BKI type - Institute buildings and laboratories",
+        "value": 0.851,
+        "weight": 1300
+    },
+    {
+        "name": "BKI type - Medical facilities",
+        "value": 0.815,
+        "weight": 1400
+    },
+    {
+        "name": "BKI type - Care homes",
+        "value": 0.832,
+        "weight": 1500
+    },
+    {
+        "name": "BKI type - General school buildings",
+        "value": 0.871,
+        "weight": 1600
+    },
+    {
+        "name": "BKI type - Vocational school buildings",
+        "value": 0.886,
+        "weight": 1700
+    },
+    {
+        "name": "BKI type - Special and other school buildings",
+        "value": 0.840,
+        "weight": 1800
+    },
+    {
+        "name": "BKI type - Facilities of training and further education",
+        "value": 0.883,
+        "weight": 1900
+    },
+    {
+        "name": "BKI type - Kindergarden without basement",
+        "value": 0.846,
+        "weight": 2000
+    },
+    {
+        "name": "BKI type - Kindergarden with basement",
+        "value": 0.819,
+        "weight": 2100
+    },
+    {
+        "name": "BKI type - Single and double family homes with basement",
+        "value": 0.796,
+        "weight": 2200
+    },
+    {
+        "name": "BKI type - Single and double family homes without basement",
+        "value": 0.785,
+        "weight": 2300
+    },
+    {
+        "name": "BKI type - Single and double family homes in passive solid construction",
+        "value": 0.789,
+        "weight": 2400
+    },
+    {
+        "name": "BKI type - Single and double family homes in passive wooden construction",
+        "value": 0.791,
+        "weight": 2500
+    },
+    {
+        "name": "BKI type - Double homes and terraced houses at the end",
+        "value": 0.815,
+        "weight": 2600
+    },
+    {
+        "name": "BKI type - Terraced houses",
+        "value": 0.827,
+        "weight": 2700
+    },
+    {
+        "name": "BKI type - Multi-family homes with < 6 units",
+        "value": 0.829,
+        "weight": 2800
+    },
+    {
+        "name": "BKI type - Multi-family homes with 6 to 20 units",
+        "value": 0.837,
+        "weight": 2900
+    },
+    {
+        "name": "BKI type - Multi-family homes with > 20 units",
+        "value": 0.835,
+        "weight": 3000
+    },
+    {
+        "name": "BKI type - Residential houses with up to 15% mixed use",
+        "value": 0.809,
+        "weight": 3100
+    },
+    {
+        "name": "BKI type - Senior apartments",
+        "value": 0.816,
+        "weight": 3200
+    },
+    {
+        "name": "BKI type - Dormitories and boarding schools",
+        "value": 0.838,
+        "weight": 3300
+    },
+    {
+        "name": "BKI type - Restaurants, cantines and cafeterias",
+        "value": 0.877,
+        "weight": 3400
+    },
+    {
+        "name": "BKI type - Commercial buildings with apartments",
+        "value": 0.881,
+        "weight": 3500
+    },
+    {
+        "name": "BKI type - Commercial buildings without apartments",
+        "value": 0.887,
+        "weight": 3600
+    },
+    {
+        "name": "BKI type - Consumer markets",
+        "value": 0.906,
+        "weight": 3700
+    },
+    {
+        "name": "BKI type - Industrial production facilities in solid construction",
+        "value": 0.917,
+        "weight": 3800
+    },
+    {
+        "name": "BKI type - Theatres",
+        "value": 0.858,
+        "weight": 3900
+    }
+]

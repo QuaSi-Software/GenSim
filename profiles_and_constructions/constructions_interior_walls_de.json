@@ -1,0 +1,63 @@
+[
+    {
+        "name": "Leicht",
+        "weight": 100,
+        "reference": "-",
+        "interior_wall_layers": [
+            {
+                "name": "Gipskarton 2 fach 12,5mm",
+                "layer_idx": 1,
+                "thickness": 0.025,
+                "heat_conductivity": 0.25,
+                "density": 680,
+                "heat_capacity": 960
+            },
+            {
+                "name": "Mineralwolldämmmatte 040",
+                "layer_idx": 2,
+                "thickness": 0.04,
+                "heat_conductivity": 0.04,
+                "density": 150,
+                "heat_capacity": 1030
+            },
+            {
+                "name": "Gipskarton 2 fach 12,5mm",
+                "layer_idx": 3,
+                "thickness": 0.025,
+                "heat_conductivity": 0.25,
+                "density": 680,
+                "heat_capacity": 960
+            }
+        ]
+    },
+    {
+        "name": "Mittel",
+        "weight": 200,
+        "reference": "-",
+        "interior_wall_layers": [
+            {
+                "name": "Kalksandstein 1,8",
+                "layer_idx": 1,
+                "thickness": 0.15,
+                "heat_conductivity": 0.99,
+                "density": 1800,
+                "heat_capacity": 1000
+            }
+        ]
+    },
+    {
+        "name": "Schwer",
+        "weight": 300,
+        "reference": "-",
+        "interior_wall_layers": [
+            {
+                "name": "Kalksandstein 1,8",
+                "layer_idx": 1,
+                "thickness": 0.3,
+                "heat_conductivity": 0.99,
+                "density": 1800,
+                "heat_capacity": 1000
+            }
+        ]
+    }
+]

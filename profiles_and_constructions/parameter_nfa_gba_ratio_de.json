@@ -1,0 +1,193 @@
+[
+    {
+        "name": "Sondernutzungstyp - Justizgebäude",
+        "value": 0.830,
+        "weight": 200
+    },
+    {
+        "name": "Sondernutzungstyp - Verwaltungsgebäude",
+        "value": 0.850,
+        "weight": 300
+    },
+    {
+        "name": "Sondernutzungstyp - Laborgebäude",
+        "value": 0.879,
+        "weight": 400
+    },
+    {
+        "name": "Sondernutzungstyp - Wissenschaftl. Lehrgebäude",
+        "value": 0.881,
+        "weight": 500
+    },
+    {
+        "name": "Sondernutzungstyp - Gesamtschule",
+        "value": 0.889,
+        "weight": 600
+    },
+    {
+        "name": "Sondernutzungstyp - KiTa",
+        "value": 0.860,
+        "weight": 700
+    },
+    {
+        "name": "Sondernutzungstyp - Kindergarten",
+        "value": 0.861,
+        "weight": 800
+    },
+    {
+        "name": "Sondernutzungstyp - Sport- und Turnhallen",
+        "value": 0.910,
+        "weight": 900
+    },
+    {
+        "name": "Sondernutzungstyp - Mehrzweckhalle",
+        "value": 0.909,
+        "weight": 1000
+    },
+    {
+        "name": "Sondernutzungstyp - Hotel und Herbergen",
+        "value": 0.911,
+        "weight": 1100
+    },
+    {
+        "name": "BKI Nutzungstyp - Bürogebäude",
+        "value": 0.851,
+        "weight": 1200
+    },
+    {
+        "name": "BKI Nutzungstyp - Instituts- und Laborgebäude",
+        "value": 0.851,
+        "weight": 1300
+    },
+    {
+        "name": "BKI Nutzungstyp - Medizinische Einrichtungen",
+        "value": 0.815,
+        "weight": 1400
+    },
+    {
+        "name": "BKI Nutzungstyp - Pflegeheime",
+        "value": 0.832,
+        "weight": 1500
+    },
+    {
+        "name": "BKI Nutzungstyp - Allgemeinbildende Schulen",
+        "value": 0.871,
+        "weight": 1600
+    },
+    {
+        "name": "BKI Nutzungstyp - Berufliche Schulen",
+        "value": 0.886,
+        "weight": 1700
+    },
+    {
+        "name": "BKI Nutzungstyp - Förder- und Sonderschulen",
+        "value": 0.840,
+        "weight": 1800
+    },
+    {
+        "name": "BKI Nutzungstyp - Weiterbildungseinrichtungen",
+        "value": 0.883,
+        "weight": 1900
+    },
+    {
+        "name": "BKI Nutzungstyp - Kindergärten nicht unterkellert",
+        "value": 0.846,
+        "weight": 2000
+    },
+    {
+        "name": "BKI Nutzungstyp - Kindergärten unterkellert",
+        "value": 0.819,
+        "weight": 2100
+    },
+    {
+        "name": "BKI Nutzungstyp - Ein-/Zweifamilienhäuser unterkellert",
+        "value": 0.796,
+        "weight": 2200
+    },
+    {
+        "name": "BKI Nutzungstyp - Ein-/Zweifamilienhäuser nicht unterkellert",
+        "value": 0.785,
+        "weight": 2300
+    },
+    {
+        "name": "BKI Nutzungstyp - Ein-/Zweifamilienhäuser Passivhaus Massivbau",
+        "value": 0.789,
+        "weight": 2400
+    },
+    {
+        "name": "BKI Nutzungstyp - Ein-/Zweifamilienhäuser Passivhaus Holzbau",
+        "value": 0.791,
+        "weight": 2500
+    },
+    {
+        "name": "BKI Nutzungstyp - Doppel- und Reihenendhäuser",
+        "value": 0.815,
+        "weight": 2600
+    },
+    {
+        "name": "BKI Nutzungstyp - Reihenhäuser",
+        "value": 0.827,
+        "weight": 2700
+    },
+    {
+        "name": "BKI Nutzungstyp - Mehrfamilienhäuser < 6 WE",
+        "value": 0.829,
+        "weight": 2800
+    },
+    {
+        "name": "BKI Nutzungstyp - Mehrfamilienhäuser 6 -19 WE",
+        "value": 0.837,
+        "weight": 2900
+    },
+    {
+        "name": "BKI Nutzungstyp - Mehrfamilienhäuser > 20 WE",
+        "value": 0.835,
+        "weight": 3000
+    },
+    {
+        "name": "BKI Nutzungstyp - Wohnhäuser mit bis zu 15% Mischnutzung",
+        "value": 0.809,
+        "weight": 3100
+    },
+    {
+        "name": "BKI Nutzungstyp - Seniorenwohnungen",
+        "value": 0.816,
+        "weight": 3200
+    },
+    {
+        "name": "BKI Nutzungstyp - Wohnheime und Internate",
+        "value": 0.838,
+        "weight": 3300
+    },
+    {
+        "name": "BKI Nutzungstyp - Gaststätten, Kantinen und Mensen",
+        "value": 0.877,
+        "weight": 3400
+    },
+    {
+        "name": "BKI Nutzungstyp - Geschäftshäuser mit Wohnungen",
+        "value": 0.881,
+        "weight": 3500
+    },
+    {
+        "name": "BKI Nutzungstyp - Geschäftshäuser ohne Wohnungen",
+        "value": 0.887,
+        "weight": 3600
+    },
+    {
+        "name": "BKI Nutzungstyp - Verbrauchermärkte",
+        "value": 0.906,
+        "weight": 3700
+    },
+    {
+        "name": "BKI Nutzungstyp - Industrielle Produktionsgebäude Massivbauweise",
+        "value": 0.917,
+        "weight": 3800
+    },
+    {
+        "name": "BKI Nutzungstyp - Theater",
+        "value": 0.858,
+        "weight": 3900
+    }
+]
+
