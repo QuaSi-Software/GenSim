@@ -1,6 +1,7 @@
 [
     {
         "name": "Konstant 25°C",
+        "id": "prf_csp_constant_25_c",
         "unit": "°C",
         "weight": 100,
         "workday": [
@@ -1550,6 +1551,7 @@
     },
     {
         "name": "Konstant 26°C",
+        "id": "prf_csp_constant_26_c",
         "unit": "°C",
         "weight": 200,
         "workday": [
@@ -3099,6 +3101,7 @@
     },
     {
         "name": "Kühlung Deaktiviert",
+        "id": "prf_csp_cooling_deactivated",
         "unit": "°C",
         "weight": 300,
         "workday": [

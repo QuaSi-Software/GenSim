@@ -1,6 +1,7 @@
 [
     {
         "name": "SLP BDEW G0  Sommer (Gewerbe allg.)",
+        "id": "prf_equ_slp_bdew_g0_summer_general_commerce",
         "unit": "-",
         "weight": 200,
         "workday": [
@@ -1550,6 +1551,7 @@
     },
     {
         "name": "SLP BDEW G1 Sommer (Gewerbe werkt. 8-18 Uhr)",
+        "id": "prf_equ_slp_bdew_g1_summer_commerce_business_day_8_18_o_clock",
         "unit": "-",
         "weight": 300,
         "workday": [
@@ -3099,6 +3101,7 @@
     },
     {
         "name": "SLP BDEW G2 Sommer (Gewerbe starker Verbrauch Abends)",
+        "id": "prf_equ_slp_bdew_g2_summer_commerce_high_evening_use",
         "unit": "-",
         "weight": 400,
         "workday": [
@@ -4648,6 +4651,7 @@
     },
     {
         "name": "SLP BDEW G3 Sommer (Gewerbe durchlaufend)",
+        "id": "prf_equ_slp_bdew_g3_summer_commerce_constant_use",
         "unit": "-",
         "weight": 500,
         "workday": [
@@ -6197,6 +6201,7 @@
     },
     {
         "name": "SLP BDEW G4 Sommer (Laden/Friseur)",
+        "id": "prf_equ_slp_bdew_g4_summer_store_barber",
         "unit": "-",
         "weight": 600,
         "workday": [
@@ -7746,6 +7751,7 @@
     },
     {
         "name": "SLP BDEW G5 Sommer (Bäckerei mit Backstube)",
+        "id": "prf_equ_slp_bdew_g5_summer_bakery_with_ovens",
         "unit": "-",
         "weight": 700,
         "workday": [
@@ -9295,6 +9301,7 @@
     },
     {
         "name": "SLP BDEW G6 Sommer ( Wochenendbetrieb z.B. Kino)",
+        "id": "prf_equ_slp_bdew_g6_summer_weekend_service_e_g_cinema",
         "unit": "-",
         "weight": 800,
         "workday": [
@@ -10844,6 +10851,7 @@
     },
     {
         "name": "SLP BDEW H0 Sommer (Wohnen)",
+        "id": "prf_equ_slp_bdew_h0_summer_residential",
         "unit": "-",
         "weight": 100,
         "workday": [
@@ -12393,6 +12401,7 @@
     },
     {
         "name": "DIN 18599: Sonstige Aufenthaltsräume",
+        "id": "prf_equ_din_18599_other_common_rooms",
         "unit": "-",
         "weight": 3800,
         "workday": [
@@ -13942,6 +13951,7 @@
     },
     {
         "name": "DIN 18599: Bettenzimmer (Krankenhaus, Pflegeheim)",
+        "id": "prf_equ_din_18599_bedroom_hospital_nursing_home",
         "unit": "-",
         "weight": 3300,
         "workday": [
@@ -15491,6 +15501,7 @@
     },
     {
         "name": "DIN 18599: Bibliothek (Freihandbereich)",
+        "id": "prf_equ_din_18599_library_public_access_area",
         "unit": "-",
         "weight": 4500,
         "workday": [
@@ -17040,6 +17051,7 @@
     },
     {
         "name": "DIN 18599: Einzel-/Gruppen-/Großraumbüro",
+        "id": "prf_equ_din_18599_single_group_and_open_floor_office",
         "unit": "-",
         "weight": 2700,
         "workday": [
@@ -18589,6 +18601,7 @@
     },
     {
         "name": "DIN 18599: Einzelhandel/Kaufhaus",
+        "id": "prf_equ_din_18599_retail_department_store",
         "unit": "-",
         "weight": 3000,
         "workday": [
@@ -20138,6 +20151,7 @@
     },
     {
         "name": "DIN 18599: Hörsaal, Auditorium",
+        "id": "prf_equ_din_18599_lecture_hall_auditorium",
         "unit": "-",
         "weight": 3200,
         "workday": [
@@ -21687,6 +21701,7 @@
     },
     {
         "name": "DIN 18599: Hotelzimmer",
+        "id": "prf_equ_din_18599_hotel_room",
         "unit": "-",
         "weight": 3400,
         "workday": [
@@ -23236,6 +23251,7 @@
     },
     {
         "name": "DIN 18599: Kantine",
+        "id": "prf_equ_din_18599_canteen",
         "unit": "-",
         "weight": 3500,
         "workday": [
@@ -24785,6 +24801,7 @@
     },
     {
         "name": "DIN 18599: Klassenzimmer (Schule), Gruppenraum (Kindergarten)",
+        "id": "prf_equ_din_18599_classroom_school_group_room_kindergarden",
         "unit": "-",
         "weight": 3100,
         "workday": [
@@ -26334,6 +26351,7 @@
     },
     {
         "name": "DIN 18599: Küche in Nichtwohngebäuden",
+        "id": "prf_equ_din_18599_kitchen_in_non_residential_buildings",
         "unit": "-",
         "weight": 3700,
         "workday": [
@@ -27883,6 +27901,7 @@
     },
     {
         "name": "DIN 18599: Lager",
+        "id": "prf_equ_din_18599_warehouse",
         "unit": "-",
         "weight": 3900,
         "workday": [
@@ -29432,6 +29451,7 @@
     },
     {
         "name": "DIN 18599: Besprechung/Sitzungszimmer/Seminar",
+        "id": "prf_equ_din_18599_meeting_session_room_seminar",
         "unit": "-",
         "weight": 2800,
         "workday": [
@@ -30981,6 +31001,7 @@
     },
     {
         "name": "DIN 18599: Messe/Kongress",
+        "id": "prf_equ_din_18599_fair_congress",
         "unit": "-",
         "weight": 4300,
         "workday": [
@@ -32530,6 +32551,7 @@
     },
     {
         "name": "DIN 18599: Ausstellungsräume und Museum",
+        "id": "prf_equ_din_18599_exhibition_spaces_and_museum",
         "unit": "-",
         "weight": 4400,
         "workday": [
@@ -34079,6 +34101,7 @@
     },
     {
         "name": "DIN 18599: Parkhaus (für öffentliche Nutzung)",
+        "id": "prf_equ_din_18599_parking_garage_for_public_use",
         "unit": "-",
         "weight": 4800,
         "workday": [
@@ -35628,6 +35651,7 @@
     },
     {
         "name": "DIN 18599: Parkhaus (für Büro- und Privatnutzung)",
+        "id": "prf_equ_din_18599_parking_garage_for_office_and_private_use",
         "unit": "-",
         "weight": 4700,
         "workday": [
@@ -37177,6 +37201,7 @@
     },
     {
         "name": "DIN 18599: Restaurant",
+        "id": "prf_equ_din_18599_restaurant",
         "unit": "-",
         "weight": 3600,
         "workday": [
@@ -38726,6 +38751,7 @@
     },
     {
         "name": "DIN 18599: Schalterhalle",
+        "id": "prf_equ_din_18599_service_counter_area",
         "unit": "-",
         "weight": 2900,
         "workday": [
@@ -40275,6 +40301,7 @@
     },
     {
         "name": "DIN 18599: Serverraum/Rechenzentrum",
+        "id": "prf_equ_din_18599_server_room_data_center",
         "unit": "-",
         "weight": 4000,
         "workday": [
@@ -41824,6 +41851,7 @@
     },
     {
         "name": "DIN 18599: Theater und Veranstaltungsbauten (Zuschauerbereich)",
+        "id": "prf_equ_din_18599_theatre_and_event_buildings_audience_area",
         "unit": "-",
         "weight": 4200,
         "workday": [
@@ -43373,6 +43401,7 @@
     },
     {
         "name": "DIN 18599: Turnhalle (ohne Zuschauerbereich)",
+        "id": "prf_equ_din_18599_sports_hall_without_audience_area",
         "unit": "-",
         "weight": 4600,
         "workday": [
@@ -44922,6 +44951,7 @@
     },
     {
         "name": "DIN 18599: Werkstatt",
+        "id": "prf_equ_din_18599_workshop",
         "unit": "-",
         "weight": 4100,
         "workday": [
@@ -46471,6 +46501,7 @@
     },
     {
         "name": "DIN 18599: Wohnen",
+        "id": "prf_equ_din_18599_residental_area",
         "unit": "-",
         "weight": 2600,
         "workday": [
@@ -48020,6 +48051,7 @@
     },
     {
         "name": "DOE Prototype Building: Fast Food Restaurant",
+        "id": "prf_equ_doe_prototype_building_fast_food_restaurant",
         "unit": "-",
         "weight": 1500,
         "workday": [
@@ -49569,6 +49601,7 @@
     },
     {
         "name": "DOE Prototype Building: Highrise Apartment",
+        "id": "prf_equ_doe_prototype_building_highrise_apartment",
         "unit": "-",
         "weight": 900,
         "workday": [
@@ -51118,6 +51151,7 @@
     },
     {
         "name": "DOE Prototype Building: Hospital Offices",
+        "id": "prf_equ_doe_prototype_building_hospital_offices",
         "unit": "-",
         "weight": 1800,
         "workday": [
@@ -52667,6 +52701,7 @@
     },
     {
         "name": "DOE Prototype Building: Hospital Patients",
+        "id": "prf_equ_doe_prototype_building_hospital_patients",
         "unit": "-",
         "weight": 1900,
         "workday": [
@@ -54216,6 +54251,7 @@
     },
     {
         "name": "DOE Prototype Building: Large Hotel",
+        "id": "prf_equ_doe_prototype_building_large_hotel",
         "unit": "-",
         "weight": 2100,
         "workday": [
@@ -55765,6 +55801,7 @@
     },
     {
         "name": "DOE Prototype Building: Large Office",
+        "id": "prf_equ_doe_prototype_building_large_office",
         "unit": "-",
         "weight": 1300,
         "workday": [
@@ -57314,6 +57351,7 @@
     },
     {
         "name": "DOE Prototype Building: Medium Office",
+        "id": "prf_equ_doe_prototype_building_medium_office",
         "unit": "-",
         "weight": 1200,
         "workday": [
@@ -58863,6 +58901,7 @@
     },
     {
         "name": "DOE Prototype Building: Midrise Apartment",
+        "id": "prf_equ_doe_prototype_building_midrise_apartment",
         "unit": "-",
         "weight": 1000,
         "workday": [
@@ -60412,6 +60451,7 @@
     },
     {
         "name": "DOE Prototype Building: Small Office",
+        "id": "prf_equ_doe_prototype_building_small_office",
         "unit": "-",
         "weight": 1100,
         "workday": [
@@ -61961,6 +62001,7 @@
     },
     {
         "name": "DOE Prototype Building: Outpatient Health Care",
+        "id": "prf_equ_doe_prototype_building_outpatient_health_care",
         "unit": "-",
         "weight": 2500,
         "workday": [
@@ -63510,6 +63551,7 @@
     },
     {
         "name": "DOE Prototype Building: Primary School",
+        "id": "prf_equ_doe_prototype_building_primary_school",
         "unit": "-",
         "weight": 2300,
         "workday": [
@@ -65059,6 +65101,7 @@
     },
     {
         "name": "DOE Prototype Building: Full Service Restaurant",
+        "id": "prf_equ_doe_prototype_building_full_service_restaurant",
         "unit": "-",
         "weight": 1400,
         "workday": [
@@ -66608,6 +66651,7 @@
     },
     {
         "name": "DOE Prototype Building: Retail",
+        "id": "prf_equ_doe_prototype_building_retail",
         "unit": "-",
         "weight": 1600,
         "workday": [
@@ -68157,6 +68201,7 @@
     },
     {
         "name": "DOE Prototype Building: Retail Strip Mall",
+        "id": "prf_equ_doe_prototype_building_retail_strip_mall",
         "unit": "-",
         "weight": 1700,
         "workday": [
@@ -69706,6 +69751,7 @@
     },
     {
         "name": "DOE Prototype Building: Secondary School",
+        "id": "prf_equ_doe_prototype_building_secondary_school",
         "unit": "-",
         "weight": 2200,
         "workday": [
@@ -71255,6 +71301,7 @@
     },
     {
         "name": "DOE Prototype Building: Small Hotel",
+        "id": "prf_equ_doe_prototype_building_small_hotel",
         "unit": "-",
         "weight": 2000,
         "workday": [
@@ -72804,6 +72851,7 @@
     },
     {
         "name": "DOE Prototype Building: Warehouse",
+        "id": "prf_equ_doe_prototype_building_warehouse",
         "unit": "-",
         "weight": 2400,
         "workday": [

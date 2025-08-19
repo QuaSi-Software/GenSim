@@ -1,6 +1,7 @@
 [
     {
         "name": "Light",
+        "id": "constr_iw_light",
         "weight": 100,
         "reference": "-",
         "interior_wall_layers": [
@@ -32,6 +33,7 @@
     },
     {
         "name": "Medium",
+        "id": "constr_iw_medium",
         "weight": 200,
         "reference": "-",
         "interior_wall_layers": [
@@ -47,6 +49,7 @@
     },
     {
         "name": "Heavy",
+        "id": "constr_iw_heavy",
         "weight": 300,
         "reference": "-",
         "interior_wall_layers": [

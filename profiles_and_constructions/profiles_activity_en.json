@@ -1,6 +1,7 @@
 [
     {
         "name": "DIN 18599: Class room",
+        "id": "prf_act_din_18599_class_room",
         "unit": "W",
         "weight": 700,
         "workday": [
@@ -1550,6 +1551,7 @@
     },
     {
         "name": "DIN 18599: Kitchens and workshops",
+        "id": "prf_act_din_18599_kitchens_and_workshops",
         "unit": "W",
         "weight": 800,
         "workday": [
@@ -3099,6 +3101,7 @@
     },
     {
         "name": "DIN 18599: Standard",
+        "id": "prf_act_din_18599_standard",
         "unit": "W",
         "weight": 600,
         "workday": [
@@ -4648,6 +4651,7 @@
     },
     {
         "name": "DOE Prototype Building: FullServiceRestaurant",
+        "id": "prf_act_doe_prototype_building_fullservicerestaurant",
         "unit": "W",
         "weight": 300,
         "workday": [
@@ -6197,6 +6201,7 @@
     },
     {
         "name": "DOE Prototype Building: MidriseApartment",
+        "id": "prf_act_doe_prototype_building_midriseapartment",
         "unit": "W",
         "weight": 100,
         "workday": [
@@ -7746,6 +7751,7 @@
     },
     {
         "name": "DOE Prototype Building: Office",
+        "id": "prf_act_doe_prototype_building_office",
         "unit": "W",
         "weight": 200,
         "workday": [
@@ -9295,6 +9301,7 @@
     },
     {
         "name": "DOE Prototype Building: Retail",
+        "id": "prf_act_doe_prototype_building_retail",
         "unit": "W",
         "weight": 500,
         "workday": [
@@ -10844,6 +10851,7 @@
     },
     {
         "name": "DOE Prototype Building: SuperMarket",
+        "id": "prf_act_doe_prototype_building_supermarket",
         "unit": "W",
         "weight": 400,
         "workday": [
@@ -12393,6 +12401,7 @@
     },
     {
         "name": "VDI 2078: 1996-07: Light work while standing",
+        "id": "prf_act_vdi_2078_1996_07_light_work_while_standing",
         "unit": "W",
         "weight": 900,
         "workday": [
@@ -13942,6 +13951,7 @@
     },
     {
         "name": "VDI 2078: 1996-07: Heavy exertion",
+        "id": "prf_act_vdi_2078_1996_07_heavy_exertion",
         "unit": "W",
         "weight": 1000,
         "workday": [

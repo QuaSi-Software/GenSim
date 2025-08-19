@@ -1,6 +1,7 @@
 [
     {
         "name": "Bestand: Hochhaus zwischen 1958 bis 1968",
+        "id": "constr_stock_highrise_between_1958_and_1968",
         "weight": 4100,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -131,6 +132,7 @@
     },
     {
         "name": "Bestand: Hochhaus zwischen 1969 und 1978",
+        "id": "constr_stock_highrise_between_1969_and_1978",
         "weight": 4200,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -261,6 +263,7 @@
     },
     {
         "name": "Bestand: Großes Mehrfamilienhaus zwischen 1958 und 1968",
+        "id": "constr_stock_large_multi_family_house_between_1958_and_1968",
         "weight": 3900,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -391,6 +394,7 @@
     },
     {
         "name": "Bestand: Großes Mehrfamilienhaus zwischen 1860 und 1918",
+        "id": "constr_stock_large_multi_family_house_between_1860_and_1918",
         "weight": 3600,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -481,6 +485,7 @@
     },
     {
         "name": "Bestand: Großes Mehrfamilienhaus zwischen 1919 und 1948",
+        "id": "constr_stock_large_multi_family_house_between_1919_and_1948",
         "weight": 3700,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -603,6 +608,7 @@
     },
     {
         "name": "Bestand: Großes Mehrfamilienhaus zwischen 1949 und 1957",
+        "id": "constr_stock_large_multi_family_house_between_1949_and_1957",
         "weight": 3800,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -717,6 +723,7 @@
     },
     {
         "name": "Bestand: Großes Mehrfamilienhaus zwischen 1969 und 1978",
+        "id": "constr_stock_large_multi_family_house_between_1969_and_1978",
         "weight": 4000,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -847,6 +854,7 @@
     },
     {
         "name": "Bestand: Mehrfamilienhaus zwischen 1860 und 1918",
+        "id": "constr_stock_multi_family_house_between_1860_and_1918",
         "weight": 2500,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -937,6 +945,7 @@
     },
     {
         "name": "Bestand: Mehrfamilienhaus zwischen 1919 und 1948",
+        "id": "constr_stock_multi_family_house_between_1919_and_1948",
         "weight": 2600,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -1051,6 +1060,7 @@
     },
     {
         "name": "Bestand: Mehrfamilienhaus zwischen 1949 und 1957",
+        "id": "constr_stock_multi_family_house_between_1949_and_1957",
         "weight": 2700,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -1165,6 +1175,7 @@
     },
     {
         "name": "Bestand: Mehrfamilienhaus zwischen 1958 und 1968",
+        "id": "constr_stock_multi_family_house_between_1958_and_1968",
         "weight": 2800,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -1287,6 +1298,7 @@
     },
     {
         "name": "Bestand: Mehrfamilienhaus zwischen 1969 und 1978",
+        "id": "constr_stock_multi_family_house_between_1969_and_1978",
         "weight": 2900,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -1417,6 +1429,7 @@
     },
     {
         "name": "Bestand: Mehrfamilienhaus zwischen 1979 und 1983",
+        "id": "constr_stock_multi_family_house_between_1979_and_1983",
         "weight": 3000,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -1531,6 +1544,7 @@
     },
     {
         "name": "Bestand: Mehrfamilienhaus zwischen 1984 und 1994",
+        "id": "constr_stock_multi_family_house_between_1984_and_1994",
         "weight": 3100,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -1645,6 +1659,7 @@
     },
     {
         "name": "Bestand: Mehrfamilienhaus zwischen 1995 und 2001",
+        "id": "constr_stock_multi_family_house_between_1995_and_2001",
         "weight": 3200,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -1759,6 +1774,7 @@
     },
     {
         "name": "Bestand: Mehrfamilienhaus zwischen 2002 und 2009",
+        "id": "constr_stock_multi_family_house_between_2002_and_2009",
         "weight": 3300,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -1873,6 +1889,7 @@
     },
     {
         "name": "Bestand: Mehrfamilienhaus zwischen 2010 und 2015",
+        "id": "constr_stock_multi_family_house_between_2010_and_2015",
         "weight": 3400,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -1971,6 +1988,7 @@
     },
     {
         "name": "Bestand: Mehrfamilienhaus ab 2016",
+        "id": "constr_stock_multi_family_house_from_2016",
         "weight": 3500,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -2077,6 +2095,7 @@
     },
     {
         "name": "Bestand: Mehrfamilienhaus bis 1859",
+        "id": "constr_stock_multi_family_house_until_1859",
         "weight": 2400,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -2167,6 +2186,7 @@
     },
     {
         "name": "Neubau: EH 40",
+        "id": "constr_new_building_energy_efficiency_house_40",
         "weight": 4900,
         "reference": "-",
         "windows": {
@@ -2289,6 +2309,7 @@
     },
     {
         "name": "Neubau: EH 55",
+        "id": "constr_new_building_energy_efficiency_house_55",
         "weight": 5000,
         "reference": "-",
         "windows": {
@@ -2411,6 +2432,7 @@
     },
     {
         "name": "Neubau: GEG",
+        "id": "constr_new_building_geg_current_german_standard",
         "weight": 5100,
         "reference": "-",
         "windows": {
@@ -2533,6 +2555,7 @@
     },
     {
         "name": "Neubau: Passivhaus",
+        "id": "constr_new_building_passive_house",
         "weight": 4800,
         "reference": "-",
         "windows": {
@@ -2655,6 +2678,7 @@
     },
     {
         "name": "Bestand: Nichtwohngebäude von 1919 bis 1978",
+        "id": "constr_stock_non_residential_building_from_1919_until_1978",
         "weight": 4400,
         "reference": "BMVBS-Online-Publikation, Nr. 16/2011",
         "windows": {
@@ -2745,6 +2769,7 @@
     },
     {
         "name": "Bestand: Nichtwohngebäude von 1979 bis 1983",
+        "id": "constr_stock_non_residential_building_from_1979_until_1983",
         "weight": 4500,
         "reference": "BMVBS-Online-Publikation, Nr. 16/2011",
         "windows": {
@@ -2851,6 +2876,7 @@
     },
     {
         "name": "Bestand: Nichtwohngebäude von 1984 bis 1994",
+        "id": "constr_stock_non_residential_building_from_1984_until_1994",
         "weight": 4600,
         "reference": "BMVBS-Online-Publikation, Nr. 16/2011",
         "windows": {
@@ -2957,6 +2983,7 @@
     },
     {
         "name": "Bestand: Nichtwohngebäude ab 1995",
+        "id": "constr_stock_non_residential_building_from_1995",
         "weight": 4700,
         "reference": "BMVBS-Online-Publikation, Nr. 16/2011",
         "windows": {
@@ -3063,6 +3090,7 @@
     },
     {
         "name": "Bestand: Nichtwohngebäude bis 1918",
+        "id": "constr_stock_non_residential_building_until_1918",
         "weight": 4300,
         "reference": "BMVBS-Online-Publikation, Nr. 16/2011",
         "windows": {
@@ -3153,6 +3181,7 @@
     },
     {
         "name": "Bestand: Einfamilienhaus zwischen 1860 und 1918",
+        "id": "constr_stock_single_family_house_between_1860_and_1918",
         "weight": 200,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -3251,6 +3280,7 @@
     },
     {
         "name": "Bestand: Einfamilienhaus zwischen 1919 und 1948",
+        "id": "constr_stock_single_family_house_between_1919_and_1948",
         "weight": 300,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -3365,6 +3395,7 @@
     },
     {
         "name": "Bestand: Einfamilienhaus zwischen 1949 und 1957",
+        "id": "constr_stock_single_family_house_between_1949_and_1957",
         "weight": 400,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -3495,6 +3526,7 @@
     },
     {
         "name": "Bestand: Einfamilienhaus zwischen 1958 und 1968",
+        "id": "constr_stock_single_family_house_between_1958_and_1968",
         "weight": 500,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -3601,6 +3633,7 @@
     },
     {
         "name": "Bestand: Einfamilienhaus zwischen 1969 und 1978",
+        "id": "constr_stock_single_family_house_between_1969_and_1978",
         "weight": 600,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -3731,6 +3764,7 @@
     },
     {
         "name": "Bestand: Einfamilienhaus zwischen 1979 und 1983",
+        "id": "constr_stock_single_family_house_between_1979_and_1983",
         "weight": 700,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -3853,6 +3887,7 @@
     },
     {
         "name": "Bestand: Einfamilienhaus zwischen 1984 und 1994",
+        "id": "constr_stock_single_family_house_between_1984_and_1994",
         "weight": 800,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -3967,6 +4002,7 @@
     },
     {
         "name": "Bestand: Einfamilienhaus zwischen 1995 und 2001",
+        "id": "constr_stock_single_family_house_between_1995_and_2001",
         "weight": 900,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -4081,6 +4117,7 @@
     },
     {
         "name": "Bestand: Einfamilienhaus zwischen 2002 und 2009",
+        "id": "constr_stock_single_family_house_between_2002_and_2009",
         "weight": 1000,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -4195,6 +4232,7 @@
     },
     {
         "name": "Bestand: Einfamilienhaus zwischen 2010 und 2015",
+        "id": "constr_stock_single_family_house_between_2010_and_2015",
         "weight": 1100,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -4293,6 +4331,7 @@
     },
     {
         "name": "Bestand: Einfamilienhaus ab 2016",
+        "id": "constr_stock_single_family_house_from_2016",
         "weight": 1200,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -4399,6 +4438,7 @@
     },
     {
         "name": "Bestand: Einfamilienhaus bis 1859",
+        "id": "constr_stock_single_family_house_until_1859",
         "weight": 100,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -4489,6 +4529,7 @@
     },
     {
         "name": "Bestand: Reihenhaus zwischen 1860 und 1918",
+        "id": "constr_stock_terraced_house_between_1860_and_1918",
         "weight": 1300,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -4579,6 +4620,7 @@
     },
     {
         "name": "Bestand: Reihenhaus zwischen 1919 und 1948",
+        "id": "constr_stock_terraced_house_between_1919_and_1948",
         "weight": 1400,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -4693,6 +4735,7 @@
     },
     {
         "name": "Bestand: Reihenhaus zwischen 1949 und 1957",
+        "id": "constr_stock_terraced_house_between_1949_and_1957",
         "weight": 1500,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -4823,6 +4866,7 @@
     },
     {
         "name": "Bestand: Reihenhaus zwischen 1958 und 1968",
+        "id": "constr_stock_terraced_house_between_1958_and_1968",
         "weight": 1600,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -4937,6 +4981,7 @@
     },
     {
         "name": "Bestand: Reihenhaus zwischen 1969 und 1978",
+        "id": "constr_stock_terraced_house_between_1969_and_1978",
         "weight": 1700,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -5067,6 +5112,7 @@
     },
     {
         "name": "Bestand: Reihenhaus zwischen 1979 und 1983",
+        "id": "constr_stock_terraced_house_between_1979_and_1983",
         "weight": 1800,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -5181,6 +5227,7 @@
     },
     {
         "name": "Bestand: Reihenhaus zwischen 1984 und 1994",
+        "id": "constr_stock_terraced_house_between_1984_and_1994",
         "weight": 1900,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -5295,6 +5342,7 @@
     },
     {
         "name": "Bestand: Reihenhaus zwischen 1995 und 2001",
+        "id": "constr_stock_terraced_house_between_1995_and_2001",
         "weight": 2000,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -5409,6 +5457,7 @@
     },
     {
         "name": "Bestand: Reihenhaus zwischen 2002 und 2009",
+        "id": "constr_stock_terraced_house_between_2002_and_2009",
         "weight": 2100,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -5523,6 +5572,7 @@
     },
     {
         "name": "Bestand: Reihenhaus zwischen 2010 und 2015",
+        "id": "constr_stock_terraced_house_between_2010_and_2015",
         "weight": 2200,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {
@@ -5621,6 +5671,7 @@
     },
     {
         "name": "Bestand: Reihenhaus ab 2016",
+        "id": "constr_stock_terraced_house_from_2016",
         "weight": 2300,
         "reference": "Wohngebäudetypologie nach IWU Tabula",
         "windows": {

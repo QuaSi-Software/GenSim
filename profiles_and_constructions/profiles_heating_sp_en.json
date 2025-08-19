@@ -1,6 +1,7 @@
 [
     {
         "name": "Constant 20°C",
+        "id": "prf_hsp_constant_20_c",
         "unit": "°C",
         "weight": 100,
         "workday": [
@@ -1550,6 +1551,7 @@
     },
     {
         "name": "Day 20°C, night and weekend/holiday 18°C",
+        "id": "prf_hsp_day_20_c_night_and_weekend_holiday_18_c",
         "unit": "°C",
         "weight": 300,
         "workday": [
@@ -3099,6 +3101,7 @@
     },
     {
         "name": "Day 20°C, night 18°C",
+        "id": "prf_hsp_day_20_c_night_18_c",
         "unit": "°C",
         "weight": 200,
         "workday": [
