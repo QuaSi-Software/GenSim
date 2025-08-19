@@ -47,7 +47,7 @@
     {
         "name": "Special use type - Hotels and other accommodations",
         "value": 0.911,
-        "weight": 100
+        "weight": 1100
     },
     {
         "name": "BKI type - Offices",

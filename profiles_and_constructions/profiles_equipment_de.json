@@ -2,7 +2,7 @@
     {
         "name": "SLP BDEW G0  Sommer (Gewerbe allg.)",
         "unit": "-",
-        "weight": 0,
+        "weight": 200,
         "workday": [
             [
                 "00:00",
@@ -1551,7 +1551,7 @@
     {
         "name": "SLP BDEW G1 Sommer (Gewerbe werkt. 8-18 Uhr)",
         "unit": "-",
-        "weight": 0,
+        "weight": 300,
         "workday": [
             [
                 "00:00",
@@ -3100,7 +3100,7 @@
     {
         "name": "SLP BDEW G2 Sommer (Gewerbe starker Verbrauch Abends)",
         "unit": "-",
-        "weight": 0,
+        "weight": 400,
         "workday": [
             [
                 "00:00",
@@ -4649,7 +4649,7 @@
     {
         "name": "SLP BDEW G3 Sommer (Gewerbe durchlaufend)",
         "unit": "-",
-        "weight": 0,
+        "weight": 500,
         "workday": [
             [
                 "00:00",
@@ -6198,7 +6198,7 @@
     {
         "name": "SLP BDEW G4 Sommer (Laden/Friseur)",
         "unit": "-",
-        "weight": 0,
+        "weight": 600,
         "workday": [
             [
                 "00:00",
@@ -7747,7 +7747,7 @@
     {
         "name": "SLP BDEW G5 Sommer (Bäckerei mit Backstube)",
         "unit": "-",
-        "weight": 0,
+        "weight": 700,
         "workday": [
             [
                 "00:00",
@@ -9296,7 +9296,7 @@
     {
         "name": "SLP BDEW G6 Sommer ( Wochenendbetrieb z.B. Kino)",
         "unit": "-",
-        "weight": 0,
+        "weight": 800,
         "workday": [
             [
                 "00:00",
@@ -10845,7 +10845,7 @@
     {
         "name": "SLP BDEW H0 Sommer (Wohnen)",
         "unit": "-",
-        "weight": 0,
+        "weight": 100,
         "workday": [
             [
                 "00:00",
@@ -12394,7 +12394,7 @@
     {
         "name": "DIN 18599: Sonstige Aufenthaltsräume",
         "unit": "-",
-        "weight": 0,
+        "weight": 3800,
         "workday": [
             [
                 "00:00",
@@ -13943,7 +13943,7 @@
     {
         "name": "DIN 18599: Bettenzimmer (Krankenhaus, Pflegeheim)",
         "unit": "-",
-        "weight": 0,
+        "weight": 3300,
         "workday": [
             [
                 "00:00",
@@ -15492,7 +15492,7 @@
     {
         "name": "DIN 18599: Bibliothek (Freihandbereich)",
         "unit": "-",
-        "weight": 0,
+        "weight": 4500,
         "workday": [
             [
                 "00:00",
@@ -17041,7 +17041,7 @@
     {
         "name": "DIN 18599: Einzel-/Gruppen-/Großraumbüro",
         "unit": "-",
-        "weight": 0,
+        "weight": 2700,
         "workday": [
             [
                 "00:00",
@@ -18590,7 +18590,7 @@
     {
         "name": "DIN 18599: Einzelhandel/Kaufhaus",
         "unit": "-",
-        "weight": 0,
+        "weight": 3000,
         "workday": [
             [
                 "00:00",
@@ -20139,7 +20139,7 @@
     {
         "name": "DIN 18599: Hörsaal, Auditorium",
         "unit": "-",
-        "weight": 0,
+        "weight": 3200,
         "workday": [
             [
                 "00:00",
@@ -21688,7 +21688,7 @@
     {
         "name": "DIN 18599: Hotelzimmer",
         "unit": "-",
-        "weight": 0,
+        "weight": 3400,
         "workday": [
             [
                 "00:00",
@@ -23237,7 +23237,7 @@
     {
         "name": "DIN 18599: Kantine",
         "unit": "-",
-        "weight": 0,
+        "weight": 3500,
         "workday": [
             [
                 "00:00",
@@ -24786,7 +24786,7 @@
     {
         "name": "DIN 18599: Klassenzimmer (Schule), Gruppenraum (Kindergarten)",
         "unit": "-",
-        "weight": 0,
+        "weight": 3100,
         "workday": [
             [
                 "00:00",
@@ -26335,7 +26335,7 @@
     {
         "name": "DIN 18599: Küche in Nichtwohngebäuden",
         "unit": "-",
-        "weight": 0,
+        "weight": 3700,
         "workday": [
             [
                 "00:00",
@@ -27884,7 +27884,7 @@
     {
         "name": "DIN 18599: Lager",
         "unit": "-",
-        "weight": 0,
+        "weight": 3900,
         "workday": [
             [
                 "00:00",
@@ -29433,7 +29433,7 @@
     {
         "name": "DIN 18599: Besprechung/Sitzungszimmer/Seminar",
         "unit": "-",
-        "weight": 0,
+        "weight": 2800,
         "workday": [
             [
                 "00:00",
@@ -30982,7 +30982,7 @@
     {
         "name": "DIN 18599: Messe/Kongress",
         "unit": "-",
-        "weight": 0,
+        "weight": 4300,
         "workday": [
             [
                 "00:00",
@@ -32531,7 +32531,7 @@
     {
         "name": "DIN 18599: Ausstellungsräume und Museum",
         "unit": "-",
-        "weight": 0,
+        "weight": 4400,
         "workday": [
             [
                 "00:00",
@@ -34080,7 +34080,7 @@
     {
         "name": "DIN 18599: Parkhaus (für öffentliche Nutzung)",
         "unit": "-",
-        "weight": 0,
+        "weight": 4800,
         "workday": [
             [
                 "00:00",
@@ -35629,7 +35629,7 @@
     {
         "name": "DIN 18599: Parkhaus (für Büro- und Privatnutzung)",
         "unit": "-",
-        "weight": 0,
+        "weight": 4700,
         "workday": [
             [
                 "00:00",
@@ -37178,7 +37178,7 @@
     {
         "name": "DIN 18599: Restaurant",
         "unit": "-",
-        "weight": 0,
+        "weight": 3600,
         "workday": [
             [
                 "00:00",
@@ -38727,7 +38727,7 @@
     {
         "name": "DIN 18599: Schalterhalle",
         "unit": "-",
-        "weight": 0,
+        "weight": 2900,
         "workday": [
             [
                 "00:00",
@@ -40276,7 +40276,7 @@
     {
         "name": "DIN 18599: Serverraum/Rechenzentrum",
         "unit": "-",
-        "weight": 0,
+        "weight": 4000,
         "workday": [
             [
                 "00:00",
@@ -41825,7 +41825,7 @@
     {
         "name": "DIN 18599: Theater und Veranstaltungsbauten (Zuschauerbereich)",
         "unit": "-",
-        "weight": 0,
+        "weight": 4200,
         "workday": [
             [
                 "00:00",
@@ -43374,7 +43374,7 @@
     {
         "name": "DIN 18599: Turnhalle (ohne Zuschauerbereich)",
         "unit": "-",
-        "weight": 0,
+        "weight": 4600,
         "workday": [
             [
                 "00:00",
@@ -44923,7 +44923,7 @@
     {
         "name": "DIN 18599: Werkstatt",
         "unit": "-",
-        "weight": 0,
+        "weight": 4100,
         "workday": [
             [
                 "00:00",
@@ -46472,7 +46472,7 @@
     {
         "name": "DIN 18599: Wohnen",
         "unit": "-",
-        "weight": 0,
+        "weight": 2600,
         "workday": [
             [
                 "00:00",
@@ -48021,7 +48021,7 @@
     {
         "name": "DOE Prototype Building: Fast Food Restaurant",
         "unit": "-",
-        "weight": 0,
+        "weight": 1500,
         "workday": [
             [
                 "00:00",
@@ -49570,7 +49570,7 @@
     {
         "name": "DOE Prototype Building: Highrise Apartment",
         "unit": "-",
-        "weight": 0,
+        "weight": 900,
         "workday": [
             [
                 "00:00",
@@ -51119,7 +51119,7 @@
     {
         "name": "DOE Prototype Building: Hospital Offices",
         "unit": "-",
-        "weight": 0,
+        "weight": 1800,
         "workday": [
             [
                 "00:00",
@@ -52668,7 +52668,7 @@
     {
         "name": "DOE Prototype Building: Hospital Patients",
         "unit": "-",
-        "weight": 0,
+        "weight": 1900,
         "workday": [
             [
                 "00:00",
@@ -54217,7 +54217,7 @@
     {
         "name": "DOE Prototype Building: Large Hotel",
         "unit": "-",
-        "weight": 0,
+        "weight": 2100,
         "workday": [
             [
                 "00:00",
@@ -55766,7 +55766,7 @@
     {
         "name": "DOE Prototype Building: Large Office",
         "unit": "-",
-        "weight": 0,
+        "weight": 1300,
         "workday": [
             [
                 "00:00",
@@ -57315,7 +57315,7 @@
     {
         "name": "DOE Prototype Building: Medium Office",
         "unit": "-",
-        "weight": 0,
+        "weight": 1200,
         "workday": [
             [
                 "00:00",
@@ -58864,7 +58864,7 @@
     {
         "name": "DOE Prototype Building: Midrise Apartment",
         "unit": "-",
-        "weight": 0,
+        "weight": 1000,
         "workday": [
             [
                 "00:00",
@@ -60413,7 +60413,7 @@
     {
         "name": "DOE Prototype Building: Small Office",
         "unit": "-",
-        "weight": 0,
+        "weight": 1100,
         "workday": [
             [
                 "00:00",
@@ -61962,7 +61962,7 @@
     {
         "name": "DOE Prototype Building: Outpatient Health Care",
         "unit": "-",
-        "weight": 0,
+        "weight": 2500,
         "workday": [
             [
                 "00:00",
@@ -63511,7 +63511,7 @@
     {
         "name": "DOE Prototype Building: Primary School",
         "unit": "-",
-        "weight": 0,
+        "weight": 2300,
         "workday": [
             [
                 "00:00",
@@ -65060,7 +65060,7 @@
     {
         "name": "DOE Prototype Building: Full Service Restaurant",
         "unit": "-",
-        "weight": 0,
+        "weight": 1400,
         "workday": [
             [
                 "00:00",
@@ -66609,7 +66609,7 @@
     {
         "name": "DOE Prototype Building: Retail",
         "unit": "-",
-        "weight": 0,
+        "weight": 1600,
         "workday": [
             [
                 "00:00",
@@ -68158,7 +68158,7 @@
     {
         "name": "DOE Prototype Building: Retail Strip Mall",
         "unit": "-",
-        "weight": 0,
+        "weight": 1700,
         "workday": [
             [
                 "00:00",
@@ -69707,7 +69707,7 @@
     {
         "name": "DOE Prototype Building: Secondary School",
         "unit": "-",
-        "weight": 0,
+        "weight": 2200,
         "workday": [
             [
                 "00:00",
@@ -71256,7 +71256,7 @@
     {
         "name": "DOE Prototype Building: Small Hotel",
         "unit": "-",
-        "weight": 0,
+        "weight": 2000,
         "workday": [
             [
                 "00:00",
@@ -72805,7 +72805,7 @@
     {
         "name": "DOE Prototype Building: Warehouse",
         "unit": "-",
-        "weight": 0,
+        "weight": 2400,
         "workday": [
             [
                 "00:00",
