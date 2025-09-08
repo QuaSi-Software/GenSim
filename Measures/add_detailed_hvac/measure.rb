@@ -202,19 +202,15 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
             heat_exchanger.setLatentEffectivenessat75HeatingAirFlow(0)
           end
       else # >= 3.8.0
-          # setting the constant curve first
-          sensible_efficiency_curve = OpenStudio::Model::CurveLinear.new(model)
-          sensible_efficiency_curve.setCoefficient1Constant(sensible_efficiency)
-          latent_efficiency_curve = OpenStudio::Model::CurveLinear.new(model)
+          heat_exchanger.setSensibleEffectivenessat100CoolingAirFlow(sensible_efficiency)
+          heat_exchanger.setSensibleEffectivenessat100HeatingAirFlow(sensible_efficiency)
           if heat_recovery_method == "Enthalpy"
-            latent_efficiency_curve.setCoefficient1Constant(latent_efficiency)
+            heat_exchanger.setLatentEffectivenessat100CoolingAirFlow(latent_efficiency)
+            heat_exchanger.setLatentEffectivenessat100HeatingAirFlow(latent_efficiency)
           else
-            latent_efficiency_curve.setCoefficient1Constant(0.0)
+            heat_exchanger.setLatentEffectivenessat100CoolingAirFlow(0)
+            heat_exchanger.setLatentEffectivenessat100HeatingAirFlow(0)
           end
-          heat_exchanger.setSensibleEffectivenessofCoolingAirFlowCurve(sensible_efficiency_curve)
-          heat_exchanger.setSensibleEffectivenessofHeatingAirFlowCurve(sensible_efficiency_curve)
-          heat_exchanger.setLatentEffectivenessofCoolingAirFlowCurve(latent_efficiency_curve)
-          heat_exchanger.setLatentEffectivenessofHeatingAirFlowCurve(latent_efficiency_curve)
       end
       heat_exchanger.setSupplyAirOutletTemperatureControl(true)
       heat_exchanger.addToNode(system_OA.outboardOANode.get)
