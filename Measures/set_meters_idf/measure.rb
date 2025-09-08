@@ -202,6 +202,16 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
       end
     end
 
+
+    # first let's delete any diagnostics objects, since somewhere around 3.9.0 we get errors if we have two of them
+    # Find all Output:Diagnostics objects
+    diagnostics_objects = workspace.getObjectsByType("Output:Diagnostics".to_IddObjectType)
+
+    # Delete each one
+    diagnostics_objects.each do |obj|
+        workspace.removeObject(obj)
+    end
+
     # set diagnostics to display all warnings and report on all variables
     new_diagnostic_string = "
       Output:Diagnostics,
