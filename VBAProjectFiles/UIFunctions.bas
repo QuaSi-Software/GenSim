@@ -3,6 +3,7 @@ Dim strOpenStudioDir As String
 Dim strMeasureDir As String
 Dim strOutputDir As String
 Dim strWeatherDir As String
+Public Const IFC_IMPORT As Boolean = True
 
 Function GetOpenStudioBinPath()
     If Range("DirOpenStudio") = "" Then
@@ -21,15 +22,15 @@ Function GetRubyExePath()
 End Function
 
 Function GetMeasuresFolder()
-    GetMeasuresFolder = Application.ActiveWorkbook.path & "\Measures"
+    GetMeasuresFolder = Application.ActiveWorkbook.Path & "\Measures"
 End Function
 
 Function GetWeatherFolder()
-    GetWeatherFolder = Application.ActiveWorkbook.path & "\Wetter"
+    GetWeatherFolder = Application.ActiveWorkbook.Path & "\Wetter"
 End Function
    
 Function GetOutputFolder()
-    GetOutputFolder = Application.ActiveWorkbook.path & "\Output"
+    GetOutputFolder = Application.ActiveWorkbook.Path & "\Output"
        
     If Dir(GetOutputFolder, vbDirectory) = "" Then
         MkDir GetOutputFolder
@@ -38,7 +39,7 @@ End Function
    
 Function GetWorkingPath()
     Dim sTempPath As String
-    sTempPath = Application.ActiveWorkbook.path & "\Temp"
+    sTempPath = Application.ActiveWorkbook.Path & "\Temp"
     If Dir(sTempPath, vbDirectory) = "" Then
         MkDir (sTempPath)
     End If
@@ -63,7 +64,7 @@ End Sub
 Sub SetApplicationPath()
     Sheets("Installation").Unprotect
     
-    Range("ThisDir") = Application.ActiveWorkbook.path
+    Range("ThisDir") = Application.ActiveWorkbook.Path
     Range("InstallationStatus") = ""
     
     Sheets("Installation").Protect
@@ -86,7 +87,7 @@ Sub ReadWeatherFiles()
     'Create an instance of the FileSystemObject
     Set objFSO = CreateObject("Scripting.FileSystemObject")
     'Get the folder object
-    Set objFolder = objFSO.GetFolder(Application.ActiveWorkbook.path & "\Wetter")
+    Set objFolder = objFSO.GetFolder(Application.ActiveWorkbook.Path & "\Wetter")
 
     Set sht = ThisWorkbook.Worksheets("Wetterdateien")
     i = 0
@@ -160,10 +161,10 @@ End Sub
 
 Sub BrowseMeasuresDir()
     If Range("ThisDir") = "" Then
-        Range("ThisDir") = Application.ActiveWorkbook.path
+        Range("ThisDir") = Application.ActiveWorkbook.Path
     End If
     If Range("MeasuresDir") = "" Then
-        strMeasureDir = Application.ActiveWorkbook.path & "\Measures"
+        strMeasureDir = Application.ActiveWorkbook.Path & "\Measures"
     Else
         strMeasureDir = Range("MeasuresDir")
     End If
@@ -173,10 +174,10 @@ End Sub
 
 Sub BrowseOutputDir()
     If Range("ThisDir") = "" Then
-        Range("ThisDir") = Application.ActiveWorkbook.path
+        Range("ThisDir") = Application.ActiveWorkbook.Path
     End If
     If Range("OutputDir") = "" Then
-        strOutputDir = Application.ActiveWorkbook.path & "\Output"
+        strOutputDir = Application.ActiveWorkbook.Path & "\Output"
     Else
         strOutputDir = Range("OutputDir")
     End If
@@ -186,10 +187,10 @@ End Sub
 
 Sub BrowseWeatherDir()
     If Range("ThisDir") = "" Then
-        Range("ThisDir") = Application.ActiveWorkbook.path
+        Range("ThisDir") = Application.ActiveWorkbook.Path
     End If
     If Range("WeatherDir") = "" Then
-        strWeatherDir = Application.ActiveWorkbook.path & "\Wetter"
+        strWeatherDir = Application.ActiveWorkbook.Path & "\Wetter"
     Else
         strWeatherDir = Range("WeatherDir")
     End If
@@ -206,7 +207,7 @@ Function load_file_from_folder(filetype As String, weatherfile As String)
     Dim fileDialog As fileDialog: Set fileDialog = Application.fileDialog(msoFileDialogFilePicker)
     
     
-    fileDialog.InitialFileName = Application.ActiveWorkbook.path
+    fileDialog.InitialFileName = Application.ActiveWorkbook.Path
     fileDialog.ButtonName = "Speichern"
     fileDialog.Title = "Bitte Datei auswählen"
     fileDialog.Filters.Clear
@@ -218,14 +219,14 @@ Function load_file_from_folder(filetype As String, weatherfile As String)
         parts = Split(filetype, "-")
         firstPart = parts(0)
         secondPart = parts(1)
-        fileDialog.InitialFileName = Application.ActiveWorkbook.path & "\*." & firstPart
+        fileDialog.InitialFileName = Application.ActiveWorkbook.Path & "\*." & firstPart
         fileDialog.Filters.Add firstPart & " Files", "*." & firstPart, 1
         fileDialog.Filters.Add secondPart & " Files", "*." & secondPart, 2
         If UBound(parts) >= 2 Then
             fileDialog.Filters.Add parts(2) & " Files", "*." & parts(2), 3
         End If
     Else
-        fileDialog.InitialFileName = Application.ActiveWorkbook.path & "\*." & filetype
+        fileDialog.InitialFileName = Application.ActiveWorkbook.Path & "\*." & filetype
         fileDialog.Filters.Add filetype & " Files", "*." & filetype, 1
     End If
     
@@ -251,7 +252,7 @@ Sub import_geometry_osm()
     Dim file_types As String
     Dim weather_file As String
     file_types = "osm-idf"
-    If IsDockerInstalled() Then
+    If IsDockerInstalled() And IFC_IMPORT Then
         file_types = "osm-idf-ifc"
         If Not (IsDockerRunning()) Then
             MsgBox ("Your Docker/Docker Desktop is not running, please start it.")
@@ -437,7 +438,7 @@ Sub FillLocationParameters(bForce As Boolean)
     If bForce Or IsEmpty(Range("Name")) Then
         Dim dd As DropDown
         Set dd = Sheets("HAUPTSEITE").DropDowns("DropDown1")
-        myFile = Application.ActiveWorkbook.path & "\Wetter\" & dd.List(dd.Value)
+        myFile = Application.ActiveWorkbook.Path & "\Wetter\" & dd.List(dd.Value)
         Value = dd.Value
         Open myFile For Input As #1
         ' read the first line
@@ -561,7 +562,7 @@ Sub ImportOSWFile()
     'Request source file from user
     fileDialog.ButtonName = "Laden"
     fileDialog.Title = "Bitte Konfiguration auswählen"
-    fileDialog.InitialFileName = Application.ActiveWorkbook.path & "\Output"
+    fileDialog.InitialFileName = Application.ActiveWorkbook.Path & "\Output"
     fileDialog.Filters.Add "OSW Files", "*.osw", 1
     fileDialog.FilterIndex = 1
 
@@ -601,7 +602,7 @@ Sub ExportOSWFile()
     'displays the save file dialog
     varResult = Application.GetSaveAsFilename(FileFilter:= _
         "OSW Files (*.osw), *.osw", Title:="Bitte Speicherort auswählen", _
-        InitialFileName:=Application.ActiveWorkbook.path & "\Output\exported.osw")
+        InitialFileName:=Application.ActiveWorkbook.Path & "\Output\exported.osw")
     'checks to make sure the user hasn't canceled the dialog
     If varResult <> False Then
         'Notify the user that this process might take a while
@@ -636,7 +637,7 @@ Sub OpenErrorFile()
     Dim result As Integer
     Dim last As String
     
-    current = Dir(Application.ActiveWorkbook.path & "\Output\run\eplusout.err")
+    current = Dir(Application.ActiveWorkbook.Path & "\Output\run\eplusout.err")
     FileName = current
     Do While Len(current) > 0
         last = current
@@ -649,7 +650,7 @@ Sub OpenErrorFile()
     Loop
     
     If (FileName <> "") Then
-        result = Shell("notepad.exe " & Application.ActiveWorkbook.path & "\Output\run\" & FileName, vbNormalFocus)
+        result = Shell("notepad.exe " & Application.ActiveWorkbook.Path & "\Output\run\" & FileName, vbNormalFocus)
     End If
 End Sub
 
