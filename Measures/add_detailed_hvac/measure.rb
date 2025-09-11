@@ -89,7 +89,7 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
     args << return_fan_pressure_rise
     system_type = OpenStudio::Measure::OSArgument.makeDoubleArgument("system_type", true)
     system_type.setDisplayName("Type of ventilation system")
-    system_type.setDefaultValue(1)
+    system_type.setDefaultValue(1) # 1 => Abluftanlage, 2 => Zentrale Lüftungsanlage, 3 => keine Lüftung
     args << system_type
 
     # hot water temperature schedule use default of 67??
@@ -135,9 +135,14 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
     return_fan_pressure_rise = runner.getDoubleArgumentValue("return_fan_pressure_rise", user_arguments)
     system_type = runner.getDoubleArgumentValue("system_type", user_arguments)
 
-    hvacSched = CreateSchedule(model, "HVACSched", hvac_sched_weekday, hvac_sched_saturday, hvac_sched_sunday, hvac_sched_holiday, holidays)
     zoneHeatingTempSched = CreateSchedule(model, "ZoneHeatingTempSched", zone_heating_temp_sched_weekday, zone_heating_temp_sched_saturday, zone_heating_temp_sched_sunday, zone_heating_temp_sched_holiday, holidays, false, true)
     zoneCoolingTempSched = CreateSchedule(model, "ZoneCoolingTempSched", zone_cooling_temp_sched_weekday, zone_cooling_temp_sched_saturday, zone_cooling_temp_sched_sunday, zone_cooling_temp_sched_holiday, holidays)
+
+    if system_type == 3
+        runner.registerInfo("No mechanical ventilation selected, no air loop is added")
+        return
+    end
+    hvacSched = CreateSchedule(model, "HVACSched", hvac_sched_weekday, hvac_sched_saturday, hvac_sched_sunday, hvac_sched_holiday, holidays)
 
     # rescale air change rate to conditioned volume and GFA
     ach_per_hour = ach_per_hour * nfa_gfa_ratio * floor_height_ratio
