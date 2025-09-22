@@ -146,7 +146,7 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
         comp.setString(8, "#{comp_name} - Heating Water Inlet")
         comp.setString(9, "#{comp_name} - Heating Water Outlet")
         comp.setString(10, "Autosize")
-        #comp.setString(11, "Autosize")
+        comp.setString(11, "Autosize")
         comp.setString(12, "#{comp_name} - Cooling Water Inlet")
         comp.setString(13, "#{comp_name} - Cooling Water Outlet")
         #comp.setString(14, "CalculateFromCircuitLength")

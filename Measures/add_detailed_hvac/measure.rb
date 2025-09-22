@@ -415,14 +415,10 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
           runner.registerWarning("Could not add cooling coil radiant #{coolingCoilRadiant.name}")
         end
         # set design capacity for heating and cooling
-        # heatingCoilRadiant.setHeatingDesignCapacity(0)
         heatingCoilRadiant.setHeatingDesignCapacityMethod("HeatingDesignCapacity")
         heatingCoilRadiant.autosizeHeatingDesignCapacity()
         coolingCoilRadiant.setCoolingDesignCapacityMethod("CoolingDesignCapacity")
         coolingCoilRadiant.autosizeCoolingDesignCapacity()
-        # coolingCoilRadiant.setMaximumColdWaterFlow(coldWaterFlowPerArea * zone.floorArea())
-        # coolingCoilRadiant.setCoolingDesignCapacityMethod("CapacityPerFloorArea")
-        # coolingCoilRadiant.setCoolingDesignCapacityPerFloorArea(100)
       else
         runner.registerInfo("Found version #{current_version.to_s()} < 3.2.0")
         hotWaterPlant.addDemandBranchForComponent(radiantLowTVarFlow.heatingCoil());
