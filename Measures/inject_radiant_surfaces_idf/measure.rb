@@ -74,9 +74,8 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
     runner.registerInitialCondition("The building started with #{lowTempRadiants.size} Low Temp Radiant objects and #{internalMasses.size} Internal Masses.")
 
     current_version = OpenStudio::VersionString.new(OpenStudio.openStudioVersion())
-    required_version = OpenStudio::VersionString.new(3,2,0)
 
-    if current_version >= required_version
+    if current_version >= OpenStudio::VersionString.new(3,2,0)
       runner.registerInfo("Found version #{current_version.to_s()} >= 3.2.0")
       # since version 3.2 the low temp radiant object do not get propertly converted into IDF so this code will fix it
       # init the dictionary
@@ -147,7 +146,7 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
         comp.setString(8, "#{comp_name} - Heating Water Inlet")
         comp.setString(9, "#{comp_name} - Heating Water Outlet")
         comp.setString(10, "Autosize")
-        #comp.setString(11, "Autosize")
+        comp.setString(11, "Autosize")
         comp.setString(12, "#{comp_name} - Cooling Water Inlet")
         comp.setString(13, "#{comp_name} - Cooling Water Outlet")
         #comp.setString(14, "CalculateFromCircuitLength")

@@ -98,6 +98,7 @@ Function ParseEIOFile(filePath As String) As Boolean
     Dim FileNum As Integer
     Dim DataLine As String
 
+    On Error GoTo CleanFail
     FileNum = FreeFile()
     Open filePath For Input As #FileNum
 
@@ -166,6 +167,18 @@ Function ParseEIOFile(filePath As String) As Boolean
     Application.ScreenUpdating = True
 
     ParseEIOFile = bFound
+    
+CleanExit:
+    If FileNum > 0 Then
+        Close #FileNum   ' always close the file
+    End If
+    Exit Function
+    
+CleanFail:
+    ' Optional: log or show error
+    ' MsgBox "Error in ParseEIOFile: " & Err.Description
+    ParseEIOFile = False
+    Resume CleanExit
 End Function
 
 

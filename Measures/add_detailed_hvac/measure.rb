@@ -106,6 +106,9 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
     # use the built-in error checking
     return false unless runner.validateUserArguments(arguments(model), user_arguments)
 
+    # get current version
+    current_version = OpenStudio::VersionString.new(OpenStudio.openStudioVersion())
+
     # Abruf der Variablen
     heat_recovery_method = runner.getStringArgumentValue("heat_recovery_method", user_arguments)
     latent_efficiency = runner.getDoubleArgumentValue("latent_efficiency", user_arguments)
@@ -187,20 +190,32 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
 
       heat_exchanger = OpenStudio::Model::HeatExchangerAirToAirSensibleAndLatent.new(model)
       heat_exchanger.setAvailabilitySchedule(hvacSched)
-      heat_exchanger.setSensibleEffectivenessat100CoolingAirFlow(sensible_efficiency)
-      heat_exchanger.setSensibleEffectivenessat100HeatingAirFlow(sensible_efficiency)
-      heat_exchanger.setSensibleEffectivenessat75CoolingAirFlow(sensible_efficiency)
-      heat_exchanger.setSensibleEffectivenessat75HeatingAirFlow(sensible_efficiency)
-      if heat_recovery_method == "Enthalpy"
-        heat_exchanger.setLatentEffectivenessat100CoolingAirFlow(latent_efficiency)
-        heat_exchanger.setLatentEffectivenessat100HeatingAirFlow(latent_efficiency)
-        heat_exchanger.setLatentEffectivenessat75CoolingAirFlow(latent_efficiency)
-        heat_exchanger.setLatentEffectivenessat75HeatingAirFlow(latent_efficiency)
-      else
-        heat_exchanger.setLatentEffectivenessat100CoolingAirFlow(0)
-        heat_exchanger.setLatentEffectivenessat100HeatingAirFlow(0)
-        heat_exchanger.setLatentEffectivenessat75CoolingAirFlow(0)
-        heat_exchanger.setLatentEffectivenessat75HeatingAirFlow(0)
+      if current_version < OpenStudio::VersionString.new(3,8,0)
+          heat_exchanger.setSensibleEffectivenessat100CoolingAirFlow(sensible_efficiency)
+          heat_exchanger.setSensibleEffectivenessat100HeatingAirFlow(sensible_efficiency)
+          heat_exchanger.setSensibleEffectivenessat75CoolingAirFlow(sensible_efficiency)
+          heat_exchanger.setSensibleEffectivenessat75HeatingAirFlow(sensible_efficiency)
+          if heat_recovery_method == "Enthalpy"
+            heat_exchanger.setLatentEffectivenessat100CoolingAirFlow(latent_efficiency)
+            heat_exchanger.setLatentEffectivenessat100HeatingAirFlow(latent_efficiency)
+            heat_exchanger.setLatentEffectivenessat75CoolingAirFlow(latent_efficiency)
+            heat_exchanger.setLatentEffectivenessat75HeatingAirFlow(latent_efficiency)
+          else
+            heat_exchanger.setLatentEffectivenessat100CoolingAirFlow(0)
+            heat_exchanger.setLatentEffectivenessat100HeatingAirFlow(0)
+            heat_exchanger.setLatentEffectivenessat75CoolingAirFlow(0)
+            heat_exchanger.setLatentEffectivenessat75HeatingAirFlow(0)
+          end
+      else # >= 3.8.0
+          heat_exchanger.setSensibleEffectivenessat100CoolingAirFlow(sensible_efficiency)
+          heat_exchanger.setSensibleEffectivenessat100HeatingAirFlow(sensible_efficiency)
+          if heat_recovery_method == "Enthalpy"
+            heat_exchanger.setLatentEffectivenessat100CoolingAirFlow(latent_efficiency)
+            heat_exchanger.setLatentEffectivenessat100HeatingAirFlow(latent_efficiency)
+          else
+            heat_exchanger.setLatentEffectivenessat100CoolingAirFlow(0)
+            heat_exchanger.setLatentEffectivenessat100HeatingAirFlow(0)
+          end
       end
       heat_exchanger.setSupplyAirOutletTemperatureControl(true)
       heat_exchanger.addToNode(system_OA.outboardOANode.get)
@@ -396,10 +411,7 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
       # attach the zone to the baseboard
       radiantLowTVarFlow.addToThermalZone(zone)
 
-      current_version = OpenStudio::VersionString.new(OpenStudio.openStudioVersion())
-      required_version = OpenStudio::VersionString.new(3,2,0)
-
-      if current_version >= required_version
+      if current_version >= OpenStudio::VersionString.new(3,2,0)
         runner.registerInfo("Found version #{current_version.to_s()} >= 3.2.0")
         if !hotWaterPlant.addDemandBranchForComponent(radiantLowTVarFlow.heatingCoil().get)
           runner.registerWarning("Could not add heating coil radiant #{heatingCoilRadiant.name}")
@@ -408,14 +420,10 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
           runner.registerWarning("Could not add cooling coil radiant #{coolingCoilRadiant.name}")
         end
         # set design capacity for heating and cooling
-        # heatingCoilRadiant.setHeatingDesignCapacity(0)
         heatingCoilRadiant.setHeatingDesignCapacityMethod("HeatingDesignCapacity")
         heatingCoilRadiant.autosizeHeatingDesignCapacity()
         coolingCoilRadiant.setCoolingDesignCapacityMethod("CoolingDesignCapacity")
         coolingCoilRadiant.autosizeCoolingDesignCapacity()
-        # coolingCoilRadiant.setMaximumColdWaterFlow(coldWaterFlowPerArea * zone.floorArea())
-        # coolingCoilRadiant.setCoolingDesignCapacityMethod("CapacityPerFloorArea")
-        # coolingCoilRadiant.setCoolingDesignCapacityPerFloorArea(100)
       else
         runner.registerInfo("Found version #{current_version.to_s()} < 3.2.0")
         hotWaterPlant.addDemandBranchForComponent(radiantLowTVarFlow.heatingCoil());
