@@ -129,6 +129,13 @@ Function ParseEIOFile(filePath As String) As Boolean
                 Else
                     dHeatingSystem = CDbl(splitarray(4)) / 1000
                 End If
+            ElseIf InStr(splitarray(1), "DistrictHeating:Water") Then  ' name change in the later energyPlus versions
+                bFound = True
+                If Application.International(xlDecimalSeparator) = "," Then
+                    dHeatingSystem = CDbl(Replace(splitarray(4), ".", ",")) / 1000
+                Else
+                    dHeatingSystem = CDbl(splitarray(4)) / 1000
+                End If
             End If
         End If
 

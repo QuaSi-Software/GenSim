@@ -509,7 +509,7 @@
     },
     {
         "name": "Total Heating",
-        "eplus_variables": ["DistrictHeating:Facility"],
+        "eplus_variables": ["DistrictHeatingWater:Facility"],
         "node_reference": "",
         "create_output_variable": false,
         "create_custom_meter": true,

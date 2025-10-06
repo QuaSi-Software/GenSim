@@ -126,7 +126,7 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
                    end
 
     meters = []
-    meters << "DistrictHeating:Facility"
+    meters << "DistrictHeatingWater:Facility"
     meters << "DistrictCooling:Facility"
     meters << "InteriorLights:Electricity"
     meters << "InteriorEquipment:Electricity"
