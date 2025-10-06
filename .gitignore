@@ -10,7 +10,7 @@ GenSimEPlus.komodoproject
 
 # Log and output files
 *.log
-Output/
+Output*/
 readvars.audit
 Measures/test/*
 Measures/test_results/*
