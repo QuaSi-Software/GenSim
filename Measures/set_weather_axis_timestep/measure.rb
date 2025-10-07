@@ -101,14 +101,14 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
           end
       else
             # Create Summer Extreme Sizing Period
-            summer_extreme = OpenStudio::Model::SizingPeriodWeatherFileConditionType.new("SummerExtreme")
+            summer_extreme = OpenStudio::Model::WeatherFileConditionType.new(model)
             summer_extreme.setName("Summer Extreme")
-            summer_extreme.setWeatherFileConditionType("SummerExtreme")
+            # summer_extreme.setWeatherFileConditionType("SummerExtreme")
 
             # Create Winter Extreme Sizing Period
-            winter_extreme = OpenStudio::Model::SizingPeriodWeatherFileConditionType.new(model)
+            winter_extreme = OpenStudio::Model::WeatherFileConditionType.new(model)
             winter_extreme.setName("Winter Extreme")
-            winter_extreme.setWeatherFileConditionType("WinterExtreme")
+            # winter_extreme.setWeatherFileConditionType("WinterExtreme")
       end
     else
       runner.registerInfo("'#{weatherFilePath}' does not exist or is not an .epw file.")
