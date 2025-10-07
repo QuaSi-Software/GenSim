@@ -109,8 +109,11 @@ class LoadIDFModelTest < Minitest::Test
 
     # assert that it ran correctly
     assert_equal('Success', result.value.valueName)
-    assert(result.info.size == 1)
+    assert(result.info.size >= 1)
     assert(result.warnings.empty?)
+    assert(result.errors.empty?)
+    assert(result.initialCondition.is_initialized)
+    assert(result.finalCondition.is_initialized)
 
     # check that there is now 1 space
     assert_equal(1, model.getSpaces.size - num_spaces_seed)

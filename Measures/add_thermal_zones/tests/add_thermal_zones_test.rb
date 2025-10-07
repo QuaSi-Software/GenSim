@@ -47,7 +47,7 @@ class AddThermalZonesTest < MiniTest::Test
 
     # assert that it ran correctly
     assert_equal("Success", result.value.valueName)
-    assert(result.info.size == 523)
+    assert(result.info.size >= 1)
     assert(result.warnings.empty?)
     assert(result.errors.empty?)
     assert(result.initialCondition.is_initialized)

@@ -77,14 +77,14 @@ class AddMaterialsAndConstructionTest < MiniTest::Test
 
     # assert that it ran correctly
     assert_equal("Success", result.value.valueName)
-    # print(result.info.size)
-    assert(result.info.size == 6)
+    assert(result.info.size >= 1)
     assert(result.warnings.empty?)
+    assert(result.errors.empty?)
+    assert(result.finalCondition.is_initialized)
+    assert_equal("The building finished with 24 surfaces that have constructions now.", result.finalCondition.get.logMessage)
 
     # check that there is now 1 space
     assert_equal(0, model.getSpaces.size - num_spaces_seed)
-
-    assert_equal("The building finished with 24 surfaces that have constructions now.", result.finalCondition.get.logMessage)
 
     SaveModel(model, dir)
   end

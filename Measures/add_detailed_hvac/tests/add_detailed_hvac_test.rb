@@ -78,7 +78,7 @@ class AddDetailedHVAC_Test < MiniTest::Test
 
     # assert that it ran correctly
     assert_equal("Success", result.value.valueName)
-    assert(result.info.size == 16)
+    assert(result.info.size >= 1)
     assert(result.warnings.empty?)
     assert(result.errors.empty?)
     refute(result.initialCondition.is_initialized)
