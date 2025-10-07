@@ -122,6 +122,14 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
 
       i = 0
       zones.each do |zone|
+        # if we have fewer branches than zones, skip the extra zones. this is particularly
+        # the case during testing on an empty model, which doesn't have any branches, but
+        # one zone
+        if list_branches_chilled.size - 1 < i || list_branches_hot.size - 1 < i
+          runner.registerInfo("Skipping empty zones for updating branches")
+          next
+        end
+
         zone_name = zone.getString(0).get
         comp_name = "#{zone_name} - LowTempRad"
 
