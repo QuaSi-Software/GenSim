@@ -62,9 +62,6 @@ class AddThermalZones < OpenStudio::Measure::ModelMeasure
       elsif modelObject.iddObjectType == "OS:Lights:Definition".to_IddObjectType
         modelObject.remove
         numberOfObjectsRemoved += 1
-      elsif modelObject.iddObjectType == "OS:Lights:Definition".to_IddObjectType
-        modelObject.remove
-        numberOfObjectsRemoved += 1
       elsif modelObject.iddObjectType == "OS:Schedule:Ruleset".to_IddObjectType
         modelObject.remove
         numberOfObjectsRemoved += 1

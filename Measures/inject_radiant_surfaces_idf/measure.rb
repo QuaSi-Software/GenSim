@@ -54,9 +54,9 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
     weekSchedules = workspace.getObjectsByType("Schedule:Week:Daily".to_IddObjectType)
     yearSchedules = workspace.getObjectsByType("Schedule:Year".to_IddObjectType)
     yearSchedules.each do |yearSchedule|
-       if yearSchedule.getString(0).get == "SAT Year Schedule"
-          if !yearSchedule.getDouble(4).is_initialized
-            weekSchedules.each do |weekSchedule|
+      if yearSchedule.getString(0).get == "SAT Year Schedule"
+        if !yearSchedule.getDouble(4).is_initialized
+          weekSchedules.each do |weekSchedule|
             if weekSchedule.getString(0).get == "SAT Week Schedule 10 deg C"
               yearSchedule.setString(2, "SAT Week Schedule 10 deg C")
               yearSchedule.setDouble(3, 1)
@@ -65,8 +65,8 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
               yearSchedule.setDouble(6, 31)
             end
           end
-         end
-       end
+        end
+      end
     end
 
     counter = 0
@@ -76,7 +76,7 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
     current_version = OpenStudio::VersionString.new(OpenStudio.openStudioVersion())
 
     if current_version >= OpenStudio::VersionString.new(3,2,0)
-      runner.registerInfo("Found version #{current_version.to_s()} >= 3.2.0")
+      runner.registerInfo("Found version #{current_version} >= 3.2.0")
       # since version 3.2 the low temp radiant object do not get propertly converted into IDF so this code will fix it
       # init the dictionary
       list_branches_chilled = []
@@ -90,11 +90,11 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
           runner.registerInfo("Empty Branch Component found: #{branch_name}")
           if branch_name.start_with?("Chilled Water Loop")
             runner.registerInfo("Starts with chilled water")
-            comp_name = "LowTempRad " + branch_name.sub("Chilled Water Loop", "").strip
+            # comp_name = "LowTempRad " + branch_name.sub("Chilled Water Loop", "").strip
             list_branches_chilled << branch
           elsif branch_name.start_with?("Hot Water Loop")
             runner.registerInfo("Starts with hot water")
-            comp_name = "LowTempRad " + branch_name.sub("Hot Water Loop", "").strip
+            # comp_name = "LowTempRad " + branch_name.sub("Hot Water Loop", "").strip
             list_branches_hot << branch
           end
         end
@@ -195,41 +195,39 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
         counter = counter + 1
       end
 
-      '''
-      ZoneHVAC:LowTemperatureRadiant:VariableFlow,
-       0  Zone HVAC Low Temperature Radiant Variable Flow 1, !- Name
-       1  Always On Discrete,                     !- Availability Schedule Name
-       2  EXT-Story 1 Core Zone,                  !- Zone Name
-       3  Internal Mass 1,                        !- Surface Name or Radiant Surface Group Name
-       4  0.013,                                  !- Hydronic Tubing Inside Diameter {m}
-       5  Autosize,                               !- Hydronic Tubing Length {m}
-       6  MeanAirTemperature,                     !- Temperature Control Type
-       7  HeatingDesignCapacity,                  !- Heating Design Capacity Method
-       8  Autosize,                               !- Heating Design Capacity {W}
-       9  ,                                       !- Heating Design Capacity Per Floor Area {W/m2}
-      10  ,                                       !- Fraction of Autosized Heating Design Capacity
-      11  0,                                      !- Maximum Hot Water Flow {m3/s}
-      12  Node 33,                                !- Heating Water Inlet Node Name
-      13  Node 34,                                !- Heating Water Outlet Node Name
-      14  0.5,                                    !- Heating Control Throttling Range {deltaC}
-      15  ZoneHeatingTempSched,                   !- Heating Control Temperature Schedule Name
-      16  CoolingDesignCapacity,                  !- Cooling Design Capacity Method
-      17  Autosize,                               !- Cooling Design Capacity {W}
-      18  ,                                       !- Cooling Design Capacity Per Floor Area {W/m2}
-      19  ,                                       !- Fraction of Autosized Cooling Design Capacity
-      20  Autosize,                               !- Maximum Cold Water Flow {m3/s}
-      21  Node 26,                                !- Cooling Water Inlet Node Name
-      22  Node 35,                                !- Cooling Water Outlet Node Name
-      23  0.5,                                    !- Cooling Control Throttling Range {deltaC}
-      24  ZoneCoolingTempSched,                   !- Cooling Control Temperature Schedule Name
-      25  SimpleOff,                              !- Condensation Control Type
-      26  1,                                      !- Condensation Control Dewpoint Offset {C}
-      27  CalculateFromCircuitLength,             !- Number of Circuits
-      28  106.7;                                  !- Circuit Length {m}
-      '''
+      # ZoneHVAC:LowTemperatureRadiant:VariableFlow,
+      #  0  Zone HVAC Low Temperature Radiant Variable Flow 1, !- Name
+      #  1  Always On Discrete,                     !- Availability Schedule Name
+      #  2  EXT-Story 1 Core Zone,                  !- Zone Name
+      #  3  Internal Mass 1,                        !- Surface Name or Radiant Surface Group Name
+      #  4  0.013,                                  !- Hydronic Tubing Inside Diameter {m}
+      #  5  Autosize,                               !- Hydronic Tubing Length {m}
+      #  6  MeanAirTemperature,                     !- Temperature Control Type
+      #  7  HeatingDesignCapacity,                  !- Heating Design Capacity Method
+      #  8  Autosize,                               !- Heating Design Capacity {W}
+      #  9  ,                                       !- Heating Design Capacity Per Floor Area {W/m2}
+      # 10  ,                                       !- Fraction of Autosized Heating Design Capacity
+      # 11  0,                                      !- Maximum Hot Water Flow {m3/s}
+      # 12  Node 33,                                !- Heating Water Inlet Node Name
+      # 13  Node 34,                                !- Heating Water Outlet Node Name
+      # 14  0.5,                                    !- Heating Control Throttling Range {deltaC}
+      # 15  ZoneHeatingTempSched,                   !- Heating Control Temperature Schedule Name
+      # 16  CoolingDesignCapacity,                  !- Cooling Design Capacity Method
+      # 17  Autosize,                               !- Cooling Design Capacity {W}
+      # 18  ,                                       !- Cooling Design Capacity Per Floor Area {W/m2}
+      # 19  ,                                       !- Fraction of Autosized Cooling Design Capacity
+      # 20  Autosize,                               !- Maximum Cold Water Flow {m3/s}
+      # 21  Node 26,                                !- Cooling Water Inlet Node Name
+      # 22  Node 35,                                !- Cooling Water Outlet Node Name
+      # 23  0.5,                                    !- Cooling Control Throttling Range {deltaC}
+      # 24  ZoneCoolingTempSched,                   !- Cooling Control Temperature Schedule Name
+      # 25  SimpleOff,                              !- Condensation Control Type
+      # 26  1,                                      !- Condensation Control Dewpoint Offset {C}
+      # 27  CalculateFromCircuitLength,             !- Number of Circuits
+      # 28  106.7;                                  !- Circuit Length {m}
 
     else
-      runner.registerInfo("Found version #{current_version.to_s()} < 3.2.0")
+      runner.registerInfo("Found version #{current_version} < 3.2.0")
       # this is the old way of adjusting the low temperature components, by just adding the related internal mass object
       lowTempRadiants.each do |lowTempRadiant|
         runner.registerInfo("LowTempZoneName: #{lowTempRadiant.getString(2)}")

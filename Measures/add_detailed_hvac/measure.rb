@@ -21,7 +21,7 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
   end
 
   # define the arguments that the user will input
-  def arguments(model)
+  def arguments(_model)
     args = OpenStudio::Measure::OSArgumentVector.new
     heat_recovery_method = OpenStudio::Measure::OSArgument.makeStringArgument("heat_recovery_method", true)
     heat_recovery_method.setDisplayName("Heat recovery method")
@@ -412,7 +412,7 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
       radiantLowTVarFlow.addToThermalZone(zone)
 
       if current_version >= OpenStudio::VersionString.new(3,2,0)
-        runner.registerInfo("Found version #{current_version.to_s()} >= 3.2.0")
+        runner.registerInfo("Found version #{current_version} >= 3.2.0")
         if !hotWaterPlant.addDemandBranchForComponent(radiantLowTVarFlow.heatingCoil().get)
           runner.registerWarning("Could not add heating coil radiant #{heatingCoilRadiant.name}")
         end
@@ -425,7 +425,7 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
         coolingCoilRadiant.setCoolingDesignCapacityMethod("CoolingDesignCapacity")
         coolingCoilRadiant.autosizeCoolingDesignCapacity()
       else
-        runner.registerInfo("Found version #{current_version.to_s()} < 3.2.0")
+        runner.registerInfo("Found version #{current_version} < 3.2.0")
         hotWaterPlant.addDemandBranchForComponent(radiantLowTVarFlow.heatingCoil());
         chilledWaterPlant.addDemandBranchForComponent(radiantLowTVarFlow.coolingCoil());
       end

@@ -17,7 +17,7 @@ class LoadIDFModelC < OpenStudio::Measure::ModelMeasure
   end
 
   # define the arguments that the user will input
-  def arguments(model)
+  def arguments(_model)
     args = OpenStudio::Measure::OSArgumentVector.new
 
     # the name of the space to add to the model
@@ -61,7 +61,6 @@ class LoadIDFModelC < OpenStudio::Measure::ModelMeasure
           runner.registerError("Failed to load IDF file at #{idf_file_path}")
           return false
         end
-        idf_file = idf_file.get
 
         # Create a ModelTranslator to convert IDF to OSM
         translator = OpenStudio::EnergyPlus::ReverseTranslator.new

@@ -20,7 +20,7 @@ class Results < OpenStudio::Measure::ReportingMeasure
   end
 
   # define the arguments that the user will input
-  def arguments(model = nil)
+  def arguments(_model)
     args = OpenStudio::Measure::OSArgumentVector.new
 
     args << OpenStudio::Measure::OSArgument::makeIntegerArgument("timestep", true)
@@ -206,17 +206,17 @@ class Results < OpenStudio::Measure::ReportingMeasure
     sqlFile = getSQLFile(runner)
     ann_env_pd = getEnvPeriod(runner, sqlFile)
 
-    reporting_frequencies.each do |reporting_frequency|
+    reporting_frequencies.each do |rep_freq|
       runner.registerInfo("***********************************************")
       runner.registerInfo("***********************************************")
-      runner.registerInfo("Reporting Frequency = #{reporting_frequency}")
+      runner.registerInfo("Reporting Frequency = #{rep_freq}")
       runner.registerInfo("Environmental Period = #{ann_env_pd}")
 
-      headers = ["#{reporting_frequency}"]
+      headers = ["#{rep_freq}"]
       output_timeseries = {}
       conversion_factors = {}
 
-      variable_names = sqlFile.availableVariableNames(ann_env_pd, reporting_frequency)
+      variable_names = sqlFile.availableVariableNames(ann_env_pd, rep_freq)
       variable_names.each do |variable_name|
         runner.registerInfo("****************************")
         runner.registerInfo("Variable Name = #{variable_name}")
@@ -226,7 +226,7 @@ class Results < OpenStudio::Measure::ReportingMeasure
           next
         end
 
-        time_series_vec = sqlFile.timeSeries(ann_env_pd, reporting_frequency, variable_name.to_s)
+        time_series_vec = sqlFile.timeSeries(ann_env_pd, rep_freq, variable_name.to_s)
         if time_series_vec.empty?
           runner.registerWarning("Time series for #{variable_name} is empty.")
           next
@@ -238,7 +238,7 @@ class Results < OpenStudio::Measure::ReportingMeasure
           if (units == "J") or (units == "W")
             headerunits = "Wh"
           end
-          header = "#{variable_name.to_s}[#{headerunits}]"
+          header = "#{variable_name}[#{headerunits}]"
           headers << header
 
           if !output_timeseries.include?(header)
@@ -257,12 +257,12 @@ class Results < OpenStudio::Measure::ReportingMeasure
       end
 
       if output_timeseries.empty?
-        runner.registerInfo("No output variables found at reporting frequency = #{reporting_frequency}")
+        runner.registerInfo("No output variables found at reporting frequency = #{rep_freq}")
         next
       end
 
       # write output for absolute values, and optionally relative to gross and net area
-      csvFileName = reporting_frequency.delete(' ')
+      csvFileName = rep_freq.delete(' ')
       saveToCSVFile(runner, output_timeseries, headers, conversion_factors, 1, csvFileName)
       if gross
         saveToCSVFile(
