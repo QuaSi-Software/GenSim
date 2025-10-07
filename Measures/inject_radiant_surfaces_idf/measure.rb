@@ -192,6 +192,7 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
         end
 
         i = i + 1
+        counter = counter + 1
       end
 
       '''
@@ -249,7 +250,15 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
       surfGroup.remove()
     end
 
-	  runner.registerFinalCondition("The building finished with #{counter}/#{lowTempRadiants.size} updated low temperature rediant objects objects.")
+    # message prior to 3.2
+	  # runner.registerFinalCondition("The building finished with #{counter}/#{lowTempRadiants.size} updated low temperature radiant objects objects.")
+
+    # new message
+	  runner.registerFinalCondition(
+      "The building finished with #{counter}/#{zones.size} updated zones for " +
+      "#{list_branches_chilled.size} chilled branches and #{list_branches_hot.size} hot " +
+      "branches and #{lowTempRadiants.size} low temperature radiant objects."
+    )
 
     return true
   end
