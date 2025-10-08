@@ -167,7 +167,7 @@ class Results < OpenStudio::Measure::ReportingMeasure
     super(runner, user_arguments)
 
     # use the built-in error checking
-    if !runner.validateUserArguments(arguments(), user_arguments)
+    if !runner.validateUserArguments(arguments("dummy"), user_arguments)
       return false
     end
 
