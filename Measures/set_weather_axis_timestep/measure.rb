@@ -119,28 +119,6 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
       building.setNorthAxis(northAxis)
     end
 
-    repfrequency = "Hourly"
-    repfrequency = if timestep >= 60
-                     "Hourly"
-                   else
-                     "Timestep"
-                   end
-
-    meters = []
-    meters << "DistrictHeatingWater:Facility"
-    meters << "DistrictCooling:Facility"
-    meters << "InteriorLights:Electricity"
-    meters << "InteriorEquipment:Electricity"
-    meters << "ElectricityProduced:Plant"
-    meters << "Electricity:Facility"
-    meters << "Photovoltaic:ElectricityProduced"
-    # add meters
-    meters.each do |meter|
-      newMeter = OpenStudio::Model::OutputMeter.new(model)
-      newMeter.setName(meter)
-      newMeter.setReportingFrequency(repfrequency)
-    end
-
     # create the timestep object
     osTimestep = model.getTimestep
     osTimestep.setNumberOfTimestepsPerHour(timestep)
