@@ -24,7 +24,7 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
     args << OpenStudio::Measure::OSArgument.makeStringArgument("weather_file_path", true)
     args << OpenStudio::Measure::OSArgument.makeIntegerArgument("time_step", true)
     northaxis = OpenStudio::Measure::OSArgument.makeDoubleArgument("north_axis", true)
-    northaxis.setDefaultValue(-9999)
+    northaxis.setDefaultValue(-9999.0)
     args << northaxis
     replace_design_days = OpenStudio::Measure::OSArgument.makeBoolArgument("replace_design_days", true)
     replace_design_days.setDefaultValue(true)  # <- this sets the default value
@@ -114,10 +114,11 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
       runner.registerInfo("'#{weatherFilePath}' does not exist or is not an .epw file.")
     end
 
-    if !northAxis == -9999
+    if northAxis != -9999.0
       building = model.getBuilding
       building.setNorthAxis(northAxis)
     end
+
     repfrequency = "Hourly"
     repfrequency = if timestep >= 60
                      "Hourly"
