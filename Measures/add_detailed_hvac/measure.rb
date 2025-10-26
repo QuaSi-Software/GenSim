@@ -141,9 +141,10 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
     zoneHeatingTempSched = CreateSchedule(model, "ZoneHeatingTempSched", zone_heating_temp_sched_weekday, zone_heating_temp_sched_saturday, zone_heating_temp_sched_sunday, zone_heating_temp_sched_holiday, holidays, false, true)
     zoneCoolingTempSched = CreateSchedule(model, "ZoneCoolingTempSched", zone_cooling_temp_sched_weekday, zone_cooling_temp_sched_saturday, zone_cooling_temp_sched_sunday, zone_cooling_temp_sched_holiday, holidays)
 
+    runner.registerInfo("system_type {system_type}")
     if system_type == 3
         runner.registerInfo("No mechanical ventilation selected, no air loop is added")
-        return
+        return true
     end
     hvacSched = CreateSchedule(model, "HVACSched", hvac_sched_weekday, hvac_sched_saturday, hvac_sched_sunday, hvac_sched_holiday, holidays)
 
@@ -181,7 +182,7 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
     returnFan = OpenStudio::Model::FanConstantVolume.new(model, hvacSched)
     returnFan.setName("Return Fan")
     returnFan.setPressureRise(return_fan_pressure_rise)
-	  returnFan.setFanEfficiency(1)
+	returnFan.setFanEfficiency(1)
     air_loop_comps << returnFan
 
     if (heat_recovery_method == "Sensible") || (heat_recovery_method == "Enthalpy")
