@@ -58,6 +58,9 @@ class AddShadingControls < OpenStudio::Measure::ModelMeasure
     # report initial condition of model
     runner.registerInitialCondition("Adding shading controls to potentially #{model.getSubSurfaces.size} windows wiht a setpoint of: #{setpoint}")
 
+    # get current version
+    current_version = OpenStudio::VersionString.new(OpenStudio.openStudioVersion())
+
     sub_surfaces.each do |sub_surface|
       # If Subsurface is not a window "next"
       next if sub_surface.subSurfaceType != "FixedWindow"
@@ -68,8 +71,15 @@ class AddShadingControls < OpenStudio::Measure::ModelMeasure
       new_shading_control = OpenStudio::Model::ShadingControl.new(new_shading_material)
       new_shading_control.setName("#{sub_surface.name} shading control")
       new_shading_control.setShadingControlType("OnIfHighSolarOnWindow")
+      if current_version >= OpenStudio::VersionString.new(3,2,0)
+        runner.registerInfo("Found version #{current_version} >= 3.2.0")
+        # workaround for the new version since the OnIfHighSolarOnWindow seems to have a bug
+        new_shading_control.setShadingControlType("OnIfHighHorizontalSolar")
+      end
       new_shading_control.setShadingType("ExteriorBlind")
       new_shading_control.setSetpoint(setpoint)
+      new_shading_control.setTypeofSlatAngleControlforBlinds("")
+      new_shading_control.setMultipleSurfaceControlType("Group") # set this to keep it the same before
       sub_surface.setShadingControl(new_shading_control)
     end # end subsurfaces.each do
 
