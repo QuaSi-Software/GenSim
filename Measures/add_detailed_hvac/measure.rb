@@ -144,158 +144,158 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
     runner.registerInfo("system_type {system_type}")
     if system_type == 3
         runner.registerInfo("No mechanical ventilation selected, no air loop is added")
-        return true
-    end
-    hvacSched = CreateSchedule(model, "HVACSched", hvac_sched_weekday, hvac_sched_saturday, hvac_sched_sunday, hvac_sched_holiday, holidays)
+    else
+        hvacSched = CreateSchedule(model, "HVACSched", hvac_sched_weekday, hvac_sched_saturday, hvac_sched_sunday, hvac_sched_holiday, holidays)
 
-    # rescale air change rate to conditioned volume and GFA
-    ach_per_hour = ach_per_hour * nfa_gfa_ratio * floor_height_ratio
+        # rescale air change rate to conditioned volume and GFA
+        ach_per_hour = ach_per_hour * nfa_gfa_ratio * floor_height_ratio
 
-    air_loop_comps = []
-    # creating the DOAS air loop
-    airLoopHVAC = OpenStudio::Model::AirLoopHVAC.new(model)
-    airLoopHVAC.setName("DOAS Air Loop")
-    sizingSystem = airLoopHVAC.sizingSystem()
-    sizingSystem.setTypeofLoadtoSizeOn("VentilationRequirement")
+        air_loop_comps = []
+        # creating the DOAS air loop
+        airLoopHVAC = OpenStudio::Model::AirLoopHVAC.new(model)
+        airLoopHVAC.setName("DOAS Air Loop")
+        sizingSystem = airLoopHVAC.sizingSystem()
+        sizingSystem.setTypeofLoadtoSizeOn("VentilationRequirement")
 
-    if system_type == 2
-      # if we do not have heat recovery we add only a return fan
-      supplyFan = OpenStudio::Model::FanConstantVolume.new(model, hvacSched)
-      supplyFan.setName("Supply Fan")
-      supplyFan.setPressureRise(supply_fan_pressure_rise)
-      supplyFan.setFanEfficiency(1)
-      air_loop_comps << supplyFan
-    end
+        if system_type == 2
+          # if we do not have heat recovery we add only a return fan
+          supplyFan = OpenStudio::Model::FanConstantVolume.new(model, hvacSched)
+          supplyFan.setName("Supply Fan")
+          supplyFan.setPressureRise(supply_fan_pressure_rise)
+          supplyFan.setFanEfficiency(1)
+          air_loop_comps << supplyFan
+        end
 
-    controller_OA = OpenStudio::Model::ControllerOutdoorAir.new(model)
-    controller_OA.autosizeMinimumOutdoorAirFlowRate
-    controller_OA.autosizeMaximumOutdoorAirFlowRate
-    controller_OA.setMinimumFractionofOutdoorAirSchedule(model.alwaysOnDiscreteSchedule)
-    controller_OA.setMaximumFractionofOutdoorAirSchedule(model.alwaysOnDiscreteSchedule)
+        controller_OA = OpenStudio::Model::ControllerOutdoorAir.new(model)
+        controller_OA.autosizeMinimumOutdoorAirFlowRate
+        controller_OA.autosizeMaximumOutdoorAirFlowRate
+        controller_OA.setMinimumFractionofOutdoorAirSchedule(model.alwaysOnDiscreteSchedule)
+        controller_OA.setMaximumFractionofOutdoorAirSchedule(model.alwaysOnDiscreteSchedule)
 
-    system_OA = OpenStudio::Model::AirLoopHVACOutdoorAirSystem.new(model, controller_OA)
-    air_loop_comps << system_OA
-    system_OA.outboardOANode.get.setName("Outside Air Node")
-    system_OA.outboardReliefNode.get.setName("Outside Relief Node")
-    # for now no heating or cooling coils
+        system_OA = OpenStudio::Model::AirLoopHVACOutdoorAirSystem.new(model, controller_OA)
+        air_loop_comps << system_OA
+        system_OA.outboardOANode.get.setName("Outside Air Node")
+        system_OA.outboardReliefNode.get.setName("Outside Relief Node")
+        # for now no heating or cooling coils
 
-    returnFan = OpenStudio::Model::FanConstantVolume.new(model, hvacSched)
-    returnFan.setName("Return Fan")
-    returnFan.setPressureRise(return_fan_pressure_rise)
-	returnFan.setFanEfficiency(1)
-    air_loop_comps << returnFan
+        returnFan = OpenStudio::Model::FanConstantVolume.new(model, hvacSched)
+        returnFan.setName("Return Fan")
+        returnFan.setPressureRise(return_fan_pressure_rise)
+        returnFan.setFanEfficiency(1)
+        air_loop_comps << returnFan
 
-    if (heat_recovery_method == "Sensible") || (heat_recovery_method == "Enthalpy")
-      runner.registerInfo("system_OA.outboardOANode:  #{system_OA.outboardOANode.get}")
-      runner.registerInfo("system_OA.outboardReliefNode:  #{system_OA.outboardReliefNode.get}")
+        if (heat_recovery_method == "Sensible") || (heat_recovery_method == "Enthalpy")
+          runner.registerInfo("system_OA.outboardOANode:  #{system_OA.outboardOANode.get}")
+          runner.registerInfo("system_OA.outboardReliefNode:  #{system_OA.outboardReliefNode.get}")
 
-      heat_exchanger = OpenStudio::Model::HeatExchangerAirToAirSensibleAndLatent.new(model)
-      heat_exchanger.setAvailabilitySchedule(hvacSched)
-      if current_version < OpenStudio::VersionString.new(3,8,0)
-          heat_exchanger.setSensibleEffectivenessat100CoolingAirFlow(sensible_efficiency)
-          heat_exchanger.setSensibleEffectivenessat100HeatingAirFlow(sensible_efficiency)
-          heat_exchanger.setSensibleEffectivenessat75CoolingAirFlow(sensible_efficiency)
-          heat_exchanger.setSensibleEffectivenessat75HeatingAirFlow(sensible_efficiency)
-          if heat_recovery_method == "Enthalpy"
-            heat_exchanger.setLatentEffectivenessat100CoolingAirFlow(latent_efficiency)
-            heat_exchanger.setLatentEffectivenessat100HeatingAirFlow(latent_efficiency)
-            heat_exchanger.setLatentEffectivenessat75CoolingAirFlow(latent_efficiency)
-            heat_exchanger.setLatentEffectivenessat75HeatingAirFlow(latent_efficiency)
-          else
-            heat_exchanger.setLatentEffectivenessat100CoolingAirFlow(0)
-            heat_exchanger.setLatentEffectivenessat100HeatingAirFlow(0)
-            heat_exchanger.setLatentEffectivenessat75CoolingAirFlow(0)
-            heat_exchanger.setLatentEffectivenessat75HeatingAirFlow(0)
+          heat_exchanger = OpenStudio::Model::HeatExchangerAirToAirSensibleAndLatent.new(model)
+          heat_exchanger.setAvailabilitySchedule(hvacSched)
+          if current_version < OpenStudio::VersionString.new(3,8,0)
+              heat_exchanger.setSensibleEffectivenessat100CoolingAirFlow(sensible_efficiency)
+              heat_exchanger.setSensibleEffectivenessat100HeatingAirFlow(sensible_efficiency)
+              heat_exchanger.setSensibleEffectivenessat75CoolingAirFlow(sensible_efficiency)
+              heat_exchanger.setSensibleEffectivenessat75HeatingAirFlow(sensible_efficiency)
+              if heat_recovery_method == "Enthalpy"
+                heat_exchanger.setLatentEffectivenessat100CoolingAirFlow(latent_efficiency)
+                heat_exchanger.setLatentEffectivenessat100HeatingAirFlow(latent_efficiency)
+                heat_exchanger.setLatentEffectivenessat75CoolingAirFlow(latent_efficiency)
+                heat_exchanger.setLatentEffectivenessat75HeatingAirFlow(latent_efficiency)
+              else
+                heat_exchanger.setLatentEffectivenessat100CoolingAirFlow(0)
+                heat_exchanger.setLatentEffectivenessat100HeatingAirFlow(0)
+                heat_exchanger.setLatentEffectivenessat75CoolingAirFlow(0)
+                heat_exchanger.setLatentEffectivenessat75HeatingAirFlow(0)
+              end
+          else # >= 3.8.0
+              heat_exchanger.setSensibleEffectivenessat100CoolingAirFlow(sensible_efficiency)
+              heat_exchanger.setSensibleEffectivenessat100HeatingAirFlow(sensible_efficiency)
+              if heat_recovery_method == "Enthalpy"
+                heat_exchanger.setLatentEffectivenessat100CoolingAirFlow(latent_efficiency)
+                heat_exchanger.setLatentEffectivenessat100HeatingAirFlow(latent_efficiency)
+              else
+                heat_exchanger.setLatentEffectivenessat100CoolingAirFlow(0)
+                heat_exchanger.setLatentEffectivenessat100HeatingAirFlow(0)
+              end
           end
-      else # >= 3.8.0
-          heat_exchanger.setSensibleEffectivenessat100CoolingAirFlow(sensible_efficiency)
-          heat_exchanger.setSensibleEffectivenessat100HeatingAirFlow(sensible_efficiency)
-          if heat_recovery_method == "Enthalpy"
-            heat_exchanger.setLatentEffectivenessat100CoolingAirFlow(latent_efficiency)
-            heat_exchanger.setLatentEffectivenessat100HeatingAirFlow(latent_efficiency)
+          heat_exchanger.setSupplyAirOutletTemperatureControl(true)
+          heat_exchanger.addToNode(system_OA.outboardOANode.get)
+
+          runner.registerInfo("heat_exchanger.primaryAirInletPort:  #{heat_exchanger.primaryAirInletPort}")
+          runner.registerInfo("heat_exchanger.primaryAirOutletPort:  #{heat_exchanger.primaryAirOutletPort}")
+          runner.registerInfo("heat_exchanger.secondaryAirInletPort:  #{heat_exchanger.secondaryAirInletPort}")
+          runner.registerInfo("heat_exchanger.secondaryAirOutletPort:  #{heat_exchanger.secondaryAirOutletPort}")
+
+          day_sched_30 = OpenStudio::Model::ScheduleDay.new(model, 27)
+          day_sched_30.setName("SAT Day Schedule 30 deg C")
+          day_sched_10 = OpenStudio::Model::ScheduleDay.new(model, 18)
+          day_sched_10.setName("SAT Day Schedule 10 deg C")
+
+          week_sched_30 = OpenStudio::Model::ScheduleWeek.new(model)
+          week_sched_30.setAllSchedules(day_sched_30)
+          week_sched_30.setName("SAT Week Schedule 30 deg C")
+
+          week_sched_10 = OpenStudio::Model::ScheduleWeek.new(model)
+          week_sched_10.setAllSchedules(day_sched_10)
+          week_sched_10.setName("SAT Week Schedule 10 deg C")
+
+          sat_sched = OpenStudio::Model::ScheduleYear.new(model)
+          sat_sched.setName("SAT Year Schedule")
+          # for now we check the latitude and if it is possitive then summer is in the middle of the calendar year
+          if model.getSite.latitude > 0
+            runner.registerInfo("latitude is:  #{model.getSite.latitude} -> summer is in the middle of the calendar year")
+            sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(5), 1), week_sched_30)
+            sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(10), 1), week_sched_10)
+            sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(12), 31), week_sched_30)
           else
-            heat_exchanger.setLatentEffectivenessat100CoolingAirFlow(0)
-            heat_exchanger.setLatentEffectivenessat100HeatingAirFlow(0)
+            runner.registerInfo("latitude is:  #{model.getSite.latitude} -> summer is at the beginning and end of the calendar year")
+            sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(5), 1), week_sched_10)
+            sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(10), 1), week_sched_30)
+            sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(12), 31), week_sched_10)
           end
-      end
-      heat_exchanger.setSupplyAirOutletTemperatureControl(true)
-      heat_exchanger.addToNode(system_OA.outboardOANode.get)
 
-      runner.registerInfo("heat_exchanger.primaryAirInletPort:  #{heat_exchanger.primaryAirInletPort}")
-      runner.registerInfo("heat_exchanger.primaryAirOutletPort:  #{heat_exchanger.primaryAirOutletPort}")
-      runner.registerInfo("heat_exchanger.secondaryAirInletPort:  #{heat_exchanger.secondaryAirInletPort}")
-      runner.registerInfo("heat_exchanger.secondaryAirOutletPort:  #{heat_exchanger.secondaryAirOutletPort}")
+          setpoint_scheduled = OpenStudio::Model::SetpointManagerScheduled.new(model, "Temperature", sat_sched)
+          erv_outlet = heat_exchanger.primaryAirOutletModelObject.get.to_Node.get
+          setpoint_scheduled.addToNode(erv_outlet)
 
-      day_sched_30 = OpenStudio::Model::ScheduleDay.new(model, 27)
-      day_sched_30.setName("SAT Day Schedule 30 deg C")
-      day_sched_10 = OpenStudio::Model::ScheduleDay.new(model, 18)
-      day_sched_10.setName("SAT Day Schedule 10 deg C")
+          # Add setpoint manager, normally this would be a
+          # SetpointManagerOutdoorAirPretreat, but you can use any
+        end
 
-      week_sched_30 = OpenStudio::Model::ScheduleWeek.new(model)
-      week_sched_30.setAllSchedules(day_sched_30)
-      week_sched_30.setName("SAT Week Schedule 30 deg C")
+        # add the components to the airloop
+        air_loop_comps.each do |comp|
+          comp.addToNode(airLoopHVAC.supplyInletNode)
+          if comp.to_CoilHeatingWater.is_initialized
+            options["hot_water_plant"].addDemandBranchForComponent(comp)
+            comp.controllerWaterCoil.get.setMinimumActuatedFlow(0)
+          elsif comp.to_CoilCoolingWater.is_initialized
+            options["chilled_water_plant"].addDemandBranchForComponent(comp)
+            comp.controllerWaterCoil.get.setMinimumActuatedFlow(0)
+          end
+        end
 
-      week_sched_10 = OpenStudio::Model::ScheduleWeek.new(model)
-      week_sched_10.setAllSchedules(day_sched_10)
-      week_sched_10.setName("SAT Week Schedule 10 deg C")
+        # add thermal zones to airloop
+        thermalZones = model.getThermalZones
+        thermalZones.each do |zone|
+          # make an air terminal for the zone
+          air_terminal = OpenStudio::Model::AirTerminalSingleDuctUncontrolled.new(model, hvacSched)
+          air_terminal.autosizeMaximumAirFlowRate
+          # attach new terminal to the zone and to the airloop
+          airLoopHVAC.addBranchForZone(zone, air_terminal.to_StraightComponent)
+          # zone sizing
+          zoneSizing = zone.sizingZone
+          zoneSizing.setName(" #{zone.name} Sizing")
 
-      sat_sched = OpenStudio::Model::ScheduleYear.new(model)
-      sat_sched.setName("SAT Year Schedule")
-      # for now we check the latitude and if it is possitive then summer is in the middle of the calendar year
-      if model.getSite.latitude > 0
-        runner.registerInfo("latitude is:  #{model.getSite.latitude} -> summer is in the middle of the calendar year")
-        sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(5), 1), week_sched_30)
-        sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(10), 1), week_sched_10)
-        sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(12), 31), week_sched_30)
-      else
-        runner.registerInfo("latitude is:  #{model.getSite.latitude} -> summer is at the beginning and end of the calendar year")
-        sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(5), 1), week_sched_10)
-        sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(10), 1), week_sched_30)
-        sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(12), 31), week_sched_10)
-      end
+          designSpecOA = OpenStudio::Model::DesignSpecificationOutdoorAir.new(model)
+          designSpecOA.setOutdoorAirMethod("AirChanges/Hour") # Flow/Person  Flow/Area Flow/Zone AirChanges/Hour Sum Maximum
+          # designSpecOA.setOutdoorAirFlowperPerson()
+          # designSpecOA.setOutdoorAirFlowperFloorArea()
+          # designSpecOA.setOutdoorAirFlowRate()
+          designSpecOA.setOutdoorAirFlowAirChangesperHour(ach_per_hour)
 
-      setpoint_scheduled = OpenStudio::Model::SetpointManagerScheduled.new(model, "Temperature", sat_sched)
-      erv_outlet = heat_exchanger.primaryAirOutletModelObject.get.to_Node.get
-      setpoint_scheduled.addToNode(erv_outlet)
-
-      # Add setpoint manager, normally this would be a
-      # SetpointManagerOutdoorAirPretreat, but you can use any
-    end
-
-    # add the components to the airloop
-    air_loop_comps.each do |comp|
-      comp.addToNode(airLoopHVAC.supplyInletNode)
-      if comp.to_CoilHeatingWater.is_initialized
-        options["hot_water_plant"].addDemandBranchForComponent(comp)
-        comp.controllerWaterCoil.get.setMinimumActuatedFlow(0)
-      elsif comp.to_CoilCoolingWater.is_initialized
-        options["chilled_water_plant"].addDemandBranchForComponent(comp)
-        comp.controllerWaterCoil.get.setMinimumActuatedFlow(0)
-      end
-    end
-
-    # add thermal zones to airloop
-    thermalZones = model.getThermalZones
-    thermalZones.each do |zone|
-      # make an air terminal for the zone
-      air_terminal = OpenStudio::Model::AirTerminalSingleDuctUncontrolled.new(model, hvacSched)
-      air_terminal.autosizeMaximumAirFlowRate
-      # attach new terminal to the zone and to the airloop
-      airLoopHVAC.addBranchForZone(zone, air_terminal.to_StraightComponent)
-      # zone sizing
-      zoneSizing = zone.sizingZone
-      zoneSizing.setName(" #{zone.name} Sizing")
-
-      designSpecOA = OpenStudio::Model::DesignSpecificationOutdoorAir.new(model)
-      designSpecOA.setOutdoorAirMethod("AirChanges/Hour") # Flow/Person  Flow/Area Flow/Zone AirChanges/Hour Sum Maximum
-      # designSpecOA.setOutdoorAirFlowperPerson()
-      # designSpecOA.setOutdoorAirFlowperFloorArea()
-      # designSpecOA.setOutdoorAirFlowRate()
-      designSpecOA.setOutdoorAirFlowAirChangesperHour(ach_per_hour)
-
-      zone.spaces.each do |space|
-        space.setDesignSpecificationOutdoorAir(designSpecOA)
-      end
+          zone.spaces.each do |space|
+            space.setDesignSpecificationOutdoorAir(designSpecOA)
+          end
+        end
     end
 
     # we are looking for the ChilledCeilingConstruction
@@ -330,10 +330,21 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
     intMassDef.setSurfaceAreaperSpaceFloorArea(0.8)
     intMassDef.setConstruction(chilledCeilingConstruction)
 
+    thermalZones = model.getThermalZones
     thermalZones.each do |zone|
       zone.spaces.each do |space|
         intMass = OpenStudio::Model::InternalMass.new(intMassDef)
         intMass.setSpace(space)
+      end
+
+      # zone sizing
+      zoneSizing = zone.sizingZone
+      zoneSizing.setName(" #{zone.name} Sizing")
+
+      if system_type == 3
+        zoneSizing.setAccountforDedicatedOutdoorAirSystem(false)
+      else
+        zoneSizing.setAccountforDedicatedOutdoorAirSystem(true)
       end
     end
 

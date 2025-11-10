@@ -228,15 +228,23 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
       workspace.insertObject(newTimestep)
     end
 
+    # get all air loops in model
+    airLoopList = workspace.getObjectsByType("AirLoopHVAC".to_IddObjectType)
+
     # set parameters of sizing calculation
     sizingZones = workspace.getObjectsByType("Sizing:Zone".to_IddObjectType)
     sizingZones.each do |sizingZone|
-      # sizingZone.setDouble(11, 2) # Zone Cooling Sizing Factor
-      sizingZone.setString(23, "Yes") # A ccount for Dedicated Outdoor Air System
-      sizingZone.setString(24, "NeutralSupplyAir") # Dedicated Outdoor Air System Control Strategy
-      sizingZone.setDouble(25, -12.7) # Dedicated Outdoor Air Low Setpoint Temperature for Design {C}
-      sizingZone.setDouble(26, 30) # Dedicated Outdoor Air High Setpoint Temperature for Design {C}
-      workspace.insertObject(sizingZone)
+        if airLoopList.size == 0
+            runner.registerInfo("No vent type, no updates to the sizing zones")
+        else
+            runner.registerWarning("For all other system types.")
+            # sizingZone.setDouble(11, 2) # Zone Cooling Sizing Factor
+            sizingZone.setString(23, "Yes") # A ccount for Dedicated Outdoor Air System
+            sizingZone.setString(24, "NeutralSupplyAir") # Dedicated Outdoor Air System Control Strategy
+            sizingZone.setDouble(25, -12.7) # Dedicated Outdoor Air Low Setpoint Temperature for Design {C}
+            sizingZone.setDouble(26, 30) # Dedicated Outdoor Air High Setpoint Temperature for Design {C}
+            workspace.insertObject(sizingZone)
+        end
     end
 
     # set reporting for tolerances
