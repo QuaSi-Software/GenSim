@@ -133,14 +133,19 @@ Yes;                               !- Use Weather File Rain and Snow Indicators
     # remove existing design days
     model.getDesignDays.each(&:remove)
 
+    # get current version
+    current_version = OpenStudio::VersionString.new(OpenStudio.openStudioVersion())
+
     # summer design day
     summer_dd = OpenStudio::Model::DesignDay.new(model)
     summer_dd.setName('Summer Design Day')
     summer_dd.setMaximumDryBulbTemperature(38.0)
     summer_dd.setDailyDryBulbTemperatureRange(10.0)
     summer_dd.setBarometricPressure(101325.0)
-    summer_dd.setHumidityConditionType('HumidityRatio')
-    summer_dd.setHumidityRatioAtMaximumDryBulb(0.012) # mass ratio water / dry_air
+    if current_version >= OpenStudio::VersionString.new(3,2,0)
+        summer_dd.setHumidityConditionType('HumidityRatio')
+        summer_dd.setHumidityRatioAtMaximumDryBulb(0.012) # mass ratio water / dry_air
+    end
     summer_dd.setDayType('SummerDesignDay')
     summer_dd.setMonth(7)
     summer_dd.setDayOfMonth(21)
@@ -158,8 +163,10 @@ Yes;                               !- Use Weather File Rain and Snow Indicators
     winter_dd.setMaximumDryBulbTemperature(-13.0)
     winter_dd.setDailyDryBulbTemperatureRange(0.0)
     winter_dd.setBarometricPressure(98675.0)
-    winter_dd.setHumidityConditionType('Wetbulb')
-    winter_dd.setWetBulbOrDewPointAtMaximumDryBulb(-15.0)
+    if current_version >= OpenStudio::VersionString.new(3,2,0)
+        winter_dd.setHumidityConditionType('Wetbulb')
+        winter_dd.setWetBulbOrDewPointAtMaximumDryBulb(-15.0)
+    end
     winter_dd.setDayType('WinterDesignDay')
     winter_dd.setMonth(1)
     winter_dd.setDayOfMonth(21)

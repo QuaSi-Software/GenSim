@@ -47,6 +47,9 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
 
     # get all zone objects in model
     zoneEquipLists = workspace.getObjectsByType("ZoneHVAC:EquipmentList".to_IddObjectType)
+
+    # get all air loops in model
+    airLoopList = workspace.getObjectsByType("AirLoopHVAC".to_IddObjectType)
     
     # the following fixes an issue with the SAT schedule. however in versions prior to 3.x (TODO)
     # it introduces a problem instead, in that the schedule appears double, causing E+ to crash
@@ -75,8 +78,8 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
 
     current_version = OpenStudio::VersionString.new(OpenStudio.openStudioVersion())
 
-    if current_version >= OpenStudio::VersionString.new(3,2,0)
-      runner.registerInfo("Found version #{current_version} >= 3.2.0")
+    if current_version > OpenStudio::VersionString.new(3,0,1)
+      runner.registerInfo("Found version #{current_version} > 3.0.1")
       # since version 3.2 the low temp radiant object do not get propertly converted into IDF so this code will fix it
       # init the dictionary
       list_branches_chilled = []
@@ -100,25 +103,28 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
         end
       end
 
-      design_obj = OpenStudio::IdfObject.new("ZoneHVAC:LowTemperatureRadiant:VariableFlow:Design".to_IddObjectType)
-      design_obj.setString(0, "Zone HVAC Low Temperature Radiant Variable Flow Design Object")
-      design_obj.setString(1, "ConvectionOnly")
-      design_obj.setDouble(2, 0.013)
-      design_obj.setDouble(3, 0.016)
-      design_obj.setDouble(4, 0.35)
-      design_obj.setString(5, "MeanAirTemperature")
-      design_obj.setString(6, "HalfFlowPower")
-      design_obj.setString(7, "HeatingDesignCapacity")
+      if current_version >= OpenStudio::VersionString.new(3,2,0)
+        runner.registerInfo("Found version #{current_version} > 3.2.0")
+          design_obj = OpenStudio::IdfObject.new("ZoneHVAC:LowTemperatureRadiant:VariableFlow:Design".to_IddObjectType)
+          design_obj.setString(0, "Zone HVAC Low Temperature Radiant Variable Flow Design Object")
+          design_obj.setString(1, "ConvectionOnly")
+          design_obj.setDouble(2, 0.013)
+          design_obj.setDouble(3, 0.016)
+          design_obj.setDouble(4, 0.35)
+          design_obj.setString(5, "MeanAirTemperature")
+          design_obj.setString(6, "HalfFlowPower")
+          design_obj.setString(7, "HeatingDesignCapacity")
 
-      design_obj.setDouble(10, 0.5)
-      design_obj.setString(11, "ZoneHeatingTempSched")
-      design_obj.setString(12, "CoolingDesignCapacity")
+          design_obj.setDouble(10, 0.5)
+          design_obj.setString(11, "ZoneHeatingTempSched")
+          design_obj.setString(12, "CoolingDesignCapacity")
 
-      design_obj.setDouble(15, 0.5)
-      design_obj.setString(16, "ZoneCoolingTempSched")
-      design_obj.setString(17, "SimpleOff")
-      design_obj.setDouble(18, 2)
-      workspace.addObject(design_obj)
+          design_obj.setDouble(15, 0.5)
+          design_obj.setString(16, "ZoneCoolingTempSched")
+          design_obj.setString(17, "SimpleOff")
+          design_obj.setDouble(18, 2)
+          workspace.addObject(design_obj)
+      end
 
       i = 0
       zones.each do |zone|
@@ -144,7 +150,9 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
 
         comp = OpenStudio::IdfObject.new("ZoneHVAC:LowTemperatureRadiant:VariableFlow".to_IddObjectType)
         comp.setString(0, comp_name)
-        comp.setString(1, design_obj.getString(0).get)
+        if current_version >= OpenStudio::VersionString.new(3,2,0)
+            comp.setString(1, design_obj.getString(0).get)
+        end
         comp.setString(2, "Always On Discrete")
         comp.setString(3, zone_name)
         comp.setString(4, related_internal_mass)
@@ -182,10 +190,17 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
             equiplist = zoneEquipConnection.getString(1).to_s
             zoneEquipLists.each do |zoneEquipList|
               if zoneEquipList.getString(0).to_s == equiplist
-                zoneEquipList.setString(14, "ZoneHVAC:LowTemperatureRadiant:VariableFlow")
-                zoneEquipList.setString(15, comp_name)
-                zoneEquipList.setDouble(16, 2)
-                zoneEquipList.setDouble(17, 3)
+                  if airLoopList.size == 0
+                    zoneEquipList.setString(8, "ZoneHVAC:LowTemperatureRadiant:VariableFlow")
+                    zoneEquipList.setString(9, comp_name)
+                    zoneEquipList.setDouble(10, 2)
+                    zoneEquipList.setDouble(11, 2)
+                  else
+                    zoneEquipList.setString(14, "ZoneHVAC:LowTemperatureRadiant:VariableFlow")
+                    zoneEquipList.setString(15, comp_name)
+                    zoneEquipList.setDouble(16, 2)
+                    zoneEquipList.setDouble(17, 3)
+                  end
               end
             end
           end
@@ -248,16 +263,19 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
       surfGroup.remove()
     end
 
-    # message prior to 3.2
-	  # runner.registerFinalCondition("The building finished with #{counter}/#{lowTempRadiants.size} updated low temperature radiant objects objects.")
-
-    # new message
-	  runner.registerFinalCondition(
-      "The building finished with #{counter}/#{zones.size} updated zones for " +
-      "#{list_branches_chilled.size} chilled branches and #{list_branches_hot.size} hot " +
-      "branches and #{lowTempRadiants.size} low temperature radiant objects."
-    )
-
+    # get current version
+    current_version = OpenStudio::VersionString.new(OpenStudio.openStudioVersion())
+    if current_version >= OpenStudio::VersionString.new(3,2,0)
+        # new message
+        runner.registerFinalCondition(
+          "The building finished with #{counter}/#{zones.size} updated zones for " +
+          "#{list_branches_chilled.size} chilled branches and #{list_branches_hot.size} hot " +
+          "branches and #{lowTempRadiants.size} low temperature radiant objects."
+        )
+    else
+        # message prior to 3.2
+	    runner.registerFinalCondition("The building finished with #{counter}/#{lowTempRadiants.size} updated low temperature radiant objects objects.")
+    end
     return true
   end
 end
