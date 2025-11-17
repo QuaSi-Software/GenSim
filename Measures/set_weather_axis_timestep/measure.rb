@@ -34,7 +34,7 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
       ["Use DDY file", "Manual Design Days", "Automatic Design Days"],
       true
     )
-    sizing_method.setDefaultValue("manual_design_days")
+    sizing_method.setDefaultValue("automatic_design_days")
     args << sizing_method
 
     return args
@@ -80,52 +80,12 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
 
   # sizing method using design days automatically determined from the weather data
   def sizing_automatic_design_days(model, runner, epw_file)
-    idf_snippet = <<-IDF
-SizingPeriod:WeatherFileConditionType,
-Extreme Summer Weather Period,     !- Name
-Extremes,                          !- Period Selection
-Monday,                            !- Day of Week for Start Day
-Yes,                               !- Use Weather File Daylight Saving Period
-Yes;                               !- Use Weather File Rain and Snow Indicators
-
-SizingPeriod:WeatherFileConditionType,
-Extreme Winter Weather Period,     !- Name
-Extremes,                          !- Period Selection
-Monday,                            !- Day of Week for Start Day
-Yes,                               !- Use Weather File Daylight Saving Period
-Yes;                               !- Use Weather File Rain and Snow Indicators
-  IDF
-
-    # load the IDF text as an IdfObject (returns Optional in C++)
-    optional_idf_obj = OpenStudio::IdfObject.load(idf_snippet)
-    unless optional_idf_obj.is_initialized
-      runner.registerError("Failed to parse IDF snippet")
-      return false
-    end
-
-    idf_obj = optional_idf_obj.get
-    model.addObject(idf_obj)
-    runner.registerInfo("Added 2 SizingPeriod:WeatherFileConditionType objects to the model.")
-
-    # summer_wfc = OpenStudio::Model::WeatherFileConditionType.new(model)
-    # summer_wfc.setName("Sizing - Extreme Summer")
-    # summer_wfc.setAttribute('Control Type', 'Extremes')
-    # summer_wfc.setAttribute('Condition Type', 'Temperature')
-
-    # winter_wfc = OpenStudio::Model::WeatherFileConditionType.new(model)
-    # winter_wfc.setName("Sizing - Extreme Winter")
-    # winter_wfc.setAttribute('Control Type', 'Extremes')
-    # winter_wfc.setAttribute('Condition Type', 'Temperature')
-
-    # # Create Summer Extreme Sizing Period
-    # summer_extreme = OpenStudio::Model::WeatherFileConditionType.new(model)
-    # summer_extreme.setName("Summer Extreme")
-    # summer_extreme.setWeatherFileConditionType("SummerExtreme")
-
-    # # Create Winter Extreme Sizing Period
-    # winter_extreme = OpenStudio::Model::WeatherFileConditionType.new(model)
-    # winter_extreme.setName("Winter Extreme")
-    # winter_extreme.setWeatherFileConditionType("WinterExtreme")
+    # we do add a dummy design day, so the zone sizing get properly generated
+    # we remove it later in the EnergyPlus measure and we add the SizingPeriod:WeatherFileConditionType objects then, too
+    # in the set_meters_idf measure
+    summer_dd = OpenStudio::Model::DesignDay.new(model)
+    summer_dd.setName('Dummy Design Day')
+    runner.registerInfo("Added dummy design day: #{summer_dd.nameString}")
   end
 
   # sizing method using manually specified design days

@@ -28,11 +28,11 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
 
     args << dtsS
     sizingHeatingFactor = OpenStudio::Measure::OSArgument.makeDoubleArgument("heating_sizing_factor", false)
-    sizingHeatingFactor.setDefaultValue("1.25")
+    sizingHeatingFactor.setDefaultValue(1.25)
     args << sizingHeatingFactor
 
     sizingCoolingFactor = OpenStudio::Measure::OSArgument.makeDoubleArgument("cooling_sizing_factor", false)
-    sizingCoolingFactor.setDefaultValue("1.15")
+    sizingCoolingFactor.setDefaultValue(1.15)
     args << sizingCoolingFactor
 
     outputLevel = OpenStudio::Measure::OSArgument.makeStringArgument("output_level", false)
@@ -209,7 +209,7 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
 
     # Delete each one
     diagnostics_objects.each do |obj|
-        workspace.removeObject(obj)
+        workspace.removeObject(obj.handle)
     end
 
     # set diagnostics to display all warnings and report on all variables
@@ -219,7 +219,43 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
         DisplayAdvancedReportVariables;    !- Key 1
         "
     idfObject = OpenStudio::IdfObject.load(new_diagnostic_string)
-    workspace.addObject(idfObject.get)
+    if idfObject.is_initialized
+      workspace.addObject(idfObject.get)
+    else
+      runner.registerError("Failed to load IDF snippet with string : #{new_diagnostic_string}")
+    end
+
+    design_days = workspace.getObjectsByType("SizingPeriod:DesignDay".to_IddObjectType)
+    if design_days.size <= 1
+        # first remove the dummy design day
+        design_days.each do |design_day|
+            workspace.removeObject(design_day.handle)
+        end
+        # we get here, when we do not define any design days, hence we want to define the weather file condition type objects here
+        idf_snippet = "
+            SizingPeriod:WeatherFileConditionType,
+            Extreme Summer Weather Period,     !- Name
+            SummerExtreme;"
+
+        idfObject = OpenStudio::IdfObject.load(idf_snippet)
+        if idfObject.is_initialized
+          workspace.addObject(idfObject.get)
+        else
+          runner.registerError("Failed to load IDF snippet with string : #{new_diagnostic_string}")
+        end
+
+         idf_snippet = "
+            SizingPeriod:WeatherFileConditionType,
+            Extreme Winter Weather Period,     !- Name
+            WinterExtreme; "
+
+        idfObject = OpenStudio::IdfObject.load(idf_snippet)
+        if idfObject.is_initialized
+          workspace.addObject(idfObject.get)
+        else
+          runner.registerError("Failed to load IDF snippet with string : #{new_diagnostic_string}")
+        end
+    end
 
     # edit ideal loads objects to set the timestep
     newTimesteps = workspace.getObjectsByType("Timestep".to_IddObjectType)
@@ -253,7 +289,11 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
         1,
         1;"
     idfObject = OpenStudio::IdfObject.load(new_reporting_string)
-    workspace.addObject(idfObject.get)
+    if idfObject.is_initialized
+      workspace.addObject(idfObject.get)
+    else
+      runner.registerError("Failed to load IDF snippet with string : #{new_diagnostic_string}")
+    end
 
     # edit ideal loads objects to set starting day of simulation
     newRunPeriods = workspace.getObjectsByType("RunPeriod".to_IddObjectType)

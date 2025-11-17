@@ -144,6 +144,22 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
     runner.registerInfo("system_type {system_type}")
     if system_type == 3
         runner.registerInfo("No mechanical ventilation selected, no air loop is added")
+        # add thermal zones to airloop
+        thermalZones = model.getThermalZones
+        thermalZones.each do |zone|
+          # zone sizing
+          zoneSizing = zone.sizingZone
+          zoneSizing.setName(" #{zone.name} Sizing")
+            # Example sizing changes
+          zoneSizing.setZoneCoolingDesignSupplyAirTemperature(12.8)   # °C
+          zoneSizing.setZoneHeatingDesignSupplyAirTemperature(40.0)   # °C
+          zoneSizing.setZoneCoolingDesignSupplyAirHumidityRatio(0.009)
+          zoneSizing.setZoneHeatingDesignSupplyAirHumidityRatio(0.003)
+
+          zoneSizing.setCoolingDesignAirFlowMethod("DesignDay")
+          zoneSizing.setHeatingDesignAirFlowMethod("DesignDay")
+          runner.registerInfo("adding sizing for zone:  #{zone.name}")
+        end
     else
         hvacSched = CreateSchedule(model, "HVACSched", hvac_sched_weekday, hvac_sched_saturday, hvac_sched_sunday, hvac_sched_holiday, holidays)
 
@@ -282,8 +298,22 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
           # attach new terminal to the zone and to the airloop
           airLoopHVAC.addBranchForZone(zone, air_terminal.to_StraightComponent)
           # zone sizing
-          zoneSizing = zone.sizingZone
+          if zone.sizingZone.nil?
+            zoneSizing = OpenStudio::Model::SizingZone.new(model)
+            zoneSizing.setThermalZone(zone)
+          else
+            zoneSizing = zone.sizingZone
+          end
           zoneSizing.setName(" #{zone.name} Sizing")
+          # Example sizing changes
+          zoneSizing.setZoneCoolingDesignSupplyAirTemperature(12.8)   # °C
+          zoneSizing.setZoneHeatingDesignSupplyAirTemperature(40.0)   # °C
+          zoneSizing.setZoneCoolingDesignSupplyAirHumidityRatio(0.009)
+          zoneSizing.setZoneHeatingDesignSupplyAirHumidityRatio(0.003)
+
+          zoneSizing.setCoolingDesignAirFlowMethod("DesignDay")
+          zoneSizing.setHeatingDesignAirFlowMethod("DesignDay")
+          runner.registerInfo("adding sizing for zone:  #{zone.name}")
 
           designSpecOA = OpenStudio::Model::DesignSpecificationOutdoorAir.new(model)
           designSpecOA.setOutdoorAirMethod("AirChanges/Hour") # Flow/Person  Flow/Area Flow/Zone AirChanges/Hour Sum Maximum
