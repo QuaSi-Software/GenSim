@@ -247,7 +247,7 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
          idf_snippet = "
             SizingPeriod:WeatherFileConditionType,
             Extreme Winter Weather Period,     !- Name
-            WinterExtreme; "
+            WinterTypical; "
 
         idfObject = OpenStudio::IdfObject.load(idf_snippet)
         if idfObject.is_initialized
