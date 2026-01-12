@@ -1,6 +1,6 @@
 [
     {
-        "name": "Zone HVAC Sensible Heating",
+        "name": "Zone Air System Sensible Heating Energy",
         "eplus_variables": [
             "Zone Air System Sensible Heating Energy"
         ],
@@ -14,7 +14,7 @@
         ]
     },
     {
-        "name": "Zone HVAC Sensible Cooling",
+        "name": "Zone Air System Sensible Cooling Energy",
         "eplus_variables": [
             "Zone Air System Sensible Cooling Energy"
         ],
@@ -28,9 +28,28 @@
         ]
     },
     {
-        "name": "Zone Opaque Conduction Heat Gain",
+      "name": "Zone Window Conduction Heat Gain",
+      "eplus_variables": ["Surface Window Heat Gain Energy"],
+      "node_reference": "",
+      "create_output_variable": true,
+      "create_custom_meter": true,
+      "create_output_meter": true,
+      "output_levels": ["Debug", "Normal"]
+    },
+    {
+      "name": "Zone Window Conduction Heat Loss",
+      "eplus_variables": ["Surface Window Heat Loss Energy"],
+      "node_reference": "",
+      "create_output_variable": true,
+      "create_custom_meter": true,
+      "create_output_meter": true,
+      "output_levels": ["Debug", "Normal"]
+    },
+
+    {
+        "name": "Zone Opaque Convection Heat Gain Energy",
         "eplus_variables": [
-            "Zone Opaque Surface Inside Faces Total Conduction Heat Gain Energy"
+            "Zone Opaque Surface Inside Faces Convection Heat Gain Energy"
         ],
         "node_reference": "",
         "create_output_variable": true,
@@ -42,9 +61,9 @@
         ]
     },
     {
-        "name": "Zone Opaque Conduction Heat Loss",
+        "name": "Zone Opaque Convection Heat Loss Energy",
         "eplus_variables": [
-            "Zone Opaque Surface Inside Faces Total Conduction Heat Loss Energy"
+            "Zone Opaque Surface Inside Faces Convection Heat Loss Energy"
         ],
         "node_reference": "",
         "create_output_variable": true,
@@ -56,7 +75,7 @@
         ]
     },
     {
-        "name": "Zone Window Total Heat Gain",
+        "name": "Zone Windows Total Heat Gain Energy",
         "eplus_variables": [
             "Zone Windows Total Heat Gain Energy"
         ],
@@ -70,7 +89,33 @@
         ]
     },
     {
-        "name": "Zone Window Total Heat Loss",
+      "name": "Zone Opaque Conduction Heat Gain",
+      "eplus_variables": [
+        "Zone Opaque Surface Inside Faces Total Conduction Heat Gain Energy"
+      ],
+      "create_output_variable": true,
+      "create_custom_meter": true,
+      "create_output_meter": true,
+        "output_levels": [
+            "Debug",
+            "Normal"
+        ]
+    },
+    {
+      "name": "Zone Opaque Conduction Heat Loss",
+      "eplus_variables": [
+        "Zone Opaque Surface Inside Faces Total Conduction Heat Loss Energy"
+      ],
+      "create_output_variable": true,
+      "create_custom_meter": true,
+      "create_output_meter": true,
+        "output_levels": [
+            "Debug",
+            "Normal"
+        ]
+    },
+    {
+        "name": "Zone Windows Total Heat Loss Energy",
         "eplus_variables": [
             "Zone Windows Total Heat Loss Energy"
         ],
@@ -84,7 +129,7 @@
         ]
     },
     {
-        "name": "Zone Window Transmitted Solar",
+        "name": "Zone Window Transmitted Solar Energy",
         "eplus_variables": [
             "Zone Windows Total Transmitted Solar Radiation Energy"
         ],
@@ -98,7 +143,7 @@
         ]
     },
     {
-        "name": "Zone Infiltration Sensible Heat Gain",
+        "name": "Zone Infiltration Sensible Heat Gain Energy",
         "eplus_variables": [
             "Zone Infiltration Sensible Heat Gain Energy"
         ],
@@ -112,7 +157,7 @@
         ]
     },
     {
-        "name": "Zone Infiltration Sensible Heat Loss",
+        "name": "Zone Infiltration Sensible Heat Loss Energy",
         "eplus_variables": [
             "Zone Infiltration Sensible Heat Loss Energy"
         ],
@@ -126,7 +171,7 @@
         ]
     },
     {
-        "name": "Zone Ventilation Sensible Heat Gain",
+        "name": "Zone Ventilation Sensible Heat Gain Energy",
         "eplus_variables": [
             "Zone Ventilation Sensible Heat Gain Energy"
         ],
@@ -140,7 +185,7 @@
         ]
     },
     {
-        "name": "Zone Ventilation Sensible Heat Loss",
+        "name": "Zone Ventilation Sensible Heat Loss Energy",
         "eplus_variables": [
             "Zone Ventilation Sensible Heat Loss Energy"
         ],
@@ -154,7 +199,7 @@
         ]
     },
     {
-        "name": "Zone People Sensible Heat Gain",
+        "name": "Zone People Sensible Heating Energy",
         "eplus_variables": [
             "Zone People Sensible Heating Energy"
         ],
@@ -168,7 +213,7 @@
         ]
     },
     {
-        "name": "Zone Lights Sensible Heat Gain",
+        "name": "Zone Lights Total Heating Energy",
         "eplus_variables": [
             "Zone Lights Total Heating Energy"
         ],
@@ -182,7 +227,7 @@
         ]
     },
     {
-        "name": "Zone Electric Equipment Sensible Heat Gain",
+        "name": "Zone Electric Equipment Total Heating Energy",
         "eplus_variables": [
             "Zone Electric Equipment Total Heating Energy"
         ],
@@ -208,5 +253,104 @@
             "Debug",
             "Normal"
         ]
+    },
+    {
+      "name": "Zone Radiant HVAC Heating Energy",
+      "eplus_variables": ["Zone Radiant HVAC Heating Energy"],
+      "node_reference": "",
+      "create_output_variable": true,
+      "create_custom_meter": true,
+      "create_output_meter": true,
+      "output_levels": ["Debug", "Normal"]
+    },
+    {
+      "name": "Zone Radiant HVAC Cooling Energy",
+      "eplus_variables": ["Zone Radiant HVAC Cooling Energy"],
+      "node_reference": "",
+      "create_output_variable": true,
+      "create_custom_meter": true,
+      "create_output_meter": true,
+      "output_levels": ["Debug", "Normal"]
+    },
+    {
+      "name": "Zone Air Terminal Sensible Heating Energy",
+      "eplus_variables": ["Zone Air Terminal Sensible Heating Energy"],
+      "node_reference": "",
+      "create_output_variable": true,
+      "create_custom_meter": true,
+      "create_output_meter": true,
+      "output_levels": ["Debug", "Normal"]
+    },
+    {
+      "name": "Zone Air Terminal Sensible Cooling Energy",
+      "eplus_variables": ["Zone Air Terminal Sensible Cooling Energy"],
+      "node_reference": "",
+      "create_output_variable": true,
+      "create_custom_meter": true,
+      "create_output_meter": true,
+      "output_levels": ["Debug", "Normal"]
+    },
+    {
+      "name": "Zone Window Solar Gain Energy",
+      "eplus_variables": ["Zone Windows Total Transmitted Solar Radiation Energy"],
+      "node_reference": "",
+      "create_output_variable": true,
+      "create_custom_meter": true,
+      "create_output_meter": true,
+      "output_levels": ["Debug", "Normal"]
+    },
+    {
+      "name": "Zone Window Transmission Heat Gain Energy",
+      "eplus_variables": ["Surface Window Heat Gain Energy"],
+      "node_reference": "*",
+      "create_output_variable": true,
+      "create_custom_meter": true,
+      "create_output_meter": true,
+      "output_levels": ["Debug", "Normal"]
+    },
+    {
+      "name": "Zone Window Transmission Heat Loss Energy",
+      "eplus_variables": ["Surface Window Heat Loss Energy"],
+      "node_reference": "*",
+      "create_output_variable": true,
+      "create_custom_meter": true,
+      "create_output_meter": true,
+      "output_levels": ["Debug", "Normal"]
+    },
+    {
+      "name": "Zone Interzone Air Transfer Heat Gain Energy",
+      "eplus_variables": ["Zone Interzone Air Transfer Heat Gain Energy"],
+      "node_reference": "",
+      "create_output_variable": true,
+      "create_custom_meter": true,
+      "create_output_meter": true,
+      "output_levels": ["Debug", "Normal"]
+    },
+    {
+      "name": "Zone Interzone Air Transfer Heat Loss Energy",
+      "eplus_variables": ["Zone Interzone Air Transfer Heat Loss Energy"],
+      "node_reference": "",
+      "create_output_variable": true,
+      "create_custom_meter": true,
+      "create_output_meter": true,
+      "output_levels": ["Debug", "Normal"]
+    },
+    {
+      "name": "Zone Opaque Surface Inside Faces Total Conduction Heat Gain Energy",
+      "eplus_variables": ["Zone Opaque Surface Inside Faces Total Conduction Heat Gain Energy"],
+      "node_reference": "",
+      "create_output_variable": true,
+      "create_custom_meter": true,
+      "create_output_meter": true,
+      "output_levels": ["Debug", "Normal"]
+    },
+    {
+      "name": "Zone Opaque Surface Inside Faces Total Conduction Heat Loss Energy",
+      "eplus_variables": ["Zone Opaque Surface Inside Faces Total Conduction Heat Loss Energy"],
+      "node_reference": "",
+      "create_output_variable": true,
+      "create_custom_meter": true,
+      "create_output_meter": true,
+      "output_levels": ["Debug", "Normal"]
     }
 ]

@@ -3,6 +3,44 @@ Plots yearly energies by two different mappings as bar chart.
 """
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use("TkAgg")  # or "QtAgg" if you have PyQt/PySide installed
+
+SIGN = {
+    # HVAC (zone air system)
+    "Zone Air System Sensible Heating Energy": +1,
+   # "Zone Air System Sensible Cooling Energy": -1,
+
+    # HVAC (terminal units)
+    "Zone Air Terminal Sensible Heating Energy": +1,
+    "Zone Air Terminal Sensible Cooling Energy": -1,
+
+    # HVAC (radiant to surfaces)
+    "Zone Radiant HVAC Heating Energy": +1,
+    "Zone Radiant HVAC Cooling Energy": -1,
+
+    # Internal gains
+    "Zone People Sensible Heating Energy": +1,
+    "Zone Lights Total Heating Energy": +1,
+    "Zone Electric Equipment Total Heating Energy": +1,
+
+    # Windows
+    "Zone Windows Total Heat Gain Energy": +1,
+    "Zone Windows Total Heat Loss Energy": -1,
+
+    # Infiltration
+    "Zone Infiltration Sensible Heat Gain Energy": +1,
+    "Zone Infiltration Sensible Heat Loss Energy": -1,
+
+    # Interzone air transfer
+    "Zone Interzone Air Transfer Heat Gain Energy": +1,
+    "Zone Interzone Air Transfer Heat Loss Energy": -1,
+
+    # Opaque transmission
+    "Zone Opaque Surface Inside Faces Total Conduction Heat Gain Energy": +1,
+    "Zone Opaque Surface Inside Faces Total Conduction Heat Loss Energy": -1,
+}
+
 
 
 def read_csv(filename):
@@ -113,6 +151,40 @@ def create_barchart(
     plt.tight_layout()
     plt.show(block=block)
 
+def create_new_barchart(title, labels, values):
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+    vals = np.array(values, dtype=float)
+    y = np.arange(len(labels))
+
+    fig, ax = plt.subplots(figsize=(12, max(4, 0.35 * len(labels))))
+
+    colors = ["tab:red" if v < 0 else "tab:blue" for v in vals]
+    ax.barh(y, vals, color=colors)
+
+    ax.set_yticks(y)
+    ax.set_yticklabels(labels, fontsize=9)
+    ax.set_title(title)
+    ax.axvline(0)
+    ax.set_xlabel("Energy (signed)")
+
+    for i, v in enumerate(vals):
+        ax.text(v, i, f" {v:,.3g}", va="center", fontsize=8)
+
+    ax.grid(True, axis="x", linestyle="--", linewidth=0.5)
+    plt.tight_layout()
+    plt.show()
+
+def signed_value(df, col):
+    """
+    Return signed value according to SIGN dictionary.
+    Falls back to +1 if column is not explicitly listed.
+    """
+    if col not in df.columns:
+        return 0.0
+    return SIGN.get(col, +1) * try_first(df, col)
+
 def try_first(df, key):
     """Returns the first value of the given column, if it exists, with 0 otherwise."""
     try:
@@ -180,10 +252,99 @@ def create_plot(df):
         internal_gains, heating_gains, cooling_losses
     )
 
+import re
+import re
+import pandas as pd
+
+def _strip_units(col: str) -> str:
+    return re.sub(r"\s*\[[^\]]+\]\s*$", "", str(col)).strip()
+
+def debug_lookup(df: pd.DataFrame, base_names):
+    print("DF shape:", df.shape)
+    print("First 20 columns:")
+    for c in list(df.columns)[:20]:
+        print("  -", repr(c))
+
+    # Map base->actual
+    base_to_actual = {}
+    for c in df.columns:
+        base_to_actual.setdefault(_strip_units(c), c)
+
+    missing = []
+    for base in base_names:
+        actual = base_to_actual.get(base)
+        if actual is None:
+            missing.append(base)
+        else:
+            s = df[actual]
+            # show numeric summary regardless of try_first
+            print(f"\nFOUND: {base}  ->  {repr(actual)}")
+            print("  dtype:", s.dtype)
+            print("  head:", s.head(3).tolist())
+            try:
+                print("  sum:", float(pd.to_numeric(s, errors='coerce').sum()))
+            except Exception as e:
+                print("  sum: <failed>", e)
+
+            # compare with try_first
+            try:
+                tf = try_first(df, actual)
+                print("  try_first:", tf)
+            except Exception as e:
+                print("  try_first: <ERROR>", e)
+
+    if missing:
+        print("\nMISSING (no matching column found):")
+        for m in missing:
+            print("  -", m)
+
+
+def _strip_units(col: str) -> str:
+    # "Foo[Wh]" -> "Foo"
+    return re.sub(r"\s*\[[^\]]+\]\s*$", "", str(col)).strip()
+
+def get_col_value(df, desired_name: str, default=0.0):
+    """
+    Find a column in df that matches desired_name ignoring trailing [units],
+    then return try_first(df, actual_column_name).
+    """
+    desired_base = _strip_units(desired_name)
+
+    # Build mapping base_name -> actual column name (first occurrence wins)
+    base_to_actual = {}
+    for c in df.columns:
+        base = _strip_units(c)
+        base_to_actual.setdefault(base, c)
+
+    actual = base_to_actual.get(desired_base)
+    if actual is None:
+        return default
+    return try_first(df, actual)
+
+def create_new_plot(df):
+    convert_units(df)
+
+    # Columns come directly from SIGN
+    columns = list(SIGN.keys())
+
+    labels = columns
+    values = [signed_value(df, c) for c in columns]
+
+    # NET closes the balance visually
+    labels.append("NET")
+    values.append(sum(values))
+
+    create_new_barchart(
+        title="Zone sensible balance (signed)",
+        labels=labels,
+        values=values,
+    )
+
+
 def main():
     """Entry point to the script."""
-    csv_filename = './Output/reports/results_report_variables_ZoneTimestep-net-Sum.csv'
+    csv_filename = 'F:\\Repos\\OrgGenSim\\Output\\run\\017_results\\report_variables_ZoneTimestep-Sum.csv'
     frame = read_csv(csv_filename)
-    create_plot(frame)
-
+    #create_plot(frame)
+    create_new_plot(frame)
 main()

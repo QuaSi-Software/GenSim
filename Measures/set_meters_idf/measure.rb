@@ -180,23 +180,24 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
 
     # create the output meters and variables from definitions
     get_output_variables(outputLevel).each do |var_def|
+      # normalize node_reference (nil -> "", and strip)
+      node_ref = var_def.fetch("node_reference", "").to_s.strip
+
       if var_def["create_output_variable"]
-        if var_def["node_reference"] == ""
-          var_def["eplus_variables"].each do |var_name|
+        # IMPORTANT: Output:Variable variable name must come from eplus_variables
+        (var_def["eplus_variables"] || []).each do |var_name|
+          if node_ref.empty?
             create_variable(var_name, reportingInterval, workspace)
+          else
+            create_variable_with_key(node_ref, var_name, reportingInterval, workspace)
           end
-        else
-          create_variable_with_key(
-            var_def["node_reference"],
-            var_def["name"],
-            reportingInterval,
-            workspace
-          )
         end
       end
+
       if var_def["create_custom_meter"]
         create_custom_meter(var_def["name"], var_def["eplus_variables"], workspace)
       end
+
       if var_def["create_output_meter"]
         create_output_meter(var_def["name"], reportingInterval, workspace)
       end
