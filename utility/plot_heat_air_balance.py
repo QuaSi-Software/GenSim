@@ -32,42 +32,14 @@ matplotlib.use("TkAgg")  # or "QtAgg" if you have PyQt/PySide installed
 
 
 SIGN = {
-    # HVAC delivered
-    "Zone Air Terminal Sensible Heating Energy": +1,
-    "Zone Air Terminal Sensible Cooling Energy": -1,
-    "Zone Radiant HVAC Heating Energy": +1,
-    "Zone Radiant HVAC Cooling Energy": -1,
-    "Baseboard Total Heating Energy": +1,
-
-    # Internal gains
-    "Zone People Sensible Heating Energy": +1,
-    "Zone Lights Total Heating Energy": +1,
-    "Zone Electric Equipment Total Heating Energy": +1,
-
-    # Outdoor air exchange
-    "Zone Infiltration Sensible Heat Gain Energy": +1,
-    "Zone Infiltration Sensible Heat Loss Energy": -1,
-    "Zone Ventilation Sensible Heat Gain Energy": +1,
-    "Zone Ventilation Sensible Heat Loss Energy": -1,
-
-    # Opaque transmission
-    "Zone Opaque Surface Inside Faces Total Conduction Heat Gain Energy": +1,
-    "Zone Opaque Surface Inside Faces Total Conduction Heat Loss Energy": -1,
-
-    # NOTE: This one is a Rate in many outputs; keep only if you know it is energy
-    # or you intentionally convert W->kWh with implicit 1h (see convert_units()).
-    #"Zone Air Heat Balance Surface Convection Rate": +1,
-
-    # Window split (aggregated)
-    "Zone Windows Total Heat Gain Energy": +1,
-    "Zone Windows Total Heat Loss Energy": -1,
-
-    # Optional interzone
-    "Zone Interzone Air Transfer Heat Gain Energy": +1,
-    "Zone Interzone Air Transfer Heat Loss Energy": -1,
-
-    # Storage (air)
-    "Zone Air Heat Balance Air Energy Storage Rate": +1,
+    "Zone Air Heat Balance Internal Convective Heat Gain Rate": +1,
+    "Zone Air Heat Balance Surface Convection Rate": +1,
+    "Zone Air Heat Balance Interzone Air Transfer Rate": +1,
+    "Zone Air Heat Balance Outdoor Air Transfer Rate": +1,
+    "Zone Air Heat Balance System Air Transfer Rate": +1,
+    "Zone Air Heat Balance System Convective Heat Gain Rate": +1,
+    "Zone Air Heat Balance Air Energy Storage Rate": -1,
+    "Zone Air Heat Balance Deviation Rate": -1,
 }
 
 

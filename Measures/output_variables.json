@@ -110,9 +110,79 @@
     ]
   },
   {
+    "name": "Zone Infiltration Total Heat Gain Energy",
+    "eplus_variables": [
+      "Zone Infiltration Total Heat Gain Energy"
+    ],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": [
+      "Debug",
+      "Normal"
+    ]
+  },
+  {
+    "name": "Zone Infiltration Total Heat Loss Energy",
+    "eplus_variables": [
+      "Zone Infiltration Total Heat Loss Energy"
+    ],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": [
+      "Debug",
+      "Normal"
+    ]
+  },
+  {
+    "name": "Zone Ventilation Total Heat Gain Energy",
+    "eplus_variables": [
+      "Zone Ventilation Total Heat Gain Energy"
+    ],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": [
+      "Debug",
+      "Normal"
+    ]
+  },
+  {
+    "name": "Zone Ventilation Total Heat Loss Energy",
+    "eplus_variables": [
+      "Zone Ventilation Total Heat Loss Energy"
+    ],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": [
+      "Debug",
+      "Normal"
+    ]
+  },
+  {
     "name": "Zone People Sensible Heating Energy",
     "eplus_variables": [
       "Zone People Sensible Heating Energy"
+    ],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": [
+      "Debug",
+      "Normal"
+    ]
+  },
+  {
+    "name": "Zone People Total Heating Energy",
+    "eplus_variables": [
+      "Zone People Total Heating Energy"
     ],
     "node_reference": "",
     "create_output_variable": true,
@@ -141,6 +211,20 @@
     "name": "Zone Electric Equipment Total Heating Energy",
     "eplus_variables": [
       "Zone Electric Equipment Total Heating Energy"
+    ],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": [
+      "Debug",
+      "Normal"
+    ]
+  },
+ {
+    "name": "Baseboard Total Heating Energy",
+    "eplus_variables": [
+      "Baseboard Total Heating Energy"
     ],
     "node_reference": "",
     "create_output_variable": true,
@@ -262,5 +346,149 @@
       "Debug",
       "Normal"
     ]
+  },
+  {
+        "name": "Total Heating",
+        "eplus_variables": ["DistrictHeatingWater:Facility"],
+        "node_reference": "",
+        "create_output_variable": false,
+        "create_custom_meter": true,
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal", "Reduced"]
+    },
+    {
+        "name": "Total Cooling",
+        "eplus_variables": ["DistrictCooling:Facility"],
+        "node_reference": "",
+        "create_output_variable": false,
+        "create_custom_meter": true,
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal", "Reduced"]
+    },
+    {
+        "name": "Lights Electricity",
+        "eplus_variables": ["InteriorLights:Electricity"],
+        "node_reference": "",
+        "create_output_variable": false,
+        "create_custom_meter": true,
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal", "Reduced"]
+    },
+    {
+        "name": "Plugs Electricity",
+        "eplus_variables": ["InteriorEquipment:Electricity"],
+        "node_reference": "",
+        "create_output_variable": false,
+        "create_custom_meter": true,
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal", "Reduced"]
+    },
+  {
+        "name": "Fans Electricity",
+        "eplus_variables": ["Fans:Electricity"],
+        "node_reference": "",
+        "create_output_variable": false,
+        "create_custom_meter": true,
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal", "Reduced"]
+    },
+    {
+        "name": "Pumps Electricity",
+        "eplus_variables": ["Pumps:Electricity"],
+        "node_reference": "",
+        "create_output_variable": false,
+        "create_custom_meter": true,
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal", "Reduced"]
+    },
+   {
+        "name": "Heating Setpoint Not Met",
+        "eplus_variables": ["Facility Heating Setpoint Not Met While Occupied Time"],
+        "node_reference": "",
+        "create_output_variable": false,
+        "create_custom_meter": true,
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal", "Reduced"]
+    },
+    {
+        "name": "Cooling Setpoint Not Met",
+        "eplus_variables": ["Facility Cooling Setpoint Not Met While Occupied Time"],
+        "node_reference": "",
+        "create_output_variable": false,
+        "create_custom_meter": true,
+        "create_output_meter": true,
+        "output_levels": ["Debug", "Normal", "Reduced"]
+    },
+  {
+        "name": "Zone Air Heat Balance Internal Convective Heat Gain Rate",
+        "eplus_variables": ["Zone Air Heat Balance Internal Convective Heat Gain Rate"],
+        "node_reference": "",
+        "create_output_variable": true,
+        "create_custom_meter": false,
+        "create_output_meter": false,
+        "output_levels": ["Debug", "Normal", "Reduced"]
+    },
+  {
+        "name": "Zone Air Heat Balance Surface Convection Rate",
+        "eplus_variables": ["Zone Air Heat Balance Surface Convection Rate"],
+        "node_reference": "",
+        "create_output_variable": true,
+        "create_custom_meter": false,
+        "create_output_meter": false,
+        "output_levels": ["Debug", "Normal", "Reduced"]
+    },
+  {
+        "name": "Zone Air Heat Balance Interzone Air Transfer Rate",
+        "eplus_variables": ["Zone Air Heat Balance Interzone Air Transfer Rate"],
+        "node_reference": "",
+        "create_output_variable": true,
+        "create_custom_meter": false,
+        "create_output_meter": false,
+        "output_levels": ["Debug", "Normal", "Reduced"]
+    },
+  {
+        "name": "Zone Air Heat Balance Outdoor Air Transfer Rate",
+        "eplus_variables": ["Zone Air Heat Balance Outdoor Air Transfer Rate"],
+        "node_reference": "",
+        "create_output_variable": true,
+        "create_custom_meter": false,
+        "create_output_meter": false,
+        "output_levels": ["Debug", "Normal", "Reduced"]
+    },
+  {
+        "name": "Zone Air Heat Balance System Air Transfer Rate",
+        "eplus_variables": ["Zone Air Heat Balance System Air Transfer Rate"],
+        "node_reference": "",
+        "create_output_variable": true,
+        "create_custom_meter": false,
+        "create_output_meter": false,
+        "output_levels": ["Debug", "Normal", "Reduced"]
+    },
+  {
+        "name": "Zone Air Heat Balance System Convective Heat Gain Rate",
+        "eplus_variables": ["Zone Air Heat Balance System Convective Heat Gain Rate"],
+        "node_reference": "",
+        "create_output_variable": true,
+        "create_custom_meter": false,
+        "create_output_meter": false,
+        "output_levels": ["Debug", "Normal", "Reduced"]
+    },
+  {
+        "name": "Zone Air Heat Balance Air Energy Storage Rate",
+        "eplus_variables": ["Zone Air Heat Balance Air Energy Storage Rate"],
+        "node_reference": "",
+        "create_output_variable": true,
+        "create_custom_meter": false,
+        "create_output_meter": false,
+        "output_levels": ["Debug", "Normal", "Reduced"]
+    },
+  {
+        "name": "Zone Air Heat Balance Deviation Rate",
+        "eplus_variables": ["Zone Air Heat Balance Deviation Rate"],
+        "node_reference": "",
+        "create_output_variable": true,
+        "create_custom_meter": false,
+        "create_output_meter": false,
+        "output_levels": ["Debug", "Normal", "Reduced"]
   }
 ]
