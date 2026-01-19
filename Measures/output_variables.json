@@ -54,6 +54,34 @@
     ]
   },
   {
+    "name": "Surface Window Heat Gain Energy",
+    "eplus_variables": [
+      "Surface Window Heat Gain Energy"
+    ],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": [
+      "Debug",
+      "Normal"
+    ]
+  },
+  {
+    "name": "Surface Window Heat Loss Energy",
+    "eplus_variables": [
+      "Surface Window Heat Loss Energy"
+    ],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": [
+      "Debug",
+      "Normal"
+    ]
+  },
+  {
     "name": "Zone Infiltration Sensible Heat Gain Energy",
     "eplus_variables": [
       "Zone Infiltration Sensible Heat Gain Energy"
@@ -490,5 +518,59 @@
         "create_custom_meter": false,
         "create_output_meter": false,
         "output_levels": ["Debug", "Normal", "Reduced"]
+  },
+  {
+  "name": "Surface Inside Face Convection Heat Gain Energy",
+  "eplus_variables": ["Surface Inside Face Convection Heat Gain Energy"],
+  "node_reference": "",
+  "create_output_variable": true,
+  "create_custom_meter": false,
+  "create_output_meter": false,
+  "output_levels": ["Debug", "Normal", "Reduced"]
+  },
+  {
+    "name": "Surface Inside Face Convection Heat Loss Energy",
+    "eplus_variables": ["Surface Inside Face Convection Heat Loss Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal", "Reduced"]
+  },
+  {
+    "name": "Surface Inside Face Net Surface Thermal Radiation Heat Gain Energy",
+    "eplus_variables": ["Surface Inside Face Net Surface Thermal Radiation Heat Gain Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal", "Reduced"]
+  },
+  {
+    "name": "Surface Inside Face Net Surface Thermal Radiation Heat Loss Energy",
+    "eplus_variables": ["Surface Inside Face Net Surface Thermal Radiation Heat Loss Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal", "Reduced"]
+  },
+  {
+    "name": "Surface Inside Face Conduction Heat Gain Energy",
+    "eplus_variables": ["Surface Inside Face Conduction Heat Gain Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal", "Reduced"]
+  },
+  {
+    "name": "Surface Inside Face Conduction Heat Loss Energy",
+    "eplus_variables": ["Surface Inside Face Conduction Heat Loss Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal", "Reduced"]
   }
 ]
