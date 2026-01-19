@@ -110,26 +110,52 @@ SIMPLIFY = {
     "Zone Air Heat Balance Deviation Rate": "Balance deviation",
 }
 
+def collect_all_vars(which: str) -> List[str]:
+    """which in {'A','B'}; returns variables used across all categories (unique, order preserved)."""
+    seen = set()
+    out = []
+    for cat in CATEGORY_MAP:
+        for v in CATEGORY_MAP[cat].get(which, []):
+            if v not in seen:
+                seen.add(v)
+                out.append(v)
+    return out
+
+def compute_net(totals_wh: pd.Series, which: str, factor: float) -> float:
+    """Net = sum(signed contributions) for the variables actually shown in the plot."""
+    if which == "A":
+        vars_used = collect_all_vars("A")
+        sign_map = SIGN_A
+    elif which == "B":
+        vars_used = collect_all_vars("B")
+        sign_map = SIGN_B
+    else:
+        raise ValueError("which must be 'A' or 'B'")
+
+    net = 0.0
+    for v in vars_used:
+        s = sign_map.get(v, 1)
+        net += signed_value_wh(totals_wh, v, s) * factor
+    return net
+
 
 import textwrap
 
-def short_vars(vars_list, max_chars=45):
+def pretty_vars(vars_list, max_chars=45):
     names = [SIMPLIFY.get(v, v) for v in vars_list]
     s = ", ".join(names)
     return s if len(s) <= max_chars else s[:max_chars-1] + "…"
 
-def build_yticklabels():
+def build_yticklabels(categories):
     labels = []
-    for cat in CATEGORY_MAP.keys():
+    for cat in categories:
+        if cat == "Residual (NET)":
+            labels.append("Residual (NET)\nA: sum(shown terms) | B: sum(shown terms)")
+            continue
+
         a_vars = CATEGORY_MAP[cat].get("A", [])
         b_vars = CATEGORY_MAP[cat].get("B", [])
-
-        # Make it truly "two-line": category + compact mapping summary
-        # (If you want 3 lines instead, split A and B onto separate lines.)
-        a_txt = short_vars(a_vars, max_chars=40).replace("\n", " / ")
-        b_txt = short_vars(b_vars, max_chars=40).replace("\n", " / ")
-
-        labels.append(f"{cat}\nA: {short_vars(a_vars, 60)}\nB: {short_vars(b_vars, 60)}")
+        labels.append(f"{cat}\nA: {pretty_vars(a_vars, 60)}\nB: {pretty_vars(b_vars, 60)}")
     return labels
 
 
@@ -250,6 +276,29 @@ def plot_grouped_signed_stacked(
         raise ValueError("unit must be 'Wh' or 'kWh'")
 
     categories = list(CATEGORY_MAP.keys())
+    # Compute NET for both sources (using plotted variables only)
+    net_a = compute_net(totals_wh, "A", factor)
+    net_b = compute_net(totals_wh, "B", factor)
+
+    # Append an extra row for residual comparison
+    categories = categories + ["Residual (NET)"]
+
+    import matplotlib as mpl
+
+    # Make hatch lines clearly visible
+    mpl.rcParams["hatch.linewidth"] = 1.2
+
+    # Use Matplotlib's default color cycle (no hardcoded RGBs)
+    cycle = plt.rcParams["axes.prop_cycle"].by_key()["color"]
+
+    # Assign one base color per category (skip residual or give it gray)
+    cat_colors = {}
+    for idx, cat in enumerate(categories):
+        if cat == "Residual (NET)":
+            cat_colors[cat] = "0.35"  # neutral gray
+        else:
+            cat_colors[cat] = cycle[idx % len(cycle)]
+
     y = list(range(len(categories)))
 
     # bar geometry
@@ -261,6 +310,14 @@ def plot_grouped_signed_stacked(
     # We'll draw each category; for each, draw Source A and Source B at different y positions,
     # stacking components separately for positive and negative.
     for i, cat in enumerate(categories):
+        if cat == "Residual (NET)":
+            # Source A residual bar
+            ax.barh(i - off, net_a, height=bar_h)
+
+            # Source B residual bar (hatched)
+            ax.barh(i + off, net_b, height=bar_h, alpha=0.7, hatch="///")
+
+            continue
         # --- Source A ---
         vars_a = CATEGORY_MAP[cat].get("A", [])
         comps_a = []
@@ -273,13 +330,21 @@ def plot_grouped_signed_stacked(
         # stack positives to the right
         left_pos = 0.0
         for val in pos_a:
-            ax.barh(i - off, val, left=left_pos, height=bar_h, label=None)
+            ax.barh(
+                i - off, val, left=left_pos, height=bar_h,
+                color=cat_colors[cat], alpha=0.95
+            )
             left_pos += val
 
         # stack negatives to the left (more negative)
         left_neg = 0.0
         for val in neg_a:
-            ax.barh(i - off, val, left=left_neg, height=bar_h, label=None)
+            ax.barh(
+                i + off, val, left=left_pos, height=bar_h,
+                color=cat_colors[cat], alpha=0.35,          # lighter intensity
+                hatch="///",                                # “white lines” pattern
+                edgecolor="white", linewidth=0.0            # hatch color comes from edgecolor
+            )
             left_neg += val
 
         # --- Source B ---
@@ -301,10 +366,15 @@ def plot_grouped_signed_stacked(
             ax.barh(i + off, val, left=left_neg, height=bar_h, label=None, alpha=0.7, hatch="///")
             left_neg += val
 
+    # annotate residual values
+    i_res = categories.index("Residual (NET)")
+    ax.text(net_a, i_res - off, f"{net_a:.1f}", va="center", ha="left" if net_a >= 0 else "right")
+    ax.text(net_b, i_res + off, f"{net_b:.1f}", va="center", ha="left" if net_b >= 0 else "right")
+
     # Cosmetics
     ax.axvline(0, linewidth=1)
     ax.set_yticks(y)
-    ax.set_yticklabels(build_yticklabels(), fontsize=9)
+    ax.set_yticklabels(build_yticklabels(categories), fontsize=9)
     ax.invert_yaxis()
     ax.set_xlabel(f"Energy ({unit}, signed)")
     ax.set_title("Combined comparison: grouped + stacked (two balance approaches)")
