@@ -572,5 +572,158 @@
     "create_custom_meter": false,
     "create_output_meter": false,
     "output_levels": ["Debug", "Normal", "Reduced"]
+  },
+{
+    "name": "Zone Infiltration Latent Heat Gain Energy",
+    "eplus_variables": ["Zone Infiltration Latent Heat Gain Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone Infiltration Latent Heat Loss Energy",
+    "eplus_variables": ["Zone Infiltration Latent Heat Loss Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone Ventilation Latent Heat Gain Energy",
+    "eplus_variables": ["Zone Ventilation Latent Heat Gain Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone Ventilation Latent Heat Loss Energy",
+    "eplus_variables": ["Zone Ventilation Latent Heat Loss Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone People Latent Gain Energy",
+    "eplus_variables": ["Zone People Latent Gain Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone Electric Equipment Latent Gain Energy",
+    "eplus_variables": ["Zone Electric Equipment Latent Gain Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone Total Internal Latent Gain Energy",
+    "eplus_variables": ["Zone Total Internal Latent Gain Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Surface Average Face Conduction Heat Gain Rate",
+    "eplus_variables": ["Surface Average Face Conduction Heat Gain Rate"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Surface Average Face Conduction Heat Loss Rate",
+    "eplus_variables": ["Surface Average Face Conduction Heat Loss Rate"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Surface Window Heat Gain Energy",
+    "eplus_variables": ["Surface Window Heat Gain Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Surface Window Heat Loss Energy",
+    "eplus_variables": ["Surface Window Heat Loss Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Heat Exchanger Sensible Heating Energy",
+    "eplus_variables": ["Heat Exchanger Sensible Heating Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Heat Exchanger Total Heating Energy",
+    "eplus_variables": ["Heat Exchanger Total Heating Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Heat Exchanger Sensible Cooling Energy",
+    "eplus_variables": ["Heat Exchanger Sensible Cooling Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Heat Exchanger Total Cooling Energy",
+    "eplus_variables": ["Heat Exchanger Total Cooling Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone Mechanical Ventilation No Load Heat Removal Energy",
+    "eplus_variables": ["Zone Mechanical Ventilation No Load Heat Removal Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone Mechanical Ventilation No Load Heat Addition Energy",
+    "eplus_variables": ["Zone Mechanical Ventilation No Load Heat Addition Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
   }
 ]

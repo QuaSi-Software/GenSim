@@ -55,15 +55,15 @@ SIGN_A: Dict[str, int] = {
     "Baseboard Total Heating Energy": +1,
 
     # Internal gains
-    "Zone People Total Heating Energy": +1,
+    "Zone People Sensible Heating Energy": +1,
     "Zone Lights Total Heating Energy": +1,
     "Zone Electric Equipment Total Heating Energy": +1,
 
     # Outdoor air exchange
-    "Zone Infiltration Total Heat Gain Energy": +1,
-    "Zone Infiltration Total Heat Loss Energy": -1,
-    "Zone Ventilation Total Heat Gain Energy": +1,
-    "Zone Ventilation Total Heat Loss Energy": -1,
+    "Zone Infiltration Sensible Heat Gain Energy": +1,
+    "Zone Infiltration Sensible Heat Loss Energy": -1,
+    "Zone Ventilation Sensible Heat Gain Energy": +1,
+    "Zone Ventilation Sensible Heat Loss Energy": -1,
 
     # Opaque transmission
     "Zone Opaque Surface Inside Faces Total Conduction Heat Gain Energy": +1,
@@ -79,6 +79,18 @@ SIGN_A: Dict[str, int] = {
 
     # Storage (air) - often used as a "residual-like" term in aggregated balances
     "Zone Air Heat Balance Air Energy Storage Rate": +1,
+
+# -------------------------------------------------
+    # Latent (zone-side)
+    # -------------------------------------------------
+    "Zone Infiltration Latent Heat Gain Energy": +1,
+    "Zone Infiltration Latent Heat Loss Energy": -1,
+    "Zone Ventilation Latent Heat Gain Energy": +1,
+    "Zone Ventilation Latent Heat Loss Energy": -1,
+    "Zone People Latent Gain Energy": +1,
+    "Zone Electric Equipment Latent Gain Energy": +1,
+    # Optional (often redundant -> can double count if you also include people/equip)
+    # "Zone Total Internal Latent Gain Energy": +1,
 }
 
 
@@ -90,7 +102,7 @@ SIGN_A: Dict[str, int] = {
 
 # A small simplifier for y-axis annotations
 SIMPLIFY_A: Dict[str, str] = {
-    "Zone People Total Heating Energy": "People",
+    "Zone People Sensible Heating Energy": "People",
     "Zone Lights Total Heating Energy": "Lights",
     "Zone Electric Equipment Total Heating Energy": "Equipment",
     "Zone Air Terminal Sensible Heating Energy": "Terminal heat",
@@ -102,13 +114,20 @@ SIMPLIFY_A: Dict[str, str] = {
     "Zone Opaque Surface Inside Faces Total Conduction Heat Loss Energy": "Opaque Conduction loss",
     "Zone Windows Total Heat Gain Energy": "Window gain",
     "Zone Windows Total Heat Loss Energy": "Window loss",
-    "Zone Infiltration Total Heat Gain Energy": "Infil gain",
-    "Zone Infiltration Total Heat Loss Energy": "Infil loss",
-    "Zone Ventilation Total Heat Gain Energy": "Vent gain",
-    "Zone Ventilation Total Heat Loss Energy": "Vent loss",
+    "Zone Infiltration Sensible Heat Gain Energy": "Infil gain",
+    "Zone Infiltration Sensible Heat Loss Energy": "Infil loss",
+    "Zone Ventilation Sensible Heat Gain Energy": "Vent gain",
+    "Zone Ventilation Sensible Heat Loss Energy": "Vent loss",
     "Zone Interzone Air Transfer Heat Gain Energy": "Interzone gain",
     "Zone Interzone Air Transfer Heat Loss Energy": "Interzone loss",
     "Zone Air Heat Balance Air Energy Storage Rate": "Air storage",
+    "Zone Infiltration Latent Heat Gain Energy": "Infil latent gain",
+    "Zone Infiltration Latent Heat Loss Energy": "Infil latent loss",
+    "Zone Ventilation Latent Heat Gain Energy": "Vent latent gain",
+    "Zone Ventilation Latent Heat Loss Energy": "Vent latent loss",
+    "Zone People Latent Gain Energy": "People latent",
+    "Zone Electric Equipment Latent Gain Energy": "Equip latent",
+    "Zone Total Internal Latent Gain Energy": "Total internal latent",
 }
 
 SIMPLIFY_B: Dict[str, str] = {
@@ -194,7 +213,7 @@ CATEGORY_MAP: Dict[str, Dict[str, List[str]]] = {
     },
     "Internal gains": {
         "A": [
-            "Zone People Total Heating Energy",
+            "Zone People Sensible Heating Energy",
             "Zone Lights Total Heating Energy",
             "Zone Electric Equipment Total Heating Energy",
         ],
@@ -203,6 +222,18 @@ CATEGORY_MAP: Dict[str, Dict[str, List[str]]] = {
             "Lights Sensible Heat Addition",
             "Equipment Sensible Heat Addition",
         ],
+    },
+    "Latent (A-only)": {
+        "A": [
+            "Zone People Latent Gain Energy",
+            "Zone Electric Equipment Latent Gain Energy",
+            "Zone Infiltration Latent Heat Gain Energy",
+            "Zone Infiltration Latent Heat Loss Energy",
+            "Zone Ventilation Latent Heat Gain Energy",
+            "Zone Ventilation Latent Heat Loss Energy",
+            # "Zone Total Internal Latent Gain Energy",  # <- usually redundant (double counts)
+        ],
+        "B": [],
     },
     "Internal sinks (equipment removal)": {
         "A": [],
@@ -242,10 +273,10 @@ CATEGORY_MAP: Dict[str, Dict[str, List[str]]] = {
     },
     "Infiltration & Ventilation": {
         "A": [
-            "Zone Infiltration Total Heat Gain Energy",
-            "Zone Infiltration Total Heat Loss Energy",
-            "Zone Ventilation Total Heat Gain Energy",
-            "Zone Ventilation Total Heat Loss Energy",
+            "Zone Infiltration Sensible Heat Gain Energy",
+            "Zone Infiltration Sensible Heat Loss Energy",
+            "Zone Ventilation Sensible Heat Gain Energy",
+            "Zone Ventilation Sensible Heat Loss Energy",
         ],
         "B": [
             "Infiltration Heat Addition",

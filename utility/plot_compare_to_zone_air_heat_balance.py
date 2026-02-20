@@ -55,15 +55,15 @@ SIGN_A: Dict[str, int] = {
     "Baseboard Total Heating Energy": +1,
 
     # Internal gains
-    "Zone People Total Heating Energy": +1,
+    "Zone People Sensible Heating Energy": +1,
     "Zone Lights Total Heating Energy": +1,
     "Zone Electric Equipment Total Heating Energy": +1,
 
     # Outdoor air exchange
-    "Zone Infiltration Total Heat Gain Energy": +1,
-    "Zone Infiltration Total Heat Loss Energy": -1,
-    "Zone Ventilation Total Heat Gain Energy": +1,
-    "Zone Ventilation Total Heat Loss Energy": -1,
+    "Zone Infiltration Sensible Heat Gain Energy": +1,
+    "Zone Infiltration Sensible Heat Loss Energy": -1,
+    "Zone Ventilation Sensible Heat Gain Energy": +1,
+    "Zone Ventilation Sensible Heat Loss Energy": -1,
 
     # Opaque transmission
     "Zone Opaque Surface Inside Faces Total Conduction Heat Gain Energy": +1,
@@ -81,6 +81,20 @@ SIGN_A: Dict[str, int] = {
     "Zone Air Heat Balance Air Energy Storage Rate": +1,
 }
 
+SIGN_B: Dict[str, int] = {
+    "Zone Air Heat Balance Internal Convective Heat Gain Rate": +1,
+    "Zone Air Heat Balance Surface Convection Rate": +1,
+    "Zone Air Heat Balance Interzone Air Transfer Rate": +1,
+    "Zone Air Heat Balance Outdoor Air Transfer Rate": +1,
+    "Zone Air Heat Balance System Air Transfer Rate": +1,
+    "Zone Air Heat Balance System Convective Heat Gain Rate": +1,
+    "Zone Air Heat Balance Air Energy Storage Rate": -1,
+    "Zone Air Heat Balance Deviation Rate": -1,
+}
+
+
+
+
 
 # ---------------------------------------------------------------------
 # 2) Source B: tabular columns from "Sensible Heat Gain Summary"
@@ -90,7 +104,7 @@ SIGN_A: Dict[str, int] = {
 
 # A small simplifier for y-axis annotations
 SIMPLIFY_A: Dict[str, str] = {
-    "Zone People Total Heating Energy": "People",
+    "Zone People Sensible Heating Energy": "People",
     "Zone Lights Total Heating Energy": "Lights",
     "Zone Electric Equipment Total Heating Energy": "Equipment",
     "Zone Air Terminal Sensible Heating Energy": "Terminal heat",
@@ -102,10 +116,10 @@ SIMPLIFY_A: Dict[str, str] = {
     "Zone Opaque Surface Inside Faces Total Conduction Heat Loss Energy": "Opaque Conduction loss",
     "Zone Windows Total Heat Gain Energy": "Window gain",
     "Zone Windows Total Heat Loss Energy": "Window loss",
-    "Zone Infiltration Total Heat Gain Energy": "Infil gain",
-    "Zone Infiltration Total Heat Loss Energy": "Infil loss",
-    "Zone Ventilation Total Heat Gain Energy": "Vent gain",
-    "Zone Ventilation Total Heat Loss Energy": "Vent loss",
+    "Zone Infiltration Sensible Heat Gain Energy": "Infil gain",
+    "Zone Infiltration Sensible Heat Loss Energy": "Infil loss",
+    "Zone Ventilation Sensible Heat Gain Energy": "Vent gain",
+    "Zone Ventilation Sensible Heat Loss Energy": "Vent loss",
     "Zone Interzone Air Transfer Heat Gain Energy": "Interzone gain",
     "Zone Interzone Air Transfer Heat Loss Energy": "Interzone loss",
     "Zone Air Heat Balance Air Energy Storage Rate": "Air storage",
@@ -132,30 +146,6 @@ SIMPLIFY_B: Dict[str, str] = {
     "Opaque Surface Conduction and Other Heat Removal": "Opaque rem",
 }
 
-# ---------------------------------------------------------------------
-# 2b) Source B signs for tabular report (known-working approach)
-# ---------------------------------------------------------------------
-HTML_COL_SIGNS: Dict[str, int] = {
-    "HVAC Zone Eq & Other Sensible Air Heating": +1,
-    "HVAC Zone Eq & Other Sensible Air Cooling": -1,
-    "HVAC Terminal Unit Sensible Air Heating": +1,
-    "HVAC Terminal Unit Sensible Air Cooling": -1,
-    "HVAC Input Heated Surface Heating": +1,
-    "HVAC Input Cooled Surface Cooling": -1,
-    "People Sensible Heat Addition": +1,
-    "Lights Sensible Heat Addition": +1,
-    "Equipment Sensible Heat Addition": +1,
-    "Window Heat Addition": +1,
-    "Interzone Air Transfer Heat Addition": +1,
-    "Infiltration Heat Addition": +1,
-    "Opaque Surface Conduction and Other Heat Addition": +1,
-    "Equipment Sensible Heat Removal": -1,
-    "Window Heat Removal": -1,
-    "Interzone Air Transfer Heat Removal": -1,
-    "Infiltration Heat Removal": -1,
-    "Opaque Surface Conduction and Other Heat Removal": -1,
-}
-
 def _normalize_html_header(h: str) -> str:
     h = re.sub(r"\s*\[.*?\]\s*$", "", str(h))  # strip [GJ]
     h = h.replace("&amp;", "&")
@@ -175,59 +165,25 @@ def _normalize_html_header(h: str) -> str:
 # - Keep "Equipment Sensible Heat Removal" as its own sink (A has none)
 
 CATEGORY_MAP: Dict[str, Dict[str, List[str]]] = {
-    "HVAC (delivered / system)": {
+    "Internal gains / internal convection": {
         "A": [
-            "Zone Air Terminal Sensible Heating Energy",
-            "Zone Air Terminal Sensible Cooling Energy",
-            "Zone Radiant HVAC Heating Energy",
-            "Zone Radiant HVAC Cooling Energy",
-            "Baseboard Total Heating Energy",
-        ],
-        "B": [
-            "HVAC Zone Eq & Other Sensible Air Heating",
-            "HVAC Zone Eq & Other Sensible Air Cooling",
-            "HVAC Terminal Unit Sensible Air Heating",
-            "HVAC Terminal Unit Sensible Air Cooling",
-            "HVAC Input Heated Surface Heating",
-            "HVAC Input Cooled Surface Cooling",
-        ],
-    },
-    "Internal gains": {
-        "A": [
-            "Zone People Total Heating Energy",
+            "Zone People Sensible Heating Energy",
             "Zone Lights Total Heating Energy",
             "Zone Electric Equipment Total Heating Energy",
         ],
         "B": [
-            "People Sensible Heat Addition",
-            "Lights Sensible Heat Addition",
-            "Equipment Sensible Heat Addition",
+            "Zone Air Heat Balance Internal Convective Heat Gain Rate",
         ],
     },
-    "Internal sinks (equipment removal)": {
-        "A": [],
-        "B": [
-            "Equipment Sensible Heat Removal",
-        ],
-    },
-    "Transmission (opaque)": {
+    "Surfaces convection (envelope + windows lumped)": {
         "A": [
             "Zone Opaque Surface Inside Faces Total Conduction Heat Gain Energy",
             "Zone Opaque Surface Inside Faces Total Conduction Heat Loss Energy",
-        ],
-        "B": [
-            "Opaque Surface Conduction and Other Heat Addition",
-            "Opaque Surface Conduction and Other Heat Removal",
-        ],
-    },
-    "Transmission (windows)": {
-        "A": [
             "Zone Windows Total Heat Gain Energy",
             "Zone Windows Total Heat Loss Energy",
         ],
         "B": [
-            "Window Heat Addition",
-            "Window Heat Removal",
+            "Zone Air Heat Balance Surface Convection Rate",
         ],
     },
     "Interzone air transfer": {
@@ -236,29 +192,50 @@ CATEGORY_MAP: Dict[str, Dict[str, List[str]]] = {
             "Zone Interzone Air Transfer Heat Loss Energy",
         ],
         "B": [
-            "Interzone Air Transfer Heat Addition",
-            "Interzone Air Transfer Heat Removal",
+            "Zone Air Heat Balance Interzone Air Transfer Rate",
         ],
     },
-    "Infiltration & Ventilation": {
+    "Outdoor air transfer (infil + vent)": {
         "A": [
-            "Zone Infiltration Total Heat Gain Energy",
-            "Zone Infiltration Total Heat Loss Energy",
-            "Zone Ventilation Total Heat Gain Energy",
-            "Zone Ventilation Total Heat Loss Energy",
+            "Zone Infiltration Sensible Heat Gain Energy",
+            "Zone Infiltration Sensible Heat Loss Energy",
+            "Zone Ventilation Sensible Heat Gain Energy",
+            "Zone Ventilation Sensible Heat Loss Energy",
         ],
         "B": [
-            "Infiltration Heat Addition",
-            "Infiltration Heat Removal",
+            "Zone Air Heat Balance Outdoor Air Transfer Rate",
         ],
     },
-    "Storage / other (A-only)": {
+    "System to zone (air transfer + convective)": {
         "A": [
+            "Zone Air Terminal Sensible Heating Energy",
+            "Zone Air Terminal Sensible Cooling Energy",
+            "Zone Radiant HVAC Heating Energy",
+            "Zone Radiant HVAC Cooling Energy",
+            "Baseboard Total Heating Energy",
+        ],
+        "B": [
+            "Zone Air Heat Balance System Air Transfer Rate",
+            "Zone Air Heat Balance System Convective Heat Gain Rate",
+        ],
+    },
+    "Storage": {
+        "A": [
+            # if you keep it in A; otherwise make A empty
             "Zone Air Heat Balance Air Energy Storage Rate",
         ],
-        "B": [],
+        "B": [
+            "Zone Air Heat Balance Air Energy Storage Rate",
+        ],
+    },
+    "Deviation (should be ~0 if perfectly closed)": {
+        "A": [],
+        "B": [
+            "Zone Air Heat Balance Deviation Rate",
+        ],
     },
 }
+
 
 
 # ---------------------------------------------------------------------
@@ -306,75 +283,103 @@ def _negate_if_needed(colname: str, val: float) -> float:
         return -val
     return val
 
+def _strip_units(col: str) -> str:
+    # "Var Name[W]" -> "Var Name", "Var Name [Wh]" -> "Var Name"
+    s = str(col)
+    s = s.replace("&amp;", "&")
+    s = re.sub(r"\s*\[[^\]]+\]\s*$", "", s).strip()
+    return s
 
-def parse_sensible_gain_summary_totalfacility(html_path: str | Path) -> pd.Series:
+def _extract_unit(col: str) -> str | None:
+    m = re.search(r"\[([^\]]+)\]\s*$", str(col).strip())
+    return m.group(1) if m else None
+
+def _parse_eplus_datetime(series: pd.Series) -> pd.DatetimeIndex:
     """
-    Known-working parser (borrowed from plot_three_sources.py logic):
-    Extract the 'Total Facility' row from:
-      Sensible Heat Gain Summary -> Annual Building Sensible Heat Gain Components
-
-    Robust to:
-      - header row embedded as first data row (columns are 0..N)
-      - proper header row
-
-    Returns:
-      pd.Series indexed by normalized column names, values in GJ (signed).
+    Parses EnergyPlus Date/Time like ' 01/01  00:10:00' and handles '24:00:00'
+    by rolling to next day.
     """
-    from io import StringIO
-    html_path = Path(html_path)
+    s = series.astype(str).str.strip()
 
-    with open(html_path, "r", encoding="utf-8", errors="ignore") as f:
-        html_text = f.read()
+    # split "MM/DD  HH:MM:SS"
+    parts = s.str.split(r"\s+", n=1, expand=True)
+    md = parts[0]
+    hms = parts[1].fillna("00:00:00")
 
-    tables = pd.read_html(StringIO(html_text))
-    target = None
+    # handle 24:xx:xx -> 00:xx:xx next day
+    is_24 = hms.str.startswith("24:")
+    hms_fixed = hms.where(~is_24, hms.str.replace("^24:", "00:", regex=True))
 
-    required = {
-        "People Sensible Heat Addition",
-        "Window Heat Addition",
-        "Opaque Surface Conduction and Other Heat Addition",
-    }
+    # add dummy year (EnergyPlus often omits year)
+    dt = pd.to_datetime("2001/" + md + " " + hms_fixed, errors="coerce")
 
-    for t in tables:
-        if t.shape[0] < 2 or t.shape[1] < 8:
-            continue
+    # roll forward rows that were 24:..
+    dt = dt + pd.to_timedelta(is_24.astype(int), unit="D")
+    return pd.DatetimeIndex(dt)
 
-        # Case: header is embedded as first row
-        first_row = [str(x) for x in t.iloc[0].tolist()]
-        if any("People Sensible Heat Addition" in x for x in first_row):
-            headers = [_normalize_html_header(x) for x in first_row]
-            t2 = t.iloc[1:].copy()
-            t2.columns = headers
-        else:
-            headers = [_normalize_html_header(c) for c in t.columns]
-            t2 = t.copy()
-            t2.columns = headers
+def compute_totals_from_csv_energy_or_rate(
+    csv_path: str | Path,
+    variables: List[str],
+    signs: Dict[str, int],
+) -> pd.Series:
+    """
+    Returns totals in Wh (signed) for requested variables.
+    - If a column is [Wh] / [J] etc (energy-like), it is summed directly.
+    - If a column is [W] (rate-like), it is integrated using timestep hours from Date/Time.
+    """
+    csv_path = Path(csv_path)
+    df = pd.read_csv(csv_path)
 
-        if required.issubset(set(t2.columns)):
-            target = t2
+    # find Date/Time column if present (needed for integrating W -> Wh)
+    dt_col = None
+    for cand in ["Date/Time", "DateTime", "Datetime", "Time", "date/time"]:
+        if cand in df.columns:
+            dt_col = cand
             break
 
-    if target is None:
-        raise ValueError("Could not find the 'Annual Building Sensible Heat Gain Components' table in the HTML file.")
+    dt_hours = None
+    if dt_col is not None:
+        dti = _parse_eplus_datetime(df[dt_col])
+        # robust timestep from median diff
+        diffs = dti.to_series().diff().dropna()
+        if not diffs.empty:
+            dt_hours = diffs.median().total_seconds() / 3600.0
 
-    first_col = target.columns[0]
-    mask = target[first_col].astype(str).str.strip().str.lower().eq("total facility")
-    if not mask.any():
-        raise ValueError("Could not find 'Total Facility' row in the HTML sensible heat gain table.")
-
-    row = target.loc[mask].iloc[0]
+    # build mapping of "base name" -> (original col name, unit)
+    col_map = {}
+    for c in df.columns:
+        base = _strip_units(c)
+        unit = _extract_unit(c)
+        col_map[base] = (c, unit)
 
     out = {}
-    for col in target.columns[1:]:
-        base = _normalize_html_header(col)
-        if base not in HTML_COL_SIGNS:
-            continue
-        v_gj = pd.to_numeric(row[col], errors="coerce")
-        if pd.isna(v_gj):
-            continue
-        out[base] = abs(float(v_gj)) * float(HTML_COL_SIGNS[base])
+    for v in variables:
+        sign = signs.get(v, 1)
 
-    return pd.Series(out, name="GJ")
+        if v not in col_map:
+            out[v] = 0.0
+            continue
+
+        orig_col, unit = col_map[v]
+        vals = pd.to_numeric(df[orig_col], errors="coerce").fillna(0.0)
+
+        # decide integrate vs sum
+        if unit is not None and unit.strip().lower() == "w":
+            if dt_hours is None:
+                # fallback: assume data already timestep-summed or hourly
+                # (better than silently returning 0)
+                wh = float(vals.sum())  # not perfect, but avoids “all zeros”
+            else:
+                wh = float((vals * dt_hours).sum())
+        else:
+            # treat as energy-like (Wh, J, kWh, etc.) and just sum;
+            # if it's J, you’d convert, but your workflow usually exports Wh.
+            wh = float(vals.sum())
+
+        out[v] = wh * sign
+
+    return pd.Series(out, name="Wh")
+
 
 
 
@@ -431,13 +436,13 @@ def compute_net_a(totals_wh: pd.Series, factor: float) -> float:
     return net
 
 
-def compute_net_b(totals_gj: pd.Series, factor: float) -> float:
+def compute_net_b(totals_wh_b: pd.Series, factor: float) -> float:
     """
-    totals_gj is the tabular Series (GJ). factor is GJ->unit (e.g., MWh).
+    totals_wh_b is the tabular Series (GJ). factor is GJ->unit (e.g., MWh).
     """
     net = 0.0
     for c in collect_all_b_cols():
-        net += float(totals_gj.get(c, 0.0)) * factor
+        net += float(totals_wh_b.get(c, 0.0)) * factor
     return net
 
 
@@ -480,7 +485,7 @@ def add_segment_label(
 
 def plot_grouped_signed_stacked(
     totals_wh_a: pd.Series,
-    totals_gj_b: pd.Series,
+    totals_wh_b: pd.Series,
     out_png: str = "combined_A_vs_SensibleHeatGainSummary_MWh.png",
     unit: str = "MWh",
     source_labels: Tuple[str, str] = ("SIGN_A (CSV vars)", "Tabular: Sensible Heat Gain Summary"),
@@ -491,16 +496,15 @@ def plot_grouped_signed_stacked(
     unit_l = unit.lower()
     if unit_l == "mwh":
         factor_a = 1.0 / 1_000_000.0  # Wh -> MWh
-        factor_b = 277.77777777777777  # GJ -> kWh
-        factor_b = factor_b / 1000.0   # GJ -> MWh
+        factor_b = 1.0 / 1_000_000.0
         unit_disp = "MWh"
     elif unit_l == "kwh":
         factor_a = 1.0 / 1000.0
-        factor_b = 277.77777777777777  # GJ -> kWh
+        factor_b = 1.0 / 1000.0
         unit_disp = "kWh"
     elif unit_l == "wh":
         factor_a = 1.0
-        factor_b = 277.77777777777777 * 1000.0  # GJ -> Wh
+        factor_b = 1.0
         unit_disp = "Wh"
     else:
         raise ValueError("unit must be 'Wh', 'kWh', or 'MWh'")
@@ -508,7 +512,7 @@ def plot_grouped_signed_stacked(
     categories = list(CATEGORY_MAP.keys())
 
     net_a = compute_net_a(totals_wh_a, factor_a)
-    net_b = compute_net_b(totals_gj_b, factor_b)
+    net_b = compute_net_b(totals_wh_b, factor_b)
     if add_residual_row:
         categories = categories + ["Residual (NET)"]
 
@@ -578,7 +582,7 @@ def plot_grouped_signed_stacked(
         # B segments (from tabular columns)
         # -------------------------
         cols_b = CATEGORY_MAP[cat].get("B", [])
-        comps_b = [float(totals_gj_b.get(c, 0.0)) * factor_b for c in cols_b]
+        comps_b = [float(totals_wh_b.get(c, 0.0)) * factor_b for c in cols_b]
         total_b = sum(comps_b)
 
         pos_items_b = [(c, val) for c, val in zip(cols_b, comps_b) if val > 0]
@@ -666,14 +670,19 @@ if __name__ == "__main__":
     HTML_PATH = r"F:\Repos\OrgGenSim\Output\run\eplustbl.htm"
 
     totals_a = load_totals_wh(CSV_PATH)
-    totals_b = parse_sensible_gain_summary_totalfacility(HTML_PATH)
+    b_vars = collect_all_b_cols()
+    totals_b = compute_totals_from_csv_energy_or_rate(
+        csv_path=CSV_PATH,
+        variables=b_vars,
+        signs=SIGN_B,
+    )
 
     plot_grouped_signed_stacked(
         totals_wh_a=totals_a,
-        totals_gj_b=totals_b,
-        out_png="combined_A_vs_SensibleHeatGainSummary_MWh_labeled.png",
+        totals_wh_b=totals_b,
+        out_png="combined_A_vs_ZoneAirHeatBalance_MWh.png",
         unit="MWh",
-        source_labels=("SIGN_A (CSV vars)", "Tabular Sensible Heat Gain Summary"),
+        source_labels=("A: SIGN_A (energy vars)", "B: Zone Air Heat Balance (rates integrated)"),
         add_residual_row=True,
         label_segments=True,
     )
