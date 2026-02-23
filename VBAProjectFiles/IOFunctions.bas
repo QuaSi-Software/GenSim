@@ -1,3 +1,4 @@
+Attribute VB_Name = "IOFunctions"
 
 Function Inc(ByRef data As Integer)
     data = data + 1
