@@ -429,7 +429,7 @@ Sub CreateResults()
         ' latent
         If (InStr(ResultsNFAAnnual(1, colIndex), outputs("InfilHeatLossLat"))) Then Sheets("GEBÄUDEBILANZ").Range("P12") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), outputs("VentHeatLossLat"))) Then Sheets("GEBÄUDEBILANZ").Range("P13") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("InfilHeatGainLat"))) Then Sheets("GEBÄUDEBILANZ").Range("P20") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("InfilHeatGainLat"))) Then Sheets("GEBÄUDEBILANZ").Range("P20") = ResultsNFAAnnual(2, colIndex) * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), outputs("VentHeatGainLat"))) Then Sheets("GEBÄUDEBILANZ").Range("P21") = ResultsNFAAnnual(2, colIndex) * 0.001
         If (InStr(ResultsNFAAnnual(1, colIndex), outputs("PeopleGainLat"))) Then Sheets("GEBÄUDEBILANZ").Range("P24") = ResultsNFAAnnual(2, colIndex) * 0.001
     Next
