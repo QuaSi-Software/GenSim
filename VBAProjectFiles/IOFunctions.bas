@@ -194,7 +194,7 @@ Function ParseEIOFile(filePath As String) As Boolean
         End If
     Wend
 
-     ' NRF-FlÃ¤che
+     ' NRF-Fläche
     Dim dBldgArea_NRF As Double
     If Range("geometry_source") = 1 Then
         dBldgArea_NRF = CDbl(Range("BldgArea_NRF"))
@@ -235,7 +235,7 @@ Sub CreateResults()
     Set cb_hvac = Sheets("Parameter").CheckBoxes("checkbox_hvac")
 
     Application.ScreenUpdating = False
-    Sheets("GEBÃ„UDEBILANZ").Unprotect
+    Sheets("GEBÄUDEBILANZ").Unprotect
     Sheets("HAUPTSEITE").Unprotect
 
     Dim sheet As Worksheet
@@ -331,23 +331,23 @@ Sub CreateResults()
     Next
 
     'Names first row
-    Results_Nutzenergie_1h(1, 1) = "Heizenergie [Wh/mÂ²NRF]"
-    Results_Nutzenergie(1, 1) = "Heizenergie [Wh/mÂ²NRF]"
+    Results_Nutzenergie_1h(1, 1) = "Heizenergie [Wh/m²NRF]"
+    Results_Nutzenergie(1, 1) = "Heizenergie [Wh/m²NRF]"
 
-    Results_Nutzenergie_1h(1, 2) = "KÃ¼hlenergie [Wh/mÂ²NRF]"
-    Results_Nutzenergie(1, 2) = "KÃ¼hlenergie [Wh/mÂ²NRF]"
+    Results_Nutzenergie_1h(1, 2) = "Kühlenergie [Wh/m²NRF]"
+    Results_Nutzenergie(1, 2) = "Kühlenergie [Wh/m²NRF]"
 
-    Results_Nutzenergie_1h(1, 3) = "Beleuchtung [Wh/mÂ²NRF]"
-    Results_Nutzenergie(1, 3) = "Beleuchtung [Wh/mÂ²NRF]"
+    Results_Nutzenergie_1h(1, 3) = "Beleuchtung [Wh/m²NRF]"
+    Results_Nutzenergie(1, 3) = "Beleuchtung [Wh/m²NRF]"
 
-    Results_Nutzenergie_1h(1, 4) = "Elektrische GerÃ¤te [Wh/mÂ²NRF]"
-    Results_Nutzenergie(1, 4) = "Elektrische GerÃ¤te [Wh/mÂ²NRF]"
+    Results_Nutzenergie_1h(1, 4) = "Elektrische Geräte [Wh/m²NRF]"
+    Results_Nutzenergie(1, 4) = "Elektrische Geräte [Wh/m²NRF]"
 
-    Results_Nutzenergie_1h(1, 5) = "LÃ¼ftungsstrom [Wh/mÂ²NRF]"
-    Results_Nutzenergie(1, 5) = "LÃ¼ftungsstrom [Wh/mÂ²NRF]"
+    Results_Nutzenergie_1h(1, 5) = "Lüftungsstrom [Wh/m²NRF]"
+    Results_Nutzenergie(1, 5) = "Lüftungsstrom [Wh/m²NRF]"
 
-    Results_Nutzenergie_1h(1, 6) = "Pumpenstrom [Wh/mÂ²NRF]"
-    Results_Nutzenergie(1, 6) = "Pumpenstrom [Wh/mÂ²NRF]"
+    Results_Nutzenergie_1h(1, 6) = "Pumpenstrom [Wh/m²NRF]"
+    Results_Nutzenergie(1, 6) = "Pumpenstrom [Wh/m²NRF]"
 
     'Write into Excel Sheet
     Sheets("NUTZENERGIE PROFILE").Range("A6:F" & 35100).ClearContents
@@ -356,7 +356,7 @@ Sub CreateResults()
     Sheets("pivot").Range("D3:I" & 35100).ClearContents
     Sheets("pivot").Range("D3:I" & iMaxRow + 5) = Results_Nutzenergie_1h
 
-    'Aggregierung in Pivot Table auf Summe Ã¤ndern
+    'Aggregierung in Pivot Table auf Summe ändern
     If Sheets("pivot").Range("A1") <> Energie Then
         For i = 1 To 6
             For Each PivotField In Sheets("pivot").PivotTables("PivotTable" & i).DataFields
@@ -377,7 +377,7 @@ Sub CreateResults()
         Sheets("pivot").Range("A1") = "Energie"
     End If
 
-    ' '--------------------- Ãœbersicht GebÃ¤udebilanz
+    ' '--------------------- Übersicht Gebäudebilanz
     ' '-------------------------------------------------------------
 
     Range("heating_annual") = "0"
@@ -399,43 +399,43 @@ Sub CreateResults()
         If (InStr(ResultsNFAAnnual(1, colIndex), outputs("UnmetCool"))) Then Sheets("HAUPTSEITE").Range("unmethours_c") = ResultsNFAAnnual(2, colIndex)
     Next
 
-    '------ Liste GebÃ¤udebilanz
+    '------ Liste Gebäudebilanz
 
-    Sheets("GEBÃ„UDEBILANZ").Range("N10:N14") = Array(0, 0, 0, 0, 0)
-    Sheets("GEBÃ„UDEBILANZ").Range("N18:N25") = Array(0, 0, 0, 0, 0, 0, 0, 0)
+    Sheets("GEBÄUDEBILANZ").Range("N10:N14") = Array(0, 0, 0, 0, 0)
+    Sheets("GEBÄUDEBILANZ").Range("N18:N25") = Array(0, 0, 0, 0, 0, 0, 0, 0)
 
     For colIndex = 1 To iMaxCol
         'Verluste
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("SurfaceHeatLoss"))) Then Sheets("GEBÃ„UDEBILANZ").Range("N10") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("WindowHeatLoss"))) Then Sheets("GEBÃ„UDEBILANZ").Range("N11") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("InfilHeatLoss"))) Then Sheets("GEBÃ„UDEBILANZ").Range("N12") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("VentHeatLoss"))) Then Sheets("GEBÃ„UDEBILANZ").Range("N13") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("AirCooling"))) Then Sheets("GEBÃ„UDEBILANZ").Range("N14") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("SurfaceHeatLoss"))) Then Sheets("GEBÄUDEBILANZ").Range("N10") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("WindowHeatLoss"))) Then Sheets("GEBÄUDEBILANZ").Range("N11") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("InfilHeatLoss"))) Then Sheets("GEBÄUDEBILANZ").Range("N12") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("VentHeatLoss"))) Then Sheets("GEBÄUDEBILANZ").Range("N13") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("AirCooling"))) Then Sheets("GEBÄUDEBILANZ").Range("N14") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
 
         'Gewinne
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("SurfaceHeatGain"))) Then Sheets("GEBÃ„UDEBILANZ").Range("N18") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("WindowHeatGain"))) Then Sheets("GEBÃ„UDEBILANZ").Range("N19") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("InfilHeatGain"))) Then Sheets("GEBÃ„UDEBILANZ").Range("N20") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("VentHeatGain"))) Then Sheets("GEBÃ„UDEBILANZ").Range("N21") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("Plugs"))) Then Sheets("GEBÃ„UDEBILANZ").Range("N22") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("Lights"))) Then Sheets("GEBÃ„UDEBILANZ").Range("N23") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("PeopleGain"))) Then Sheets("GEBÃ„UDEBILANZ").Range("N24") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("AirHeating"))) Then Sheets("GEBÃ„UDEBILANZ").Range("N25") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("SurfaceHeatGain"))) Then Sheets("GEBÄUDEBILANZ").Range("N18") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("WindowHeatGain"))) Then Sheets("GEBÄUDEBILANZ").Range("N19") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("InfilHeatGain"))) Then Sheets("GEBÄUDEBILANZ").Range("N20") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("VentHeatGain"))) Then Sheets("GEBÄUDEBILANZ").Range("N21") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("Plugs"))) Then Sheets("GEBÄUDEBILANZ").Range("N22") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("Lights"))) Then Sheets("GEBÄUDEBILANZ").Range("N23") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("PeopleGain"))) Then Sheets("GEBÄUDEBILANZ").Range("N24") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("AirHeating"))) Then Sheets("GEBÄUDEBILANZ").Range("N25") = ResultsNFAAnnual(2, colIndex) * 0.001
         
         ' heating and cooling
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("Heating"))) Then Sheets("GEBÃ„UDEBILANZ").Range("N31") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("Cooling"))) Then Sheets("GEBÃ„UDEBILANZ").Range("N32") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("Heating"))) Then Sheets("GEBÄUDEBILANZ").Range("N31") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("Cooling"))) Then Sheets("GEBÄUDEBILANZ").Range("N32") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
         
         ' latent
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("InfilHeatLossLat"))) Then Sheets("GEBÃ„UDEBILANZ").Range("P12") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("VentHeatLossLat"))) Then Sheets("GEBÃ„UDEBILANZ").Range("P13") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("InfilHeatGainLat"))) Then Sheets("GEBÃ„UDEBILANZ").Range("P20") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("VentHeatGainLat"))) Then Sheets("GEBÃ„UDEBILANZ").Range("P21") = ResultsNFAAnnual(2, colIndex) * 0.001
-        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("PeopleGainLat"))) Then Sheets("GEBÃ„UDEBILANZ").Range("P24") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("InfilHeatLossLat"))) Then Sheets("GEBÄUDEBILANZ").Range("P12") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("VentHeatLossLat"))) Then Sheets("GEBÄUDEBILANZ").Range("P13") = ResultsNFAAnnual(2, colIndex) * -1 * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("InfilHeatGainLat"))) Then Sheets("GEBÄUDEBILANZ").Range("P20") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("VentHeatGainLat"))) Then Sheets("GEBÄUDEBILANZ").Range("P21") = ResultsNFAAnnual(2, colIndex) * 0.001
+        If (InStr(ResultsNFAAnnual(1, colIndex), outputs("PeopleGainLat"))) Then Sheets("GEBÄUDEBILANZ").Range("P24") = ResultsNFAAnnual(2, colIndex) * 0.001
     Next
 
     '------------------------
-    Sheets("GEBÃ„UDEBILANZ").Protect
+    Sheets("GEBÄUDEBILANZ").Protect
     Application.ScreenUpdating = True
 End Sub
 
@@ -473,7 +473,7 @@ Sub DiagLeistung(leistung As Boolean)
                 Results_Nutzenergie_out(rwIndex, colIndex) = Results_Nutzenergie(rwIndex, colIndex) / (Range("Timestep") / 60)
             Next
         Next
-        'Aggregierung in Pivot Table auf Mitterlwert Ã¤ndern
+        'Aggregierung in Pivot Table auf Mitterlwert ändern
         For i = 1 To 6
             For Each PivotField In TB_pivot.PivotTables("PivotTable" & i).DataFields
                 With PivotField
@@ -490,7 +490,7 @@ Sub DiagLeistung(leistung As Boolean)
                 Results_Nutzenergie_out(rwIndex, colIndex) = Results_Nutzenergie(rwIndex, colIndex) * (Range("Timestep") / 60)
             Next
         Next
-        'Aggregierung in Pivot Table auf Summe Ã¤ndern
+        'Aggregierung in Pivot Table auf Summe ändern
         For i = 1 To 6
             For Each PivotField In TB_pivot.PivotTables("PivotTable" & i).DataFields
                 With PivotField
@@ -505,7 +505,7 @@ Sub DiagLeistung(leistung As Boolean)
     If berechnet Then
         'Excel Tabelle schreiben
         Sheets("pivot").Range("D4:J" & iMaxRow + 3) = Results_Nutzenergie_out
-        'Diagramm-Achsen Ã¤ndern
+        'Diagramm-Achsen ändern
         For Each ChartObj In TB_diag.ChartObjects
             If leistung Then
                 With ChartObj
