@@ -11,30 +11,7 @@ Attribute VB_Name = "JsonConverter"
 ' @class JsonConverter
 ' @author tim.hall.engr@gmail.com
 ' @license MIT (http://www.opensource.org/licenses/mit-license.php)
-'
-' The MIT License (MIT)
-'
-' Copyright (c) 2016 Tim Hall
-'
-' Permission is hereby granted, free of charge, to any person obtaining a copy
-' of this software and associated documentation files (the "Software"), to deal
-' in the Software without restriction, including without limitation the rights
-' to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-' copies of the Software, and to permit persons to whom the Software is
-' furnished to do so, subject to the following conditions:
-'
-' The above copyright notice and this permission notice shall be included in all
-' copies or substantial portions of the Software.
-'
-' THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-' IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-' FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-' AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-' LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-' SOFTWARE.
-'
-' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ '
+'' ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ '
 '
 ' Based originally on vba-json (with extensive changes)
 ' BSD license included below
@@ -74,13 +51,13 @@ Option Explicit
 #If VBA7 Then
 
 ' 64-bit Mac (2016)
-Private Declare PtrSafe Function utc_popen Lib "libc.dylib" Alias "popen" _
+Private Declare PtrSafe Function utc_popen Lib "/usr/lib/libc.dylib" Alias "popen" _
     (ByVal utc_Command As String, ByVal utc_Mode As String) As LongPtr
-Private Declare PtrSafe Function utc_pclose Lib "libc.dylib" Alias "pclose" _
+Private Declare PtrSafe Function utc_pclose Lib "/usr/lib/libc.dylib" Alias "pclose" _
     (ByVal utc_File As LongPtr) As LongPtr
-Private Declare PtrSafe Function utc_fread Lib "libc.dylib" Alias "fread" _
+Private Declare PtrSafe Function utc_fread Lib "/usr/lib/libc.dylib" Alias "fread" _
     (ByVal utc_Buffer As String, ByVal utc_Size As LongPtr, ByVal utc_Number As LongPtr, ByVal utc_File As LongPtr) As LongPtr
-Private Declare PtrSafe Function utc_feof Lib "libc.dylib" Alias "feof" _
+Private Declare PtrSafe Function utc_feof Lib "/usr/lib/libc.dylib" Alias "feof" _
     (ByVal utc_File As LongPtr) As LongPtr
 
 #Else
@@ -162,19 +139,6 @@ End Type
 
 #End If
 ' === End VBA-UTC
-
-#If Mac Then
-#ElseIf VBA7 Then
-
-Private Declare PtrSafe Sub json_CopyMemory Lib "kernel32" Alias "RtlMoveMemory" _
-    (json_MemoryDestination As Any, json_MemorySource As Any, ByVal json_ByteLength As Long)
-
-#Else
-
-Private Declare Sub json_CopyMemory Lib "kernel32" Alias "RtlMoveMemory" _
-    (json_MemoryDestination As Any, json_MemorySource As Any, ByVal json_ByteLength As Long)
-
-#End If
 
 Private Type json_Options
     ' VBA only stores 15 significant digits, so any numbers larger than that are truncated
@@ -384,7 +348,7 @@ Public Function ConvertToJson(ByVal JsonValue As Variant, Optional ByVal Whitesp
 
         json_BufferAppend json_Buffer, json_Indentation & "]", json_BufferPosition, json_BufferLength
 
-        ConvertToJson = json_BufferToString(json_Buffer, json_BufferPosition, json_BufferLength)
+        ConvertToJson = json_BufferToString(json_Buffer, json_BufferPosition)
 
     ' Dictionary or Collection
     Case VBA.vbObject
@@ -796,7 +760,6 @@ Private Function json_StringIsLargeNumber(json_String As Variant) As Boolean
     ' Length with be at least 16 characters and assume will be less than 100 characters
     If json_Length >= 16 And json_Length <= 100 Then
         Dim json_CharCode As String
-        Dim json_Index As Long
 
         json_StringIsLargeNumber = True
 
@@ -846,9 +809,6 @@ Private Sub json_BufferAppend(ByRef json_Buffer As String, _
                               ByRef json_Append As Variant, _
                               ByRef json_BufferPosition As Long, _
                               ByRef json_BufferLength As Long)
-#If Mac Then
-    json_buffer = json_buffer & json_Append
-#Else
     ' VBA can be slow to append strings due to allocating a new string for each append
     ' Instead of using the traditional append, allocate a large empty string and then copy string at append position
     '
@@ -862,76 +822,45 @@ Private Sub json_BufferAppend(ByRef json_Buffer As String, _
     ' Buffer: "abc       "
     ' Buffer Length: 10
     '
-    ' Copy memory for "def" into buffer at position 3 (0-based)
+    ' Put "def" into buffer at position 3 (0-based)
     ' Buffer: "abcdef    "
     '
     ' Approach based on cStringBuilder from vbAccelerator
     ' http://www.vbaccelerator.com/home/VB/Code/Techniques/RunTime_Debug_Tracing/VB6_Tracer_Utility_zip_cStringBuilder_cls.asp
+    '
+    ' and clsStringAppend from Philip Swannell
+    ' https://github.com/VBA-tools/VBA-JSON/pull/82
 
     Dim json_AppendLength As Long
     Dim json_LengthPlusPosition As Long
 
-    json_AppendLength = VBA.LenB(json_Append)
+    json_AppendLength = VBA.Len(json_Append)
     json_LengthPlusPosition = json_AppendLength + json_BufferPosition
 
     If json_LengthPlusPosition > json_BufferLength Then
-        ' Appending would overflow buffer, add chunks until buffer is long enough
-        Dim json_TemporaryLength As Long
+        ' Appending would overflow buffer, add chunk
+        ' (double buffer length or append length, whichever is bigger)
+        Dim json_AddedLength As Long
+        json_AddedLength = IIf(json_AppendLength > json_BufferLength, json_AppendLength, json_BufferLength)
 
-        json_TemporaryLength = json_BufferLength
-        Do While json_TemporaryLength < json_LengthPlusPosition
-            ' Initially, initialize string with 255 characters,
-            ' then add large chunks (8192) after that
-            '
-            ' Size: # Characters x 2 bytes / character
-            If json_TemporaryLength = 0 Then
-                json_TemporaryLength = json_TemporaryLength + 510
-            Else
-                json_TemporaryLength = json_TemporaryLength + 16384
-            End If
-        Loop
-
-        json_buffer = json_buffer & VBA.Space$((json_TemporaryLength - json_BufferLength) \ 2)
-        json_BufferLength = json_TemporaryLength
+        json_Buffer = json_Buffer & VBA.Space$(json_AddedLength)
+        json_BufferLength = json_BufferLength + json_AddedLength
     End If
 
-    ' Copy memory from append to buffer at buffer position
-    json_CopyMemory ByVal json_UnsignedAdd(StrPtr(json_buffer), _
-                    json_BufferPosition), _
-                    ByVal StrPtr(json_Append), _
-                    json_AppendLength
-
+    ' Note: Namespacing with VBA.Mid$ doesn't work properly here, throwing compile error:
+    ' Function call on left-hand side of assignment must return Variant or Object
+    Mid$(json_Buffer, json_BufferPosition + 1, json_AppendLength) = CStr(json_Append)
     json_BufferPosition = json_BufferPosition + json_AppendLength
-#End If
 End Sub
 
-Private Function json_BufferToString(ByRef json_Buffer As String, ByVal json_BufferPosition As Long, ByVal json_BufferLength As Long) As String
-#If Mac Then
-    json_BufferToString = json_buffer
-#Else
+Private Function json_BufferToString(ByRef json_Buffer As String, ByVal json_BufferPosition As Long) As String
     If json_BufferPosition > 0 Then
-        json_BufferToString = VBA.Left$(json_Buffer, json_BufferPosition \ 2)
-    End If
-#End If
-End Function
-
-#If VBA7 Then
-Private Function json_UnsignedAdd(json_Start As LongPtr, json_Increment As Long) As LongPtr
-#Else
-Private Function json_UnsignedAdd(json_Start As Long, json_Increment As Long) As Long
-#End If
-
-    If json_Start And &H80000000 Then
-        json_UnsignedAdd = json_Start + json_Increment
-    ElseIf (json_Start Or &H80000000) < -json_Increment Then
-        json_UnsignedAdd = json_Start + json_Increment
-    Else
-        json_UnsignedAdd = (json_Start + &H80000000) + (json_Increment + &H80000000)
+        json_BufferToString = VBA.Left$(json_Buffer, json_BufferPosition)
     End If
 End Function
 
 ''
-' VBA-UTC v1.0.5
+' VBA-UTC v1.0.6
 ' (c) Tim Hall - https://github.com/VBA-tools/VBA-UtcConverter
 '
 ' UTC/ISO 8601 Converter for VBA
