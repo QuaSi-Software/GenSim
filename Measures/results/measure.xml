@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <measure>
-  <schema_version>3.0</schema_version>
+  <schema_version>3.1</schema_version>
   <name>results</name>
   <uid>99d3a7e5-4bd5-407f-b5eb-7c59660ca980</uid>
-  <version_id>b2d45f82-2717-46d7-9e9f-26b458cd70c7</version_id>
-  <version_modified>20241121T085235Z</version_modified>
+  <version_id>93a06353-81aa-4267-a2c1-5b41dbbe45b6</version_id>
+  <version_modified>2026-03-09T12:02:58Z</version_modified>
   <xml_checksum>9BF1E6AC</xml_checksum>
   <class_name>Results</class_name>
   <display_name>Results</display_name>
@@ -117,7 +117,7 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>1C5469E7</checksum>
+      <checksum>6B357FF3</checksum>
     </file>
   </files>
 </measure>

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <measure>
-  <schema_version>3.0</schema_version>
+  <schema_version>3.1</schema_version>
   <name>load_idf_model_c</name>
   <uid>28d25d9a-8673-4b9d-a63c-9b3bd07472db</uid>
-  <version_id>a91e116d-5077-419f-86f6-6799ae663d52</version_id>
-  <version_modified>20250127T105227Z</version_modified>
+  <version_id>b5be189d-f64d-42b1-bcfc-e73a795522c0</version_id>
+  <version_modified>2026-03-09T12:02:56Z</version_modified>
   <xml_checksum>0AD1E2E2</xml_checksum>
   <class_name>LoadIDFModelC</class_name>
   <display_name>LoadIDFModel</display_name>
@@ -56,19 +56,7 @@
       <filename>LICENSE.md</filename>
       <filetype>md</filetype>
       <usage_type>license</usage_type>
-      <checksum>CD7F5672</checksum>
-    </file>
-    <file>
-      <filename>load_idf_model_test.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>test</usage_type>
-      <checksum>B1E056A4</checksum>
-    </file>
-    <file>
-      <filename>example_model.osm</filename>
-      <filetype>osm</filetype>
-      <usage_type>test</usage_type>
-      <checksum>53D14E69</checksum>
+      <checksum>07A1DAC9</checksum>
     </file>
     <file>
       <filename>README.md</filename>
@@ -85,7 +73,19 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>274B4CD8</checksum>
+      <checksum>0C0205DA</checksum>
+    </file>
+    <file>
+      <filename>example_model.osm</filename>
+      <filetype>osm</filetype>
+      <usage_type>test</usage_type>
+      <checksum>53D14E69</checksum>
+    </file>
+    <file>
+      <filename>load_idf_model_test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>F70DBD9C</checksum>
     </file>
   </files>
 </measure>

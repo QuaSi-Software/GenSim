@@ -1,7 +1,7 @@
 # GenSim
 ![GenSim](docs/logo_gensim.jpg "GenSim")
 
-Generische Gebäudesimulation auf Basis von EnergyPlus™ v22.
+Generische Gebäudesimulation auf Basis von EnergyPlus™ v25.1.
 
 GenSim erzeugt anhand einfacher Eingabeparameter ein vollständiges EnergyPlus™-Gebäudemodell, simuliert dieses und gibt anschließend Ergebnisse in Form von Lastprofilen und Jahreswerten zurück.
 
@@ -9,8 +9,8 @@ GenSim erzeugt anhand einfacher Eingabeparameter ein vollständiges EnergyPlus�
 Eine detailierte Dokumentation der Benutzung von GenSim wird auf der [offiziellen Dokumentation](https://quasi-software.readthedocs.io/en/latest/) des übergeordneten Projekts QuaSi zur Verfügung gestellt werden. Im Folgenden gibt es eine schnelle Einführung in die Installation und Benutzung.
 
 ## Installation
-1. OpenStudio in Version 2.7.0 installieren. Ältere Versionen sind auf der [OpenStudio GitHub Seite](https://github.com/NREL/OpenStudio/releases) zu finden.
-    * Dabei sollte OpenStudio standardmäßig in den Ordner `C:\openstudio-2.7.0` installiert werden.
+1. OpenStudio in Version 3.10.0 installieren. Ältere Versionen sind auf der [OpenStudio GitHub Seite](https://github.com/NREL/OpenStudio/releases) zu finden.
+    * Dabei sollte OpenStudio standardmäßig in den Ordner `C:\openstudio-3.10.0` installiert werden.
     * Auf der Seite "Komponenten auswählen" sollten alle Komponenten zur Installation ausgewählt sein.
 
 # Lizenz

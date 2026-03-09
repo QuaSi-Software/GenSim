@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <measure>
-  <schema_version>3.0</schema_version>
+  <schema_version>3.1</schema_version>
   <name>add_internal_loads</name>
   <uid>9db02274-2ce9-48e3-810d-ab9088f09c62</uid>
-  <version_id>8db0e6ea-73ac-48e2-8be3-a5bfae02fe5d</version_id>
-  <version_modified>20241121T085212Z</version_modified>
+  <version_id>c007b578-64eb-401c-ba37-8fc52d83a1fc</version_id>
+  <version_modified>2026-03-09T12:02:40Z</version_modified>
   <xml_checksum>57232789</xml_checksum>
   <class_name>AddInternalLoads</class_name>
   <display_name>AddInternalLoads</display_name>
@@ -332,10 +332,10 @@
   </attributes>
   <files>
     <file>
-      <filename>example_model.osm</filename>
-      <filetype>osm</filetype>
-      <usage_type>test</usage_type>
-      <checksum>4B0919CA</checksum>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
     </file>
     <file>
       <version>
@@ -349,16 +349,16 @@
       <checksum>1ACB6D6D</checksum>
     </file>
     <file>
-      <filename>LICENSE.md</filename>
-      <filetype>md</filetype>
-      <usage_type>license</usage_type>
-      <checksum>07A1DAC9</checksum>
-    </file>
-    <file>
       <filename>add_internal_loads_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>51CD005E</checksum>
+      <checksum>225B1B4E</checksum>
+    </file>
+    <file>
+      <filename>example_model.osm</filename>
+      <filetype>osm</filetype>
+      <usage_type>test</usage_type>
+      <checksum>4B0919CA</checksum>
     </file>
   </files>
 </measure>

@@ -21,14 +21,13 @@ class SetWeatherAxisTimestepTest < MiniTest::Test
     assert_equal(4, arguments.size)
   end
 
-  def test_bad_argument_values
-    # create hash of argument values, no arguments defined so there are no bad arguments
+  def test_bad_argument_names
+    # add argument with name that doesn't exist
     args_hash = {}
     args_hash["space_name"] = ""
 
     result = TestArguments(SetWeatherAxisTimestep.new, OpenStudio::Model::Model.new, args_hash)
 
-    # assert that it ran correctly
     assert_equal("Fail", result.value.valueName)
   end
 
@@ -37,6 +36,7 @@ class SetWeatherAxisTimestepTest < MiniTest::Test
     args_hash = {}
     args_hash["weather_file_path"] = "Test.epw"
     args_hash["time_step"] = "6"
+    args_hash["sizing_method"] = "manual_design_days"
 
     # load an existing model
     dir = __dir__

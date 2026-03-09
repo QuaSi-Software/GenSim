@@ -86,7 +86,7 @@ Für ein Parameter Set können die Tests wie folgt ausgeführt werden:
 Voraussetzungen:
 * Ruby 2.5.9 oder später
 * Zum Ausführen von GenSim:
-    * OpenStudio 2.7.0
+    * OpenStudio 3.10.0
     * MS Excel 2016 oder später
 
 In dieser Testumgebung wird der komplette Prozess beginnend mit der Eingabe in der GUI bis hin zum Evaluieren der Ergebnisse getestet. Daher beinhaltet das Ausführen auch manuelle Arbeitsschritte. Verglichen wird mit vorbestimmten Ergebnissen für drei Typgebäude. Das heißt auch, dass diese erwarteten Werte angepasst werden müssen, wenn sich etwas in der Berechnungslogik von GenSim verändert. Die Tests sind besser dazu geeignet Änderungen zu prüfen, die theoretisch nichts an der Berechnung ändern sollten. Um "falschen Alarm" durch geringfügige Änderungen zu vermeiden werden die Ergebnisse mit gewissen Toleranzen verglichen.
@@ -110,10 +110,10 @@ Alternativ:
 1. `ruby ./end_to_end_tests.rb --name=/test_case_0[12]/`: Dies führt Tests aus die dem angegebenen Pattern entsprechen, in diesem Fall die ersten beiden Testfälle.
 
 ## GenSim CLI
-Statt der GUI kann auch die interne CLI benutzt werden um Simulationen durchzuführen. In diesem Fall muss die OSW-Datei auf anderem Weg erstellt werden. Die CLI basiert auf Ruby, daher bietet es sich an die Ruby-Installation, die auch für die GUI verwendet wird, zu benutzen. Im Folgenden wird davon ausgegangen, dass der Befehl `ruby` auf die korrekt Installation verweist.
+Statt der GUI kann auch die interne CLI benutzt werden um Simulationen durchzuführen. In diesem Fall muss die OSW-Datei auf anderem Weg erstellt werden. Die CLI basiert auf Ruby, daher bietet es sich an die Ruby-Installation, die auch für die GUI verwendet wird, zu benutzen. Allerdings steht diese in OpenStudio Versionen 3.x und aufwärts nichts mehr als Binary zur Verfügung, daher muss dann separat Ruby installiert werden. Im Folgenden wird davon ausgegangen, dass der Befehl `ruby` auf die korrekte Installation verweist.
 
 1. (Einmalig) Notwendige Gems installieren: `gem install thor`
 1. In das Hauptverzeichnis wechseln: `cd /path/to/GenSim`
     1. Im Folgenden wird davon ausgegangen, dass dieser Pfad für `.` steht. Obwohl manche Commands relative Pfade mit `.` verarbeiten können, kann dieses Verhalten nicht garantiert werden. Wenn ein Command nicht funktioniert, versuche vollständige Pfade zu verwenden statt der `.` Abkürzung.
 1. Eine leere OSM-Datei erzeugen: `ruby ./Measures/gensim_cli.rb create_empty_osm --output_folder=./Output Model.osm`
-1. Die Simulation ausführen: `ruby ./Measures/gensim_cli.rb run_workflow --output_folder=./Output --os_bin_path=C:\openstudio-2.7.0\bin\openstudio.exe Model.osw`
+1. Die Simulation ausführen: `ruby ./Measures/gensim_cli.rb run_workflow --output_folder=./Output --os_bin_path=C:\openstudio-3.10.0\bin\openstudio.exe Model.osw`
