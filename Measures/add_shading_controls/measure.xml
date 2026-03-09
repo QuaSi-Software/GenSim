@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <measure>
-  <schema_version>3.0</schema_version>
+  <schema_version>3.1</schema_version>
   <name>add_shading_controls</name>
   <uid>020cd542-7e01-422a-becb-e32c0318f9d9</uid>
-  <version_id>eb29f9a2-fb35-461f-b0db-90e146806fbb</version_id>
-  <version_modified>20241121T085217Z</version_modified>
+  <version_id>0d3ad739-260f-4cf6-9b3c-de06b40e0c58</version_id>
+  <version_modified>2026-03-09T12:02:45Z</version_modified>
   <xml_checksum>2AF3A68E</xml_checksum>
   <class_name>AddShadingControls</class_name>
   <display_name>AddShadingControls</display_name>
@@ -49,10 +49,10 @@
   </attributes>
   <files>
     <file>
-      <filename>example_model.osm</filename>
-      <filetype>osm</filetype>
-      <usage_type>test</usage_type>
-      <checksum>49A24D5A</checksum>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
     </file>
     <file>
       <version>
@@ -63,19 +63,19 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>438F2BC4</checksum>
-    </file>
-    <file>
-      <filename>LICENSE.md</filename>
-      <filetype>md</filetype>
-      <usage_type>license</usage_type>
-      <checksum>07A1DAC9</checksum>
+      <checksum>E1607C2D</checksum>
     </file>
     <file>
       <filename>add_shading_controls_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>5608E964</checksum>
+      <checksum>8E2FF9ED</checksum>
+    </file>
+    <file>
+      <filename>example_model.osm</filename>
+      <filetype>osm</filetype>
+      <usage_type>test</usage_type>
+      <checksum>49A24D5A</checksum>
     </file>
   </files>
 </measure>

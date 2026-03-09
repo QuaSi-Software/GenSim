@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <measure>
-  <schema_version>3.0</schema_version>
+  <schema_version>3.1</schema_version>
   <name>add_detailed_hvac</name>
   <uid>75c17475-d6d2-4074-a097-0c2202206dab</uid>
-  <version_id>8f994bc9-14af-4070-b0f5-f3cfea6dd620</version_id>
-  <version_modified>20241121T085205Z</version_modified>
+  <version_id>4ee7b3b3-e322-4f1f-bb0c-c6f2f5f2df43</version_id>
+  <version_modified>2026-03-09T12:02:38Z</version_modified>
   <xml_checksum>C49A7DAB</xml_checksum>
   <class_name>AddDetailedHVAC</class_name>
   <display_name>AddDetailedHVAC</display_name>
@@ -212,7 +212,7 @@
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
-      <default_value>250</default_value>
+      <default_value>750</default_value>
     </argument>
     <argument>
       <name>return_fan_pressure_rise</name>
@@ -220,7 +220,7 @@
       <type>Double</type>
       <required>true</required>
       <model_dependent>false</model_dependent>
-      <default_value>250</default_value>
+      <default_value>750</default_value>
     </argument>
     <argument>
       <name>system_type</name>
@@ -260,12 +260,6 @@
   </attributes>
   <files>
     <file>
-      <filename>example_model.osm</filename>
-      <filetype>osm</filetype>
-      <usage_type>test</usage_type>
-      <checksum>9B673135</checksum>
-    </file>
-    <file>
       <filename>LICENSE.md</filename>
       <filetype>md</filetype>
       <usage_type>license</usage_type>
@@ -280,13 +274,19 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>CB123CE2</checksum>
+      <checksum>A951739E</checksum>
     </file>
     <file>
       <filename>add_detailed_hvac_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>F7926F03</checksum>
+      <checksum>873D56DD</checksum>
+    </file>
+    <file>
+      <filename>example_model.osm</filename>
+      <filetype>osm</filetype>
+      <usage_type>test</usage_type>
+      <checksum>9B673135</checksum>
     </file>
   </files>
 </measure>

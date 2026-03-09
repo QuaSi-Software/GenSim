@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <measure>
-  <schema_version>3.0</schema_version>
+  <schema_version>3.1</schema_version>
   <name>inject_radiant_surfaces_idf</name>
   <uid>e3487a61-abd7-4f98-ae4f-c77301e48a5d</uid>
-  <version_id>779e1922-2dc3-4075-a468-85ee52bade49</version_id>
-  <version_modified>20241121T085231Z</version_modified>
+  <version_id>46d871da-e8d1-4534-9b72-12fbef61df43</version_id>
+  <version_modified>2026-03-09T12:02:53Z</version_modified>
   <xml_checksum>7DF45990</xml_checksum>
   <class_name>InjectRadiantSurfacesIDF</class_name>
   <display_name>InjectRadiantSurfacesIDF</display_name>
@@ -35,12 +35,6 @@
   </attributes>
   <files>
     <file>
-      <filename>example_model.idf</filename>
-      <filetype>idf</filetype>
-      <usage_type>test</usage_type>
-      <checksum>88083A66</checksum>
-    </file>
-    <file>
       <filename>LICENSE.md</filename>
       <filetype>md</filetype>
       <usage_type>license</usage_type>
@@ -55,13 +49,19 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>692D3EA1</checksum>
+      <checksum>B1BF2D4E</checksum>
+    </file>
+    <file>
+      <filename>example_model.idf</filename>
+      <filetype>idf</filetype>
+      <usage_type>test</usage_type>
+      <checksum>88083A66</checksum>
     </file>
     <file>
       <filename>inject_radiant_surfaces_idf_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>48381CC9</checksum>
+      <checksum>E5755B4A</checksum>
     </file>
   </files>
 </measure>
