@@ -79,7 +79,7 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
   end
 
   # sizing method using design days automatically determined from the weather data
-  def sizing_automatic_design_days(model, runner, epw_file)
+  def sizing_automatic_design_days(model, runner)
     # we do add a dummy design day, so the zone sizing get properly generated
     # we remove it later in the EnergyPlus measure and we add the SizingPeriod:WeatherFileConditionType objects then, too
     # in the set_meters_idf measure
@@ -89,7 +89,7 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
   end
 
   # sizing method using manually specified design days
-  def sizing_manual_design_days(model, runner, epw_file)
+  def sizing_manual_design_days(model, runner)
     # remove existing design days
     model.getDesignDays.each(&:remove)
 
@@ -183,15 +183,15 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
     if epw_file && sizing_method == "use_ddy_file"
       sizing_use_ddy_file(model, runner, epw_file)
     elsif epw_file && sizing_method == "automatic_design_days"
-      sizing_automatic_design_days(model, runner, epw_file)
+      sizing_automatic_design_days(model, runner)
     elsif sizing_method == "manual_design_days"
-      sizing_manual_design_days(model, runner, epw_file)
+      sizing_manual_design_days(model, runner)
     else
       runner.registerError("Required weather file missing or unknown sizing method #{sizing_method}.")
     end
 
     # set north axis of building
-    if northAxis != -9999.0
+    if northAxis >= -45.0 && northAxis <= 45.0
       building = model.getBuilding
       building.setNorthAxis(northAxis)
     end
