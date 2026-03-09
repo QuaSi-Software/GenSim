@@ -48,7 +48,7 @@ class SetMetersIDFTest < MiniTest::Test
     assert(result.errors.empty?)
     assert(result.initialCondition.is_initialized)
     assert(result.finalCondition.is_initialized)
-    assert_equal("The building finished with 24 Custom Meters with version 24.2.0.", result.finalCondition.get.logMessage)
+    assert_equal("The building finished with 6 Custom Meters with version 25.1.0.", result.finalCondition.get.logMessage)
     # save the model to test output directory
     SaveIDFModel(workspace, dir)
   end
