@@ -24,7 +24,11 @@ Sub ClearCells()
 
 End Sub
 
-Sub CreateWorkflowAndExecute()
+Sub CreateWorkflowAndExecuteSub()
+    CreateWorkflowAndExecute(True)
+End Sub
+
+Function CreateWorkflowAndExecute(updatePivot As Boolean)
 
     Application.Calculation = xlCalculationManual
 
@@ -48,7 +52,7 @@ Sub CreateWorkflowAndExecute()
         MsgBox ("OpenStudio directory Not found at: " & Range("DirOpenStudio") & "\nPlease change it on sheet 1 Or install a version of OpenStudio.")
     End If
 
-    If Range("PerimeterDepth") * 2 > WorksheetFunction.Min(Range("LAENGE"), Range("BREITE")) - 1 Then MsgBox "Fehler in der Geometrie-Eingabe: 'Tiefe Auﬂenzonen' zu groﬂ!": Exit Sub
+    If Range("PerimeterDepth") * 2 > WorksheetFunction.Min(Range("LAENGE"), Range("BREITE")) - 1 Then MsgBox "Fehler in der Geometrie-Eingabe: 'Tiefe Auﬂenzonen' zu groﬂ!": return
 
         ' control flow variables
         Dim bGeneric As Boolean: bGeneric = False
@@ -105,13 +109,15 @@ Sub CreateWorkflowAndExecute()
         Range("sim_date") = Format(Now, "dd.mm.yyyy\ hh:mm")
 
         ' update pivot tables
-        Call Aktualisieren_pivots
+        If updatePivot Then
+            Call Aktualisieren_pivots
+        End If
 
         Sheets("HAUPTSEITE").Protect
 
         Application.Calculation = xlCalculationAutomatic
 
-End Sub
+End Function
 
 Sub CreatePreWorkflowAndExecute(file_path As String)
 
