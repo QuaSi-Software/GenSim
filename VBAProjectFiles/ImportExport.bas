@@ -82,7 +82,6 @@ End Function
 ' in global constant EXPORT_FOLDER_NAME as subdirectory of the directory in which the
 ' workbook resides) before exporting.
 Public Sub ExportVBACode()
-Attribute ExportVBACode.VB_ProcData.VB_Invoke_Func = "e\n14"
     Dim Workbook As Excel.Workbook: Set Workbook = Application.Workbooks(ActiveWorkbook.name)
     If Workbook.VBProject.Protection = 1 Then
         MsgBox "VBA code cannot be exported as the workbook is protected."
