@@ -1,0 +1,1 @@
+The scripts in this directory were used during development of version 2.16 to reason about the correct EnergyPlus™ output variables to be used for setting up a more complete balance sum. They have been included in the repository for the sake reproducability and transparency, but are not a required part of GenSim.
