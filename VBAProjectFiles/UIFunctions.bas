@@ -7,7 +7,7 @@ Public Const IFC_IMPORT As Boolean = True
 
 Function GetOpenStudioBinPath()
     If Range("DirOpenStudio") = "" Then
-        GetOpenStudioBinPath = "C:\openstudio-3.0.0\bin"
+        GetOpenStudioBinPath = "C:\openstudio-3.10.0\bin"
     Else
         GetOpenStudioBinPath = Range("DirOpenStudio") & "\bin"
     End If
@@ -15,7 +15,7 @@ End Function
 
 Function GetRubyExePath()
     If Range("DirOpenStudio") = "" Then
-        GetRubyExePath = "C:\openstudio-3.0.0\pat\ruby\bin\ruby.exe"
+        GetRubyExePath = "C:\openstudio-3.10.0\pat\ruby\bin\ruby.exe"
     Else
         GetRubyExePath = Range("DirOpenStudio") & "\pat\ruby\bin\ruby.exe"
     End If
@@ -137,7 +137,7 @@ Sub BrowseOpenStudioInstallationDir()
     Sheets("Installation").Unprotect
     
     If Range("DirOpenStudio") = "" Then
-        strOpenStudioDir = "C:\openstudio-3.0.0\"
+        strOpenStudioDir = "C:\openstudio-3.10.0\"
     Else
         strOpenStudioDir = Range("DirOpenStudio")
     End If
