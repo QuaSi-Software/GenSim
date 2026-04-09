@@ -917,18 +917,19 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
                 Range("People") = GetArgument(args, "floor_area_per_person")
             End If
 
-            If args.Exists("is_imported_model") And args.Exists("is_custom_ratio") Then
+            If args.Exists("is_imported_model") And GetArgument(args, "is_imported_model") = "Ja" Then
                 Dim ddRatio2 As DropDown: Set ddRatio2 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF_Import")
-
-                If GetArgument(args, "is_imported_model") = "Ja" Then
-                    If args.Exists("nfa_gfa_ratio_selection") Then DDFindAndSetValue ddRatio2, GetArgument(args, "nfa_gfa_ratio_selection")
-                    Call DropDown_BGF_NRF_Geometrie_Import
-                    If GetArgument(args, "is_custom_ratio") = "Ja" Then Range("BGF_zu_NRF_import") = GetArgument(args, "nfa_gfa_ratio")
-                    If args.Exists("area_gfa_import") Then Range("BldgArea_import") = GetArgument(args, "area_gfa_import")
-                Else
-                    If args.Exists("nfa_gfa_ratio_selection") Then DDFindAndSetValue ddRatio1, GetArgument(args, "nfa_gfa_ratio_selection")
-                    Call DropDown_BGF_NRF_Generisch
-                    If GetArgument(args, "is_custom_ratio") = "Ja" Then Range("BGF_zu_NRF") = GetArgument(args, "nfa_gfa_ratio")
+                If args.Exists("nfa_gfa_ratio_selection") Then DDFindAndSetValue ddRatio2, GetArgument(args, "nfa_gfa_ratio_selection")
+                Call DropDown_BGF_NRF_Geometrie_Import
+                If args.Exists("is_custom_ratio") And GetArgument(args, "is_custom_ratio") = "Ja" Then
+                    Range("BGF_zu_NRF_import") = GetArgument(args, "nfa_gfa_ratio")
+                End If
+                If args.Exists("area_gfa_import") Then Range("BldgArea_import") = GetArgument(args, "area_gfa_import")
+            Else
+                If args.Exists("nfa_gfa_ratio_selection") Then DDFindAndSetValue ddRatio1, GetArgument(args, "nfa_gfa_ratio_selection")
+                Call DropDown_BGF_NRF_Generisch
+                If args.Exists("is_custom_ratio") And GetArgument(args, "is_custom_ratio") = "Ja" Then
+                    Range("BGF_zu_NRF") = GetArgument(args, "nfa_gfa_ratio")
                 End If
             End If
 
