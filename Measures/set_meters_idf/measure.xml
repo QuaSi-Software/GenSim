@@ -1,9 +1,10 @@
+<?xml version="1.0"?>
 <measure>
-  <schema_version>3.0</schema_version>
+  <schema_version>3.1</schema_version>
   <name>set_meters_idf</name>
   <uid>f6530b2e-e6e0-4b16-888c-54226d297dd4</uid>
-  <version_id>c4cb7f96-fc81-49d3-86b2-a6b3886ad094</version_id>
-  <version_modified>20230814T140611Z</version_modified>
+  <version_id>00fb18f2-a9c7-41b1-ba83-49e58fce5224</version_id>
+  <version_modified>2026-03-09T12:03:02Z</version_modified>
   <xml_checksum>15DBE762</xml_checksum>
   <class_name>SetMetersIDF</class_name>
   <display_name>SetMetersIDF</display_name>
@@ -41,9 +42,17 @@
       <model_dependent>false</model_dependent>
       <default_value>1.15</default_value>
     </argument>
+    <argument>
+      <name>output_level</name>
+      <display_name>output_level</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+      <default_value>Normal</default_value>
+    </argument>
   </arguments>
-  <outputs/>
-  <provenances/>
+  <outputs />
+  <provenances />
   <tags>
     <tag>Envelope.Form</tag>
   </tags>
@@ -66,16 +75,10 @@
   </attributes>
   <files>
     <file>
-      <filename>example_model.idf</filename>
-      <filetype>idf</filetype>
-      <usage_type>test</usage_type>
-      <checksum>0AB453A0</checksum>
-    </file>
-    <file>
-      <filename>set_meters_idf_test.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>test</usage_type>
-      <checksum>913C3CDC</checksum>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
     </file>
     <file>
       <version>
@@ -86,13 +89,19 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>70D841E2</checksum>
+      <checksum>4210B36C</checksum>
     </file>
     <file>
-      <filename>LICENSE.md</filename>
-      <filetype>md</filetype>
-      <usage_type>license</usage_type>
-      <checksum>07A1DAC9</checksum>
+      <filename>example_model.idf</filename>
+      <filetype>idf</filetype>
+      <usage_type>test</usage_type>
+      <checksum>0AB453A0</checksum>
+    </file>
+    <file>
+      <filename>set_meters_idf_test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>DD1BADF0</checksum>
     </file>
   </files>
 </measure>

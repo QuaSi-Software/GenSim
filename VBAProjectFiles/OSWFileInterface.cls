@@ -451,13 +451,46 @@ End Sub
 ' @param NrOfTimesteps As Integer ByVal Number of timesteps per hour.
 Sub ExportSetMetersIDF( _
     ByRef jFile As JSONFile, _
-    ByVal NrOfTimesteps As Integer _
+    ByVal NrOfTimesteps As Integer, _
+    ByVal outputLevel As String _
 )
     jFile.AddArgument "time_step", CStr(NrOfTimesteps)
     jFile.AddArgument "day_to_start_simulation", Range("DayToStartSimulation")
     jFile.AddArgument "heating_sizing_factor", Range("HeatingSizingFactor")
     jFile.AddArgument "cooling_sizing_factor", Range("CoolingSizingFactor")
+    jFile.AddArgument "output_level", outputLevel
     jFile.AddMeasure "set_meters_idf"
+End Sub
+
+' Export method for measure Results.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+' @param NrOfTimesteps As Integer ByVal Number of timesteps per hour.
+Sub ExportResults( _
+    ByRef jFile As JSONFile, _
+    ByVal bGeneric As Boolean, _
+    ByVal nrf_bgf As Double, _
+    ByVal NrOfTimesteps As Integer, _
+    ByVal outputLevel As String _
+)
+    Dim gross_area As Double
+
+    jFile.AddArgument "timestep", CStr(NrOfTimesteps)
+    jFile.AddArgument "calculate_relative_gross", "true"
+    jFile.AddArgument "calculate_relative_net", "true"
+    jFile.AddArgument "output_level", outputLevel
+
+    If bGeneric Then
+        gross_area = Range("BldgArea")
+        jFile.AddArgument "gross_area", CStr(gross_area)
+        jFile.AddArgument "net_area", CStr(gross_area * nrf_bgf)
+    Else
+        gross_area = Range("BldgArea_import")
+        jFile.AddArgument "gross_area", CStr(gross_area)
+        jFile.AddArgument "net_area", CStr(gross_area * nrf_bgf)
+    End If
+
+    jFile.AddMeasure "results"
 End Sub
 
 ' This class is intended to provide an interface for writing parameters to an
@@ -512,6 +545,19 @@ Sub ExportToOSW( _
         nrf_bgf = Range("BGF_zu_NRF")
     Else
         nrf_bgf = Range("BGF_zu_NRF_import")
+    End If
+
+    'read level of detail for output variables and logging
+    '1 = reduced, 2 = normal, 3 = debug
+    Dim dd_output_level As DropDown
+    Set dd_output_level = Sheets("Hauptseite").DropDowns("dd_output_level")
+    Dim output_level As String
+    If dd_output_level.Value = 1 Then
+        output_level = "Reduced"
+    ElseIf dd_output_level.Value = 2 Then
+        output_level = "Normal"
+    Else
+        output_level = "Debug"
     End If
 
     'correction factor of parameters specific to the conditioned volume as false ceilings
@@ -616,10 +662,39 @@ Sub ExportToOSW( _
     End If
 
     Call ExportInjectHolidaysIDF(jFile)
-    Call ExportSetMetersIDF(jFile, NrOfTimesteps)
+    Call ExportSetMetersIDF(jFile, NrOfTimesteps, output_level)
+    Call ExportResults(jFile, bGeneric, nrf_bgf, NrOfTimesteps, output_level)
 
     jFile.Save sFilename
 End Sub
+
+Sub GenerateOSW( _
+    ByVal sFilename As String, _
+    ByVal bGeneric As Boolean, _
+    ByVal bCopyOSMFile As Boolean, _
+    ByVal bDetailedHVAC As Boolean _
+)
+    Dim jFile As New JSONFile
+
+    'correction factor of parameters specific to the conditioned volume as false ceilings
+    'are not considered conditioned
+    Dim FloorHeight_Ratio As Double
+    If Range("geometry_source") = 1 Then
+        FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight")
+    Else
+        FloorHeight_Ratio = Range("FloorHeight_kond") / Range("FloorHeight_import")
+    End If
+
+
+    If bGeneric Then
+        Call ExportCreateEmptyModel(jFile)
+    End If
+
+
+
+    jFile.Save sFilename
+End Sub
+
 
 ' Imports the OSW with the given filepath to the spreadsheet. This method is
 ' intended to be run on files that have been created with the method
@@ -629,7 +704,7 @@ End Sub
 ' @see OSWFileInterface::ExportToOSW
 '
 ' @param filename String ByRef The filepath (and name) of the file to be imported
-Sub ImportFromOSW(ByRef filename As String)
+Sub ImportFromOSW(ByRef FileName As String)
     Sheets("HAUPTSEITE").Unprotect
 
     ' Read the given json file and parse it into a Dictionary/Collection
@@ -639,7 +714,7 @@ Sub ImportFromOSW(ByRef filename As String)
 
     stream.CharSet = "utf-8"
     stream.Open
-    stream.LoadFromFile (filename)
+    stream.LoadFromFile (FileName)
     text = stream.ReadText()
     stream.Close
 
@@ -842,18 +917,19 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
                 Range("People") = GetArgument(args, "floor_area_per_person")
             End If
 
-            If args.Exists("is_imported_model") And args.Exists("is_custom_ratio") Then
+            If args.Exists("is_imported_model") And GetArgument(args, "is_imported_model") = "Ja" Then
                 Dim ddRatio2 As DropDown: Set ddRatio2 = Sheets("HAUPTSEITE").DropDowns("Dropdown_NRF_BGF_Import")
-
-                If GetArgument(args, "is_imported_model") = "Ja" Then
-                    If args.Exists("nfa_gfa_ratio_selection") Then DDFindAndSetValue ddRatio2, GetArgument(args, "nfa_gfa_ratio_selection")
-                    Call DropDown_BGF_NRF_Geometrie_Import
-                    If GetArgument(args, "is_custom_ratio") = "Ja" Then Range("BGF_zu_NRF_import") = GetArgument(args, "nfa_gfa_ratio")
-                    If args.Exists("area_gfa_import") Then Range("BldgArea_import") = GetArgument(args, "area_gfa_import")
-                Else
-                    If args.Exists("nfa_gfa_ratio_selection") Then DDFindAndSetValue ddRatio1, GetArgument(args, "nfa_gfa_ratio_selection")
-                    Call DropDown_BGF_NRF_Generisch
-                    If GetArgument(args, "is_custom_ratio") = "Ja" Then Range("BGF_zu_NRF") = GetArgument(args, "nfa_gfa_ratio")
+                If args.Exists("nfa_gfa_ratio_selection") Then DDFindAndSetValue ddRatio2, GetArgument(args, "nfa_gfa_ratio_selection")
+                Call DropDown_BGF_NRF_Geometrie_Import
+                If args.Exists("is_custom_ratio") And GetArgument(args, "is_custom_ratio") = "Ja" Then
+                    Range("BGF_zu_NRF_import") = GetArgument(args, "nfa_gfa_ratio")
+                End If
+                If args.Exists("area_gfa_import") Then Range("BldgArea_import") = GetArgument(args, "area_gfa_import")
+            Else
+                If args.Exists("nfa_gfa_ratio_selection") Then DDFindAndSetValue ddRatio1, GetArgument(args, "nfa_gfa_ratio_selection")
+                Call DropDown_BGF_NRF_Generisch
+                If args.Exists("is_custom_ratio") And GetArgument(args, "is_custom_ratio") = "Ja" Then
+                    Range("BGF_zu_NRF") = GetArgument(args, "nfa_gfa_ratio")
                 End If
             End If
 
@@ -982,20 +1058,45 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
                 End If
             End If
 
+        Case "results":
+            ' Nothing to do, the measure doesn't take user arguments
     End Select
 End Sub
 
 ' Searches through the given dropdown's list for the given value. If the value
 ' is found in the list, the selected value of the dropdown is set to this entry.
 '
+' If multiple entries with the same name exist, the first matching entry is selected.
+'
 ' @param dd DropDown ByRef The dropdown
 ' @param val Variant ByVal The value to look for
 Sub DDFindAndSetValue(ByRef dd As DropDown, ByVal val As Variant)
     Dim i As Integer
     For i = 1 To dd.ListCount
-        If Trim(dd.List(i)) = Trim(val) Then dd.Value = i
+        If Trim(dd.List(i)) = Trim(val) Then
+            dd.Value = i
+            Exit For
+        End If
     Next
 End Sub
+
+
+' Export method for measure load_idf_modelC.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportLoadIdfModel(ByVal jFileName As String, ByVal idf_path As String)
+    Dim jFile As New JSONFile
+    
+    Dim dd1 As DropDown 'weather data
+    Set dd1 = Sheets("HAUPTSEITE").DropDowns("DropDown1")
+
+    jFile.CreateFile "", GetWeatherFolder() & "\" & dd1.List(dd1.Value)
+    
+    jFile.AddArgument "idf_file_path", idf_path
+    jFile.AddMeasure "load_idf_modelC"
+    jFile.Save jFileName
+End Sub
+
 
 ' Imports the given schedule from the given argument dictionary to the given ranges.
 ' This method is intended to run on data used in the import/export methods.

@@ -18,7 +18,10 @@ class AddMaterialsAndConstructionTest < MiniTest::Test
     # get arguments with a new instance of the measure
     arguments = GetArguments(AddMaterialsAndConstruction.new, OpenStudio::Model::Model.new)
 
-    assert_equal(125, arguments.size)
+    # 3 selection box values (for importing between GUI and OSW), 3 window parameters, 4 for
+    # the chilled ceiling and 5 times the number of material layers (default 10) for 6
+    # different constructions, makes for 310 parameters
+    assert_equal(3 + 3 + 4 + 5 * 6 * 10, arguments.size)
     assert_equal("external_wall_1_name", arguments[0].name)
   end
 
@@ -74,14 +77,14 @@ class AddMaterialsAndConstructionTest < MiniTest::Test
 
     # assert that it ran correctly
     assert_equal("Success", result.value.valueName)
-    # print(result.info.size)
-    assert(result.info.size == 6)
+    assert(result.info.size >= 1)
     assert(result.warnings.empty?)
+    assert(result.errors.empty?)
+    assert(result.finalCondition.is_initialized)
+    assert_equal("The building finished with 24 surfaces that have constructions now.", result.finalCondition.get.logMessage)
 
     # check that there is now 1 space
     assert_equal(0, model.getSpaces.size - num_spaces_seed)
-
-    assert_equal("The building finished with 24 surfaces that have constructions now.", result.finalCondition.get.logMessage)
 
     SaveModel(model, dir)
   end

@@ -1,9 +1,10 @@
+<?xml version="1.0"?>
 <measure>
   <schema_version>3.0</schema_version>
   <name>add_geometry</name>
   <uid>3dcac94d-8a2e-43b6-8698-a3a4e8f3903f</uid>
-  <version_id>b407a5eb-49f9-4f70-bfe7-8fce06478f8a</version_id>
-  <version_modified>20230814T134038Z</version_modified>
+  <version_id>625dee55-6f70-4fda-8126-8a40de3c9b90</version_id>
+  <version_modified>20241121T085207Z</version_modified>
   <xml_checksum>49BEF039</xml_checksum>
   <class_name>AddGeometry</class_name>
   <display_name>AddGeometry</display_name>
@@ -236,8 +237,8 @@
       <default_value>6</default_value>
     </argument>
   </arguments>
-  <outputs/>
-  <provenances/>
+  <outputs />
+  <provenances />
   <tags>
     <tag>Envelope.Form</tag>
   </tags>
@@ -285,7 +286,7 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>37C6CB57</checksum>
+      <checksum>51C415E5</checksum>
     </file>
   </files>
 </measure>

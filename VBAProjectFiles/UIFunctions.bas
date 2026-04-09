@@ -3,10 +3,11 @@ Dim strOpenStudioDir As String
 Dim strMeasureDir As String
 Dim strOutputDir As String
 Dim strWeatherDir As String
+Public Const IFC_IMPORT As Boolean = True
 
 Function GetOpenStudioBinPath()
     If Range("DirOpenStudio") = "" Then
-        GetOpenStudioBinPath = "C:\OpenStudio-2.7.0\bin"
+        GetOpenStudioBinPath = "C:\openstudio-3.10.0\bin"
     Else
         GetOpenStudioBinPath = Range("DirOpenStudio") & "\bin"
     End If
@@ -14,22 +15,22 @@ End Function
 
 Function GetRubyExePath()
     If Range("DirOpenStudio") = "" Then
-        GetRubyExePath = "C:\openstudio-2.7.0\pat\ruby\bin\ruby.exe"
+        GetRubyExePath = "C:\openstudio-3.10.0\pat\ruby\bin\ruby.exe"
     Else
         GetRubyExePath = Range("DirOpenStudio") & "\pat\ruby\bin\ruby.exe"
     End If
 End Function
 
 Function GetMeasuresFolder()
-    GetMeasuresFolder = Application.ActiveWorkbook.path & "\Measures"
+    GetMeasuresFolder = Application.ActiveWorkbook.Path & "\Measures"
 End Function
 
 Function GetWeatherFolder()
-    GetWeatherFolder = Application.ActiveWorkbook.path & "\Wetter"
+    GetWeatherFolder = Application.ActiveWorkbook.Path & "\Wetter"
 End Function
    
 Function GetOutputFolder()
-    GetOutputFolder = Application.ActiveWorkbook.path & "\Output"
+    GetOutputFolder = Application.ActiveWorkbook.Path & "\Output"
        
     If Dir(GetOutputFolder, vbDirectory) = "" Then
         MkDir GetOutputFolder
@@ -38,7 +39,7 @@ End Function
    
 Function GetWorkingPath()
     Dim sTempPath As String
-    sTempPath = Application.ActiveWorkbook.path & "\Temp"
+    sTempPath = Application.ActiveWorkbook.Path & "\Temp"
     If Dir(sTempPath, vbDirectory) = "" Then
         MkDir (sTempPath)
     End If
@@ -63,7 +64,7 @@ End Sub
 Sub SetApplicationPath()
     Sheets("Installation").Unprotect
     
-    Range("ThisDir") = Application.ActiveWorkbook.path
+    Range("ThisDir") = Application.ActiveWorkbook.Path
     Range("InstallationStatus") = ""
     
     Sheets("Installation").Protect
@@ -86,12 +87,12 @@ Sub ReadWeatherFiles()
     'Create an instance of the FileSystemObject
     Set objFSO = CreateObject("Scripting.FileSystemObject")
     'Get the folder object
-    Set objFolder = objFSO.GetFolder(Application.ActiveWorkbook.path & "\Wetter")
+    Set objFolder = objFSO.GetFolder(Application.ActiveWorkbook.Path & "\Wetter")
 
     Set sht = ThisWorkbook.Worksheets("Wetterdateien")
     i = 0
     'loops through each file in the directory and prints their names and path
-    For Each objFile In objFolder.Files()
+    For Each objFile In objFolder.files()
         If StringEndsWith(objFile.name, ".epw") Then
             'print file name
             sht.Cells(i + 1, 1) = objFile.name
@@ -127,7 +128,7 @@ Function GetFolder(strTitle As String, strPath As String) As String
         If .Show <> -1 Then GoTo NextCode
         sItem = .SelectedItems(1)
     End With
-    NextCode:
+NextCode:
     GetFolder = sItem
     Set fldr = Nothing
 End Function
@@ -136,7 +137,7 @@ Sub BrowseOpenStudioInstallationDir()
     Sheets("Installation").Unprotect
     
     If Range("DirOpenStudio") = "" Then
-        strOpenStudioDir = "C:\Program Files\OpenStudio 1.12.4"
+        strOpenStudioDir = "C:\openstudio-3.10.0\"
     Else
         strOpenStudioDir = Range("DirOpenStudio")
     End If
@@ -160,10 +161,10 @@ End Sub
 
 Sub BrowseMeasuresDir()
     If Range("ThisDir") = "" Then
-        Range("ThisDir") = Application.ActiveWorkbook.path
+        Range("ThisDir") = Application.ActiveWorkbook.Path
     End If
     If Range("MeasuresDir") = "" Then
-        strMeasureDir = Application.ActiveWorkbook.path & "\Measures"
+        strMeasureDir = Application.ActiveWorkbook.Path & "\Measures"
     Else
         strMeasureDir = Range("MeasuresDir")
     End If
@@ -173,10 +174,10 @@ End Sub
 
 Sub BrowseOutputDir()
     If Range("ThisDir") = "" Then
-        Range("ThisDir") = Application.ActiveWorkbook.path
+        Range("ThisDir") = Application.ActiveWorkbook.Path
     End If
     If Range("OutputDir") = "" Then
-        strOutputDir = Application.ActiveWorkbook.path & "\Output"
+        strOutputDir = Application.ActiveWorkbook.Path & "\Output"
     Else
         strOutputDir = Range("OutputDir")
     End If
@@ -186,10 +187,10 @@ End Sub
 
 Sub BrowseWeatherDir()
     If Range("ThisDir") = "" Then
-        Range("ThisDir") = Application.ActiveWorkbook.path
+        Range("ThisDir") = Application.ActiveWorkbook.Path
     End If
     If Range("WeatherDir") = "" Then
-        strWeatherDir = Application.ActiveWorkbook.path & "\Wetter"
+        strWeatherDir = Application.ActiveWorkbook.Path & "\Wetter"
     Else
         strWeatherDir = Range("WeatherDir")
     End If
@@ -197,34 +198,219 @@ Sub BrowseWeatherDir()
     Range("WeatherDir") = strWeatherDir
 End Sub
 
-Function load_file_from_folder(filetype As String)
+Function load_file_from_folder(filetype As String, weatherfile As String)
     Dim result As Integer
     Dim selectedPath As String
+    Dim idf_file As String
     Dim zipPath As Variant
     Dim isComplete As Boolean: isComplete = True
     Dim fileDialog As fileDialog: Set fileDialog = Application.fileDialog(msoFileDialogFilePicker)
-
-    fileDialog.InitialFileName = Application.ActiveWorkbook.path
+    
+    
+    fileDialog.InitialFileName = Application.ActiveWorkbook.Path
     fileDialog.ButtonName = "Speichern"
     fileDialog.Title = "Bitte Datei auswählen"
-    fileDialog.InitialFileName = Application.ActiveWorkbook.path & "\*." & filetype
     fileDialog.Filters.Clear
-    fileDialog.Filters.Add filetype & " Files", "*." & filetype, 1
+    
+    Dim parts() As String
+    If InStr(filetype, "-") > 0 Then
+        Dim firstPart As String
+        Dim secondPart As String
+        parts = Split(filetype, "-")
+        firstPart = parts(0)
+        secondPart = parts(1)
+        fileDialog.InitialFileName = Application.ActiveWorkbook.Path & "\*." & firstPart
+        fileDialog.Filters.Add firstPart & " Files", "*." & firstPart, 1
+        fileDialog.Filters.Add secondPart & " Files", "*." & secondPart, 2
+        If UBound(parts) >= 2 Then
+            fileDialog.Filters.Add parts(2) & " Files", "*." & parts(2), 3
+        End If
+    Else
+        fileDialog.InitialFileName = Application.ActiveWorkbook.Path & "\*." & filetype
+        fileDialog.Filters.Add filetype & " Files", "*." & filetype, 1
+    End If
+    
     fileDialog.FilterIndex = 1
-
     result = fileDialog.Show
 
     If result <> 0 Then
         load_file_from_folder = fileDialog.SelectedItems(1)
+        If LCase(Right(load_file_from_folder, 4)) = ".idf" Then
+            load_file_from_folder = RunIDFConversionScript(fileDialog.SelectedItems(1))
+        ElseIf LCase(Right(load_file_from_folder, 4)) = ".ifc" Then
+            idf_file = RunIFCConversionScript(fileDialog.SelectedItems(1), weatherfile)
+            If Len(idf_file) > 0 Then
+                load_file_from_folder = RunIDFConversionScript(idf_file)
+            Else
+                MsgBox ("Error during conversion to IDF")
+            End If
+        End If
     End If
 End Function
 
 Sub import_geometry_osm()
-    path_osm = load_file_from_folder("osm")
+    Dim file_types As String
+    Dim weather_file As String
+    file_types = "osm-idf"
+    If IsDockerInstalled() And IFC_IMPORT Then
+        file_types = "osm-idf-ifc"
+        If Not (IsDockerRunning()) Then
+            MsgBox ("Your Docker/Docker Desktop is not running, please start it.")
+            Exit Sub
+        End If
+    End If
+    weather_file = GetWeatherFilePath("TRY2015_Augsburg_Jahr.epw", GetWeatherFolder())
+    path_osm = load_file_from_folder(file_types, weather_file)
     If path_osm <> Empty Then
         Range("path_geometry_Import") = path_osm
     End If
 End Sub
+
+
+Function IsDockerRunning() As Boolean
+    Dim objWMIService As Object
+    Dim colProcesses As Object
+    Dim objProcess As Object
+
+    Set objWMIService = GetObject("winmgmts:\\.\root\cimv2")
+    Set colProcesses = objWMIService.ExecQuery("SELECT Name FROM Win32_Process WHERE Name = 'Docker Desktop.exe' OR Name = 'Docker.exe'")
+
+    IsDockerRunning = (colProcesses.Count > 0)
+End Function
+
+
+Function GetWeatherFilePath(defaultValue As String, weatherFolder As String) As String
+    Dim ws As Worksheet
+    Set ws = ThisWorkbook.Sheets("HAUPTSEITE")
+
+    Dim selectedItem As String
+    selectedItem = ""
+
+    On Error Resume Next
+
+    ' Try ActiveX ComboBox
+    Dim ddActiveX As Object
+    Set ddActiveX = ws.OLEObjects("dd1").Object
+    If Not ddActiveX Is Nothing Then
+        If ddActiveX.ListIndex <> -1 Then
+            selectedItem = ddActiveX.List(ddActiveX.ListIndex)
+        End If
+    End If
+
+    ' Try Form Control Dropdown (linked cell)
+    If selectedItem = "" Then
+        Dim linkedCell As Range
+        ' Replace "B3" with your actual linked cell if known
+        Set linkedCell = ws.Range("B9")
+        If Not linkedCell Is Nothing Then
+            selectedItem = linkedCell.Value
+        End If
+    End If
+
+    On Error GoTo 0 ' Reset error handling
+
+    ' Final fallback
+    If Trim(selectedItem) = "" Then
+        GetWeatherFilePath = weatherFolder & "\" & defaultValue
+    Else
+        GetWeatherFilePath = weatherFolder & "\" & selectedItem
+    End If
+End Function
+
+
+Function IsDockerInstalled() As Boolean
+    Dim objReg As Object
+    Dim subKeys As Variant
+    Dim subKey As Variant
+    Dim displayName As Variant
+    Dim rootKey As Long
+    Dim keyPath As String
+    Dim paths As Variant
+    Dim i As Integer
+
+    On Error GoTo ErrorHandler
+
+    ' Create registry object
+    Set objReg = GetObject("winmgmts:\\.\root\default:StdRegProv")
+
+    ' Constants
+    rootKey = &H80000002 ' HKEY_LOCAL_MACHINE
+
+    ' Registry paths to check
+    paths = Array( _
+        "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", _
+        "SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall" _
+    )
+
+    ' Loop through both registry paths
+    For i = LBound(paths) To UBound(paths)
+        keyPath = paths(i)
+        subKeys = Null
+        objReg.EnumKey rootKey, keyPath, subKeys
+
+        If Not IsNull(subKeys) Then
+            For Each subKey In subKeys
+                displayName = Null
+                objReg.GetStringValue rootKey, keyPath & "\" & subKey, "DisplayName", displayName
+                If Not IsNull(displayName) Then
+                    If InStr(1, displayName, "Docker", vbTextCompare) > 0 Then
+                        IsDockerInstalled = True
+                        Exit Function
+                    End If
+                End If
+            Next subKey
+        End If
+    Next i
+
+    MsgBox "Docker is not installed. Please go to docker.com and install Docker Desktop."
+    IsDockerInstalled = False
+    Exit Function
+
+ErrorHandler:
+    IsDockerInstalled = False
+End Function
+
+Function RunIDFConversionScript(idfPath As String) As String
+    RunMeasures.CreatePreWorkflowAndExecute (idfPath)
+    Dim osmPath As String
+    osmPath = Replace(LCase(idfPath), ".idf", ".osm")
+    If Dir(osmPath) <> "" Then
+        MsgBox "OSM file successfully generated: " & osmPath
+        RunIDFConversionScript = osmPath
+    Else
+        MsgBox "OSM file was not properly generated."
+    End If
+End Function
+
+
+Function RunIFCConversionScript(ifcPath As String, epwPath As String) As String
+    Dim batFilePath As String
+    Dim command As String
+    Dim eplusPath As String
+
+    ' Full path to your .bat file
+    batFilePath = "run_conversion.bat"
+
+    ' Input files
+    eplusPath = "/usr/local/EnergyPlus-9-4-0/"
+
+    ' Combine all arguments with quotes
+    command = """" & batFilePath & """ " & _
+              """" & ifcPath & """ " & _
+              """" & epwPath & """ " & _
+              """" & eplusPath & """"
+
+    ' Run batch file and wait
+    retval = ExecCmd(command)
+
+    If retval <> 0 Then
+        MsgBox "Fehler während der Konvertierung, Fehlercode: " & retval
+        RunIFCConversionScript = ""
+    Else
+        RunIFCConversionScript = Replace(LCase(ifcPath), ".ifc", ".idf")
+    End If
+End Function
+
 
 Sub DropDown1_Change()
     Sheets("HAUPTSEITE").Unprotect
@@ -252,7 +438,7 @@ Sub FillLocationParameters(bForce As Boolean)
     If bForce Or IsEmpty(Range("Name")) Then
         Dim dd As DropDown
         Set dd = Sheets("HAUPTSEITE").DropDowns("DropDown1")
-        myFile = Application.ActiveWorkbook.path & "\Wetter\" & dd.List(dd.Value)
+        myFile = Application.ActiveWorkbook.Path & "\Wetter\" & dd.List(dd.Value)
         Value = dd.Value
         Open myFile For Input As #1
         ' read the first line
@@ -295,12 +481,6 @@ End Sub
 
 Sub Ansicht_Feiertage()
     Application.GoTo Reference:=Sheets("EIGENE NUTZUNGSPROFILE").Range("AH8"), Scroll:=True
-End Sub
-
-Sub Ansicht_Normen()
-    Sheets("HAUPTSEITE").Unprotect
-    Application.GoTo Reference:=Sheets("Referenzwerte Normen").Range("A1"), Scroll:=True
-    Sheets("HAUPTSEITE").Protect
 End Sub
 
 '**************************   Gruppieren: TB: CO2-Bilanz    ****************************
@@ -382,7 +562,7 @@ Sub ImportOSWFile()
     'Request source file from user
     fileDialog.ButtonName = "Laden"
     fileDialog.Title = "Bitte Konfiguration auswählen"
-    fileDialog.InitialFileName = Application.ActiveWorkbook.path & "\Output"
+    fileDialog.InitialFileName = Application.ActiveWorkbook.Path & "\Output"
     fileDialog.Filters.Add "OSW Files", "*.osw", 1
     fileDialog.FilterIndex = 1
 
@@ -418,21 +598,11 @@ End Sub
 Sub ExportOSWFile()
     Application.Calculation = xlCalculationManual
 
-    Dim cb_buildingSim As CheckBox
-    Set cb_buildingSim = Sheets("HAUPTSEITE").CheckBoxes("checkbox_buildingsim")
-    Dim cb_pvSim As CheckBox
-    Set cb_pvSim = Sheets("HAUPTSEITE").CheckBoxes("checkbox_pvsim")
-
-    If cb_pvSim.Value = 1 And Not cb_buildingSim.Value = 1 Then
-        MsgBox "Bei einer reinen PV-Simulation wird kein Export durchgeführt."
-        Exit Sub
-    End If
-
     Dim varResult As Variant
     'displays the save file dialog
     varResult = Application.GetSaveAsFilename(FileFilter:= _
         "OSW Files (*.osw), *.osw", Title:="Bitte Speicherort auswählen", _
-        InitialFileName:=Application.ActiveWorkbook.path & "\Output\exported.osw")
+        InitialFileName:=Application.ActiveWorkbook.Path & "\Output\exported.osw")
     'checks to make sure the user hasn't canceled the dialog
     If varResult <> False Then
         'Notify the user that this process might take a while
@@ -463,24 +633,24 @@ End Sub
 
 Sub OpenErrorFile()
     Dim current As String
-    Dim filename As String
+    Dim FileName As String
     Dim result As Integer
     Dim last As String
     
-    current = Dir(Application.ActiveWorkbook.path & "\Output\run\eplusout.err")
-    filename = current
+    current = Dir(Application.ActiveWorkbook.Path & "\Output\run\eplusout.err")
+    FileName = current
     Do While Len(current) > 0
         last = current
         current = Dir
         If Len(current) > 0 Then
             If CompareTimestamps(current, last) > 0 Then
-                filename = current
+                FileName = current
             End If
         End If
     Loop
     
-    If (filename <> "") Then
-        result = Shell("notepad.exe " & Application.ActiveWorkbook.path & "\Output\run\" & filename, vbNormalFocus)
+    If (FileName <> "") Then
+        result = Shell("notepad.exe " & Application.ActiveWorkbook.Path & "\Output\run\" & FileName, vbNormalFocus)
     End If
 End Sub
 
@@ -533,14 +703,4 @@ End Sub
 Sub label_geom()
     ActiveSheet.Shapes.Range(Array("label_geom_gen")).Visible = Sheets("Wetterdateien").Range("geometry_source") = 2
     ActiveSheet.Shapes.Range(Array("label_geom_imp")).Visible = Sheets("Wetterdateien").Range("geometry_source") = 1
-End Sub
-
-Sub label_building_pv()
-    Dim cb_buildingSim As CheckBox
-    Set cb_buildingSim = Sheets("HAUPTSEITE").CheckBoxes("checkbox_buildingsim")
-    Dim cb_pvSim As CheckBox
-    Set cb_pvSim = Sheets("HAUPTSEITE").CheckBoxes("checkbox_pvsim")
-
-    ActiveSheet.Shapes.Range(Array("label_building")).Visible = cb_buildingSim.Value <> 1
-    ActiveSheet.Shapes.Range(Array("label_pv")).Visible = cb_pvSim.Value <> 1
 End Sub

@@ -148,6 +148,7 @@ End Function
 ' global constant EXPORT_FOLDER_NAME as subdirectory of the directory in which the
 ' workbook resides.
 Public Sub ImportVBACode()
+Attribute ImportVBACode.VB_ProcData.VB_Invoke_Func = "i\n14"
     Dim Workbook As Excel.Workbook: Set Workbook = Application.Workbooks(ActiveWorkbook.name)
     If Workbook.VBProject.Protection = 1 Then
         MsgBox "VBA code cannot be imported as the workbook is protected."

@@ -14,18 +14,21 @@ Sub ClearCells()
     Range("Infiltration").ClearContents
     Range("LightingControl").ClearContents
     Range("TempSetpoint").ClearContents
-    Range("Photovoltaic").ClearContents
     Range("window_ventilation").ClearContents
     Range("IDFIdealLoads").ClearContents
 
     Range("SimStatus").ClearContents
     Range("StatusEnergyPlusSimulation") = ""
 
-    Sheets("HAUPTSEITE").Range("M27:O32").ClearContents
+    Sheets("HAUPTSEITE").Range("N24:O29").ClearContents
 
 End Sub
 
-Sub CreateWorkflowAndExecute()
+Sub CreateWorkflowAndExecuteSub()
+    CreateWorkflowAndExecute(True)
+End Sub
+
+Function CreateWorkflowAndExecute(updatePivot As Boolean)
 
     Application.Calculation = xlCalculationManual
 
@@ -49,7 +52,7 @@ Sub CreateWorkflowAndExecute()
         MsgBox ("OpenStudio directory Not found at: " & Range("DirOpenStudio") & "\nPlease change it on sheet 1 Or install a version of OpenStudio.")
     End If
 
-    If Range("PerimeterDepth") * 2 > WorksheetFunction.Min(Range("LAENGE"), Range("BREITE")) - 1 Then MsgBox "Fehler in der Geometrie-Eingabe: 'Tiefe Auﬂenzonen' zu groﬂ!": Exit Sub
+    If Range("PerimeterDepth") * 2 > WorksheetFunction.Min(Range("LAENGE"), Range("BREITE")) - 1 Then MsgBox "Fehler in der Geometrie-Eingabe: 'Tiefe Auﬂenzonen' zu groﬂ!": return
 
         ' control flow variables
         Dim bGeneric As Boolean: bGeneric = False
@@ -80,10 +83,6 @@ Sub CreateWorkflowAndExecute()
         Range("unmethours_h") = "k.A."
         Range("unmethours_c") = "k.A."
 
-        'Photovoltaik
-        Range("pv_annual") = "k.A."
-        Range("pv_annual_kWp") = "k.A."
-
         'Sizing
         Range("SizingHeating") = "k.A."
         Range("SizingCooling") = "k.A."
@@ -110,9 +109,69 @@ Sub CreateWorkflowAndExecute()
         Range("sim_date") = Format(Now, "dd.mm.yyyy\ hh:mm")
 
         ' update pivot tables
-        Call Aktualisieren_pivots
+        If updatePivot Then
+            Call Aktualisieren_pivots
+        End If
 
         Sheets("HAUPTSEITE").Protect
+
+        Application.Calculation = xlCalculationAutomatic
+
+End Function
+
+Sub CreatePreWorkflowAndExecute(file_path As String)
+
+    Application.Calculation = xlCalculationManual
+
+    ' Set application path
+    SetApplicationPath
+
+    ' make the main sheet unprotected so we can read And write on it
+    Sheets("HAUPTSEITE").Unprotect
+
+    ' Set status cells empty
+ '   Call ClearCells
+
+ '   Range("Status").Offset(0, 0) = "OSW-file wird erzeugt"
+
+    ' execution time measurement
+    Startzeit = Time
+    Startzeit_indv = Time
+    DoEvents
+
+    If Dir(Range("DirOpenStudio"), vbDirectory) = "" Then
+        MsgBox ("OpenStudio directory Not found at: " & Range("DirOpenStudio") & "\nPlease change it on sheet 1 Or install a version of OpenStudio.")
+    End If
+
+    If Range("PerimeterDepth") * 2 > WorksheetFunction.Min(Range("LAENGE"), Range("BREITE")) - 1 Then MsgBox "Fehler in der Geometrie-Eingabe: 'Tiefe Auﬂenzonen' zu groﬂ!": Exit Sub
+
+        ' control flow variables
+
+        ' export steps, measures And parameters To OSW file
+        Dim interface As OSWFileInterface: Set interface = New OSWFileInterface
+        Call interface.ExportLoadIdfModel(GetOutputFolder() & "\OSMConversionWorkflow.osw", file_path)
+
+        ' status
+       ' Range("Status").Offset(0, 1) = "beendet (" & WorksheetFunction.Round((Time - Startzeit_indv) * 86400, 1) & " s)"
+        Startzeit_indv = Time
+
+        ' running the open studio CLI
+       ' Range("Status").Offset(1, 0) = "Modellerzeugung und Simulation"
+
+        ' execute the OpenStudio CLI
+        RunOpenStudioCLI.RunPreOpenStudioCLI
+
+        ' execution time measurement
+        Debug.Print Time
+        Endzeit = Time
+        'Ausgabe Simulationsdauer
+   '     Range("calc_time") = Round((Endzeit - Startzeit) * 86400, 1) & " s (" & Round((Endzeit - Startzeit) * 86400 / 60, 1) & " min)"
+   '     Range("sim_date") = Format(Now, "dd.mm.yyyy\ hh:mm")
+
+        ' update pivot tables
+    '    Call Aktualisieren_pivots
+
+     '   Sheets("HAUPTSEITE").Protect
 
         Application.Calculation = xlCalculationAutomatic
 

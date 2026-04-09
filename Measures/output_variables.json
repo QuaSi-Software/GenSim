@@ -1,0 +1,240 @@
+[
+  {
+    "name": "Baseboard Total Heating Energy",
+    "eplus_variables": ["Baseboard Total Heating Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal", "Reduced"]
+  },
+  {
+    "name": "Zone Radiant HVAC Cooling Energy",
+    "eplus_variables": ["Zone Radiant HVAC Cooling Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal", "Reduced"]
+  },
+  {
+    "name": "Lights Electricity",
+    "eplus_variables": ["InteriorLights:Electricity"],
+    "node_reference": "",
+    "create_output_variable": false,
+    "create_custom_meter": true,
+    "create_output_meter": true,
+    "output_levels": ["Debug", "Normal", "Reduced"]
+  },
+  {
+    "name": "Plugs Electricity",
+    "eplus_variables": ["InteriorEquipment:Electricity"],
+    "node_reference": "",
+    "create_output_variable": false,
+    "create_custom_meter": true,
+    "create_output_meter": true,
+    "output_levels": ["Debug", "Normal", "Reduced"]
+  },
+  {
+    "name": "Fans Electricity",
+    "eplus_variables": ["Fans:Electricity"],
+    "node_reference": "",
+    "create_output_variable": false,
+    "create_custom_meter": true,
+    "create_output_meter": true,
+    "output_levels": ["Debug", "Normal", "Reduced"]
+  },
+  {
+    "name": "Pumps Electricity",
+    "eplus_variables": ["Pumps:Electricity"],
+    "node_reference": "",
+    "create_output_variable": false,
+    "create_custom_meter": true,
+    "create_output_meter": true,
+    "output_levels": ["Debug", "Normal", "Reduced"]
+  },
+  {
+    "name": "Heating Setpoint Not Met",
+    "eplus_variables": ["Facility Heating Setpoint Not Met While Occupied Time"],
+    "node_reference": "",
+    "create_output_variable": false,
+    "create_custom_meter": true,
+    "create_output_meter": true,
+    "output_levels": ["Debug", "Normal", "Reduced"]
+  },
+  {
+    "name": "Cooling Setpoint Not Met",
+    "eplus_variables": ["Facility Cooling Setpoint Not Met While Occupied Time"],
+    "node_reference": "",
+    "create_output_variable": false,
+    "create_custom_meter": true,
+    "create_output_meter": true,
+    "output_levels": ["Debug", "Normal", "Reduced"]
+  },
+  {
+    "name": "Zone Opaque Surface Inside Faces Total Conduction Heat Loss Energy",
+    "eplus_variables": [
+      "Zone Opaque Surface Inside Faces Total Conduction Heat Loss Energy"
+    ],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone Windows Total Heat Loss Energy",
+    "eplus_variables": [
+      "Zone Windows Total Heat Loss Energy"
+    ],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone Infiltration Sensible Heat Loss Energy",
+    "eplus_variables": [
+      "Zone Infiltration Sensible Heat Loss Energy"
+    ],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone Ventilation Sensible Heat Loss Energy",
+    "eplus_variables": [
+      "Zone Ventilation Sensible Heat Loss Energy"
+    ],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone Air Terminal Sensible Cooling Energy",
+    "eplus_variables": [
+      "Zone Air Terminal Sensible Cooling Energy"
+    ],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone Opaque Surface Inside Faces Total Conduction Heat Gain Energy",
+    "eplus_variables": [
+      "Zone Opaque Surface Inside Faces Total Conduction Heat Gain Energy"
+    ],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone Windows Total Heat Gain Energy",
+    "eplus_variables": [
+      "Zone Windows Total Heat Gain Energy"
+    ],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone Infiltration Sensible Heat Gain Energy",
+    "eplus_variables": [
+      "Zone Infiltration Sensible Heat Gain Energy"
+    ],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone Ventilation Sensible Heat Gain Energy",
+    "eplus_variables": [
+      "Zone Ventilation Sensible Heat Gain Energy"
+    ],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone People Sensible Heating Energy",
+    "eplus_variables": [
+      "Zone People Sensible Heating Energy"
+    ],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone Air Terminal Sensible Heating Energy",
+    "eplus_variables": [
+      "Zone Air Terminal Sensible Heating Energy"
+    ],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone Infiltration Latent Heat Gain Energy",
+    "eplus_variables": ["Zone Infiltration Latent Heat Gain Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone Infiltration Latent Heat Loss Energy",
+    "eplus_variables": ["Zone Infiltration Latent Heat Loss Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone Ventilation Latent Heat Gain Energy",
+    "eplus_variables": ["Zone Ventilation Latent Heat Gain Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone Ventilation Latent Heat Loss Energy",
+    "eplus_variables": ["Zone Ventilation Latent Heat Loss Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  },
+  {
+    "name": "Zone People Latent Gain Energy",
+    "eplus_variables": ["Zone People Latent Gain Energy"],
+    "node_reference": "",
+    "create_output_variable": true,
+    "create_custom_meter": false,
+    "create_output_meter": false,
+    "output_levels": ["Debug", "Normal"]
+  }
+]

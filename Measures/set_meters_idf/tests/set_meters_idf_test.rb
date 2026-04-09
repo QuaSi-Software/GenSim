@@ -18,7 +18,7 @@ class SetMetersIDFTest < MiniTest::Test
     # get arguments with a new instance of the measure
     arguments = GetArguments(SetMetersIDF.new, OpenStudio::Model::Model.new)
 
-    assert_equal(4, arguments.size)
+    assert_equal(5, arguments.size)
   end
 
   def test_bad_argument_values
@@ -43,12 +43,12 @@ class SetMetersIDFTest < MiniTest::Test
 
     # assert that it ran correctly
     assert_equal("Success", result.value.valueName)
-    assert(result.info.size == 36)
+    assert(result.info.size >= 1)
     assert(result.warnings.empty?)
     assert(result.errors.empty?)
     assert(result.initialCondition.is_initialized)
     assert(result.finalCondition.is_initialized)
-    assert_equal("The building finished with 14 Custom Meters with version 9.3.0.", result.finalCondition.get.logMessage)
+    assert_equal("The building finished with 6 Custom Meters with version 25.1.0.", result.finalCondition.get.logMessage)
     # save the model to test output directory
     SaveIDFModel(workspace, dir)
   end

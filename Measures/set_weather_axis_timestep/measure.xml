@@ -1,9 +1,10 @@
+<?xml version="1.0"?>
 <measure>
-  <schema_version>3.0</schema_version>
+  <schema_version>3.1</schema_version>
   <name>set_weather_axis_timestep</name>
   <uid>1fd78114-23ef-4ee1-80f4-d1695976a55b</uid>
-  <version_id>aff05601-91f9-4912-9d5b-183ad92f20cf</version_id>
-  <version_modified>20230814T140613Z</version_modified>
+  <version_id>ed5cb55a-1166-4256-ba6c-499da877c97c</version_id>
+  <version_modified>2026-03-09T12:03:05Z</version_modified>
   <xml_checksum>74C70850</xml_checksum>
   <class_name>SetWeatherAxisTimestep</class_name>
   <display_name>SetWeatherAxisTimestep</display_name>
@@ -32,9 +33,31 @@
       <model_dependent>false</model_dependent>
       <default_value>-9999</default_value>
     </argument>
+    <argument>
+      <name>sizing_method</name>
+      <display_name>sizing_method</display_name>
+      <type>Choice</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+      <default_value>automatic_design_days</default_value>
+      <choices>
+        <choice>
+          <value>use_ddy_file</value>
+          <display_name>Use DDY file</display_name>
+        </choice>
+        <choice>
+          <value>manual_design_days</value>
+          <display_name>Manual Design Days</display_name>
+        </choice>
+        <choice>
+          <value>automatic_design_days</value>
+          <display_name>Automatic Design Days</display_name>
+        </choice>
+      </choices>
+    </argument>
   </arguments>
-  <outputs/>
-  <provenances/>
+  <outputs />
+  <provenances />
   <tags>
     <tag>Envelope.Form</tag>
   </tags>
@@ -52,10 +75,10 @@
   </attributes>
   <files>
     <file>
-      <filename>example_model.osm</filename>
-      <filetype>osm</filetype>
-      <usage_type>test</usage_type>
-      <checksum>31115A0D</checksum>
+      <filename>LICENSE.md</filename>
+      <filetype>md</filetype>
+      <usage_type>license</usage_type>
+      <checksum>07A1DAC9</checksum>
     </file>
     <file>
       <version>
@@ -66,19 +89,19 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>4F24100F</checksum>
+      <checksum>A2601FA1</checksum>
+    </file>
+    <file>
+      <filename>example_model.osm</filename>
+      <filetype>osm</filetype>
+      <usage_type>test</usage_type>
+      <checksum>31115A0D</checksum>
     </file>
     <file>
       <filename>set_weather_axis_timestep_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>B413D62A</checksum>
-    </file>
-    <file>
-      <filename>LICENSE.md</filename>
-      <filetype>md</filetype>
-      <usage_type>license</usage_type>
-      <checksum>07A1DAC9</checksum>
+      <checksum>B8AD43A3</checksum>
     </file>
   </files>
 </measure>

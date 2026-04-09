@@ -88,7 +88,7 @@ For i = 0 To input_anzahl_durchlaeufe(1)
                 Next
                  
                 '###Simulation
-                CreateWorkflowAndExecute
+                CreateWorkflowAndExecute(False)
                 Application.Calculation = xlCalculationManual
                 Worksheets("SENSIBILITÄTSANALYSE").Activate
                  

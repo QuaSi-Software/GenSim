@@ -1,0 +1,230 @@
+[
+    {
+        "name": "Sondernutzungstyp - Justizgebäude",
+        "id": "para_ngr_special_use_type_judicial_buildings",
+        "value": 0.83,
+        "weight": 200
+    },
+    {
+        "name": "Sondernutzungstyp - Verwaltungsgebäude",
+        "id": "para_ngr_special_use_type_administrative_buildings",
+        "value": 0.85,
+        "weight": 300
+    },
+    {
+        "name": "Sondernutzungstyp - Laborgebäude",
+        "id": "para_ngr_special_use_type_laboratories",
+        "value": 0.879,
+        "weight": 400
+    },
+    {
+        "name": "Sondernutzungstyp - Wissenschaftl. Lehrgebäude",
+        "id": "para_ngr_special_use_type_buildings_of_scientific_education",
+        "value": 0.881,
+        "weight": 500
+    },
+    {
+        "name": "Sondernutzungstyp - Gesamtschule",
+        "id": "para_ngr_special_use_type_comprehensive_school_buildings",
+        "value": 0.889,
+        "weight": 600
+    },
+    {
+        "name": "Sondernutzungstyp - KiTa",
+        "id": "para_ngr_special_use_type_day_care_centers",
+        "value": 0.86,
+        "weight": 700
+    },
+    {
+        "name": "Sondernutzungstyp - Kindergarten",
+        "id": "para_ngr_special_use_type_kindergardens",
+        "value": 0.861,
+        "weight": 800
+    },
+    {
+        "name": "Sondernutzungstyp - Sport- und Turnhallen",
+        "id": "para_ngr_special_use_type_sports_halls_and_gymnastic_facilities",
+        "value": 0.91,
+        "weight": 900
+    },
+    {
+        "name": "Sondernutzungstyp - Mehrzweckhalle",
+        "id": "para_ngr_special_use_type_mixed_use_halls",
+        "value": 0.909,
+        "weight": 1000
+    },
+    {
+        "name": "Sondernutzungstyp - Hotel und Herbergen",
+        "id": "para_ngr_special_use_type_hotels_and_other_accommodations",
+        "value": 0.911,
+        "weight": 1100
+    },
+    {
+        "name": "BKI Nutzungstyp - Bürogebäude",
+        "id": "para_ngr_bki_type_offices",
+        "value": 0.851,
+        "weight": 1200
+    },
+    {
+        "name": "BKI Nutzungstyp - Instituts- und Laborgebäude",
+        "id": "para_ngr_bki_type_institute_buildings_and_laboratories",
+        "value": 0.851,
+        "weight": 1300
+    },
+    {
+        "name": "BKI Nutzungstyp - Medizinische Einrichtungen",
+        "id": "para_ngr_bki_type_medical_facilities",
+        "value": 0.815,
+        "weight": 1400
+    },
+    {
+        "name": "BKI Nutzungstyp - Pflegeheime",
+        "id": "para_ngr_bki_type_care_homes",
+        "value": 0.832,
+        "weight": 1500
+    },
+    {
+        "name": "BKI Nutzungstyp - Allgemeinbildende Schulen",
+        "id": "para_ngr_bki_type_general_school_buildings",
+        "value": 0.871,
+        "weight": 1600
+    },
+    {
+        "name": "BKI Nutzungstyp - Berufliche Schulen",
+        "id": "para_ngr_bki_type_vocational_school_buildings",
+        "value": 0.886,
+        "weight": 1700
+    },
+    {
+        "name": "BKI Nutzungstyp - Förder- und Sonderschulen",
+        "id": "para_ngr_bki_type_special_and_other_school_buildings",
+        "value": 0.84,
+        "weight": 1800
+    },
+    {
+        "name": "BKI Nutzungstyp - Weiterbildungseinrichtungen",
+        "id": "para_ngr_bki_type_facilities_of_training_and_further_education",
+        "value": 0.883,
+        "weight": 1900
+    },
+    {
+        "name": "BKI Nutzungstyp - Kindergärten nicht unterkellert",
+        "id": "para_ngr_bki_type_kindergarden_without_basement",
+        "value": 0.846,
+        "weight": 2000
+    },
+    {
+        "name": "BKI Nutzungstyp - Kindergärten unterkellert",
+        "id": "para_ngr_bki_type_kindergarden_with_basement",
+        "value": 0.819,
+        "weight": 2100
+    },
+    {
+        "name": "BKI Nutzungstyp - Ein-/Zweifamilienhäuser unterkellert",
+        "id": "para_ngr_bki_type_single_and_double_family_homes_with_basement",
+        "value": 0.796,
+        "weight": 2200
+    },
+    {
+        "name": "BKI Nutzungstyp - Ein-/Zweifamilienhäuser nicht unterkellert",
+        "id": "para_ngr_bki_type_single_and_double_family_homes_without_basement",
+        "value": 0.785,
+        "weight": 2300
+    },
+    {
+        "name": "BKI Nutzungstyp - Ein-/Zweifamilienhäuser Passivhaus Massivbau",
+        "id": "para_ngr_bki_type_single_and_double_family_homes_in_passive_solid_construction",
+        "value": 0.789,
+        "weight": 2400
+    },
+    {
+        "name": "BKI Nutzungstyp - Ein-/Zweifamilienhäuser Passivhaus Holzbau",
+        "id": "para_ngr_bki_type_single_and_double_family_homes_in_passive_wooden_construction",
+        "value": 0.791,
+        "weight": 2500
+    },
+    {
+        "name": "BKI Nutzungstyp - Doppel- und Reihenendhäuser",
+        "id": "para_ngr_bki_type_double_homes_and_terraced_houses_at_the_end",
+        "value": 0.815,
+        "weight": 2600
+    },
+    {
+        "name": "BKI Nutzungstyp - Reihenhäuser",
+        "id": "para_ngr_bki_type_terraced_houses",
+        "value": 0.827,
+        "weight": 2700
+    },
+    {
+        "name": "BKI Nutzungstyp - Mehrfamilienhäuser < 6 WE",
+        "id": "para_ngr_bki_type_multi_family_homes_with_6_units",
+        "value": 0.829,
+        "weight": 2800
+    },
+    {
+        "name": "BKI Nutzungstyp - Mehrfamilienhäuser 6 -19 WE",
+        "id": "para_ngr_bki_type_multi_family_homes_with_6_to_20_units",
+        "value": 0.837,
+        "weight": 2900
+    },
+    {
+        "name": "BKI Nutzungstyp - Mehrfamilienhäuser > 20 WE",
+        "id": "para_ngr_bki_type_multi_family_homes_with_20_units",
+        "value": 0.835,
+        "weight": 3000
+    },
+    {
+        "name": "BKI Nutzungstyp - Wohnhäuser mit bis zu 15% Mischnutzung",
+        "id": "para_ngr_bki_type_residential_houses_with_up_to_15_mixed_use",
+        "value": 0.809,
+        "weight": 3100
+    },
+    {
+        "name": "BKI Nutzungstyp - Seniorenwohnungen",
+        "id": "para_ngr_bki_type_senior_apartments",
+        "value": 0.816,
+        "weight": 3200
+    },
+    {
+        "name": "BKI Nutzungstyp - Wohnheime und Internate",
+        "id": "para_ngr_bki_type_dormitories_and_boarding_schools",
+        "value": 0.838,
+        "weight": 3300
+    },
+    {
+        "name": "BKI Nutzungstyp - Gaststätten, Kantinen und Mensen",
+        "id": "para_ngr_bki_type_restaurants_cantines_and_cafeterias",
+        "value": 0.877,
+        "weight": 3400
+    },
+    {
+        "name": "BKI Nutzungstyp - Geschäftshäuser mit Wohnungen",
+        "id": "para_ngr_bki_type_commercial_buildings_with_apartments",
+        "value": 0.881,
+        "weight": 3500
+    },
+    {
+        "name": "BKI Nutzungstyp - Geschäftshäuser ohne Wohnungen",
+        "id": "para_ngr_bki_type_commercial_buildings_without_apartments",
+        "value": 0.887,
+        "weight": 3600
+    },
+    {
+        "name": "BKI Nutzungstyp - Verbrauchermärkte",
+        "id": "para_ngr_bki_type_consumer_markets",
+        "value": 0.906,
+        "weight": 3700
+    },
+    {
+        "name": "BKI Nutzungstyp - Industrielle Produktionsgebäude Massivbauweise",
+        "id": "para_ngr_bki_type_industrial_production_facilities_in_solid_construction",
+        "value": 0.917,
+        "weight": 3800
+    },
+    {
+        "name": "BKI Nutzungstyp - Theater",
+        "id": "para_ngr_bki_type_theatres",
+        "value": 0.858,
+        "weight": 3900
+    }
+]
