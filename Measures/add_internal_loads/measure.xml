@@ -3,8 +3,8 @@
   <schema_version>3.1</schema_version>
   <name>add_internal_loads</name>
   <uid>9db02274-2ce9-48e3-810d-ab9088f09c62</uid>
-  <version_id>c007b578-64eb-401c-ba37-8fc52d83a1fc</version_id>
-  <version_modified>2026-03-09T12:02:40Z</version_modified>
+  <version_id>51f77fc3-4259-4866-999e-4fbc3206cf78</version_id>
+  <version_modified>2026-04-19T10:15:40Z</version_modified>
   <xml_checksum>57232789</xml_checksum>
   <class_name>AddInternalLoads</class_name>
   <display_name>AddInternalLoads</display_name>
@@ -152,6 +152,34 @@
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
+      <name>manual_vent_sched_weekday</name>
+      <display_name>manual_vent_sched_weekday</display_name>
+      <type>String</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>manual_vent_sched_saturday</name>
+      <display_name>manual_vent_sched_saturday</display_name>
+      <type>String</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>manual_vent_sched_sunday</name>
+      <display_name>manual_vent_sched_sunday</display_name>
+      <type>String</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>manual_vent_sched_holiday</name>
+      <display_name>manual_vent_sched_holiday</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
       <name>holidays</name>
       <display_name>holidays</display_name>
       <type>String</type>
@@ -230,6 +258,13 @@
     <argument>
       <name>people_activity_sched_selection</name>
       <display_name>people_activity_sched_selection</display_name>
+      <type>String</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
+      <name>manual_vent_sched_selection</name>
+      <display_name>manual_vent_sched_selection</display_name>
       <type>String</type>
       <required>false</required>
       <model_dependent>false</model_dependent>
@@ -346,7 +381,7 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>1ACB6D6D</checksum>
+      <checksum>92E7EF44</checksum>
     </file>
     <file>
       <filename>add_internal_loads_test.rb</filename>
