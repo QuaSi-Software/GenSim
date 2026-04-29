@@ -129,6 +129,7 @@ Sub ExportCustomExportParams( _
     jFile.AddArgument "imported_floor_height", Range("FloorHeight_import")
     jFile.AddArgument "air_changes_input", Range("ACH")
     jFile.AddArgument "include_window_ventilation", IIf(cb_windowvent.Value = 1, 1, 0)
+    jFile.AddArgument "include_manual_ventilation", IIf(cb_manualvent.Value = 1, 1, 0)
     jFile.AddArgument "include_infiltration", IIf(cb_inf.Value = 1, 1, 0)
 
     'other parameters
@@ -273,6 +274,7 @@ Sub ExportAddInternalLoads( _
     jFile.AddArgument "is_custom_lighting", IIf(dd49.Value > (dd49.ListCount - 2), "true", "false")
     jFile.AddArgument "is_custom_people", IIf(dd50.Value > (dd50.ListCount - 2), "true", "false")
     jFile.AddArgument "is_custom_people_activity", IIf(dd51.Value > (dd51.ListCount - 2), "true", "false")
+    jFile.AddArgument "is_custom_manual_vent", IIf(dd116.Value > (dd116.ListCount - 2), "true", "false")
 
     jFile.AddMeasure "add_internal_loads"
 End Sub
@@ -816,6 +818,7 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             If args.Exists("include_infiltration") Then cb_inf.Value = GetArgument(args, "include_infiltration")
             If args.Exists("include_lighting_control") Then cb_lightingcontrol.Value = GetArgument(args, "include_lighting_control")
             If args.Exists("include_window_ventilation") Then cb_windowvent.Value = GetArgument(args, "include_window_ventilation")
+            If args.Exists("include_manual_ventilation") Then cb_manualvent.Value = GetArgument(args, "include_manual_ventilation")
 
             'Geometrie Generisch/Importiert
             If args.Exists("generate_geometry_selection") Then Range("geometry_source") = GetArgument(args, "generate_geometry_selection")
@@ -968,6 +971,8 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
                 ImportSchedule args, "people", "R10:R105", "R8"
             If args.Exists("people_activity_sched_selection") And args.Exists("is_custom_people_activity") Then _
                 ImportSchedule args, "people_activity", "Z10:Z105", "Z8"
+            If args.Exists("manual_vent_sched_selection") And args.Exists("is_custom_manual_vent") Then _
+                ImportSchedule args, "manual_vent", "BF10:BF105", "BF8"
 
             DoEvents
 
@@ -986,6 +991,10 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             If args.Exists("people_activity_sched_selection") Then
                 Dim dd51 As DropDown: Set dd51 = Sheets("HAUPTSEITE").DropDowns("Dropdown51")
                 DDFindAndSetValue dd51, GetArgument(args, "people_activity_sched_selection")
+            End If
+            If args.Exists("manual_vent_sched_selection") Then
+                Dim dd116 As DropDown: Set dd116 = Sheets("HAUPTSEITE").DropDowns("Dropdown116")
+                DDFindAndSetValue dd116, GetArgument(args, "manual_vent_sched_selection")
             End If
 
         Case "add_ideal_loads":
@@ -1066,6 +1075,9 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
         Case "inject_holidays_idf":
             'Holidays igored for now
             '@TODO Add import when holiday functionality is implemented
+
+        Case "inject_manual_ventilation_idf":
+            If args.Exists("air_changes") Then Range("manualvent_ach") = GetArgument(args, "air_changes")
 
         Case "set_meters_idf":
             Dim dd80 As DropDown: Set dd80 = Sheets("HAUPTSEITE").DropDowns("Dropdown80")
