@@ -3,8 +3,8 @@
   <schema_version>3.1</schema_version>
   <name>save_model</name>
   <uid>82c89850-4b47-4ab2-bd7d-78b6c80e2b96</uid>
-  <version_id>85c862fc-eb0f-48bf-b443-fd73c026bbf4</version_id>
-  <version_modified>2026-03-09T12:03:00Z</version_modified>
+  <version_id>329f08bb-0fcf-4af7-b5fd-890c18f5b963</version_id>
+  <version_modified>2026-05-06T07:42:58Z</version_modified>
   <xml_checksum>2AF3A68E</xml_checksum>
   <class_name>SaveModel</class_name>
   <display_name>SaveModel</display_name>
@@ -75,7 +75,7 @@
       <filename>Test.osm</filename>
       <filetype>osm</filetype>
       <usage_type>test</usage_type>
-      <checksum>E3C135B2</checksum>
+      <checksum>547A0412</checksum>
     </file>
     <file>
       <filename>example_model.osm</filename>

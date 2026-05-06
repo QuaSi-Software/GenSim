@@ -9,12 +9,12 @@ class InjectManualVentilationIDF < OpenStudio::Measure::EnergyPlusMeasure
 
   # general description of measure
   def description
-    return "Inject zone ventilation."
+    return "Inject manual window ventilation."
   end
 
   # description for users of what the measure does and how it works
   def modeler_description
-    return "Inject zone ventilation."
+    return "Inject manual window ventilation."
   end
 
   # define the arguments that the user will input
