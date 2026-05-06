@@ -22,7 +22,7 @@ class AddInternalLoadsTest < MiniTest::Test
     # get arguments with a new instance of the measure
     arguments = GetArguments(AddInternalLoads.new, OpenStudio::Model::Model.new)
 
-    assert_equal(33, arguments.size)
+    assert_equal(39, arguments.size)
   end
 
   def test_bad_argument_values
@@ -63,6 +63,10 @@ class AddInternalLoadsTest < MiniTest::Test
     args_hash["people_activity_sched_saturday"] = defaultSched
     args_hash["people_activity_sched_sunday"] = defaultSched
     args_hash["people_activity_sched_holiday"] = defaultSched
+    args_hash["manual_vent_sched_weekday"] = defaultSched
+    args_hash["manual_vent_sched_saturday"] = defaultSched
+    args_hash["manual_vent_sched_sunday"] = defaultSched
+    args_hash["manual_vent_sched_holiday"] = defaultSched
     args_hash["holidays"] = ""
     args_hash["area_gfa_import"] = 2515
     args_hash["nfa_gfa_ratio_selection"] = "BKI Nutzungstyp - Bürogebäude "
@@ -72,10 +76,12 @@ class AddInternalLoadsTest < MiniTest::Test
     args_hash["lighting_sched_selection"] = "DIN 18599: Großraumbüro"
     args_hash["people_sched_selection"] = "DIN 18599: Einzel-/Gruppen-/Großraumbüro"
     args_hash["people_activity_sched_selection"] = "DIN 18599: Standard"
+    args_hash["manual_vent_sched_selection"] = "L$ue$ften 7-8 und 18-19 Uhr"
     args_hash["is_custom_electric_equipment"] = false
     args_hash["is_custom_lighting"] = false
     args_hash["is_custom_people"] = false
     args_hash["is_custom_people_activity"] = false
+    args_hash["is_custom_manual_vent"] = false
 
     # load an existing model
     dir = __dir__
