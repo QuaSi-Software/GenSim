@@ -1,9 +1,10 @@
+<?xml version="1.0"?>
 <measure>
-  <schema_version>3.0</schema_version>
+  <schema_version>3.1</schema_version>
   <name>custom_export_params</name>
   <uid>28949d7c-e721-4d6c-9784-0d9840672a49</uid>
-  <version_id>4f79e078-37f3-4584-938a-c628749f7f44</version_id>
-  <version_modified>20230823T085111Z</version_modified>
+  <version_id>6d52fe77-96e3-4be7-9fe9-980c888d540e</version_id>
+  <version_modified>2026-05-06T07:42:52Z</version_modified>
   <xml_checksum>2AF3A68E</xml_checksum>
   <class_name>CustomExportParams</class_name>
   <display_name>CustomExportParams</display_name>
@@ -81,6 +82,13 @@
       <model_dependent>false</model_dependent>
     </argument>
     <argument>
+      <name>include_manual_ventilation</name>
+      <display_name>Calculate manual window ventilation</display_name>
+      <type>Integer</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+    </argument>
+    <argument>
       <name>generate_geometry_selection</name>
       <display_name>Generic geometry selection value</display_name>
       <type>Integer</type>
@@ -112,8 +120,8 @@
       <model_dependent>false</model_dependent>
     </argument>
   </arguments>
-  <outputs/>
-  <provenances/>
+  <outputs />
+  <provenances />
   <tags>
     <tag>Envelope.Form</tag>
   </tags>
@@ -147,12 +155,6 @@
       <checksum>07A1DAC9</checksum>
     </file>
     <file>
-      <filename>custom_export_params_test.rb</filename>
-      <filetype>rb</filetype>
-      <usage_type>test</usage_type>
-      <checksum>7BA10FA8</checksum>
-    </file>
-    <file>
       <version>
         <software_program>OpenStudio</software_program>
         <identifier>2.7.0</identifier>
@@ -161,7 +163,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>B5D07874</checksum>
+      <checksum>ED0B9D73</checksum>
+    </file>
+    <file>
+      <filename>custom_export_params_test.rb</filename>
+      <filetype>rb</filetype>
+      <usage_type>test</usage_type>
+      <checksum>1BBB76AF</checksum>
     </file>
   </files>
 </measure>

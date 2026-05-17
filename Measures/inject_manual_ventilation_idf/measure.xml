@@ -3,13 +3,13 @@
   <schema_version>3.1</schema_version>
   <name>inject_manual_ventilation_idf</name>
   <uid>3bdd4f5d-02e7-43ad-b151-9f781ef887b3</uid>
-  <version_id>631d76d4-b49c-48f6-aaa5-cd8930c7102e</version_id>
-  <version_modified>2026-04-19T10:16:22Z</version_modified>
+  <version_id>85a9f2c7-6ec4-4aca-8b22-a9be95a4e70b</version_id>
+  <version_modified>2026-05-06T07:42:57Z</version_modified>
   <xml_checksum>0B6DEAE1</xml_checksum>
   <class_name>InjectManualVentilationIDF</class_name>
   <display_name>InjectManualVentilationIDF</display_name>
-  <description>Inject zone ventilation.</description>
-  <modeler_description>Inject zone ventilation.</modeler_description>
+  <description>Inject manual window ventilation.</description>
+  <modeler_description>Inject manual window ventilation.</modeler_description>
   <arguments>
     <argument>
       <name>air_changes</name>
@@ -57,7 +57,7 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>6E8FB397</checksum>
+      <checksum>9CB1DEDD</checksum>
     </file>
   </files>
 </measure>

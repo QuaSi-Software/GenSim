@@ -3,8 +3,8 @@
   <schema_version>3.1</schema_version>
   <name>add_internal_loads</name>
   <uid>9db02274-2ce9-48e3-810d-ab9088f09c62</uid>
-  <version_id>51f77fc3-4259-4866-999e-4fbc3206cf78</version_id>
-  <version_modified>2026-04-19T10:15:40Z</version_modified>
+  <version_id>f54ee65e-93f0-474e-8b6e-3a781b7d6a43</version_id>
+  <version_modified>2026-05-06T07:42:48Z</version_modified>
   <xml_checksum>57232789</xml_checksum>
   <class_name>AddInternalLoads</class_name>
   <display_name>AddInternalLoads</display_name>
@@ -337,6 +337,23 @@
         </choice>
       </choices>
     </argument>
+    <argument>
+      <name>is_custom_manual_vent</name>
+      <display_name>is_custom_manual_vent</display_name>
+      <type>Boolean</type>
+      <required>false</required>
+      <model_dependent>false</model_dependent>
+      <choices>
+        <choice>
+          <value>true</value>
+          <display_name>true</display_name>
+        </choice>
+        <choice>
+          <value>false</value>
+          <display_name>false</display_name>
+        </choice>
+      </choices>
+    </argument>
   </arguments>
   <outputs />
   <provenances />
@@ -381,13 +398,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>92E7EF44</checksum>
+      <checksum>8FA918D0</checksum>
     </file>
     <file>
       <filename>add_internal_loads_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>225B1B4E</checksum>
+      <checksum>4D5A32EC</checksum>
     </file>
     <file>
       <filename>example_model.osm</filename>

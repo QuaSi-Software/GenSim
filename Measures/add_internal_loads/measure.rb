@@ -64,6 +64,7 @@ class AddInternalLoads < OpenStudio::Measure::ModelMeasure
     args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_lighting", false)
     args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_people", false)
     args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_people_activity", false)
+    args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_manual_vent", false)
 
     return args
   end
