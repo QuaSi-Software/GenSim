@@ -23,6 +23,10 @@ class InjectManualVentilationIDF < OpenStudio::Measure::EnergyPlusMeasure
 
     args << OpenStudio::Measure::OSArgument.makeDoubleArgument("air_changes", true)
 
+    dtsS = OpenStudio::Measure::OSArgument.makeStringArgument("infiltration_type", false)
+    dtsS.setDefaultValue("EnergyPlus")
+    args << dtsS
+
     return args
   end
 
@@ -35,6 +39,7 @@ class InjectManualVentilationIDF < OpenStudio::Measure::EnergyPlusMeasure
 
     # assign the user inputs to variables
     ventilationACH = runner.getDoubleArgumentValue("air_changes", user_arguments)
+    infiltration_type = runner.getStringArgumentValue("infiltration_type", user_arguments)
 
     # get all thermal zones in the starting model
     zones = workspace.getObjectsByType("Zone".to_IddObjectType)
@@ -75,10 +80,22 @@ class InjectManualVentilationIDF < OpenStudio::Measure::EnergyPlusMeasure
       zoneVent.setString(3, "AirChanges/Hour")
       zoneVent.setDouble(7, ventilationACH)
       zoneVent.setString(8, "Natural")
-      zoneVent.setDouble(11, 1)
-      zoneVent.setDouble(12, 0)
-      zoneVent.setDouble(13, 0)
-      zoneVent.setDouble(14, 0)
+      if infiltration_type == "BLAST"
+          zoneVent.setDouble(11, 0.606)
+          zoneVent.setDouble(12, 0.03636)
+          zoneVent.setDouble(13, 0.1177)
+          zoneVent.setDouble(14, 0)
+      elsif infiltration_type == "DOE2"
+          zoneVent.setDouble(11, 0)
+          zoneVent.setDouble(12, 0)
+          zoneVent.setDouble(13, 0.224)
+          zoneVent.setDouble(14, 0)
+      else
+          zoneVent.setDouble(11, 1)
+          zoneVent.setDouble(12, 0)
+          zoneVent.setDouble(13, 0)
+          zoneVent.setDouble(14, 0)
+      end
       zoneVent.setDouble(15, -100)
       zoneVent.setDouble(19, -100)
       workspace.addObject(zoneVent)

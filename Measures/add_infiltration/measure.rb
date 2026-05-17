@@ -37,6 +37,9 @@ class AddInfiltration < OpenStudio::Measure::ModelMeasure
     floor_height_ratio.setDisplayName("Ratio of conditioned floor height over total floor height")
     floor_height_ratio.setDefaultValue(1)
     args << floor_height_ratio
+    dtsS = OpenStudio::Measure::OSArgument.makeStringArgument("infiltration_type", false)
+    dtsS.setDefaultValue("EnergyPlus")
+    args << dtsS
 
     return args
   end
@@ -52,6 +55,7 @@ class AddInfiltration < OpenStudio::Measure::ModelMeasure
     infiltration_ach = runner.getDoubleArgumentValue("air_changes", user_arguments)
     nfa_gfa_ratio = runner.getDoubleArgumentValue("nfa_gfa_ratio", user_arguments)
     floor_height_ratio = runner.getDoubleArgumentValue("floor_height_ratio", user_arguments)
+    infiltration_type = runner.getStringArgumentValue("infiltration_type", user_arguments)
 
     # rescale air change rate to conditioned volume and GFA
     infiltration_ach = infiltration_ach * nfa_gfa_ratio * floor_height_ratio
@@ -74,7 +78,24 @@ class AddInfiltration < OpenStudio::Measure::ModelMeasure
       new_space_type_infil.setAirChangesperHour(infiltration_ach)
       new_space_type_infil.setSpace(space)
       new_space_type_infil.setSchedule(constSchedule)
+      if infiltration_type == "BLAST"
+          new_space_type_infil.setConstantTermCoefficient(0.606)
+          new_space_type_infil.setTemperatureTermCoefficient(0.03636)
+          new_space_type_infil.setVelocityTermCoefficient(0.1177)
+          new_space_type_infil.setVelocitySquaredTermCoefficient(0)
+      elsif infiltration_type == "DOE2"
+          new_space_type_infil.setConstantTermCoefficient(0)
+          new_space_type_infil.setTemperatureTermCoefficient(0)
+          new_space_type_infil.setVelocityTermCoefficient(0.224)
+          new_space_type_infil.setVelocitySquaredTermCoefficient(0)
+      else
+          new_space_type_infil.setConstantTermCoefficient(1)
+          new_space_type_infil.setTemperatureTermCoefficient(0)
+          new_space_type_infil.setVelocityTermCoefficient(0)
+          new_space_type_infil.setVelocitySquaredTermCoefficient(0)
+      end
     end # end .each do
+
 
     # report final condition of model
     runner.registerFinalCondition("Infiltration added to #{model.getSpaces.size} spaces.")

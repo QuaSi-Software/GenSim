@@ -24,6 +24,9 @@ class InjectZoneVentilationIDF < OpenStudio::Measure::EnergyPlusMeasure
     args << OpenStudio::Measure::OSArgument.makeDoubleArgument("air_changes", true)
     args << OpenStudio::Measure::OSArgument.makeDoubleArgument("min_indoor_temperature", true)
     args << OpenStudio::Measure::OSArgument.makeDoubleArgument("temperature_difference", true)
+    dtsS = OpenStudio::Measure::OSArgument.makeStringArgument("infiltration_type", false)
+    dtsS.setDefaultValue("EnergyPlus")
+    args << dtsS
 
     return args
   end
@@ -39,6 +42,7 @@ class InjectZoneVentilationIDF < OpenStudio::Measure::EnergyPlusMeasure
     ventilationACH = runner.getDoubleArgumentValue("air_changes", user_arguments)
     minIndoorTemperature = runner.getDoubleArgumentValue("min_indoor_temperature", user_arguments)
     deltaT = runner.getDoubleArgumentValue("temperature_difference", user_arguments)
+    infiltration_type = runner.getStringArgumentValue("infiltration_type", user_arguments)
 
     # get all thermal zones in the starting model
     zones = workspace.getObjectsByType("Zone".to_IddObjectType)
@@ -79,10 +83,22 @@ class InjectZoneVentilationIDF < OpenStudio::Measure::EnergyPlusMeasure
       zoneVent.setString(3, "AirChanges/Hour")
       zoneVent.setDouble(7, ventilationACH)
       zoneVent.setString(8, "Natural")
-      zoneVent.setDouble(11, 1)
-      zoneVent.setDouble(12, 0)
-      zoneVent.setDouble(13, 0)
-      zoneVent.setDouble(14, 0)
+      if infiltration_type == "BLAST"
+          zoneVent.setDouble(11, 0.606)
+          zoneVent.setDouble(12, 0.03636)
+          zoneVent.setDouble(13, 0.1177)
+          zoneVent.setDouble(14, 0)
+      elsif infiltration_type == "DOE2"
+          zoneVent.setDouble(11, 0)
+          zoneVent.setDouble(12, 0)
+          zoneVent.setDouble(13, 0.224)
+          zoneVent.setDouble(14, 0)
+      else
+          zoneVent.setDouble(11, 1)
+          zoneVent.setDouble(12, 0)
+          zoneVent.setDouble(13, 0)
+          zoneVent.setDouble(14, 0)
+      end
       zoneVent.setDouble(15, minIndoorTemperature)
       zoneVent.setDouble(19, deltaT)
       workspace.addObject(zoneVent)
