@@ -24,7 +24,7 @@ class InjectManualVentilationIDF < OpenStudio::Measure::EnergyPlusMeasure
     args << OpenStudio::Measure::OSArgument.makeDoubleArgument("air_changes", true)
 
     dtsS = OpenStudio::Measure::OSArgument.makeStringArgument("infiltration_type", false)
-    dtsS.setDefaultValue("EnergyPlus")
+    dtsS.setDefaultValue("BLAST")
     args << dtsS
 
     return args

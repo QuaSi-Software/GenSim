@@ -25,7 +25,7 @@ class InjectZoneVentilationIDF < OpenStudio::Measure::EnergyPlusMeasure
     args << OpenStudio::Measure::OSArgument.makeDoubleArgument("min_indoor_temperature", true)
     args << OpenStudio::Measure::OSArgument.makeDoubleArgument("temperature_difference", true)
     dtsS = OpenStudio::Measure::OSArgument.makeStringArgument("infiltration_type", false)
-    dtsS.setDefaultValue("EnergyPlus")
+    dtsS.setDefaultValue("BLAST")
     args << dtsS
 
     return args

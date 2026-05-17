@@ -38,7 +38,7 @@ class AddInfiltration < OpenStudio::Measure::ModelMeasure
     floor_height_ratio.setDefaultValue(1)
     args << floor_height_ratio
     dtsS = OpenStudio::Measure::OSArgument.makeStringArgument("infiltration_type", false)
-    dtsS.setDefaultValue("EnergyPlus")
+    dtsS.setDefaultValue("BLAST")
     args << dtsS
 
     return args
