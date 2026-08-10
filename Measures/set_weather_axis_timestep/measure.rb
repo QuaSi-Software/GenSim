@@ -181,7 +181,7 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
 
     # perform sizing depending on chosen method
     if epw_file && sizing_method == "use_ddy_file"
-      sizing_use_ddy_file(model, runner, epw_file)
+      return false unless sizing_use_ddy_file(model, runner, epw_file)
     elsif epw_file && sizing_method == "automatic_design_days"
       sizing_automatic_design_days(model, runner)
     elsif sizing_method == "manual_design_days"
