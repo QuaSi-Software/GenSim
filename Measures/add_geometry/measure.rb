@@ -205,13 +205,28 @@ class AddGeometry < OpenStudio::Measure::ModelMeasure
     perimeterdepth = runner.getDoubleArgumentValue("perimeter_depth", user_arguments)
 
     # test for positive inputs
-    runner.registerError("Enter a total building area greater than 0.") if floor_area <= 0
-    runner.registerError("Enter a building length greater than 0.") if building_length <= 0
-    runner.registerError("Enter a building width greater than 0.") if building_width <= 0
+    has_invalid_input = false
+    if floor_area <= 0
+      runner.registerError("Enter a total building area greater than 0.")
+      has_invalid_input = true
+    end
+    if building_length <= 0
+      runner.registerError("Enter a building length greater than 0.")
+      has_invalid_input = true
+    end
+    if building_width <= 0
+      runner.registerError("Enter a building width greater than 0.")
+      has_invalid_input = true
+    end
     if number_of_stories <= 0
       runner.registerError("Enter a number of stories 1 or greater.")
+      has_invalid_input = true
     end
-    runner.registerError("Enter a positive floor height.") if floor_to_floor_height <= 0
+    if floor_to_floor_height <= 0
+      runner.registerError("Enter a positive floor height.")
+      has_invalid_input = true
+    end
+    return false if has_invalid_input
 
     # determine if core and perimeter zoning can be used
     if (building_length > 10) && (building_width > 10)

@@ -61,7 +61,7 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
 
     unless ddy_file
       runner.registerError "Could not find DDY file for #{ddy_file}"
-      return error
+      return false
     end
 
     ddy_model = OpenStudio::EnergyPlus.loadAndTranslateIdf(ddy_file).get
