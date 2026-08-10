@@ -311,6 +311,10 @@ Sub ExportAddDetailedHVAC( _
     jFile.AddArgument "supply_fan_pressure_rise", CStr(750) 'update 10.01.22 -> new standard DIN EN 16798-3 - SFP2
     jFile.AddArgument "return_fan_pressure_rise", CStr(750)
     jFile.AddArgument "system_type", Range("system_type")
+    jFile.AddArgument "add_doas_heating_coil", Range("HC")
+    jFile.AddArgument "doas_heating_coil_supply_air_temp", Range("HC_Temp")
+    jFile.AddArgument "add_doas_cooling_coil", Range("CC")
+    jFile.AddArgument "doas_cooling_coil_supply_air_temp", Range("CC_Temp")
 
     jFile.AddMeasure "add_detailed_hvac"
 End Sub
