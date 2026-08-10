@@ -13,7 +13,7 @@ class LoadIDFModelTest < Minitest::Test
 
   def test_number_of_arguments_and_argument_names
     # create an instance of the measure
-    measure = LoadIDFModel.new
+    measure = LoadIDFModelC.new
 
     # make an empty model
     model = OpenStudio::Model::Model.new
@@ -21,12 +21,12 @@ class LoadIDFModelTest < Minitest::Test
     # get arguments and test that they are what we are expecting
     arguments = measure.arguments(model)
     assert_equal(1, arguments.size)
-    assert_equal('space_name', arguments[0].name)
+    assert_equal('idf_file_path', arguments[0].name)
   end
 
   def test_bad_argument_values
     # create an instance of the measure
-    measure = LoadIDFModel.new
+    measure = LoadIDFModelC.new
 
     # create runner with empty OSW
     osw = OpenStudio::WorkflowJSON.new
@@ -39,9 +39,9 @@ class LoadIDFModelTest < Minitest::Test
     arguments = measure.arguments(model)
     argument_map = OpenStudio::Measure.convertOSArgumentVectorToMap(arguments)
 
-    # create hash of argument values
+    # create hash of argument values, an empty idf_file_path should fail validation
     args_hash = {}
-    args_hash['space_name'] = ''
+    args_hash['idf_file_path'] = ''
 
     # populate argument with specified hash value if specified
     arguments.each do |arg|
@@ -65,31 +65,22 @@ class LoadIDFModelTest < Minitest::Test
 
   def test_good_argument_values
     # create an instance of the measure
-    measure = LoadIDFModel.new
+    measure = LoadIDFModelC.new
 
     # create runner with empty OSW
     osw = OpenStudio::WorkflowJSON.new
     runner = OpenStudio::Measure::OSRunner.new(osw)
 
-    # load the test model
-    translator = OpenStudio::OSVersion::VersionTranslator.new
-    path = "#{File.dirname(__FILE__)}/example_model.osm"
-    model = translator.loadModel(path)
-    assert(!model.empty?)
-    model = model.get
-
-    # store the number of spaces in the seed model
-    num_spaces_seed = model.getSpaces.size
+    # start from an empty model, the measure loads the IDF file itself
+    model = OpenStudio::Model::Model.new
 
     # get arguments
     arguments = measure.arguments(model)
     argument_map = OpenStudio::Measure.convertOSArgumentVectorToMap(arguments)
 
     # create hash of argument values.
-    # If the argument has a default that you want to use, you don't need it in the hash
     args_hash = {}
-    args_hash['space_name'] = 'New Space'
-    # using defaults values from measure.rb for other arguments
+    args_hash['idf_file_path'] = "#{File.dirname(__FILE__)}/example_model.idf"
 
     # populate argument with specified hash value if specified
     arguments.each do |arg|
@@ -109,17 +100,17 @@ class LoadIDFModelTest < Minitest::Test
 
     # assert that it ran correctly
     assert_equal('Success', result.value.valueName)
-    assert(result.info.size >= 1)
     assert(result.warnings.empty?)
     assert(result.errors.empty?)
     assert(result.initialCondition.is_initialized)
     assert(result.finalCondition.is_initialized)
 
-    # check that there is now 1 space
-    assert_equal(1, model.getSpaces.size - num_spaces_seed)
+    # the IDF file should have been converted and produce a non-empty model
+    assert(model.getSpaces.size > 0)
 
-    # save the model to test output directory
-    output_file_path = "#{File.dirname(__FILE__)}//output/test_output.osm"
-    model.save(output_file_path, true)
+    # the measure should have saved an OSM file next to the source IDF file
+    output_osm_path = args_hash['idf_file_path'].sub(/\.idf$/i, '.osm')
+    assert(File.exist?(output_osm_path))
+    File.delete(output_osm_path) if File.exist?(output_osm_path)
   end
 end

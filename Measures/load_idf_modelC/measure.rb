@@ -73,11 +73,10 @@ class LoadIDFModelC < OpenStudio::Measure::ModelMeasure
         #model.addObjects(model_idf.get.objects)
     end
 
-    schedules = workspace.getObjectsByType("Schedule:Year".to_IddObjectType)
+    schedules = model.getObjectsByType("Schedule:Year".to_IddObjectType)
     schedules.each do |schedule|
-        if(schedule.getString(1).to_s.nil?)
+        if schedule.getString(1).to_s.empty?
             runner.registerInfo("Schedule removed: " + schedule.getString(0).to_s)
-            workspace.removeObject(schedule.idfObject.handle)
             schedule.remove
         end
     end
@@ -93,7 +92,7 @@ class LoadIDFModelC < OpenStudio::Measure::ModelMeasure
     model.save(osm_file_path, true)
 
     # report final condition of model
-    runner.registerFinalCondition("OSM file saved successfully to: #{idf_file_path}.osm")
+    runner.registerFinalCondition("OSM file saved successfully to: #{osm_file_path}")
     return true
   end
 end
