@@ -22,7 +22,7 @@ class AddDetailedHVAC_Test < MiniTest::Test
     # get arguments with a new instance of the measure
     arguments = GetArguments(AddDetailedHVAC.new, OpenStudio::Model::Model.new)
 
-    assert_equal(28, arguments.size)
+    assert_equal(32, arguments.size)
   end
 
   def test_bad_argument_values
@@ -86,6 +86,64 @@ class AddDetailedHVAC_Test < MiniTest::Test
     assert_equal("In the final model 4 zones are connected to the DOAS air loop.", result.finalCondition.get.logMessage)
     # save the model to test output directory
     SaveModel(model, dir)
+  end
+
+  def test_doas_heating_and_cooling_coils
+    args_hash = {}
+    hvacSched = " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0"
+    heatingSched = " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20"
+    coolingSched = " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25"
+    args_hash["heat_recovery_method"] = "none"
+    args_hash["latent_efficiency"] = 1
+    args_hash["sensible_efficiency"] = 0.75
+    args_hash["ach_per_hour"] = 2.0
+    args_hash["nfg_gfa_ratio"] = 0.8
+    args_hash["floor_height_ratio"] = 0.8
+    args_hash["hvac_sched_weekday"] = hvacSched
+    args_hash["hvac_sched_saturday"] = hvacSched
+    args_hash["hvac_sched_sunday"] = hvacSched
+    args_hash["hvac_sched_holiday"] = hvacSched
+    args_hash["holidays"] = "-"
+    args_hash["zone_heating_temp_sched_weekday"] = heatingSched
+    args_hash["zone_heating_temp_sched_saturday"] = heatingSched
+    args_hash["zone_heating_temp_sched_sunday"] = heatingSched
+    args_hash["zone_heating_temp_sched_holiday"] = heatingSched
+    args_hash["zone_cooling_temp_sched_weekday"] = coolingSched
+    args_hash["zone_cooling_temp_sched_saturday"] = coolingSched
+    args_hash["zone_cooling_temp_sched_sunday"] = coolingSched
+    args_hash["zone_cooling_temp_sched_holiday"] = coolingSched
+    args_hash["hot_water_temp_setpoint"] = 82
+    args_hash["hot_water_temp_diff"] = 11
+    args_hash["cold_water_temp_setpoint"] = 10
+    args_hash["cold_water_temp_diff"] = 5
+    args_hash["supply_fan_pressure_rise"] = 75
+    args_hash["return_fan_pressure_rise"] = 750
+    args_hash["system_type"] = 2
+    args_hash["add_doas_heating_coil"] = true
+    args_hash["doas_heating_coil_supply_air_temp"] = 18
+    args_hash["add_doas_cooling_coil"] = true
+    args_hash["doas_cooling_coil_supply_air_temp"] = 14
+
+    # load an existing model
+    dir = __dir__
+    model = OpenModel(dir)
+    result = TestArguments(AddDetailedHVAC.new, model, args_hash)
+
+    # assert that it ran correctly
+    assert_equal("Success", result.value.valueName)
+    assert(result.errors.empty?)
+
+    # verify the DOAS heating and cooling coils were added and connected to the plant loops
+    air_loop = model.getAirLoopHVACByName("DOAS Air Loop").get
+    heating_coils = air_loop.supplyComponents.select { |c| c.to_CoilHeatingWater.is_initialized }
+    cooling_coils = air_loop.supplyComponents.select { |c| c.to_CoilCoolingWater.is_initialized }
+    assert_equal(1, heating_coils.size)
+    assert_equal(1, cooling_coils.size)
+
+    hot_water_plant = model.getPlantLoopByName("Hot Water Loop").get
+    chilled_water_plant = model.getPlantLoopByName("Chilled Water Loop").get
+    assert(hot_water_plant.demandComponents.any? { |c| c.to_CoilHeatingWater.is_initialized })
+    assert(chilled_water_plant.demandComponents.any? { |c| c.to_CoilCoolingWater.is_initialized })
   end
 
   def teardown
