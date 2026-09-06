@@ -32,7 +32,7 @@ Voraussetzungen:
 
 In dieser Testumgebung werden die einzelnen Measures und das Durchführen eines Workflows (als Serie von Measures) getestet.
 
-Im ersten Schritt wird ein Docker Image `gensin-testenv` aufgebaut. In der Regel muss dies nur einmal gemacht werden, außer es ändert sich etwas in der Datei `Gemfile` in der die notwendigen Ruby-Pakete angegeben sind.
+Im ersten Schritt wird ein Docker Image `gensin-testenv` aufgebaut. In der Regel muss dies nur einmal gemacht werden, außer es ändert sich etwas in der Datei `Gemfile` oder `Gemfile.lock`, in denen die notwendigen Ruby-Pakete angegeben sind.
 1. In das Verzeichnis, in dem GenSim liegt, wechseln: `cd /path/to/GenSim`
 1. Das Docker image erstellen: `docker build -t gensim-testenv .`
 

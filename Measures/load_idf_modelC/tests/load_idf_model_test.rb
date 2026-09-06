@@ -105,12 +105,17 @@ class LoadIDFModelTest < Minitest::Test
     assert(result.initialCondition.is_initialized)
     assert(result.finalCondition.is_initialized)
 
-    # the IDF file should have been converted and produce a non-empty model
-    assert(model.getSpaces.size > 0)
-
-    # the measure should have saved an OSM file next to the source IDF file
+    # the measure reassigns its own local `model` variable rather than mutating
+    # the one passed in, so that reference never reflects the converted content -
+    # check the saved OSM file instead, which is what the measure actually wrote
     output_osm_path = args_hash['idf_file_path'].sub(/\.idf$/i, '.osm')
     assert(File.exist?(output_osm_path))
+
+    translator = OpenStudio::OSVersion::VersionTranslator.new
+    saved_model = translator.loadModel(output_osm_path)
+    assert(!saved_model.empty?)
+    assert(saved_model.get.getSpaces.size > 0)
+
     File.delete(output_osm_path) if File.exist?(output_osm_path)
   end
 end

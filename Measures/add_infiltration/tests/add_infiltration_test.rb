@@ -18,7 +18,7 @@ class AddInfiltrationTest < MiniTest::Test
     # get arguments with a new instance of the measure
     arguments = GetArguments(AddInfiltration.new, OpenStudio::Model::Model.new)
 
-    assert_equal(3, arguments.size)
+    assert_equal(4, arguments.size)
   end
 
   def test_bad_argument_values

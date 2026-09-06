@@ -1,0 +1,19 @@
+name: Measure Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Build test image
+        run: docker build -t gensim-testenv .
+
+      - name: Run measure tests
+        run: docker run --rm -w /gensim/Measures -v "${{ github.workspace }}:/gensim" gensim-testenv
