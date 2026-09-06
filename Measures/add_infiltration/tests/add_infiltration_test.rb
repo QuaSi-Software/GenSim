@@ -22,14 +22,16 @@ class AddInfiltrationTest < MiniTest::Test
   end
 
   def test_bad_argument_values
-    # create hash of argument values, no arguments defined so there are no bad arguments
+    # a negative air change rate should fail the measure's own reasonableness check
     args_hash = {}
-    args_hash["space_name"] = ""
+    args_hash["air_changes"] = -1.0
 
     result = TestArguments(AddInfiltration.new, OpenStudio::Model::Model.new, args_hash)
 
-    # assert that it ran correctly
-    assert_equal("Success", result.value.valueName)
+    # assert that it failed as expected
+    assert_equal("Fail", result.value.valueName)
+    assert_equal(1, result.errors.size)
+    assert(result.errors[0].logMessage.include?("below the measure limit"))
   end
 
   def test_good_argument_values

@@ -1,0 +1,214 @@
+Version,
+    25.1;
+
+Building,
+    Simple One Zone,          !- Name
+    0,                        !- North Axis {deg}
+    Suburbs,                  !- Terrain
+    0.04,                     !- Loads Convergence Tolerance Value
+    0.4,                      !- Temperature Convergence Tolerance Value {deltaC}
+    FullExterior,             !- Solar Distribution
+    25,                       !- Maximum Number of Warmup Days
+    6;                        !- Minimum Number of Warmup Days
+
+Timestep,
+    4;                        !- Number of Timesteps per Hour
+
+SimulationControl,
+    No,                        !- Do Zone Sizing Calculation
+    No,                        !- Do System Sizing Calculation
+    No,                        !- Do Plant Sizing Calculation
+    No,                        !- Run Simulation for Sizing Periods
+    Yes;                       !- Run Simulation for Weather File Run Periods
+
+Site:Location,
+    Denver Intl AP,            !- Name
+    39.83,                     !- Latitude {deg}
+    -104.65,                   !- Longitude {deg}
+    -7.0,                      !- Time Zone {hr}
+    1650;                      !- Elevation {m}
+
+RunPeriod,
+    Test Run Period,          !- Name
+    1,                        !- Begin Month
+    1,                        !- Begin Day of Month
+    ,                         !- Begin Year
+    1,                        !- End Month
+    3,                        !- End Day of Month
+    ,                         !- End Year
+    ,                         !- Day of Week for Start Day
+    Yes,                      !- Use Weather File Holidays and Special Days
+    Yes,                      !- Use Weather File Daylight Saving Period
+    No,                       !- Apply Weekend Holiday Rule
+    Yes,                      !- Use Weather File Rain Indicators
+    Yes;                      !- Use Weather File Snow Indicators
+
+ScheduleTypeLimits,
+    Fraction,                 !- Name
+    0,                        !- Lower Limit Value
+    1,                        !- Upper Limit Value
+    Continuous;               !- Numeric Type
+
+Schedule:Compact,
+    AlwaysOn,                 !- Name
+    Fraction,                 !- Schedule Type Limits Name
+    Through: 12/31,           !- Field 1
+    For: AllDays,             !- Field 2
+    Until: 24:00,1;           !- Field 3
+
+Material,
+    Concrete Layer,           !- Name
+    MediumRough,              !- Roughness
+    0.2,                      !- Thickness {m}
+    1.7,                      !- Conductivity {W/m-K}
+    2300,                     !- Density {kg/m3}
+    900;                      !- Specific Heat {J/kg-K}
+
+Construction,
+    Simple Envelope,          !- Name
+    Concrete Layer;           !- Outside Layer
+
+Zone,
+    Zone One,                 !- Name
+    0,                        !- Direction of Relative North {deg}
+    0,                        !- X Origin {m}
+    0,                        !- Y Origin {m}
+    0,                        !- Z Origin {m}
+    1,                        !- Type
+    1,                        !- Multiplier
+    autocalculate,            !- Ceiling Height {m}
+    autocalculate;            !- Volume {m3}
+
+GlobalGeometryRules,
+    UpperLeftCorner,          !- Starting Vertex Position
+    CounterClockwise,         !- Vertex Entry Direction
+    World;                    !- Coordinate System
+
+BuildingSurface:Detailed,
+    Floor,                    !- Name
+    Floor,                    !- Surface Type
+    Simple Envelope,          !- Construction Name
+    Zone One,                 !- Zone Name
+    ,                         !- Space Name
+    Ground,                   !- Outside Boundary Condition
+    ,                         !- Outside Boundary Condition Object
+    NoSun,                    !- Sun Exposure
+    NoWind,                   !- Wind Exposure
+    0,                        !- View Factor to Ground
+    4,                        !- Number of Vertices
+    0,0,0,
+    0,5,0,
+    5,5,0,
+    5,0,0;
+
+BuildingSurface:Detailed,
+    Roof,                     !- Name
+    Roof,                     !- Surface Type
+    Simple Envelope,          !- Construction Name
+    Zone One,                 !- Zone Name
+    ,                         !- Space Name
+    Outdoors,                 !- Outside Boundary Condition
+    ,                         !- Outside Boundary Condition Object
+    SunExposed,               !- Sun Exposure
+    WindExposed,              !- Wind Exposure
+    0,                        !- View Factor to Ground
+    4,                        !- Number of Vertices
+    0,0,3,
+    5,0,3,
+    5,5,3,
+    0,5,3;
+
+BuildingSurface:Detailed,
+    South Wall,               !- Name
+    Wall,                     !- Surface Type
+    Simple Envelope,          !- Construction Name
+    Zone One,                 !- Zone Name
+    ,                         !- Space Name
+    Outdoors,                 !- Outside Boundary Condition
+    ,                         !- Outside Boundary Condition Object
+    SunExposed,               !- Sun Exposure
+    WindExposed,              !- Wind Exposure
+    0,                        !- View Factor to Ground
+    4,                        !- Number of Vertices
+    0,0,3,
+    0,0,0,
+    5,0,0,
+    5,0,3;
+
+BuildingSurface:Detailed,
+    North Wall,                !- Name
+    Wall,                     !- Surface Type
+    Simple Envelope,          !- Construction Name
+    Zone One,                 !- Zone Name
+    ,                         !- Space Name
+    Outdoors,                 !- Outside Boundary Condition
+    ,                         !- Outside Boundary Condition Object
+    SunExposed,               !- Sun Exposure
+    WindExposed,              !- Wind Exposure
+    0,                        !- View Factor to Ground
+    4,                        !- Number of Vertices
+    5,5,3,
+    5,5,0,
+    0,5,0,
+    0,5,3;
+
+BuildingSurface:Detailed,
+    East Wall,                !- Name
+    Wall,                     !- Surface Type
+    Simple Envelope,          !- Construction Name
+    Zone One,                 !- Zone Name
+    ,                         !- Space Name
+    Outdoors,                 !- Outside Boundary Condition
+    ,                         !- Outside Boundary Condition Object
+    SunExposed,               !- Sun Exposure
+    WindExposed,              !- Wind Exposure
+    0,                        !- View Factor to Ground
+    4,                        !- Number of Vertices
+    5,0,3,
+    5,0,0,
+    5,5,0,
+    5,5,3;
+
+BuildingSurface:Detailed,
+    West Wall,                 !- Name
+    Wall,                     !- Surface Type
+    Simple Envelope,          !- Construction Name
+    Zone One,                 !- Zone Name
+    ,                         !- Space Name
+    Outdoors,                 !- Outside Boundary Condition
+    ,                         !- Outside Boundary Condition Object
+    SunExposed,               !- Sun Exposure
+    WindExposed,              !- Wind Exposure
+    0,                        !- View Factor to Ground
+    4,                        !- Number of Vertices
+    0,5,3,
+    0,5,0,
+    0,0,0,
+    0,0,3;
+
+ZoneInfiltration:DesignFlowRate,
+    Zone One Infiltration,    !- Name
+    Zone One,                 !- Zone or ZoneList Name
+    AlwaysOn,                 !- Schedule Name
+    Flow/Zone,                !- Design Flow Rate Calculation Method
+    0.05,                     !- Design Flow Rate {m3/s}
+    ,                         !- Flow per Zone Floor Area {m3/s-m2}
+    ,                         !- Flow per Exterior Surface Area {m3/s-m2}
+    ,                         !- Air Changes per Hour
+    1,                        !- Constant Term Coefficient
+    0,                        !- Temperature Term Coefficient
+    0,                        !- Velocity Term Coefficient
+    0;                        !- Velocity Squared Term Coefficient
+
+Output:Variable,
+    *,                                              !- Key Value
+    Zone Infiltration Sensible Heat Loss Energy,     !- Variable Name
+    Hourly;                                          !- Reporting Frequency
+
+Output:Variable,
+    *,                         !- Key Value
+    Zone Mean Air Temperature, !- Variable Name
+    Hourly;                    !- Reporting Frequency
+
+Output:SQLite,
+    SimpleAndTabular;          !- Option Type

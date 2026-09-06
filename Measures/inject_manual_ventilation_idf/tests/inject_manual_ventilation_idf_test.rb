@@ -2,7 +2,7 @@
 
 # author: Tobias Maile <tobias@maileconsulting.de>
 ########################################################
-# This is the test for the measure "AddingLightingControls"
+# This is the test for the measure "InjectManualVentilationIDF"
 ########################################################
 
 require "openstudio"
@@ -13,36 +13,33 @@ require_relative "../measure.rb"
 require_relative "../../TestHelper.rb"
 require "minitest/autorun"
 
-class AddLightingControlsTest < MiniTest::Test
+class InjectManualVentilationIDFTest < MiniTest::Test
   def test_number_of_arguments_and_argument_names
     # get arguments with a new instance of the measure
-    arguments = GetArguments(AddLightingControls.new, OpenStudio::Model::Model.new)
+    arguments = GetArguments(InjectManualVentilationIDF.new, OpenStudio::Model::Model.new)
 
-    assert_equal(1, arguments.size)
+    assert_equal(2, arguments.size)
   end
 
   def test_bad_argument_values
-    # a setpoint above the measure's upper limit should fail its own reasonableness check
+    # air_changes is required with no default, so an empty argument hash must fail validation
     args_hash = {}
-    args_hash["daylighting_setpoint"] = 10_000.0
 
-    result = TestArguments(AddLightingControls.new, OpenStudio::Model::Model.new, args_hash)
+    result = TestArguments(InjectManualVentilationIDF.new, OpenStudio::Model::Model.new, args_hash)
 
     # assert that it failed as expected
     assert_equal("Fail", result.value.valueName)
-    assert_equal(1, result.errors.size)
-    assert(result.errors[0].logMessage.include?("outside the measure limit"))
   end
 
   def test_good_argument_values
     # If the argument has a default that you want to use, you don't need it in the hash
     args_hash = {}
-    args_hash["daylighting_setpoint"] = 500
+    args_hash["air_changes"] = 2.0
 
     # load an existing model
     dir = __dir__
-    model = OpenModel(dir)
-    result = TestArguments(AddLightingControls.new, model, args_hash)
+    workspace = OpenIDFModel(dir)
+    result = TestArguments(InjectManualVentilationIDF.new, workspace, args_hash)
 
     # assert that it ran correctly
     assert_equal("Success", result.value.valueName)
@@ -51,8 +48,8 @@ class AddLightingControlsTest < MiniTest::Test
     assert(result.errors.empty?)
     assert(result.initialCondition.is_initialized)
     assert(result.finalCondition.is_initialized)
-    assert_equal("4 sensors added on a total effected sensor area of 37.161216 square meters", result.finalCondition.get.logMessage)
+    assert_equal("The building finished with 4 Manual ZoneVentilation objects.", result.finalCondition.get.logMessage)
     # save the model to test output directory
-    SaveModel(model, dir)
+    SaveIDFModel(workspace, dir)
   end
 end

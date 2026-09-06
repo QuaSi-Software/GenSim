@@ -89,19 +89,15 @@ class Results < OpenStudio::Measure::ReportingMeasure
     values = {}
 
     for key in output_timeseries.keys
-      if output_timeseries.count > 1
-        value = nil
-        for timeseries in output_timeseries[key]
-          if value.nil?
-            value = timeseries.values
-          else
-            value += timeseries.values
-          end
+      value = nil
+      for timeseries in output_timeseries[key]
+        if value.nil?
+          value = timeseries.values
+        else
+          value += timeseries.values
         end
-        values[key] = value
-      else
-        values[key] = output_timeseries[key].values
       end
+      values[key] = value
 
       if key.include?("[Wh]")
         factors[key] = conversion_factors[key] / area
@@ -204,6 +200,8 @@ class Results < OpenStudio::Measure::ReportingMeasure
 
     # now read the data from the SQLite database
     sqlFile = getSQLFile(runner)
+    return false unless sqlFile
+
     ann_env_pd = getEnvPeriod(runner, sqlFile)
 
     reporting_frequencies.each do |rep_freq|
