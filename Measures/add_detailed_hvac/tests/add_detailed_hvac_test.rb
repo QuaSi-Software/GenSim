@@ -146,7 +146,7 @@ class AddDetailedHVAC_Test < MiniTest::Test
     # both coils should be connected to the same shared "main supply air temperature" schedule
     heating_coil_spm = heating_coils[0].to_CoilHeatingWater.get.airOutletModelObject.get.to_Node.get.setpointManagers[0].to_SetpointManagerScheduled.get
     cooling_coil_spm = cooling_coils[0].to_CoilCoolingWater.get.airOutletModelObject.get.to_Node.get.setpointManagers[0].to_SetpointManagerScheduled.get
-    assert_equal("Main Supply Air Temperature Schedule", heating_coil_spm.schedule.name.to_s)
+    assert_equal("SAT Year Schedule", heating_coil_spm.schedule.name.to_s)
     assert_equal(heating_coil_spm.schedule, cooling_coil_spm.schedule)
   end
 

@@ -239,35 +239,37 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
         sizingSystem = airLoopHVAC.sizingSystem()
         sizingSystem.setTypeofLoadtoSizeOn("VentilationRequirement")
 
-        # main supply air temperature schedule, shared by the DOAS heating coil, the DOAS
+        # SAT Year Schedule, shared by the DOAS heating coil, the DOAS
         # cooling coil, and (if present) the heat recovery ERV, so they all target the
         # same leaving air temperature for the air loop
-        day_sched_30 = OpenStudio::Model::ScheduleDay.new(model, 27)
-        day_sched_30.setName("SAT Day Schedule 30 deg C")
-        day_sched_10 = OpenStudio::Model::ScheduleDay.new(model, 18)
-        day_sched_10.setName("SAT Day Schedule 10 deg C")
+        high_temp = 27
+        low_temp = 18
+        day_sched_High = OpenStudio::Model::ScheduleDay.new(model, high_temp)
+        day_sched_High.setName("SAT Day Schedule #{high_temp} deg C")
+        day_sched_Low = OpenStudio::Model::ScheduleDay.new(model, low_temp)
+        day_sched_Low.setName("SAT Day Schedule #{low_temp} deg C")
 
-        week_sched_30 = OpenStudio::Model::ScheduleWeek.new(model)
-        week_sched_30.setAllSchedules(day_sched_30)
-        week_sched_30.setName("SAT Week Schedule 30 deg C")
+        week_sched_High = OpenStudio::Model::ScheduleWeek.new(model)
+        week_sched_High.setAllSchedules(day_sched_High)
+        week_sched_High.setName("SAT Week Schedule #{high_temp} deg C")
 
-        week_sched_10 = OpenStudio::Model::ScheduleWeek.new(model)
-        week_sched_10.setAllSchedules(day_sched_10)
-        week_sched_10.setName("SAT Week Schedule 10 deg C")
+        week_sched_Low = OpenStudio::Model::ScheduleWeek.new(model)
+        week_sched_Low.setAllSchedules(day_sched_Low)
+        week_sched_Low.setName("SAT Week Schedule #{low_temp} deg C")
 
         sat_sched = OpenStudio::Model::ScheduleYear.new(model)
-        sat_sched.setName("Main Supply Air Temperature Schedule")
+        sat_sched.setName("SAT Year Schedule")
         # for now we check the latitude and if it is possitive then summer is in the middle of the calendar year
         if model.getSite.latitude > 0
           runner.registerInfo("latitude is:  #{model.getSite.latitude} -> summer is in the middle of the calendar year")
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(5), 1), week_sched_30)
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(10), 1), week_sched_10)
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(12), 31), week_sched_30)
+          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(5), 1), week_sched_High)
+          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(10), 1), week_sched_Low)
+          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(12), 31), week_sched_High)
         else
           runner.registerInfo("latitude is:  #{model.getSite.latitude} -> summer is at the beginning and end of the calendar year")
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(5), 1), week_sched_10)
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(10), 1), week_sched_30)
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(12), 31), week_sched_10)
+          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(5), 1), week_sched_Low)
+          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(10), 1), week_sched_High)
+          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(12), 31), week_sched_Low)
         end
 
         if system_type == 2
