@@ -22,7 +22,7 @@ class AddDetailedHVAC_Test < MiniTest::Test
     # get arguments with a new instance of the measure
     arguments = GetArguments(AddDetailedHVAC.new, OpenStudio::Model::Model.new)
 
-    assert_equal(32, arguments.size)
+    assert_equal(30, arguments.size)
   end
 
   def test_bad_argument_values
@@ -120,9 +120,7 @@ class AddDetailedHVAC_Test < MiniTest::Test
     args_hash["return_fan_pressure_rise"] = 750
     args_hash["system_type"] = 2
     args_hash["add_doas_heating_coil"] = true
-    args_hash["doas_heating_coil_supply_air_temp"] = 18
     args_hash["add_doas_cooling_coil"] = true
-    args_hash["doas_cooling_coil_supply_air_temp"] = 14
 
     # load an existing model
     dir = __dir__
@@ -144,6 +142,12 @@ class AddDetailedHVAC_Test < MiniTest::Test
     chilled_water_plant = model.getPlantLoopByName("Chilled Water Loop").get
     assert(hot_water_plant.demandComponents.any? { |c| c.to_CoilHeatingWater.is_initialized })
     assert(chilled_water_plant.demandComponents.any? { |c| c.to_CoilCoolingWater.is_initialized })
+
+    # both coils should be connected to the same shared "main supply air temperature" schedule
+    heating_coil_spm = heating_coils[0].to_CoilHeatingWater.get.airOutletModelObject.get.to_Node.get.setpointManagers[0].to_SetpointManagerScheduled.get
+    cooling_coil_spm = cooling_coils[0].to_CoilCoolingWater.get.airOutletModelObject.get.to_Node.get.setpointManagers[0].to_SetpointManagerScheduled.get
+    assert_equal("Main Supply Air Temperature Schedule", heating_coil_spm.schedule.name.to_s)
+    assert_equal(heating_coil_spm.schedule, cooling_coil_spm.schedule)
   end
 
   def teardown

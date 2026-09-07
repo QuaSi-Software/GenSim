@@ -96,18 +96,10 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
     add_doas_heating_coil.setDisplayName("Add heating coil to DOAS air loop")
     add_doas_heating_coil.setDefaultValue(false)
     args << add_doas_heating_coil
-    doas_heating_coil_supply_air_temp = OpenStudio::Measure::OSArgument.makeDoubleArgument("doas_heating_coil_supply_air_temp", true)
-    doas_heating_coil_supply_air_temp.setDisplayName("DOAS heating coil leaving air temperature setpoint")
-    doas_heating_coil_supply_air_temp.setDefaultValue(18)
-    args << doas_heating_coil_supply_air_temp
     add_doas_cooling_coil = OpenStudio::Measure::OSArgument.makeBoolArgument("add_doas_cooling_coil", true)
     add_doas_cooling_coil.setDisplayName("Add cooling coil to DOAS air loop")
     add_doas_cooling_coil.setDefaultValue(false)
     args << add_doas_cooling_coil
-    doas_cooling_coil_supply_air_temp = OpenStudio::Measure::OSArgument.makeDoubleArgument("doas_cooling_coil_supply_air_temp", true)
-    doas_cooling_coil_supply_air_temp.setDisplayName("DOAS cooling coil leaving air temperature setpoint")
-    doas_cooling_coil_supply_air_temp.setDefaultValue(14)
-    args << doas_cooling_coil_supply_air_temp
 
     # hot water temperature schedule use default of 67??
     # pressure rise
@@ -155,9 +147,7 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
     return_fan_pressure_rise = runner.getDoubleArgumentValue("return_fan_pressure_rise", user_arguments)
     system_type = runner.getDoubleArgumentValue("system_type", user_arguments)
     add_doas_heating_coil = runner.getBoolArgumentValue("add_doas_heating_coil", user_arguments)
-    doas_heating_coil_supply_air_temp = runner.getDoubleArgumentValue("doas_heating_coil_supply_air_temp", user_arguments)
     add_doas_cooling_coil = runner.getBoolArgumentValue("add_doas_cooling_coil", user_arguments)
-    doas_cooling_coil_supply_air_temp = runner.getDoubleArgumentValue("doas_cooling_coil_supply_air_temp", user_arguments)
 
     zoneHeatingTempSched = CreateSchedule(model, "ZoneHeatingTempSched", zone_heating_temp_sched_weekday, zone_heating_temp_sched_saturday, zone_heating_temp_sched_sunday, zone_heating_temp_sched_holiday, holidays, false, true)
     zoneCoolingTempSched = CreateSchedule(model, "ZoneCoolingTempSched", zone_cooling_temp_sched_weekday, zone_cooling_temp_sched_saturday, zone_cooling_temp_sched_sunday, zone_cooling_temp_sched_holiday, holidays)
@@ -249,6 +239,37 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
         sizingSystem = airLoopHVAC.sizingSystem()
         sizingSystem.setTypeofLoadtoSizeOn("VentilationRequirement")
 
+        # main supply air temperature schedule, shared by the DOAS heating coil, the DOAS
+        # cooling coil, and (if present) the heat recovery ERV, so they all target the
+        # same leaving air temperature for the air loop
+        day_sched_30 = OpenStudio::Model::ScheduleDay.new(model, 27)
+        day_sched_30.setName("SAT Day Schedule 30 deg C")
+        day_sched_10 = OpenStudio::Model::ScheduleDay.new(model, 18)
+        day_sched_10.setName("SAT Day Schedule 10 deg C")
+
+        week_sched_30 = OpenStudio::Model::ScheduleWeek.new(model)
+        week_sched_30.setAllSchedules(day_sched_30)
+        week_sched_30.setName("SAT Week Schedule 30 deg C")
+
+        week_sched_10 = OpenStudio::Model::ScheduleWeek.new(model)
+        week_sched_10.setAllSchedules(day_sched_10)
+        week_sched_10.setName("SAT Week Schedule 10 deg C")
+
+        sat_sched = OpenStudio::Model::ScheduleYear.new(model)
+        sat_sched.setName("Main Supply Air Temperature Schedule")
+        # for now we check the latitude and if it is possitive then summer is in the middle of the calendar year
+        if model.getSite.latitude > 0
+          runner.registerInfo("latitude is:  #{model.getSite.latitude} -> summer is in the middle of the calendar year")
+          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(5), 1), week_sched_30)
+          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(10), 1), week_sched_10)
+          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(12), 31), week_sched_30)
+        else
+          runner.registerInfo("latitude is:  #{model.getSite.latitude} -> summer is at the beginning and end of the calendar year")
+          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(5), 1), week_sched_10)
+          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(10), 1), week_sched_30)
+          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(12), 31), week_sched_10)
+        end
+
         if system_type == 2
           # if we do not have heat recovery we add only a return fan
           supplyFan = OpenStudio::Model::FanConstantVolume.new(model, hvacSched)
@@ -328,34 +349,6 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
           runner.registerInfo("heat_exchanger.secondaryAirInletPort:  #{heat_exchanger.secondaryAirInletPort}")
           runner.registerInfo("heat_exchanger.secondaryAirOutletPort:  #{heat_exchanger.secondaryAirOutletPort}")
 
-          day_sched_30 = OpenStudio::Model::ScheduleDay.new(model, 27)
-          day_sched_30.setName("SAT Day Schedule 30 deg C")
-          day_sched_10 = OpenStudio::Model::ScheduleDay.new(model, 18)
-          day_sched_10.setName("SAT Day Schedule 10 deg C")
-
-          week_sched_30 = OpenStudio::Model::ScheduleWeek.new(model)
-          week_sched_30.setAllSchedules(day_sched_30)
-          week_sched_30.setName("SAT Week Schedule 30 deg C")
-
-          week_sched_10 = OpenStudio::Model::ScheduleWeek.new(model)
-          week_sched_10.setAllSchedules(day_sched_10)
-          week_sched_10.setName("SAT Week Schedule 10 deg C")
-
-          sat_sched = OpenStudio::Model::ScheduleYear.new(model)
-          sat_sched.setName("SAT Year Schedule")
-          # for now we check the latitude and if it is possitive then summer is in the middle of the calendar year
-          if model.getSite.latitude > 0
-            runner.registerInfo("latitude is:  #{model.getSite.latitude} -> summer is in the middle of the calendar year")
-            sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(5), 1), week_sched_30)
-            sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(10), 1), week_sched_10)
-            sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(12), 31), week_sched_30)
-          else
-            runner.registerInfo("latitude is:  #{model.getSite.latitude} -> summer is at the beginning and end of the calendar year")
-            sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(5), 1), week_sched_10)
-            sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(10), 1), week_sched_30)
-            sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(12), 31), week_sched_10)
-          end
-
           setpoint_scheduled = OpenStudio::Model::SetpointManagerScheduled.new(model, "Temperature", sat_sched)
           erv_outlet = heat_exchanger.primaryAirOutletModelObject.get.to_Node.get
           setpoint_scheduled.addToNode(erv_outlet)
@@ -370,14 +363,12 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
           if comp.to_CoilHeatingWater.is_initialized
             hotWaterPlant.addDemandBranchForComponent(comp)
             comp.controllerWaterCoil.get.setMinimumActuatedFlow(0)
-            doasHeatingCoilSATSched = CreateConstSchedule(model, "DOASHeatingCoilSATSched", doas_heating_coil_supply_air_temp)
-            doasHeatingCoilSPM = OpenStudio::Model::SetpointManagerScheduled.new(model, doasHeatingCoilSATSched)
+            doasHeatingCoilSPM = OpenStudio::Model::SetpointManagerScheduled.new(model, sat_sched)
             doasHeatingCoilSPM.addToNode(comp.airOutletModelObject.get.to_Node.get)
           elsif comp.to_CoilCoolingWater.is_initialized
             chilledWaterPlant.addDemandBranchForComponent(comp)
             comp.controllerWaterCoil.get.setMinimumActuatedFlow(0)
-            doasCoolingCoilSATSched = CreateConstSchedule(model, "DOASCoolingCoilSATSched", doas_cooling_coil_supply_air_temp)
-            doasCoolingCoilSPM = OpenStudio::Model::SetpointManagerScheduled.new(model, doasCoolingCoilSATSched)
+            doasCoolingCoilSPM = OpenStudio::Model::SetpointManagerScheduled.new(model, sat_sched)
             doasCoolingCoilSPM.addToNode(comp.airOutletModelObject.get.to_Node.get)
           end
         end
