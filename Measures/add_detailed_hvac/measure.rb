@@ -245,17 +245,20 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
         high_temp = 27
         low_temp = 18
         day_sched_High = OpenStudio::Model::ScheduleDay.new(model, high_temp)
-        day_sched_High.setName("SAT Day Schedule #{high_temp} deg C")
+        day_sched_High.setName("SAT Day Schedule High #{high_temp} deg C")
         day_sched_Low = OpenStudio::Model::ScheduleDay.new(model, low_temp)
-        day_sched_Low.setName("SAT Day Schedule #{low_temp} deg C")
+        day_sched_Low.setName("SAT Day Schedule Low #{low_temp} deg C")
 
         week_sched_High = OpenStudio::Model::ScheduleWeek.new(model)
         week_sched_High.setAllSchedules(day_sched_High)
-        week_sched_High.setName("SAT Week Schedule #{high_temp} deg C")
+        week_sched_High.setName("SAT Week Schedule High #{high_temp} deg C")
 
+        # "SAT Week Schedule Low" is a stable prefix inject_radiant_surfaces_idf matches on
+        # to find a year-round fallback week schedule - keep it as the leading text even if
+        # the temperature value changes
         week_sched_Low = OpenStudio::Model::ScheduleWeek.new(model)
         week_sched_Low.setAllSchedules(day_sched_Low)
-        week_sched_Low.setName("SAT Week Schedule #{low_temp} deg C")
+        week_sched_Low.setName("SAT Week Schedule Low #{low_temp} deg C")
 
         sat_sched = OpenStudio::Model::ScheduleYear.new(model)
         sat_sched.setName("SAT Year Schedule")
