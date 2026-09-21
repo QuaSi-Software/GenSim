@@ -251,6 +251,17 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
     else
         hvacSched = CreateSchedule(model, "HVACSched", hvac_sched_weekday, hvac_sched_saturday, hvac_sched_sunday, hvac_sched_holiday, holidays)
         fanFlowFracSched = CreateSchedule(model, "FanFlowFractionSched", fan_flow_frac_sched_weekday, fan_flow_frac_sched_saturday, fan_flow_frac_sched_sunday, fan_flow_frac_sched_holiday, holidays)
+        # unlike hvacSched (used as a real availability schedule on the fans/terminals),
+        # this schedule is only referenced by name from the EMS sensor below, so OpenStudio
+        # never infers schedule type limits for it on its own - without explicit limits,
+        # load_idf_modelC's IDF round-trip (Schedule:Year with an empty type limits field)
+        # treats it as orphaned and deletes it, breaking the EMS sensor that reads it
+        fanFlowFracTypeLimits = OpenStudio::Model::ScheduleTypeLimits.new(model)
+        fanFlowFracTypeLimits.setName("Fan Flow Fraction")
+        fanFlowFracTypeLimits.setLowerLimitValue(0)
+        fanFlowFracTypeLimits.setUpperLimitValue(1)
+        fanFlowFracTypeLimits.setNumericType("Continuous")
+        fanFlowFracSched.setScheduleTypeLimits(fanFlowFracTypeLimits)
 
         # rescale air change rate to conditioned volume and GFA
         ach_per_hour = ach_per_hour * nfa_gfa_ratio * floor_height_ratio
