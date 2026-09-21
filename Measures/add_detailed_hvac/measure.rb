@@ -92,6 +92,24 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
     system_type.setDefaultValue(1) # 1 => Abluftanlage, 2 => Zentrale Lüftungsanlage, 3 => keine Lüftung
     args << system_type
 
+    full_flow_sched = (["1"] * 96).join(";")
+    fan_flow_frac_sched_weekday = OpenStudio::Measure::OSArgument.makeStringArgument("fan_flow_frac_sched_weekday", true)
+    fan_flow_frac_sched_weekday.setDisplayName("Fan flow fraction schedule (weekday)")
+    fan_flow_frac_sched_weekday.setDefaultValue(full_flow_sched)
+    args << fan_flow_frac_sched_weekday
+    fan_flow_frac_sched_saturday = OpenStudio::Measure::OSArgument.makeStringArgument("fan_flow_frac_sched_saturday", true)
+    fan_flow_frac_sched_saturday.setDisplayName("Fan flow fraction schedule (Saturday)")
+    fan_flow_frac_sched_saturday.setDefaultValue(full_flow_sched)
+    args << fan_flow_frac_sched_saturday
+    fan_flow_frac_sched_sunday = OpenStudio::Measure::OSArgument.makeStringArgument("fan_flow_frac_sched_sunday", true)
+    fan_flow_frac_sched_sunday.setDisplayName("Fan flow fraction schedule (Sunday)")
+    fan_flow_frac_sched_sunday.setDefaultValue(full_flow_sched)
+    args << fan_flow_frac_sched_sunday
+    fan_flow_frac_sched_holiday = OpenStudio::Measure::OSArgument.makeStringArgument("fan_flow_frac_sched_holiday", false)
+    fan_flow_frac_sched_holiday.setDisplayName("Fan flow fraction schedule (holiday)")
+    fan_flow_frac_sched_holiday.setDefaultValue(full_flow_sched)
+    args << fan_flow_frac_sched_holiday
+
     add_doas_heating_coil = OpenStudio::Measure::OSArgument.makeBoolArgument("add_doas_heating_coil", true)
     add_doas_heating_coil.setDisplayName("Add heating coil to DOAS air loop")
     add_doas_heating_coil.setDefaultValue(false)
@@ -146,6 +164,10 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
     supply_fan_pressure_rise = runner.getDoubleArgumentValue("supply_fan_pressure_rise", user_arguments)
     return_fan_pressure_rise = runner.getDoubleArgumentValue("return_fan_pressure_rise", user_arguments)
     system_type = runner.getDoubleArgumentValue("system_type", user_arguments)
+    fan_flow_frac_sched_weekday = runner.getStringArgumentValue("fan_flow_frac_sched_weekday", user_arguments)
+    fan_flow_frac_sched_saturday = runner.getStringArgumentValue("fan_flow_frac_sched_saturday", user_arguments)
+    fan_flow_frac_sched_sunday = runner.getStringArgumentValue("fan_flow_frac_sched_sunday", user_arguments)
+    fan_flow_frac_sched_holiday = runner.getStringArgumentValue("fan_flow_frac_sched_holiday", user_arguments)
     add_doas_heating_coil = runner.getBoolArgumentValue("add_doas_heating_coil", user_arguments)
     add_doas_cooling_coil = runner.getBoolArgumentValue("add_doas_cooling_coil", user_arguments)
 
@@ -228,6 +250,7 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
         end
     else
         hvacSched = CreateSchedule(model, "HVACSched", hvac_sched_weekday, hvac_sched_saturday, hvac_sched_sunday, hvac_sched_holiday, holidays)
+        fanFlowFracSched = CreateSchedule(model, "FanFlowFractionSched", fan_flow_frac_sched_weekday, fan_flow_frac_sched_saturday, fan_flow_frac_sched_sunday, fan_flow_frac_sched_holiday, holidays)
 
         # rescale air change rate to conditioned volume and GFA
         ach_per_hour = ach_per_hour * nfa_gfa_ratio * floor_height_ratio
@@ -282,6 +305,7 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
           supplyFan.setPressureRise(supply_fan_pressure_rise)
           supplyFan.setFanEfficiency(1)
           air_loop_comps << supplyFan
+          AddFanFlowFractionEms(model, supplyFan, fanFlowFracSched, hvacSched)
         end
 
         controller_OA = OpenStudio::Model::ControllerOutdoorAir.new(model)
@@ -312,6 +336,7 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
         returnFan.setPressureRise(return_fan_pressure_rise)
         returnFan.setFanEfficiency(1)
         air_loop_comps << returnFan
+        AddFanFlowFractionEms(model, returnFan, fanFlowFracSched, hvacSched)
 
         if (heat_recovery_method == "Sensible") || (heat_recovery_method == "Enthalpy")
           runner.registerInfo("system_OA.outboardOANode:  #{system_OA.outboardOANode.get}")

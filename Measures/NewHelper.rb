@@ -6,6 +6,39 @@ def ConvertToDouble(argument)
   return double_arg.valueAsDouble
 end
 
+# override a fan's air mass flow rate via EMS to a schedule-defined fraction of its
+# (autosized) nominal flow, gated by the fan's own on/off availability schedule so the
+# fraction schedule can only reduce flow during hours the fan is already available in
+def AddFanFlowFractionEms(model, fan, flow_frac_sched, availability_sched)
+  ems_name = fan.name.to_s.gsub(/[^0-9A-Za-z_]/, "_")
+
+  nominal_flow = OpenStudio::Model::EnergyManagementSystemInternalVariable.new(model, "Fan Maximum Mass Flow Rate")
+  nominal_flow.setName("#{ems_name}_NomFlow")
+  nominal_flow.setInternalDataIndexKeyName(fan.name.to_s)
+
+  frac_sensor = OpenStudio::Model::EnergyManagementSystemSensor.new(model, "Schedule Value")
+  frac_sensor.setName("#{ems_name}_FlowFrac")
+  frac_sensor.setKeyName(flow_frac_sched.name.to_s)
+
+  avail_sensor = OpenStudio::Model::EnergyManagementSystemSensor.new(model, "Schedule Value")
+  avail_sensor.setName("#{ems_name}_Avail")
+  avail_sensor.setKeyName(availability_sched.name.to_s)
+
+  flow_actuator = OpenStudio::Model::EnergyManagementSystemActuator.new(fan, "Fan", "Fan Air Mass Flow Rate")
+  flow_actuator.setName("#{ems_name}_FlowActuator")
+
+  program = OpenStudio::Model::EnergyManagementSystemProgram.new(model)
+  program.setName("#{ems_name}_FlowFracProgram")
+  program.addLine("SET #{flow_actuator.name} = #{frac_sensor.name} * #{avail_sensor.name} * #{nominal_flow.name}")
+
+  program_calling_manager = OpenStudio::Model::EnergyManagementSystemProgramCallingManager.new(model)
+  program_calling_manager.setName("#{ems_name}_FlowFracPCM")
+  program_calling_manager.setCallingPoint("InsideHVACSystemIterationLoop")
+  program_calling_manager.addProgram(program)
+
+  return program_calling_manager
+end
+
 # create a ruleset schedule with a basic profile
 def CreateSchedule(model, name, valuesWeekday, valuesSaturday, valuesSunday, valuesHoliday, _holidays, internalLoad = false, heatingTemperatureSetpoints = false)
   # ScheduleRuleset

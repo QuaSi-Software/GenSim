@@ -22,7 +22,7 @@ class AddDetailedHVAC_Test < MiniTest::Test
     # get arguments with a new instance of the measure
     arguments = GetArguments(AddDetailedHVAC.new, OpenStudio::Model::Model.new)
 
-    assert_equal(30, arguments.size)
+    assert_equal(34, arguments.size)
   end
 
   def test_bad_argument_values
@@ -148,6 +148,103 @@ class AddDetailedHVAC_Test < MiniTest::Test
     cooling_coil_spm = cooling_coils[0].to_CoilCoolingWater.get.airOutletModelObject.get.to_Node.get.setpointManagers[0].to_SetpointManagerScheduled.get
     assert_equal("SAT Year Schedule", heating_coil_spm.schedule.name.to_s)
     assert_equal(heating_coil_spm.schedule, cooling_coil_spm.schedule)
+  end
+
+  def test_fan_flow_fraction_schedule_applied
+    args_hash = {}
+    hvacSched = " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0"
+    heatingSched = " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20"
+    coolingSched = " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25"
+    fanFlowFracSched = (["0.3"] * 96).join(";")
+    args_hash["heat_recovery_method"] = "none"
+    args_hash["ach_per_hour"] = 2.0
+    args_hash["hvac_sched_weekday"] = hvacSched
+    args_hash["hvac_sched_saturday"] = hvacSched
+    args_hash["hvac_sched_sunday"] = hvacSched
+    args_hash["hvac_sched_holiday"] = hvacSched
+    args_hash["holidays"] = "-"
+    args_hash["zone_heating_temp_sched_weekday"] = heatingSched
+    args_hash["zone_heating_temp_sched_saturday"] = heatingSched
+    args_hash["zone_heating_temp_sched_sunday"] = heatingSched
+    args_hash["zone_heating_temp_sched_holiday"] = heatingSched
+    args_hash["zone_cooling_temp_sched_weekday"] = coolingSched
+    args_hash["zone_cooling_temp_sched_saturday"] = coolingSched
+    args_hash["zone_cooling_temp_sched_sunday"] = coolingSched
+    args_hash["zone_cooling_temp_sched_holiday"] = coolingSched
+    args_hash["hot_water_temp_setpoint"] = 82
+    args_hash["hot_water_temp_diff"] = 11
+    args_hash["cold_water_temp_setpoint"] = 10
+    args_hash["cold_water_temp_diff"] = 5
+    args_hash["system_type"] = 2
+    args_hash["fan_flow_frac_sched_weekday"] = fanFlowFracSched
+    args_hash["fan_flow_frac_sched_saturday"] = fanFlowFracSched
+    args_hash["fan_flow_frac_sched_sunday"] = fanFlowFracSched
+
+    dir = __dir__
+    model = OpenModel(dir)
+    result = TestArguments(AddDetailedHVAC.new, model, args_hash)
+
+    assert_equal("Success", result.value.valueName)
+    assert(result.errors.empty?)
+
+    # both the supply fan and the return fan get an EMS override for system_type 2
+    actuators = model.getEnergyManagementSystemActuators
+    assert_equal(2, actuators.size)
+    actuators.each do |actuator|
+      assert_equal("Fan", actuator.actuatedComponentType)
+      assert_equal("Fan Air Mass Flow Rate", actuator.actuatedComponentControlType)
+    end
+
+    assert_equal(2, model.getEnergyManagementSystemPrograms.size)
+    assert_equal(2, model.getEnergyManagementSystemProgramCallingManagers.size)
+    assert_equal(4, model.getEnergyManagementSystemSensors.size) # frac + avail sensor per fan
+    assert_equal(2, model.getEnergyManagementSystemInternalVariables.size)
+
+    fan_flow_frac_sched = model.getScheduleRulesetByName("FanFlowFractionSched").get
+    weekday_rule = fan_flow_frac_sched.scheduleRules.find { |r| r.applyMonday }
+    assert_equal(0.3, weekday_rule.daySchedule.values[0])
+
+    SaveModel(model, dir)
+  end
+
+  def test_fan_flow_fraction_schedule_return_fan_only
+    args_hash = {}
+    hvacSched = " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0"
+    heatingSched = " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20"
+    coolingSched = " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25"
+    args_hash["heat_recovery_method"] = "none"
+    args_hash["ach_per_hour"] = 2.0
+    args_hash["hvac_sched_weekday"] = hvacSched
+    args_hash["hvac_sched_saturday"] = hvacSched
+    args_hash["hvac_sched_sunday"] = hvacSched
+    args_hash["hvac_sched_holiday"] = hvacSched
+    args_hash["holidays"] = "-"
+    args_hash["zone_heating_temp_sched_weekday"] = heatingSched
+    args_hash["zone_heating_temp_sched_saturday"] = heatingSched
+    args_hash["zone_heating_temp_sched_sunday"] = heatingSched
+    args_hash["zone_heating_temp_sched_holiday"] = heatingSched
+    args_hash["zone_cooling_temp_sched_weekday"] = coolingSched
+    args_hash["zone_cooling_temp_sched_saturday"] = coolingSched
+    args_hash["zone_cooling_temp_sched_sunday"] = coolingSched
+    args_hash["zone_cooling_temp_sched_holiday"] = coolingSched
+    args_hash["hot_water_temp_setpoint"] = 82
+    args_hash["hot_water_temp_diff"] = 11
+    args_hash["cold_water_temp_setpoint"] = 10
+    args_hash["cold_water_temp_diff"] = 5
+    args_hash["system_type"] = 1
+
+    dir = __dir__
+    model = OpenModel(dir)
+    result = TestArguments(AddDetailedHVAC.new, model, args_hash)
+
+    assert_equal("Success", result.value.valueName)
+    assert(result.errors.empty?)
+
+    # only the return/exhaust fan exists for system_type 1
+    assert_equal(1, model.getEnergyManagementSystemActuators.size)
+    assert_equal(1, model.getEnergyManagementSystemPrograms.size)
+
+    SaveModel(model, dir)
   end
 
   def teardown
