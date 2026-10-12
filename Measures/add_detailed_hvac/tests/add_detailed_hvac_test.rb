@@ -79,7 +79,9 @@ class AddDetailedHVAC_Test < MiniTest::Test
     # assert that it ran correctly
     assert_equal("Success", result.value.valueName)
     assert(result.info.size >= 1)
-    assert(result.warnings.empty?)
+    # the example model is occupied around the clock, the DOAS runs 05:00-18:00 only
+    assert_equal(1, result.warnings.size)
+    assert_match(/People are present for 4015 h per year while the DOAS is off/, result.warnings[0].logMessage)
     assert(result.errors.empty?)
     refute(result.initialCondition.is_initialized)
     assert(result.finalCondition.is_initialized)
@@ -155,6 +157,8 @@ class AddDetailedHVAC_Test < MiniTest::Test
     assert_equal(1.0, sizing_system.centralHeatingMaximumSystemAirFlowRatio.get)
     assert_equal(18.0, sizing_system.centralHeatingDesignSupplyAirTemperature)
     assert_equal(27.0, sizing_system.centralCoolingDesignSupplyAirTemperature)
+    # neutral DOAS: saturation humidity ratio at 27 deg C, so the cooling coil is sized sensible-only
+    assert_in_delta(0.0227, sizing_system.centralCoolingDesignSupplyAirHumidityRatio, 0.0005)
 
     hot_water_plant = model.getPlantLoopByName("Hot Water Loop").get
     chilled_water_plant = model.getPlantLoopByName("Chilled Water Loop").get
@@ -178,6 +182,10 @@ class AddDetailedHVAC_Test < MiniTest::Test
     assert_equal([18.0], winter_week.winterDesignDaySchedule.get.values.uniq)
     assert_equal([27.0], summer_week.mondaySchedule.get.values.uniq)
     assert_equal([27.0], summer_week.summerDesignDaySchedule.get.values.uniq)
+    # the SAT day schedules carry temperature limits, so EnergyPlus validates them
+    [winter_week.mondaySchedule.get, summer_week.holidaySchedule.get].each do |day|
+      assert_equal("Temperature", day.scheduleTypeLimits.get.unitType)
+    end
 
     # in the southern hemisphere the seasons are swapped
     southern_model = OpenModel(dir)
@@ -290,6 +298,51 @@ class AddDetailedHVAC_Test < MiniTest::Test
     assert_equal(1, model.getEnergyManagementSystemPrograms.size)
 
     SaveModel(model, dir)
+  end
+
+  def test_unventilated_occupancy_check
+    heatingSched = (["20"] * 96).join(";")
+    coolingSched = (["25"] * 96).join(";")
+    args_hash = {}
+    args_hash["heat_recovery_method"] = "none"
+    args_hash["ach_per_hour"] = 2.0
+    args_hash["holidays"] = "-"
+    %w[weekday saturday sunday holiday].each do |day|
+      args_hash["zone_heating_temp_sched_#{day}"] = heatingSched
+      args_hash["zone_cooling_temp_sched_#{day}"] = coolingSched
+    end
+    args_hash["hot_water_temp_setpoint"] = 82
+    args_hash["hot_water_temp_diff"] = 11
+    args_hash["cold_water_temp_setpoint"] = 10
+    args_hash["cold_water_temp_diff"] = 5
+    args_hash["system_type"] = 2
+    set_hvac_sched = lambda do |values|
+      %w[weekday saturday sunday holiday].each { |day| args_hash["hvac_sched_#{day}"] = values }
+    end
+    ventilation_warning = /People are present for .* h per year while the DOAS is off/
+
+    # a reduced (fractional) flow around the clock covers the always occupied example model
+    set_hvac_sched.call(((["0.3"] * 20) + (["1"] * 52) + (["0.3"] * 24)).join(";"))
+    result = TestArguments(AddDetailedHVAC.new, OpenModel(__dir__), args_hash)
+    assert_equal("Success", result.value.valueName)
+    refute(result.warnings.any? { |w| w.logMessage =~ ventilation_warning })
+
+    # off at night (05:00-18:00 only) - 11 h x 365 days without any outdoor air
+    set_hvac_sched.call(((["0"] * 20) + (["1"] * 52) + (["0"] * 24)).join(";"))
+    result = TestArguments(AddDetailedHVAC.new, OpenModel(__dir__), args_hash)
+    assert(result.warnings.any? { |w| w.logMessage =~ /People are present for 4015 h per year/ })
+
+    # same schedule, but add_infiltration follows in the workflow - only an info then
+    workflow = OpenStudio::WorkflowJSON.new
+    workflow.setWorkflowSteps([OpenStudio::MeasureStep.new("add_infiltration")])
+    runner = OpenStudio::Measure::OSRunner.new(workflow)
+    model = OpenModel(__dir__)
+    measure = AddDetailedHVAC.new
+    measure.run(model, runner, GetArgumentMap(GetArguments(measure, model), args_hash))
+    result = runner.result
+    assert_equal("Success", result.value.valueName)
+    refute(result.warnings.any? { |w| w.logMessage =~ ventilation_warning })
+    assert(result.info.any? { |i| i.logMessage =~ /only infiltration exchanges the zone air/ })
   end
 
   def teardown

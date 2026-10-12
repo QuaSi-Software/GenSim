@@ -36,13 +36,15 @@ def AddFanFlowFractionEms(model, fan, flow_frac_sched)
 end
 
 # build a week schedule from a ruleset schedule (as created by CreateSchedule) with every value
-# shifted by delta, e.g. to derive a supply air temperature from a zone setpoint schedule
-def CreateOffsetWeekSchedule(model, source_sched, name, delta)
+# shifted by delta, e.g. to derive a supply air temperature from a zone setpoint schedule;
+# type_limits (optional) is set on the new day schedules so EnergyPlus can validate them
+def CreateOffsetWeekSchedule(model, source_sched, name, delta, type_limits = nil)
   offset_days = {}
   offset_day = lambda do |day_sch, label|
     offset_days[day_sch.handle.to_s] ||= begin
       new_day = OpenStudio::Model::ScheduleDay.new(model)
       new_day.setName("#{name} #{label}")
+      new_day.setScheduleTypeLimits(type_limits) unless type_limits.nil?
       day_sch.times.each_with_index { |t, i| new_day.addValue(t, day_sch.values[i] + delta) }
       new_day
     end
@@ -69,6 +71,27 @@ def CreateOffsetWeekSchedule(model, source_sched, name, delta)
   week_sched.setWinterDesignDaySchedule(offset_day.call(source_sched.winterDesignDaySchedule, "Winter Design Day"))
 
   return week_sched
+end
+
+# hours per year (15 min resolution, over the model's own calendar year) in which any of the
+# people schedules is > 0 while vent_sched is 0; only ruleset schedules are evaluated
+def UnventilatedOccupiedHours(model, people_schedules, vent_sched)
+  year_description = model.getYearDescription
+  start_date = year_description.makeDate(1, 1)
+  end_date = year_description.makeDate(12, 31)
+  vent_days = vent_sched.getDaySchedules(start_date, end_date)
+  people_days = people_schedules.map { |s| s.getDaySchedules(start_date, end_date) }
+  # sample in the middle of each 15 min interval
+  sample_times = (0...96).map { |q| OpenStudio::Time.new(0, 0, q * 15 + 7, 30) }
+
+  unventilated_steps = 0
+  vent_days.each_with_index do |vent_day, i|
+    sample_times.each do |time|
+      next if vent_day.getValue(time) > 0
+      unventilated_steps += 1 if people_days.any? { |days| days[i].getValue(time) > 0 }
+    end
+  end
+  return unventilated_steps / 4.0
 end
 
 # create a ruleset schedule with a basic profile

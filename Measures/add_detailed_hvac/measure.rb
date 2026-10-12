@@ -239,6 +239,30 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
         hvacSchedTypeLimits.setNumericType("Continuous")
         hvacSched.setScheduleTypeLimits(hvacSchedTypeLimits)
 
+        # occupants keep adding moisture while the DOAS is off; without infiltration (added later
+        # in the workflow by add_infiltration) the zones get no outdoor air at all in those hours,
+        # which drives the zone humidity up and shuts the radiant cooling off for condensation
+        people_schedules = model.getPeoples.map { |p| p.numberofPeopleSchedule }
+                                .select(&:is_initialized).map(&:get)
+                                .select { |s| s.to_ScheduleRuleset.is_initialized }
+                                .map { |s| s.to_ScheduleRuleset.get }.uniq { |s| s.handle.to_s }
+        unless people_schedules.empty?
+          unventilated_hours = UnventilatedOccupiedHours(model, people_schedules, hvacSched)
+          has_infiltration = runner.workflow.workflowSteps.any? do |step|
+            step.to_MeasureStep.is_initialized && step.to_MeasureStep.get.measureDirName == "add_infiltration"
+          end
+          if unventilated_hours > 0 && !has_infiltration
+            runner.registerWarning("People are present for #{unventilated_hours.round} h per year while the DOAS is off " \
+                                   "(Betriebszeiten = 0) and no infiltration is simulated, so the zones get no outdoor air " \
+                                   "in these hours. Moisture from the occupants accumulates (high zone humidity, condensation " \
+                                   "shut-offs of the radiant cooling). Extend the Betriebszeiten to the occupied hours " \
+                                   "(a reduced fraction is enough) or enable infiltration.")
+          elsif unventilated_hours > 0
+            runner.registerInfo("People are present for #{unventilated_hours.round} h per year while the DOAS is off; " \
+                                "only infiltration exchanges the zone air in these hours.")
+          end
+        end
+
         # rescale air change rate to conditioned volume and GFA
         ach_per_hour = ach_per_hour * nfa_gfa_ratio * floor_height_ratio
 
@@ -256,11 +280,20 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
         # present) the heat recovery ERV, so they all target the same leaving air temperature for
         # the air loop. Low (heating season) = zone heating setpoint - 2 K, high (cooling season)
         # = zone cooling setpoint + 2 K, so the DOAS delivers near-neutral air incl. setbacks
-        week_sched_High = CreateOffsetWeekSchedule(model, zoneCoolingTempSched, "SAT Week Schedule High", 2.0)
+        temperature_limits = model.getScheduleTypeLimitsByName("Temperature")
+        if temperature_limits.is_initialized
+          temperature_limits = temperature_limits.get
+        else
+          temperature_limits = OpenStudio::Model::ScheduleTypeLimits.new(model)
+          temperature_limits.setName("Temperature")
+          temperature_limits.setUnitType("Temperature")
+          temperature_limits.setNumericType("Continuous")
+        end
+        week_sched_High = CreateOffsetWeekSchedule(model, zoneCoolingTempSched, "SAT Week Schedule High", 2.0, temperature_limits)
 
         # "SAT Week Schedule Low" is a stable prefix inject_radiant_surfaces_idf matches on
         # to find a year-round fallback week schedule - keep it as the leading text
-        week_sched_Low = CreateOffsetWeekSchedule(model, zoneHeatingTempSched, "SAT Week Schedule Low", -2.0)
+        week_sched_Low = CreateOffsetWeekSchedule(model, zoneHeatingTempSched, "SAT Week Schedule Low", -2.0, temperature_limits)
 
         # size the DOAS coils for the SAT they actually control to, at the full (constant) DOAS
         # air flow - the OpenStudio defaults (16.7 / 12.8 deg C, 30 % heating air flow) are meant for VAV
@@ -271,7 +304,14 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
         end
         sizingSystem.setCentralHeatingMaximumSystemAirFlowRatio(1.0)
         sizingSystem.setCentralHeatingDesignSupplyAirTemperature(week_values.call(week_sched_Low).max)
-        sizingSystem.setCentralCoolingDesignSupplyAirTemperature(week_values.call(week_sched_High).min)
+        cooling_design_sat = week_values.call(week_sched_High).min
+        sizingSystem.setCentralCoolingDesignSupplyAirTemperature(cooling_design_sat)
+        # the DOAS stays neutral (no dehumidification): E+ sizes the coil outlet humidity ratio as
+        # min(this value, coil inlet humidity ratio), so the saturation humidity ratio at the design
+        # SAT makes it a sensible-only coil - the default 0.0085 asks for drying at ~27 deg C, which
+        # has no apparatus dew point
+        p_ws = 610.94 * Math.exp(17.625 * cooling_design_sat / (cooling_design_sat + 243.04))
+        sizingSystem.setCentralCoolingDesignSupplyAirHumidityRatio(0.622 * p_ws / (101325.0 - p_ws))
 
         sat_sched = OpenStudio::Model::ScheduleYear.new(model)
         sat_sched.setName("SAT Year Schedule")
