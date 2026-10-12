@@ -105,7 +105,8 @@ class AddDetailedHVAC_Test < MiniTest::Test
     args_hash["hvac_sched_holiday"] = hvacSched
     args_hash["holidays"] = "-"
     args_hash["zone_heating_temp_sched_weekday"] = heatingSched
-    args_hash["zone_heating_temp_sched_saturday"] = heatingSched
+    # night setback on Saturdays, to check that every day of the setpoint schedule gets offset
+    args_hash["zone_heating_temp_sched_saturday"] = ((["16"] * 24) + (["20"] * 72)).join(";")
     args_hash["zone_heating_temp_sched_sunday"] = heatingSched
     args_hash["zone_heating_temp_sched_holiday"] = heatingSched
     args_hash["zone_cooling_temp_sched_weekday"] = coolingSched
@@ -125,6 +126,8 @@ class AddDetailedHVAC_Test < MiniTest::Test
     # load an existing model
     dir = __dir__
     model = OpenModel(dir)
+    # the example model has no site location (latitude 0) - place it in Augsburg (northern hemisphere)
+    model.getSite.setLatitude(48.4)
     result = TestArguments(AddDetailedHVAC.new, model, args_hash)
 
     # assert that it ran correctly
@@ -143,11 +146,34 @@ class AddDetailedHVAC_Test < MiniTest::Test
     assert(hot_water_plant.demandComponents.any? { |c| c.to_CoilHeatingWater.is_initialized })
     assert(chilled_water_plant.demandComponents.any? { |c| c.to_CoilCoolingWater.is_initialized })
 
-    # both coils should be connected to the same shared "main supply air temperature" schedule
+    # both coils share the seasonal "SAT Year Schedule": heating season = zone heating setpoint - 2 K,
+    # cooling season = zone cooling setpoint + 2 K (northern hemisphere)
     heating_coil_spm = heating_coils[0].to_CoilHeatingWater.get.airOutletModelObject.get.to_Node.get.setpointManagers[0].to_SetpointManagerScheduled.get
     cooling_coil_spm = cooling_coils[0].to_CoilCoolingWater.get.airOutletModelObject.get.to_Node.get.setpointManagers[0].to_SetpointManagerScheduled.get
     assert_equal("SAT Year Schedule", heating_coil_spm.schedule.name.to_s)
     assert_equal(heating_coil_spm.schedule, cooling_coil_spm.schedule)
+
+    sat_sched = heating_coil_spm.schedule.to_ScheduleYear.get
+    weeks = sat_sched.scheduleWeeks
+    assert_equal(["SAT Week Schedule Low", "SAT Week Schedule High", "SAT Week Schedule Low"], weeks.map { |w| w.name.to_s })
+    winter_week = weeks[0]
+    summer_week = weeks[1]
+    assert_equal([18.0], winter_week.mondaySchedule.get.values.uniq)
+    assert_equal(([14.0] * 24) + ([18.0] * 72), winter_week.saturdaySchedule.get.values)
+    assert_equal([18.0], winter_week.winterDesignDaySchedule.get.values.uniq)
+    assert_equal([27.0], summer_week.mondaySchedule.get.values.uniq)
+    assert_equal([27.0], summer_week.summerDesignDaySchedule.get.values.uniq)
+
+    # in the southern hemisphere the seasons are swapped
+    southern_model = OpenModel(dir)
+    southern_model.getSite.setLatitude(-33.9)
+    TestArguments(AddDetailedHVAC.new, southern_model, args_hash)
+    southern_weeks = southern_model.getScheduleYearByName("SAT Year Schedule").get.scheduleWeeks
+    assert_equal(["SAT Week Schedule High", "SAT Week Schedule Low", "SAT Week Schedule High"], southern_weeks.map { |w| w.name.to_s })
+
+    # the zone setpoint schedules themselves stay untouched
+    zone_heating_sched = model.getScheduleRulesetByName("ZoneHeatingTempSched").get
+    assert_equal([20.0], zone_heating_sched.scheduleRules.find(&:applyMonday).daySchedule.values.uniq)
   end
 
   def test_fan_flow_fraction_schedule_applied

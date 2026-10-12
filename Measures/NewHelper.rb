@@ -35,6 +35,42 @@ def AddFanFlowFractionEms(model, fan, flow_frac_sched)
   return program_calling_manager
 end
 
+# build a week schedule from a ruleset schedule (as created by CreateSchedule) with every value
+# shifted by delta, e.g. to derive a supply air temperature from a zone setpoint schedule
+def CreateOffsetWeekSchedule(model, source_sched, name, delta)
+  offset_days = {}
+  offset_day = lambda do |day_sch, label|
+    offset_days[day_sch.handle.to_s] ||= begin
+      new_day = OpenStudio::Model::ScheduleDay.new(model)
+      new_day.setName("#{name} #{label}")
+      day_sch.times.each_with_index { |t, i| new_day.addValue(t, day_sch.values[i] + delta) }
+      new_day
+    end
+  end
+  rule_day = lambda do |apply_method, label|
+    rule = source_sched.scheduleRules.find { |r| r.send(apply_method) }
+    offset_day.call(rule.nil? ? source_sched.defaultDaySchedule : rule.daySchedule, label)
+  end
+
+  week_sched = OpenStudio::Model::ScheduleWeek.new(model)
+  week_sched.setName(name)
+  week_sched.setMondaySchedule(rule_day.call(:applyMonday, "Weekday"))
+  week_sched.setTuesdaySchedule(rule_day.call(:applyTuesday, "Weekday"))
+  week_sched.setWednesdaySchedule(rule_day.call(:applyWednesday, "Weekday"))
+  week_sched.setThursdaySchedule(rule_day.call(:applyThursday, "Weekday"))
+  week_sched.setFridaySchedule(rule_day.call(:applyFriday, "Weekday"))
+  week_sched.setSaturdaySchedule(rule_day.call(:applySaturday, "Saturday"))
+  week_sched.setSundaySchedule(rule_day.call(:applySunday, "Sunday"))
+  holiday = offset_day.call(source_sched.defaultDaySchedule, "Holiday")
+  week_sched.setHolidaySchedule(holiday)
+  week_sched.setCustomDay1Schedule(holiday)
+  week_sched.setCustomDay2Schedule(holiday)
+  week_sched.setSummerDesignDaySchedule(offset_day.call(source_sched.summerDesignDaySchedule, "Summer Design Day"))
+  week_sched.setWinterDesignDaySchedule(offset_day.call(source_sched.winterDesignDaySchedule, "Winter Design Day"))
+
+  return week_sched
+end
+
 # create a ruleset schedule with a basic profile
 def CreateSchedule(model, name, valuesWeekday, valuesSaturday, valuesSunday, valuesHoliday, _holidays, internalLoad = false, heatingTemperatureSetpoints = false)
   # ScheduleRuleset

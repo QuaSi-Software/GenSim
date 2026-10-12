@@ -249,40 +249,29 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
         sizingSystem = airLoopHVAC.sizingSystem()
         sizingSystem.setTypeofLoadtoSizeOn("VentilationRequirement")
 
-        # SAT Year Schedule, shared by the DOAS heating coil, the DOAS
-        # cooling coil, and (if present) the heat recovery ERV, so they all target the
-        # same leaving air temperature for the air loop
-        high_temp = 27
-        low_temp = 18
-        day_sched_High = OpenStudio::Model::ScheduleDay.new(model, high_temp)
-        day_sched_High.setName("SAT Day Schedule High #{high_temp} deg C")
-        day_sched_Low = OpenStudio::Model::ScheduleDay.new(model, low_temp)
-        day_sched_Low.setName("SAT Day Schedule Low #{low_temp} deg C")
-
-        week_sched_High = OpenStudio::Model::ScheduleWeek.new(model)
-        week_sched_High.setAllSchedules(day_sched_High)
-        week_sched_High.setName("SAT Week Schedule High #{high_temp} deg C")
+        # SAT Year Schedule, shared by the DOAS heating coil, the DOAS cooling coil, and (if
+        # present) the heat recovery ERV, so they all target the same leaving air temperature for
+        # the air loop. Low (heating season) = zone heating setpoint - 2 K, high (cooling season)
+        # = zone cooling setpoint + 2 K, so the DOAS delivers near-neutral air incl. setbacks
+        week_sched_High = CreateOffsetWeekSchedule(model, zoneCoolingTempSched, "SAT Week Schedule High", 2.0)
 
         # "SAT Week Schedule Low" is a stable prefix inject_radiant_surfaces_idf matches on
-        # to find a year-round fallback week schedule - keep it as the leading text even if
-        # the temperature value changes
-        week_sched_Low = OpenStudio::Model::ScheduleWeek.new(model)
-        week_sched_Low.setAllSchedules(day_sched_Low)
-        week_sched_Low.setName("SAT Week Schedule Low #{low_temp} deg C")
+        # to find a year-round fallback week schedule - keep it as the leading text
+        week_sched_Low = CreateOffsetWeekSchedule(model, zoneHeatingTempSched, "SAT Week Schedule Low", -2.0)
 
         sat_sched = OpenStudio::Model::ScheduleYear.new(model)
         sat_sched.setName("SAT Year Schedule")
         # for now we check the latitude and if it is possitive then summer is in the middle of the calendar year
         if model.getSite.latitude > 0
           runner.registerInfo("latitude is:  #{model.getSite.latitude} -> summer is in the middle of the calendar year")
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(5), 1), week_sched_High)
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(10), 1), week_sched_Low)
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(12), 31), week_sched_High)
-        else
-          runner.registerInfo("latitude is:  #{model.getSite.latitude} -> summer is at the beginning and end of the calendar year")
           sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(5), 1), week_sched_Low)
           sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(10), 1), week_sched_High)
           sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(12), 31), week_sched_Low)
+        else
+          runner.registerInfo("latitude is:  #{model.getSite.latitude} -> summer is at the beginning and end of the calendar year")
+          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(5), 1), week_sched_High)
+          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(10), 1), week_sched_Low)
+          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(12), 31), week_sched_High)
         end
 
         if system_type == 2
