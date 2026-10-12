@@ -3,8 +3,8 @@
   <schema_version>3.1</schema_version>
   <name>add_detailed_hvac</name>
   <uid>75c17475-d6d2-4074-a097-0c2202206dab</uid>
-  <version_id>6858b5cc-d287-4dad-b999-3a32850a22b3</version_id>
-  <version_modified>2026-10-12T11:43:36Z</version_modified>
+  <version_id>d78a61e8-5d9f-4c45-988d-613381b9084a</version_id>
+  <version_modified>2026-10-12T12:16:31Z</version_modified>
   <xml_checksum>C49A7DAB</xml_checksum>
   <class_name>AddDetailedHVAC</class_name>
   <display_name>AddDetailedHVAC</display_name>
@@ -310,13 +310,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>A3C2A932</checksum>
+      <checksum>6DBB1D7D</checksum>
     </file>
     <file>
       <filename>add_detailed_hvac_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>822A9CFC</checksum>
+      <checksum>C7C912C2</checksum>
     </file>
     <file>
       <filename>example_model.osm</filename>

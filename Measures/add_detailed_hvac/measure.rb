@@ -242,6 +242,9 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
         # rescale air change rate to conditioned volume and GFA
         ach_per_hour = ach_per_hour * nfa_gfa_ratio * floor_height_ratio
 
+        # components get added one by one at the supply inlet node (see below), so the air flows
+        # through them in REVERSE order of this list: return fan -> outdoor air system -> cooling
+        # coil -> heating coil -> supply fan
         air_loop_comps = []
         # creating the DOAS air loop
         airLoopHVAC = OpenStudio::Model::AirLoopHVAC.new(model)
@@ -259,19 +262,34 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
         # to find a year-round fallback week schedule - keep it as the leading text
         week_sched_Low = CreateOffsetWeekSchedule(model, zoneHeatingTempSched, "SAT Week Schedule Low", -2.0)
 
+        # size the DOAS coils for the SAT they actually control to, at the full (constant) DOAS
+        # air flow - the OpenStudio defaults (16.7 / 12.8 deg C, 30 % heating air flow) are meant for VAV
+        week_values = lambda do |week|
+          [week.mondaySchedule, week.tuesdaySchedule, week.wednesdaySchedule, week.thursdaySchedule, week.fridaySchedule,
+           week.saturdaySchedule, week.sundaySchedule, week.holidaySchedule,
+           week.summerDesignDaySchedule, week.winterDesignDaySchedule].map { |d| d.get.values.to_a }.flatten
+        end
+        sizingSystem.setCentralHeatingMaximumSystemAirFlowRatio(1.0)
+        sizingSystem.setCentralHeatingDesignSupplyAirTemperature(week_values.call(week_sched_Low).max)
+        sizingSystem.setCentralCoolingDesignSupplyAirTemperature(week_values.call(week_sched_High).min)
+
         sat_sched = OpenStudio::Model::ScheduleYear.new(model)
         sat_sched.setName("SAT Year Schedule")
+        # build the season dates in the model's own year (set by set_weather_axis_timestep) -
+        # OpenStudio::Date.new without a year assumes 2009, and ScheduleYear rejects such dates
+        # when the model's year differs, leaving the schedule without any weeks
+        year_description = model.getYearDescription
         # for now we check the latitude and if it is possitive then summer is in the middle of the calendar year
         if model.getSite.latitude > 0
           runner.registerInfo("latitude is:  #{model.getSite.latitude} -> summer is in the middle of the calendar year")
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(5), 1), week_sched_Low)
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(10), 1), week_sched_High)
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(12), 31), week_sched_Low)
+          sat_sched.addScheduleWeek(year_description.makeDate(5, 1), week_sched_Low)
+          sat_sched.addScheduleWeek(year_description.makeDate(10, 1), week_sched_High)
+          sat_sched.addScheduleWeek(year_description.makeDate(12, 31), week_sched_Low)
         else
           runner.registerInfo("latitude is:  #{model.getSite.latitude} -> summer is at the beginning and end of the calendar year")
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(5), 1), week_sched_High)
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(10), 1), week_sched_Low)
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(12), 31), week_sched_High)
+          sat_sched.addScheduleWeek(year_description.makeDate(5, 1), week_sched_High)
+          sat_sched.addScheduleWeek(year_description.makeDate(10, 1), week_sched_Low)
+          sat_sched.addScheduleWeek(year_description.makeDate(12, 31), week_sched_High)
         end
 
         if system_type == 2
@@ -291,7 +309,6 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
         controller_OA.setMaximumFractionofOutdoorAirSchedule(model.alwaysOnDiscreteSchedule)
 
         system_OA = OpenStudio::Model::AirLoopHVACOutdoorAirSystem.new(model, controller_OA)
-        air_loop_comps << system_OA
         system_OA.outboardOANode.get.setName("Outside Air Node")
         system_OA.outboardReliefNode.get.setName("Outside Relief Node")
 
@@ -306,6 +323,10 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
           doasCoolingCoil.setName("DOAS Cooling Coil")
           air_loop_comps << doasCoolingCoil
         end
+
+        # the coils must come after the outdoor air system so they condition the supply air,
+        # not the return air that gets exhausted
+        air_loop_comps << system_OA
 
         returnFan = OpenStudio::Model::FanConstantVolume.new(model, hvacSched)
         returnFan.setName("Return Fan")

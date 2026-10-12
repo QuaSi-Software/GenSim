@@ -128,6 +128,9 @@ class AddDetailedHVAC_Test < MiniTest::Test
     model = OpenModel(dir)
     # the example model has no site location (latitude 0) - place it in Augsburg (northern hemisphere)
     model.getSite.setLatitude(48.4)
+    # weather files starting on a Sunday (e.g. TRY2015) make the model's assumed base year 2006
+    # instead of OpenStudio's default 2009 - the SAT season dates must still be accepted
+    model.getYearDescription.setDayofWeekforStartDay("Sunday")
     result = TestArguments(AddDetailedHVAC.new, model, args_hash)
 
     # assert that it ran correctly
@@ -140,6 +143,18 @@ class AddDetailedHVAC_Test < MiniTest::Test
     cooling_coils = air_loop.supplyComponents.select { |c| c.to_CoilCoolingWater.is_initialized }
     assert_equal(1, heating_coils.size)
     assert_equal(1, cooling_coils.size)
+
+    # the coils must sit downstream of the outdoor air system, so they condition the supply air
+    # (not the exhausted return air): return fan -> OA system -> cooling coil -> heating coil -> supply fan
+    main_comps = air_loop.supplyComponents.reject { |c| c.to_Node.is_initialized }.map { |c| c.iddObjectType.valueName }
+    assert_equal(["OS_Fan_ConstantVolume", "OS_AirLoopHVAC_OutdoorAirSystem", "OS_Coil_Cooling_Water", "OS_Coil_Heating_Water", "OS_Fan_ConstantVolume"], main_comps)
+    assert_equal("Supply Fan", air_loop.supplyComponents.reject { |c| c.to_Node.is_initialized }.last.name.to_s)
+
+    # coils are sized at the full constant DOAS flow, for the SAT they control to
+    sizing_system = air_loop.sizingSystem
+    assert_equal(1.0, sizing_system.centralHeatingMaximumSystemAirFlowRatio.get)
+    assert_equal(18.0, sizing_system.centralHeatingDesignSupplyAirTemperature)
+    assert_equal(27.0, sizing_system.centralCoolingDesignSupplyAirTemperature)
 
     hot_water_plant = model.getPlantLoopByName("Hot Water Loop").get
     chilled_water_plant = model.getPlantLoopByName("Chilled Water Loop").get
