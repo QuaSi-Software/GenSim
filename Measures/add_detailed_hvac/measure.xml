@@ -3,8 +3,8 @@
   <schema_version>3.1</schema_version>
   <name>add_detailed_hvac</name>
   <uid>75c17475-d6d2-4074-a097-0c2202206dab</uid>
-  <version_id>a04d288b-3da8-43c1-9d3e-a2ccbbe25468</version_id>
-  <version_modified>2026-09-21T09:32:09Z</version_modified>
+  <version_id>b0386a74-9120-4329-a283-8f77f03f27eb</version_id>
+  <version_modified>2026-10-12T09:49:48Z</version_modified>
   <xml_checksum>C49A7DAB</xml_checksum>
   <class_name>AddDetailedHVAC</class_name>
   <display_name>AddDetailedHVAC</display_name>
@@ -231,38 +231,6 @@
       <default_value>1</default_value>
     </argument>
     <argument>
-      <name>fan_flow_frac_sched_weekday</name>
-      <display_name>Fan flow fraction schedule (weekday)</display_name>
-      <type>String</type>
-      <required>true</required>
-      <model_dependent>false</model_dependent>
-      <default_value>1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1</default_value>
-    </argument>
-    <argument>
-      <name>fan_flow_frac_sched_saturday</name>
-      <display_name>Fan flow fraction schedule (Saturday)</display_name>
-      <type>String</type>
-      <required>true</required>
-      <model_dependent>false</model_dependent>
-      <default_value>1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1</default_value>
-    </argument>
-    <argument>
-      <name>fan_flow_frac_sched_sunday</name>
-      <display_name>Fan flow fraction schedule (Sunday)</display_name>
-      <type>String</type>
-      <required>true</required>
-      <model_dependent>false</model_dependent>
-      <default_value>1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1</default_value>
-    </argument>
-    <argument>
-      <name>fan_flow_frac_sched_holiday</name>
-      <display_name>Fan flow fraction schedule (holiday)</display_name>
-      <type>String</type>
-      <required>false</required>
-      <model_dependent>false</model_dependent>
-      <default_value>1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1</default_value>
-    </argument>
-    <argument>
       <name>add_doas_heating_coil</name>
       <display_name>Add heating coil to DOAS air loop</display_name>
       <type>Boolean</type>
@@ -342,13 +310,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>4D356B97</checksum>
+      <checksum>7DBD073E</checksum>
     </file>
     <file>
       <filename>add_detailed_hvac_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>221909B8</checksum>
+      <checksum>F8E5B3D0</checksum>
     </file>
     <file>
       <filename>example_model.osm</filename>

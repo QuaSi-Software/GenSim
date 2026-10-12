@@ -22,7 +22,7 @@ class AddDetailedHVAC_Test < MiniTest::Test
     # get arguments with a new instance of the measure
     arguments = GetArguments(AddDetailedHVAC.new, OpenStudio::Model::Model.new)
 
-    assert_equal(34, arguments.size)
+    assert_equal(30, arguments.size)
   end
 
   def test_bad_argument_values
@@ -152,10 +152,10 @@ class AddDetailedHVAC_Test < MiniTest::Test
 
   def test_fan_flow_fraction_schedule_applied
     args_hash = {}
-    hvacSched = " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0"
+    # fractional Betriebszeiten: off at night, 30 % flow in the morning, full flow during the day
+    hvacSched = ((["0"] * 20) + (["0.3"] * 12) + (["1"] * 40) + (["0"] * 24)).join(";")
     heatingSched = " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20"
     coolingSched = " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25"
-    fanFlowFracSched = (["0.3"] * 96).join(";")
     args_hash["heat_recovery_method"] = "none"
     args_hash["ach_per_hour"] = 2.0
     args_hash["hvac_sched_weekday"] = hvacSched
@@ -176,9 +176,6 @@ class AddDetailedHVAC_Test < MiniTest::Test
     args_hash["cold_water_temp_setpoint"] = 10
     args_hash["cold_water_temp_diff"] = 5
     args_hash["system_type"] = 2
-    args_hash["fan_flow_frac_sched_weekday"] = fanFlowFracSched
-    args_hash["fan_flow_frac_sched_saturday"] = fanFlowFracSched
-    args_hash["fan_flow_frac_sched_sunday"] = fanFlowFracSched
 
     dir = __dir__
     model = OpenModel(dir)
@@ -197,12 +194,19 @@ class AddDetailedHVAC_Test < MiniTest::Test
 
     assert_equal(2, model.getEnergyManagementSystemPrograms.size)
     assert_equal(2, model.getEnergyManagementSystemProgramCallingManagers.size)
-    assert_equal(4, model.getEnergyManagementSystemSensors.size) # frac + avail sensor per fan
+    assert_equal(2, model.getEnergyManagementSystemSensors.size) # one HVACSched sensor per fan
     assert_equal(2, model.getEnergyManagementSystemInternalVariables.size)
 
-    fan_flow_frac_sched = model.getScheduleRulesetByName("FanFlowFractionSched").get
-    weekday_rule = fan_flow_frac_sched.scheduleRules.find { |r| r.applyMonday }
-    assert_equal(0.3, weekday_rule.daySchedule.values[0])
+    # the fractional schedule must still be accepted as the fans' availability schedule,
+    # and the EMS sensors read that same schedule as the flow fraction
+    hvac_sched = model.getFanConstantVolumeByName("Supply Fan").get.availabilitySchedule.to_ScheduleRuleset.get
+    assert_equal(hvac_sched.handle, model.getFanConstantVolumeByName("Return Fan").get.availabilitySchedule.handle)
+    assert_equal("HVAC Operation Fraction", hvac_sched.scheduleTypeLimits.get.name.to_s)
+    model.getEnergyManagementSystemSensors.each do |sensor|
+      assert_equal(hvac_sched.name.to_s, sensor.keyName)
+    end
+    weekday_rule = hvac_sched.scheduleRules.find { |r| r.applyMonday }
+    assert(weekday_rule.daySchedule.values.include?(0.3))
 
     SaveModel(model, dir)
   end
