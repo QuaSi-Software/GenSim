@@ -39,7 +39,7 @@ def change_pct(reference, value)
   return nil if reference.nil? || value.nil?
   return(value.zero? ? 0.0 : Float::INFINITY) if reference.zero?
 
-  (value - reference) / reference.abs * 100.0
+  (value - reference).to_f / reference.abs * 100.0
 end
 
 def format_value(value)
