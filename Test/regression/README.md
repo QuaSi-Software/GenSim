@@ -11,6 +11,9 @@ results between branches or commits, to see whether a change of the measures cha
   the same inputs.
 - `compare_results.rb`: compares two or more result directories and lists every value that changed by
   more than the tolerance.
+- `diff_idf.rb`: compares the `run/in.idf` of two runs object by object (independent of object order
+  and numbering), to find the inputs behind a result difference.
+- `RESULTS_LOG.md`: the explained differences found so far. Add an entry for every comparison.
 
 Extracted per case (from the EnergyPlus tabular reports): end uses in kWh and kWh/m², totals per fuel,
 peak demands, unmet heating and cooling hours, hours not comfortable (ASHRAE 55), and the number of
@@ -26,7 +29,10 @@ C:\openstudio-3.10.0\bin\openstudio.exe Test\regression\run_regression.rb --jobs
 Results go to `Output\regression\<branch>` (not versioned). One run of all 18 cases takes about
 10 minutes with 6 parallel jobs. Options: `--cases REGEX`, `--modes ideal,detailed`, `--out DIR`,
 `--repo DIR` (measures of another checkout, e.g. a `git worktree` of another branch), `--keep-runs`
-(keep the complete EnergyPlus output, about 0.5 GB per case), `--prepare-only`.
+(keep the complete EnergyPlus output, about 0.5 GB per case), `--prepare-only`, and
+`--set MEASURE.ARGUMENT=VALUE` (override an input in every case, repeatable, e.g.
+`--set add_infiltration.infiltration_type=EnergyPlus`, to test whether an input explains a difference).
+The runs need about 1 GB of memory each; with little free memory use `--jobs 2` to `4`.
 
 Comparing two branches, e.g. `main` against `varFanTest`:
 

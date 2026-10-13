@@ -21,6 +21,8 @@
 #   --modes LIST     ideal,detailed (default: both)
 #   --jobs N         simulations run in parallel (default: 6)
 #   --os PATH        openstudio executable (default: C:/openstudio-3.10.0/bin/openstudio.exe)
+#   --set M.ARG=VAL  override a measure argument in every case (repeatable), e.g.
+#                    --set add_infiltration.infiltration_type=EnergyPlus
 #   --keep-runs      keep the complete simulation output (about 0.5 GB per run)
 #   --prepare-only   only write the workflows, do not simulate
 
@@ -41,6 +43,7 @@ options = {
   jobs: 6,
   os: "C:/openstudio-3.10.0/bin/openstudio.exe",
   keep_runs: false,
+  overrides: [],
   prepare_only: false
 }
 args = ARGV.dup
@@ -52,6 +55,9 @@ until args.empty?
   when "--modes" then options[:modes] = args.shift.split(",").map(&:strip)
   when "--jobs" then options[:jobs] = args.shift.to_i
   when "--os" then options[:os] = args.shift
+  when "--set"
+    abort("--set expects MEASURE.ARGUMENT=VALUE") unless (m = args.shift.to_s.match(/\A([^.=]+)\.([^=]+)=(.*)\z/))
+    options[:overrides] << m.captures
   when "--keep-runs" then options[:keep_runs] = true
   when "--prepare-only" then options[:prepare_only] = true
   else abort("unknown option #{arg}")
@@ -87,7 +93,7 @@ def step_arguments(osw)
 end
 
 # Build the complete workflow of one typology and HVAC mode; returns [osw, notes, errors]
-def build_workflow(base, typology, mode, measures_dir, run_dir)
+def build_workflow(base, typology, mode, measures_dir, run_dir, overrides = [])
   notes = []
   errors = []
   typology_args = step_arguments(typology)
@@ -129,12 +135,27 @@ def build_workflow(base, typology, mode, measures_dir, run_dir)
     results["arguments"]["net_area"] = (gross_area * nfa_gfa).round.to_s
   end
 
-  # adapt to the measures of the repository under test
+  overrides.each do |measure, name, value|
+    if (s = step.call(measure))
+      s["arguments"][name] = value
+      notes << "override #{measure}.#{name} = #{value}"
+    else
+      notes << "override #{measure}.#{name}: step not in this case - ignored"
+    end
+  end
+
+  # adapt to the measures of the repository under test; explicit overrides are always passed on,
+  # since a measure.xml can lag behind its measure.rb
   steps.select! do |s|
     known = measure_arguments(measures_dir, s["measure_dir_name"])
     if known.nil?
       notes << "measure #{s['measure_dir_name']} does not exist in this repository - step skipped"
       next false
+    end
+    overridden = overrides.select { |measure, _, _| measure == s["measure_dir_name"] }.map { |_, name, _| name }
+    (overridden - known.keys).each do |name|
+      notes << "#{s['measure_dir_name']}: override #{name} is not in measure.xml - passed on anyway"
+      known[name] = { required: false, default: nil }
     end
     unknown = s["arguments"].keys - known.keys
     notes << "#{s['measure_dir_name']}: unknown arguments dropped: #{unknown.join(', ')}" unless unknown.empty?
@@ -238,7 +259,7 @@ typology_files.each do |file|
     run_dir = File.join(out_dir, id)
     FileUtils.rm_rf(run_dir)
     FileUtils.mkdir_p(run_dir)
-    osw, notes, errors = build_workflow(base, typology, mode, measures_dir, run_dir)
+    osw, notes, errors = build_workflow(base, typology, mode, measures_dir, run_dir, options[:overrides])
     File.write(File.join(run_dir, "Model.osw"), JSON.pretty_generate(osw))
     OpenStudio::Model::Model.new.save(OpenStudio::Path.new(File.join(run_dir, "Model.osm")), true)
     cases << { "id" => id, "typology" => name, "mode" => mode, "run_dir" => run_dir, "notes" => notes, "errors" => errors }
@@ -267,6 +288,7 @@ workers.each(&:join)
 
 # extract and summarize
 summary = { "branch" => branch, "commit" => commit, "uncommitted_measure_changes" => dirty,
+            "overrides" => options[:overrides].map { |m, a, v| "#{m}.#{a}=#{v}" },
             "created" => Time.now.strftime("%Y-%m-%d %H:%M"), "cases" => {} }
 cases.each do |c|
   result = c["errors"].empty? ? extract_results(c["run_dir"]) : { "energyplus" => "not run", "metrics" => {} }
