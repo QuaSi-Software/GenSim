@@ -86,6 +86,15 @@ class AddDetailedHVAC_Test < MiniTest::Test
     refute(result.initialCondition.is_initialized)
     assert(result.finalCondition.is_initialized)
     assert_equal("In the final model 4 zones are connected to the DOAS air loop.", result.finalCondition.get.logMessage)
+    # the economizer bypasses the heat exchanger when the outdoor air is cooler than the return air,
+    # but not below the heating design SAT (heating setpoint 20 - 2 K)
+    controller_OA = model.getControllerOutdoorAirs.first
+    assert_equal("DifferentialDryBulb", controller_OA.getEconomizerControlType)
+    assert_in_delta(18.0, controller_OA.getEconomizerMinimumLimitDryBulbTemperature.get, 0.001)
+    assert_equal("BypassWhenWithinEconomizerLimits", controller_OA.getHeatRecoveryBypassControlType.get)
+    assert(model.getHeatExchangerAirToAirSensibleAndLatents.first.economizerLockout)
+    mixed_air_node = model.getAirLoopHVACOutdoorAirSystems.first.mixedAirModelObject.get.to_Node.get
+    refute_empty(mixed_air_node.setpointManagers)
     # save the model to test output directory
     SaveModel(model, dir)
   end

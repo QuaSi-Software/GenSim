@@ -3,6 +3,33 @@
 Explains the result differences found with the regression runs between branches and commits.
 Add new comparisons at the top, with the commits, the numbers and how each cause was confirmed.
 
+## 2026-10-13: varFanTest with economizer (heat exchanger bypass)
+
+Change in `add_detailed_hvac` (only with heat recovery): the outdoor air controller gets a
+`DifferentialDryBulb` economizer with the minimum limit = heating design SAT (heating setpoint
+−2 K), heat recovery bypass `BypassWhenWithinEconomizerLimits`, and a scheduled setpoint (SAT
+schedule) on the mixed air node, which E+ requires for an economizer. The DOAS runs on 100 %
+outdoor air, so the economizer does not change the flow; it only bypasses the heat exchanger while
+the outdoor air is between the heating design SAT and the return air temperature. This fixes the
+open design question of the entry below: cool outdoor air is no longer heated with exhaust air in summer.
+
+Detailed mode, kWh/m² (4 cases, `--modes detailed --cases "office|restaurant|kindergarten|single"`):
+
+| case | cooling lüftung | varFanTest | economizer | heating varFanTest | economizer | condensation-driven warnings varFanTest → economizer |
+|---|---:|---:|---:|---:|---:|---:|
+| Kindergarten | 13.5 | 18.7 | 14.8 | 15.17 | 15.17 | 1218 → 887 |
+| Office | 9.4 | 13.8 | 11.1 | 15.99 | 15.99 | 218 → 218 |
+| Restaurant | 14.3 | 27.9 | 18.7 | 18.17 | 18.17 | 933 → 659 |
+| Single-family house (no heat recovery) | 0.87 | 0.87 | 0.87 | 29.76 | 29.76 | 224 → 224 |
+
+- Heating and heating peak are unchanged: in winter, above the heating design SAT the exchanger
+  was already bypassed by its outlet temperature control, so no heat recovery is lost.
+- Most of the extra cooling is gone. The rest comes from summer hours with outdoor air below the heating
+  design SAT (cool nights), when the exchanger still heats the outdoor air towards the summer SAT.
+  A lower minimum limit would remove that too, but would also bypass the heat recovery in winter
+  between that limit and the heating design SAT.
+- Unmet cooling hours are back at the lüftung level. No new warning types, no severe errors.
+
 ## 2026-10-13: main vs. lüftungMitSchedule vs. varFanTest
 
 Runs (all 9 typologies, ideal loads and detailed HVAC, `--jobs 4`, OpenStudio 3.10.0):

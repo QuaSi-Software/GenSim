@@ -303,7 +303,8 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
            week.summerDesignDaySchedule, week.winterDesignDaySchedule].map { |d| d.get.values.to_a }.flatten
         end
         sizingSystem.setCentralHeatingMaximumSystemAirFlowRatio(1.0)
-        sizingSystem.setCentralHeatingDesignSupplyAirTemperature(week_values.call(week_sched_Low).max)
+        heating_design_sat = week_values.call(week_sched_Low).max
+        sizingSystem.setCentralHeatingDesignSupplyAirTemperature(heating_design_sat)
         cooling_design_sat = week_values.call(week_sched_High).min
         sizingSystem.setCentralCoolingDesignSupplyAirTemperature(cooling_design_sat)
         # the DOAS stays neutral (no dehumidification): E+ sizes the coil outlet humidity ratio as
@@ -422,6 +423,17 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
 
           # Add setpoint manager, normally this would be a
           # SetpointManagerOutdoorAirPretreat, but you can use any
+
+          # economizer: the DOAS runs on 100 % outdoor air, so it cannot raise the outdoor air flow;
+          # it only bypasses the heat exchanger (economizer lockout) while the outdoor air is cooler
+          # than the return air. Without it the exchanger heats cool outdoor air in summer with the
+          # exhaust air towards the summer SAT (cooling setpoint + 2 K) and the free cooling is lost.
+          # Below the heating design SAT the economizer is off, so the heat recovery stays as before
+          # in winter (above it the exchanger is bypassed anyway by its outlet temperature control).
+          controller_OA.setEconomizerControlType("DifferentialDryBulb")
+          controller_OA.setEconomizerMinimumLimitDryBulbTemperature(heating_design_sat)
+          controller_OA.setHeatRecoveryBypassControlType("BypassWhenWithinEconomizerLimits")
+          heat_exchanger.setEconomizerLockout(true)
         end
 
         # add the components to the airloop
@@ -438,6 +450,12 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
             doasCoolingCoilSPM = OpenStudio::Model::SetpointManagerScheduled.new(model, sat_sched)
             doasCoolingCoilSPM.addToNode(comp.airOutletModelObject.get.to_Node.get)
           end
+        end
+        # an economizer needs a temperature setpoint on the mixed air node; at 100 % outdoor air
+        # it does not change the flow
+        if controller_OA.getEconomizerControlType != "NoEconomizer"
+          mixedAirSPM = OpenStudio::Model::SetpointManagerScheduled.new(model, "Temperature", sat_sched)
+          mixedAirSPM.addToNode(system_OA.mixedAirModelObject.get.to_Node.get)
         end
 
         # add thermal zones to airloop
