@@ -3,6 +3,85 @@
 Explains the result differences found with the regression runs between branches and commits.
 Add new comparisons at the top, with the commits, the numbers and how each cause was confirmed.
 
+## 2026-10-19: main → manualwindows → lüftungMitSchedule → varFanTest (24 plain cases)
+
+Commits: main 3a4a1f0, manualwindows e710ff1, lüftungMitSchedule 133e5ee, varFanTest b719fa1;
+the 18 typology cases and, for the first time, the 6 test environment IV cases. Inputs are
+identical for all branches. Cooling, kWh/m² (ideal / detailed):
+
+| case | main | manualwindows | lüftung | varFanTest |
+|---|---|---|---|---|
+| Hotel | 11.05 / 17.13 | 11.12 / 17.13 | 11.12 / 17.13 | 11.12 / 17.13 |
+| Kindergarten | 8.42 / 13.57 | 8.35 / 13.50 | 8.35 / 13.50 | 8.35 / 13.46 |
+| Multi-family house | 1.62 / 2.52 | 1.65 / 2.54 | 1.65 / 2.54 | 1.65 / 2.54 |
+| Office | 6.81 / 9.47 | 6.74 / 9.41 | 6.74 / 9.41 | 6.74 / 9.51 |
+| Restaurant | 8.44 / 14.23 | 8.47 / 14.25 | 8.47 / 14.25 | 8.47 / 14.67 |
+| Retail | 8.78 / 13.41 | 8.75 / 13.41 | 8.75 / 13.41 | 8.75 / 13.50 |
+| School | 10.19 / 15.53 | 10.13 / 15.48 | 10.13 / 15.48 | 10.13 / 15.41 |
+| Single-family house | 0.41 / 0.86 | 0.42 / 0.87 | 0.42 / 0.87 | 0.42 / 0.87 |
+| Sports hall | 11.96 / 14.22 | 11.60 / 13.88 | 11.60 / 13.88 | 11.60 / 13.84 |
+| env_iv test_01 | 10.78 / 14.47 | 10.73 / 14.44 | 10.73 / 14.44 | 10.73 / 14.44 |
+| env_iv test_02 | 5.80 / 6.70 | 5.77 / 6.71 | 5.77 / 6.71 | 5.77 / 6.71 |
+| env_iv test_03 | 10.00 / 14.84 | 10.15 / 15.03 | 10.15 / 15.03 | 10.15 / 15.00 |
+
+Heating, kWh/m² (ideal / detailed), for the steps that change it:
+
+| case | main | manualwindows = lüftung | varFanTest |
+|---|---|---|---|
+| Hotel | 37.27 / 31.17 | 39.87 / 33.73 | 39.87 / 33.73 |
+| Kindergarten | 9.89 / 11.89 | 11.81 / 15.12 | 11.81 / 15.17 |
+| Office | 15.13 / 14.40 | 16.45 / 16.19 | 16.45 / 16.00 |
+| Restaurant | 25.36 / 17.32 | 26.78 / 18.69 | 26.78 / 18.17 |
+| Retail | 28.40 / 23.74 | 31.07 / 26.70 | 31.07 / 26.51 |
+| School | 8.26 / 9.85 | 10.11 / 12.98 | 10.11 / 13.11 |
+| Sports hall | 18.79 / 18.04 | 25.14 / 25.63 | 25.14 / 25.66 |
+
+All 96 runs complete without severe errors.
+
+### main → manualwindows: infiltration coefficients (cooling −3 to +2 %)
+
+- `diff_idf.rb` (Office, detailed): the only result-relevant change is the `ZoneInfiltration` and
+  window `ZoneVentilation` coefficients, constant (blank = 1/0/0/0) in main, BLAST
+  (0.606 / 0.03636·ΔT / 0.1177·wind) in manualwindows (e710ff1). Manual window ventilation adds
+  its schedules, but it is off in all cases.
+- BLAST raises the air exchange with the indoor-outdoor temperature difference and the wind. In
+  winter that is the heating increase (+3 to +42 %, decided to keep, see below). In summer it is
+  about the nominal rate during the day (small ΔT) and above it on cool, windy nights, so the
+  night air cools the building a little more: cooling −0.3 to −3 % (largest in the Sports hall,
+  which has the highest infiltration and no window ventilation). Cooling rises by 0.6 to 2 % where
+  the window ventilation matters more (env_iv test_03, a school with 2 ach from 24 °C; the houses;
+  the Hotel). Likely cause, not separated by a run: the BLAST coefficients also apply to the window
+  ventilation and reduce it on warm, calm days, when ΔT and wind are small.
+
+### manualwindows → lüftungMitSchedule: no result change
+
+- The results are identical in all 24 cases; only 0–2 warnings differ. The DOAS coil support of
+  lüftung is off in all cases, and the SAT schedule only got new names ("10 deg C" held 18 °C
+  already, see the correction in the 2026-10-13 entry).
+
+### lüftungMitSchedule → varFanTest: heat exchanger setpoint follows the heating setpoint
+
+- Ideal mode: identical (the DOAS changes do not apply). Detailed mode without heat recovery
+  (Single- and Multi-family house, env_iv test_01/02): identical.
+- Detailed with heat recovery: cooling −0.5 to +2.9 %, heating −2.8 to +1.2 %. Cause: the heat
+  exchanger outlet setpoint is a constant 18 °C in lüftung and the heating setpoint −2 K in
+  varFanTest (`HX Setpoint Schedule`, 3b5cac1). The IDF shows e.g. 17 °C at night and 19 °C
+  during operation for the Restaurant (heating profile 19–21 °C).
+  - Restaurant, Office, Retail: heating profiles up to 21 °C, so the setpoint is 19 °C while the
+    DOAS runs. In winter the exchanger recovers up to 19 instead of 18 °C; on cool summer days it
+    also tempers the outdoor air to 19 °C, which the radiant cooling removes again (cooling +0.7 to
+    +2.9 %, heating −0.7 to −2.8 %).
+  - Kindergarten, School, Sports hall, env_iv test_03: heating profiles 19–20 °C, setpoint
+    17–18 °C, i.e. at most the lüftung value: slightly less tempering, cooling −0.2 to −0.5 %,
+    heating +0.1 to +1.2 %.
+  - Hotel: constant 20 °C heating, setpoint 18 °C as in lüftung: identical results, which confirms
+    the cause.
+- The economizer (59719db) should add little here (not separated by a run): it bypasses the
+  exchanger only above the heating design SAT, where the outlet temperature control already stops
+  heating.
+- The 2026-10-13 increase of +24 to +96 % is gone (it came from the summer SAT of cooling + 2 K,
+  fixed by 59719db and 3b5cac1).
+
 ## 2026-10-19: first run of the feature variants (varFanTest 3b5cac1)
 
 All 19 variant cases of `variants.json` complete without EnergyPlus failures. kWh/m²:
@@ -97,12 +176,11 @@ heating increase is intended. The `infiltration_doe2` variant keeps the other co
   matches more heating and slightly less cooling. The effect is largest in the Sports hall (high
   infiltration rate, large volume), which has no window ventilation, so infiltration alone causes it.
 - Heating peak demand rises by +2 to +49 %, and the warnings rise by 9 (new schedule notices).
-- **Detailed mode only:** the ERV setpoint (`SAT Year Schedule`) also changed, from a constant
-  10 °C in main to a constant 18 °C (`SAT Week Schedule Low`) in lüftung. With heat recovery,
-  the detailed heating increase is therefore the sum of both changes. Without heat recovery
-  (Single- and Multi-family house), the increase is the same as with ideal loads. The two shares
-  were not separated (needs a run of lüftung with `--set add_infiltration.infiltration_type=EnergyPlus
-  --set inject_zone_ventilation_idf.infiltration_type=EnergyPlus --modes detailed`).
+- ~~Detailed mode only: the ERV setpoint changed from a constant 10 °C in main to 18 °C.~~
+  **Corrected 2026-10-19:** this was read from the schedule names. In main the schedule is named
+  "SAT Week Schedule 10 deg C" but holds 18 °C, the same value as in lüftung; only the names
+  changed. The whole difference main → lüftung is the infiltration coefficients (see the
+  2026-10-19 four-branch entry above).
 - Side finding: the `measure.xml` of the three measures does not list `infiltration_type` (on
   lüftungMitSchedule and varFanTest). OpenStudio accepts it anyway, but tools reading the XML do
   not see it. The first attempt to override it with `--set` was dropped for this reason, so
