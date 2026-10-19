@@ -19,6 +19,9 @@
 #   --out DIR        result directory (default: <repo>/Output/regression/<branch>)
 #   --cases REGEX    only run typologies whose name matches (case insensitive)
 #   --modes LIST     ideal,detailed (default: both)
+#   --variants REGEX feature variants of variants.json to run in addition to the plain typologies:
+#                    all (default), none, or a regex on the variant names
+#   --only-variants  run only the variants, not the plain typologies
 #   --jobs N         simulations run in parallel (default: 6)
 #   --os PATH        openstudio executable (default: C:/openstudio-3.10.0/bin/openstudio.exe)
 #   --set M.ARG=VAL  override a measure argument in every case (repeatable), e.g.
@@ -44,6 +47,8 @@ options = {
   os: "C:/openstudio-3.10.0/bin/openstudio.exe",
   keep_runs: false,
   overrides: [],
+  variants: /./,
+  only_variants: false,
   prepare_only: false
 }
 args = ARGV.dup
@@ -58,6 +63,14 @@ until args.empty?
   when "--set"
     abort("--set expects MEASURE.ARGUMENT=VALUE") unless (m = args.shift.to_s.match(/\A([^.=]+)\.([^=]+)=(.*)\z/))
     options[:overrides] << m.captures
+  when "--variants"
+    value = args.shift.to_s
+    options[:variants] = case value
+                         when "all" then /./
+                         when "none" then nil
+                         else Regexp.new(value, Regexp::IGNORECASE)
+                         end
+  when "--only-variants" then options[:only_variants] = true
   when "--keep-runs" then options[:keep_runs] = true
   when "--prepare-only" then options[:prepare_only] = true
   else abort("unknown option #{arg}")
@@ -92,11 +105,23 @@ def step_arguments(osw)
   osw["steps"].to_h { |s| [s["measure_dir_name"], s["arguments"] || {}] }
 end
 
-# Build the complete workflow of one typology and HVAC mode; returns [osw, notes, errors]
-def build_workflow(base, typology, mode, measures_dir, run_dir, overrides = [])
+# a variant value: a string, or [[value, count], ...] expanded to a ';'-separated schedule
+def variant_value(value)
+  return value.to_s unless value.is_a?(Array)
+
+  value.flat_map { |v, count| [v.to_s] * count }.join(";")
+end
+
+# Build the complete workflow of one typology and HVAC mode, optionally with a feature variant
+# laid over the typology; returns [osw, notes, errors]
+def build_workflow(base, typology, mode, measures_dir, run_dir, overrides = [], variant = nil)
   notes = []
   errors = []
   typology_args = step_arguments(typology)
+  (variant&.fetch("set", {}) || {}).each do |key, value|
+    measure, name = key.split(".", 2)
+    typology_args[measure] = (typology_args[measure] || {}).merge(name => variant_value(value))
+  end
   steps = base["steps"].map do |step|
     args = (step["arguments"] || {}).merge(typology_args.fetch(step["measure_dir_name"], {}))
     { "measure_dir_name" => step["measure_dir_name"], "arguments" => args }
@@ -125,7 +150,8 @@ def build_workflow(base, typology, mode, measures_dir, run_dir, overrides = [])
     steps.reject! { |s| s["measure_dir_name"] == "inject_radiant_surfaces_idf" }
   end
 
-  weather = File.join(INPUT_ROOT, "Wetter", File.basename(base["weather_file"].tr("\\", "/")))
+  weather = File.join(INPUT_ROOT, "Wetter", variant&.fetch("weather", nil) || File.basename(base["weather_file"].tr("\\", "/")))
+  errors << "weather file #{weather} not found" unless File.exist?(weather)
   step.call("set_weather_axis_timestep")["arguments"]["weather_file_path"] = weather
   step.call("save_model")["arguments"]["output_path"] = run_dir
   if (results = step.call("results"))
@@ -144,17 +170,19 @@ def build_workflow(base, typology, mode, measures_dir, run_dir, overrides = [])
     end
   end
 
-  # adapt to the measures of the repository under test; explicit overrides are always passed on,
-  # since a measure.xml can lag behind its measure.rb
+  # adapt to the measures of the repository under test; explicit overrides and variant inputs are
+  # always passed on, since a measure.xml can lag behind its measure.rb
+  explicit = overrides.map { |measure, name, _| [measure, name] } +
+             (variant&.fetch("set", {}) || {}).keys.map { |key| key.split(".", 2) }
   steps.select! do |s|
     known = measure_arguments(measures_dir, s["measure_dir_name"])
     if known.nil?
       notes << "measure #{s['measure_dir_name']} does not exist in this repository - step skipped"
       next false
     end
-    overridden = overrides.select { |measure, _, _| measure == s["measure_dir_name"] }.map { |_, name, _| name }
+    overridden = explicit.select { |measure, _| measure == s["measure_dir_name"] }.map(&:last)
     (overridden - known.keys).each do |name|
-      notes << "#{s['measure_dir_name']}: override #{name} is not in measure.xml - passed on anyway"
+      notes << "#{s['measure_dir_name']}: explicit input #{name} is not in measure.xml - passed on anyway"
       known[name] = { required: false, default: nil }
     end
     unknown = s["arguments"].keys - known.keys
@@ -250,19 +278,35 @@ typology_files = Dir[File.join(INPUT_ROOT, "building_typologies", "*.osw")].sort
 typology_files.select! { |f| File.basename(f, ".osw") =~ options[:cases] } if options[:cases]
 abort("no typologies found") if typology_files.empty?
 
+variants = JSON.parse(File.read(File.join(SCRIPT_DIR, "variants.json"), encoding: "UTF-8"))["variants"]
+variants = options[:variants] ? variants.select { |v| v["name"] =~ options[:variants] } : []
+all_typologies = Dir[File.join(INPUT_ROOT, "building_typologies", "*.osw")].map { |f| File.basename(f, ".osw").sub(/ \(Germany\)$/, "") }
+variants.each do |v|
+  (v["typologies"] - all_typologies).each { |t| warn "variant #{v['name']}: unknown typology #{t}" }
+end
+
 cases = []
 typology_files.each do |file|
   typology = JSON.parse(File.read(file, encoding: "UTF-8"))
   name = File.basename(file, ".osw").sub(/ \(Germany\)$/, "")
-  options[:modes].each do |mode|
-    id = "#{name.tr(' ', '_')}__#{mode}"
+  # the plain typology (variant nil) and every variant listed for it, per mode
+  runs = options[:only_variants] ? [] : options[:modes].map { |mode| [mode, nil] }
+  variants.each do |v|
+    next unless v["typologies"].include?(name)
+
+    (v["modes"] & options[:modes]).each { |mode| runs << [mode, v] }
+  end
+  runs.each do |mode, variant|
+    id = "#{name.tr(' ', '_')}__#{mode}#{variant ? "__#{variant['name']}" : ''}"
     run_dir = File.join(out_dir, id)
     FileUtils.rm_rf(run_dir)
     FileUtils.mkdir_p(run_dir)
-    osw, notes, errors = build_workflow(base, typology, mode, measures_dir, run_dir, options[:overrides])
+    osw, notes, errors = build_workflow(base, typology, mode, measures_dir, run_dir, options[:overrides], variant)
+    notes.unshift("variant #{variant['name']}: #{variant['description']}") if variant
     File.write(File.join(run_dir, "Model.osw"), JSON.pretty_generate(osw))
     OpenStudio::Model::Model.new.save(OpenStudio::Path.new(File.join(run_dir, "Model.osm")), true)
-    cases << { "id" => id, "typology" => name, "mode" => mode, "run_dir" => run_dir, "notes" => notes, "errors" => errors }
+    cases << { "id" => id, "typology" => name, "mode" => mode, "variant" => variant&.fetch("name"),
+               "run_dir" => run_dir, "notes" => notes, "errors" => errors }
   end
 end
 puts "#{cases.size} cases for #{branch} (#{commit}#{dirty ? ', uncommitted measure changes' : ''}) -> #{out_dir}"

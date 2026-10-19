@@ -1,0 +1,135 @@
+{
+  "_comment": [
+    "Feature variants of the typologies, run in addition to the plain typologies.",
+    "Each variant is laid over the listed typologies like an extra typology layer, before the",
+    "include_* flags and the HVAC mode are applied. 'set' keys are MEASURE.ARGUMENT; for the ideal",
+    "mode, add_detailed_hvac arguments go to add_ideal_loads. A value given as [[value, count], ...]",
+    "is expanded to a ';'-separated schedule (96 quarter hours per day). 'weather' replaces the EPW",
+    "(file name in Wetter/)."
+  ],
+  "variants": [
+    {
+      "name": "enthalpy_recovery",
+      "description": "Enthalpy heat recovery (DOAS heat exchanger with latent effectiveness, ideal loads Enthalpy)",
+      "typologies": ["Office"],
+      "modes": ["ideal", "detailed"],
+      "set": {
+        "add_detailed_hvac.heat_recovery_method": "Enthalpy",
+        "add_detailed_hvac.latent_efficiency": "0.6",
+        "inject_ideal_load_parameters_idf.heat_recovery_type": "Enthalpy",
+        "inject_ideal_load_parameters_idf.latent_efficiency": "0.6"
+      }
+    },
+    {
+      "name": "doas_coils",
+      "description": "DOAS heating and cooling coils with sensible heat recovery",
+      "typologies": ["Office"],
+      "modes": ["detailed"],
+      "set": {
+        "add_detailed_hvac.add_doas_heating_coil": "true",
+        "add_detailed_hvac.add_doas_cooling_coil": "true"
+      }
+    },
+    {
+      "name": "doas_coils_no_recovery",
+      "description": "Central ventilation with DOAS coils but without heat recovery",
+      "typologies": ["Multi-family house"],
+      "modes": ["detailed"],
+      "set": {
+        "custom_export_params.ventilation_type": "2",
+        "add_detailed_hvac.system_type": "2",
+        "add_detailed_hvac.heat_recovery_method": "None",
+        "add_detailed_hvac.add_doas_heating_coil": "true",
+        "add_detailed_hvac.add_doas_cooling_coil": "true"
+      }
+    },
+    {
+      "name": "no_ventilation",
+      "description": "No mechanical ventilation (system type 3)",
+      "typologies": ["School"],
+      "modes": ["detailed"],
+      "set": {
+        "custom_export_params.ventilation_type": "3",
+        "add_detailed_hvac.system_type": "3"
+      }
+    },
+    {
+      "name": "manual_ventilation",
+      "description": "Manual window ventilation (7-8 and 18-19 h)",
+      "typologies": ["Multi-family house", "Office"],
+      "modes": ["ideal", "detailed"],
+      "set": {
+        "custom_export_params.include_manual_ventilation": "1"
+      }
+    },
+    {
+      "name": "fractional_fan",
+      "description": "Fractional operating schedule: reduced DOAS flow at night and on Saturday, off on Sunday",
+      "typologies": ["Office"],
+      "modes": ["detailed"],
+      "set": {
+        "add_detailed_hvac.is_custom_hvac": "true",
+        "add_detailed_hvac.hvac_sched_weekday": [[0.3, 24], [1, 52], [0.3, 20]],
+        "add_detailed_hvac.hvac_sched_saturday": [[0, 32], [0.5, 40], [0, 24]],
+        "add_detailed_hvac.hvac_sched_sunday": [[0, 96]],
+        "add_detailed_hvac.hvac_sched_holiday": [[0, 96]]
+      }
+    },
+    {
+      "name": "infiltration_doe2",
+      "description": "DOE-2 infiltration coefficients instead of the BLAST default",
+      "typologies": ["Single-family house"],
+      "modes": ["ideal"],
+      "set": {
+        "add_infiltration.infiltration_type": "DOE2",
+        "inject_zone_ventilation_idf.infiltration_type": "DOE2",
+        "inject_manual_ventilation_idf.infiltration_type": "DOE2"
+      }
+    },
+    {
+      "name": "climate_2045",
+      "description": "Future test reference year TRY2045 Stuttgart (hotter summers)",
+      "typologies": ["Restaurant"],
+      "modes": ["ideal", "detailed"],
+      "weather": "TRY2045_Stuttgart_Jahr.epw"
+    },
+    {
+      "name": "southern_hemisphere",
+      "description": "Santiago de Chile (TMYx, latitude -33.4): seasons of the DOAS SAT schedule swapped",
+      "typologies": ["Office"],
+      "modes": ["ideal", "detailed"],
+      "weather": "CHL_RM_Santiago-Quinta.Normal.855770_TMYx.epw"
+    },
+    {
+      "name": "sizing_ddy",
+      "description": "Design days from the DDY file instead of automatic design days",
+      "typologies": ["Kindergarten"],
+      "modes": ["ideal"],
+      "set": {
+        "set_weather_axis_timestep.sizing_method": "use_ddy_file"
+      }
+    },
+    {
+      "name": "controls_off",
+      "description": "No shading control, lighting control, window ventilation or infiltration",
+      "typologies": ["Retail"],
+      "modes": ["ideal", "detailed"],
+      "set": {
+        "custom_export_params.include_shading_control": "0",
+        "custom_export_params.include_lighting_control": "0",
+        "custom_export_params.include_window_ventilation": "0",
+        "custom_export_params.include_infiltration": "0"
+      }
+    },
+    {
+      "name": "output_debug",
+      "description": "Debug output level of set_meters_idf and results",
+      "typologies": ["Single-family house"],
+      "modes": ["ideal"],
+      "set": {
+        "set_meters_idf.output_level": "Debug",
+        "results.output_level": "Debug"
+      }
+    }
+  ]
+}
