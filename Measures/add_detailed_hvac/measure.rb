@@ -276,9 +276,9 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
         sizingSystem = airLoopHVAC.sizingSystem()
         sizingSystem.setTypeofLoadtoSizeOn("VentilationRequirement")
 
-        # SAT Year Schedule, shared by the DOAS heating coil, the DOAS cooling coil, and (if
-        # present) the heat recovery ERV, so they all target the same leaving air temperature for
-        # the air loop. Low (heating season) = zone heating setpoint - 2 K, high (cooling season)
+        # SAT Year Schedule, shared by the DOAS heating coil and the DOAS cooling coil, so they
+        # target the same leaving air temperature for the air loop (the heat recovery uses only
+        # the Low week, see "HX Setpoint Schedule" below). Low (heating season) = zone heating setpoint - 2 K, high (cooling season)
         # = zone cooling setpoint + 2 K, so the DOAS delivers near-neutral air incl. setbacks
         temperature_limits = model.getScheduleTypeLimitsByName("Temperature")
         if temperature_limits.is_initialized
@@ -417,7 +417,14 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
           runner.registerInfo("heat_exchanger.secondaryAirInletPort:  #{heat_exchanger.secondaryAirInletPort}")
           runner.registerInfo("heat_exchanger.secondaryAirOutletPort:  #{heat_exchanger.secondaryAirOutletPort}")
 
-          setpoint_scheduled = OpenStudio::Model::SetpointManagerScheduled.new(model, "Temperature", sat_sched)
+          # the heat exchanger tempers the outdoor air only up to the heating SAT (heating setpoint
+          # - 2 K) all year, not to the summer SAT (cooling setpoint + 2 K): otherwise it heats cool
+          # outdoor air on summer nights with the exhaust air and the free cooling is lost. Above that
+          # it is bypassed by its outlet temperature control; the DOAS coils keep the SAT Year Schedule
+          hx_sched = OpenStudio::Model::ScheduleYear.new(model)
+          hx_sched.setName("HX Setpoint Schedule")
+          hx_sched.addScheduleWeek(year_description.makeDate(12, 31), week_sched_Low)
+          setpoint_scheduled = OpenStudio::Model::SetpointManagerScheduled.new(model, "Temperature", hx_sched)
           erv_outlet = heat_exchanger.primaryAirOutletModelObject.get.to_Node.get
           setpoint_scheduled.addToNode(erv_outlet)
 
@@ -426,10 +433,8 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
 
           # economizer: the DOAS runs on 100 % outdoor air, so it cannot raise the outdoor air flow;
           # it only bypasses the heat exchanger (economizer lockout) while the outdoor air is cooler
-          # than the return air. Without it the exchanger heats cool outdoor air in summer with the
-          # exhaust air towards the summer SAT (cooling setpoint + 2 K) and the free cooling is lost.
-          # Below the heating design SAT the economizer is off, so the heat recovery stays as before
-          # in winter (above it the exchanger is bypassed anyway by its outlet temperature control).
+          # than the return air and warmer than the heating design SAT. Below that limit the economizer
+          # is off, so the heat recovery stays in winter.
           controller_OA.setEconomizerControlType("DifferentialDryBulb")
           controller_OA.setEconomizerMinimumLimitDryBulbTemperature(heating_design_sat)
           controller_OA.setHeatRecoveryBypassControlType("BypassWhenWithinEconomizerLimits")

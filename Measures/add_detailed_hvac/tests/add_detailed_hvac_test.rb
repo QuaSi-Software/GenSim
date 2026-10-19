@@ -95,6 +95,11 @@ class AddDetailedHVAC_Test < MiniTest::Test
     assert(model.getHeatExchangerAirToAirSensibleAndLatents.first.economizerLockout)
     mixed_air_node = model.getAirLoopHVACOutdoorAirSystems.first.mixedAirModelObject.get.to_Node.get
     refute_empty(mixed_air_node.setpointManagers)
+    # the heat exchanger tempers the outdoor air to the heating SAT all year, not to the summer SAT
+    hx_outlet = model.getHeatExchangerAirToAirSensibleAndLatents.first.primaryAirOutletModelObject.get.to_Node.get
+    hx_sched = hx_outlet.setpointManagers[0].to_SetpointManagerScheduled.get.schedule.to_ScheduleYear.get
+    assert_equal("HX Setpoint Schedule", hx_sched.name.to_s)
+    assert_equal(["SAT Week Schedule Low"], hx_sched.scheduleWeeks.map { |w| w.name.to_s })
     # save the model to test output directory
     SaveModel(model, dir)
   end

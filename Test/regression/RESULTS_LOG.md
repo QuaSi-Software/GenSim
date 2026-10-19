@@ -3,6 +3,33 @@
 Explains the result differences found with the regression runs between branches and commits.
 Add new comparisons at the top, with the commits, the numbers and how each cause was confirmed.
 
+## 2026-10-19: heat exchanger setpoint = heating SAT all year
+
+Change in `add_detailed_hvac`: the `SetpointManager:Scheduled` on the heat exchanger outlet uses a
+new `HX Setpoint Schedule` (only the `SAT Week Schedule Low` week, heating setpoint −2 K) instead
+of the `SAT Year Schedule`. The DOAS coils keep the seasonal SAT Year Schedule, and the economizer
+stays. On cool summer nights the exchanger now only tempers the outdoor air to the heating SAT
+instead of heating it towards the summer SAT (cooling setpoint + 2 K).
+
+Detailed mode, kWh/m² (same 4 cases as below):
+
+| case | cooling lüftung | economizer | HX setpoint | heating |
+|---|---:|---:|---:|---|
+| Kindergarten | 13.5 | 14.8 | 13.5 | unchanged (< 1 %) |
+| Office | 9.4 | 11.1 | 9.5 | unchanged |
+| Restaurant | 14.3 | 18.7 | 14.7 | unchanged |
+| Single-family house (no heat recovery) | 0.87 | 0.87 | 0.87 | unchanged |
+
+- Cooling is back at the lüftung level; heating, heating peak and the warnings are unchanged
+  (Kindergarten warnings +1.4 %).
+- Alternative tested on the Restaurant IDF only (EnergyPlus run directly): the
+  `Time of Day Economizer Control Schedule` of the outdoor air controller, set to 1 from May to
+  September, bypasses the exchanger regardless of the economizer limits. Cooling was 150 GJ
+  (this change: 158 GJ, economizer: 202 GJ), but heating rose by 13 % (222 vs. 196 GJ), and the
+  cooling recovery on hot days is lost too. Without the economizer minimum limit, the heat recovery
+  is bypassed all winter (heating 1339 GJ). EnergyPlus has no EMS actuator for the bypass or the
+  economizer limits (checked in the `.edd`).
+
 ## 2026-10-13: varFanTest with economizer (heat exchanger bypass)
 
 Change in `add_detailed_hvac` (only with heat recovery): the outdoor air controller gets a
