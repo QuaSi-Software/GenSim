@@ -150,7 +150,10 @@ def build_workflow(base, typology, mode, measures_dir, run_dir, overrides = [], 
     steps.reject! { |s| s["measure_dir_name"] == "inject_radiant_surfaces_idf" }
   end
 
-  weather = File.join(INPUT_ROOT, "Wetter", variant&.fetch("weather", nil) || File.basename(base["weather_file"].tr("\\", "/")))
+  # weather file: the variant's, else the one of the typology/test file, else the base workflow's
+  typology_weather = typology_args.dig("set_weather_axis_timestep", "weather_file_path")
+  weather_name = variant&.fetch("weather", nil) || File.basename((typology_weather || base["weather_file"]).tr("\\", "/"))
+  weather = File.join(INPUT_ROOT, "Wetter", weather_name)
   errors << "weather file #{weather} not found" unless File.exist?(weather)
   step.call("set_weather_axis_timestep")["arguments"]["weather_file_path"] = weather
   step.call("save_model")["arguments"]["output_path"] = run_dir
@@ -274,21 +277,22 @@ end
 
 # collect the cases
 base = JSON.parse(File.read(File.join(SCRIPT_DIR, "base_workflow.osw"), encoding: "UTF-8"))
-typology_files = Dir[File.join(INPUT_ROOT, "building_typologies", "*.osw")].sort
-typology_files.select! { |f| File.basename(f, ".osw") =~ options[:cases] } if options[:cases]
-abort("no typologies found") if typology_files.empty?
+# name => workflow file of every input: the building typologies and the complete exports of
+# test environment IV (Test/parameter_sets/env_iv, named "env_iv test_01" etc.)
+all_inputs = Dir[File.join(INPUT_ROOT, "building_typologies", "*.osw")].sort.to_h { |f| [File.basename(f, ".osw").sub(/ \(Germany\)$/, ""), f] }
+Dir[File.join(INPUT_ROOT, "Test", "parameter_sets", "env_iv", "*.osw")].sort.each { |f| all_inputs["env_iv #{File.basename(f, '.osw')}"] = f }
+inputs = options[:cases] ? all_inputs.select { |name, _| name =~ options[:cases] } : all_inputs
+abort("no typologies found") if inputs.empty?
 
 variants = JSON.parse(File.read(File.join(SCRIPT_DIR, "variants.json"), encoding: "UTF-8"))["variants"]
 variants = options[:variants] ? variants.select { |v| v["name"] =~ options[:variants] } : []
-all_typologies = Dir[File.join(INPUT_ROOT, "building_typologies", "*.osw")].map { |f| File.basename(f, ".osw").sub(/ \(Germany\)$/, "") }
 variants.each do |v|
-  (v["typologies"] - all_typologies).each { |t| warn "variant #{v['name']}: unknown typology #{t}" }
+  (v["typologies"] - all_inputs.keys).each { |t| warn "variant #{v['name']}: unknown typology #{t}" }
 end
 
 cases = []
-typology_files.each do |file|
+inputs.each do |name, file|
   typology = JSON.parse(File.read(file, encoding: "UTF-8"))
-  name = File.basename(file, ".osw").sub(/ \(Germany\)$/, "")
   # the plain typology (variant nil) and every variant listed for it, per mode
   runs = options[:only_variants] ? [] : options[:modes].map { |mode| [mode, nil] }
   variants.each do |v|
