@@ -3,6 +3,39 @@
 Explains the result differences found with the regression runs between branches and commits.
 Add new comparisons at the top, with the commits, the numbers and how each cause was confirmed.
 
+## 2026-10-19: first run of the feature variants (varFanTest 3b5cac1)
+
+All 19 variant cases of `variants.json` complete without EnergyPlus failures. kWh/m²:
+
+| case | heating | cooling | warnings | notes |
+|---|---:|---:|---:|---|
+| Office ideal / detailed enthalpy_recovery | 16.5 / 16.0 | 6.7 / 9.5 | 227 / 218 | |
+| Office detailed doas_coils | 28.6 | 19.7 | 257 | |
+| Multi-family house detailed doas_coils_no_recovery | 32.4 | 6.5 | 222 | |
+| School detailed no_ventilation | 8.7 | 23.5 | 51594 | condensation shut-offs of the radiant cooling, 585 unmet cooling hours |
+| Multi-family house ideal / detailed manual_ventilation | 25.6 / 25.6 | 1.5 / 2.4 | 227 / 223 | |
+| Office ideal / detailed manual_ventilation | 19.7 / 20.6 | 6.3 / 9.0 | 227 / 218 | |
+| Office detailed fractional_fan | 19.7 | 7.7 | 95200 | heat exchanger flow < 50 % of nominal |
+| Single-family house ideal infiltration_doe2 | 27.3 | 0.6 | 227 | |
+| Restaurant ideal / detailed climate_2045 | 18.5 / 11.0 | 15.5 / 21.4 | 228 / 1806 | |
+| Office ideal / detailed southern_hemisphere | 2.4 / 1.9 | 13.2 / 18.7 | 227 / 218 | 264 unmet cooling hours (detailed) |
+| Kindergarten ideal sizing_ddy | 11.8 | 8.3 | 226 | 4 severe: warm-up not converged on the DDY heating design day |
+| Retail ideal / detailed controls_off | 14.4 / 10.3 | 45.5 / 61.4 | 231 / 22874 | condensation shut-offs, no infiltration or window ventilation |
+| Single-family house ideal output_debug | 29.8 | 0.4 | 227 | |
+
+- **fractional_fan:** 94,981 of the warnings are "HeatExchanger:AirToAir:SensibleAndLatent: Average
+  air volume flow rate is <50% or >130%". At 30 % night flow the exchanger runs outside the range of
+  its effectiveness inputs, and EnergyPlus extrapolates. This is a limitation of the fractional fan
+  flow; open.
+- **no_ventilation, controls_off:** without ventilation or infiltration the zones get humid and the
+  radiant cooling shuts off for condensation. Expected for these inputs.
+- **sizing_ddy:** the 4 severe errors are warm-up convergence failures by a few hundredths of a
+  kelvin (0.42–0.50 vs. 0.40) on "Stuttgart Ann Htg 99.6% Condns DB"; the run completes.
+- **southern_hemisphere:** the `SAT Year Schedule` is High / Low / High, i.e. the seasons are swapped as
+  intended.
+- **infiltration_doe2:** `infiltration_type` is missing from the measure.xml files, so variant inputs
+  are passed on like `--set` overrides (heating 29.8 → 27.3 kWh/m² vs. BLAST).
+
 ## 2026-10-19: heat exchanger setpoint = heating SAT all year
 
 Change in `add_detailed_hvac`: the `SetpointManager:Scheduled` on the heat exchanger outlet uses a
@@ -104,6 +137,9 @@ from constant to BLAST.** Commit 3c407b7 added the argument `infiltration_type` 
 `add_infiltration`, `inject_zone_ventilation_idf` and `inject_manual_ventilation_idf`, and
 e710ff1 changed its default from `EnergyPlus` to `BLAST`. The Excel export does not write this
 argument, so every GenSim run uses the default.
+
+**Decided (2026-10-19): BLAST stays the default**, since its coefficients are more realistic. The
+heating increase is intended. The `infiltration_doe2` variant keeps the other coefficient path tested.
 
 - `diff_idf.rb` of the ideal-loads Office: apart from the order of zones in some lists, the only
   differences are `ZoneInfiltration:DesignFlowRate` and `ZoneVentilation:DesignFlowRate`. In main,

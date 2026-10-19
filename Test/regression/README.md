@@ -15,6 +15,33 @@ results between branches or commits, to see whether a change of the measures cha
   and numbering), to find the inputs behind a result difference.
 - `RESULTS_LOG.md`: the explained differences found so far. Add an entry for every comparison.
 
+## Feature variants
+
+The typologies alone leave several features untested (they all use sensible or no heat recovery,
+no DOAS coils, no manual window ventilation, binary operating schedules, one climate, one hemisphere
+and one sizing method). `variants.json` adds feature variants: each one is laid over the listed
+typologies like an extra typology layer, in the listed modes, and runs as its own case
+`<typology>__<mode>__<variant>`.
+
+| variant | typologies | modes | covers |
+|---|---|---|---|
+| enthalpy_recovery | Office | ideal, detailed | enthalpy heat recovery (latent effectiveness 0.6) |
+| doas_coils | Office | detailed | DOAS heating and cooling coils with heat recovery |
+| doas_coils_no_recovery | Multi-family house | detailed | central ventilation with DOAS coils, no heat recovery |
+| no_ventilation | School | detailed | no mechanical ventilation (system type 3) |
+| manual_ventilation | Multi-family house, Office | ideal, detailed | manual window ventilation |
+| fractional_fan | Office | detailed | fractional operating schedule (reduced DOAS fan flow) |
+| infiltration_doe2 | Single-family house | ideal | DOE-2 infiltration coefficients (BLAST is the default) |
+| climate_2045 | Restaurant | ideal, detailed | TRY2045 weather |
+| southern_hemisphere | Office | ideal, detailed | Santiago de Chile weather, latitude switch of the DOAS SAT seasons |
+| sizing_ddy | Kindergarten | ideal | design days from the DDY file |
+| controls_off | Retail | ideal, detailed | no shading/lighting control, window ventilation or infiltration |
+| output_debug | Single-family house | ideal | Debug output level |
+
+`--variants all|none|REGEX` selects the variants (default: all), `--only-variants` skips the plain
+typologies. To cover a new feature, add a variant with the inputs that switch it on. Schedule inputs
+can be given as `[[value, count], ...]` (quarter hours, 96 per day).
+
 Extracted per case (from the EnergyPlus tabular reports): end uses in kWh and kWh/m², totals per fuel,
 peak demands, unmet heating and cooling hours, hours not comfortable (ASHRAE 55), and the number of
 EnergyPlus warnings and severe errors.
@@ -26,8 +53,9 @@ cd <repo>
 C:\openstudio-3.10.0\bin\openstudio.exe Test\regression\run_regression.rb --jobs 6
 ```
 
-Results go to `Output\regression\<branch>` (not versioned). One run of all 18 cases takes about
-10 minutes with 6 parallel jobs. Options: `--cases REGEX`, `--modes ideal,detailed`, `--out DIR`,
+Results go to `Output\regression\<branch>` (not versioned). One run of the 18 plain cases takes about
+10 minutes with 6 parallel jobs; the 19 variant cases add about as much. Options: `--cases REGEX`,
+`--modes ideal,detailed`, `--variants all|none|REGEX`, `--only-variants`, `--out DIR`,
 `--repo DIR` (measures of another checkout, e.g. a `git worktree` of another branch), `--keep-runs`
 (keep the complete EnergyPlus output, about 0.5 GB per case), `--prepare-only`, and
 `--set MEASURE.ARGUMENT=VALUE` (override an input in every case, repeatable, e.g.
