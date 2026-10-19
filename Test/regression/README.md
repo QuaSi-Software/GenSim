@@ -1,7 +1,10 @@
 # Regression runs of the building typologies
 
-Runs the 9 building typologies (`building_typologies/*.osw`) without Excel and compares the key
-results between branches or commits, to see whether a change of the measures changes the results.
+Runs the 9 building typologies (`building_typologies/*.osw`) and the 3 complete exports of test
+environment IV (`Test/parameter_sets/env_iv/test_0*.osw`, cases `env_iv_test_0*`) without Excel and
+compares the key results between branches or commits, to see whether a change of the measures
+changes the results. The env_iv files are laid over the base workflow like the typologies, which adds
+the arguments that newer measures require and the older files lack.
 
 - `base_workflow.osw`: a complete GenSim export with the default inputs. Each typology only holds the
   parameters that differ from these defaults and is laid over it per measure step, like the Excel import.
@@ -53,8 +56,8 @@ cd <repo>
 C:\openstudio-3.10.0\bin\openstudio.exe Test\regression\run_regression.rb --jobs 6
 ```
 
-Results go to `Output\regression\<branch>` (not versioned). One run of the 18 plain cases takes about
-10 minutes with 6 parallel jobs; the 19 variant cases add about as much. Options: `--cases REGEX`,
+Results go to `Output\regression\<branch>` (not versioned). One run of the 24 plain cases takes about
+15 minutes with 6 parallel jobs; the 19 variant cases add about as much. Options: `--cases REGEX`,
 `--modes ideal,detailed`, `--variants all|none|REGEX`, `--only-variants`, `--out DIR`,
 `--repo DIR` (measures of another checkout, e.g. a `git worktree` of another branch), `--keep-runs`
 (keep the complete EnergyPlus output, about 0.5 GB per case), `--prepare-only`, and
