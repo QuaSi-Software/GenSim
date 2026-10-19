@@ -1,3 +1,5 @@
 Source of data: Klimaberatungsmodul https://kunden.dwd.de/obt/
 
 Test reference year (TRY) weather data was provided by Deutscher Wetterdienst (DWD) and transformed to EnergyPlus™ Weather (EPW) files and Design Day (DDY) files using the EnergyPlus™ Weather Converter (see https://bigladdersoftware.com/epx/docs/8-3/auxiliary-programs/using-the-weather-converter.html). The original data is released under the "Verordnung zur Festlegung der Nutzungsbestimmungen für die Bereitstellung von Geodaten des Bundes" (GeoNutzV) (see https://kunden.dwd.de/copyright.html and https://www.gesetze-im-internet.de/geonutzv/BJNR054700013.html).
+
+CHL_RM_Santiago-Quinta.Normal.855770_TMYx (EPW and DDY, used by the regression runs for a southern-hemisphere location): TMYx typical meteorological year from Climate.OneBuilding.Org (https://climate.onebuilding.org), derived from ISD (NOAA) hourly data.
