@@ -3,8 +3,8 @@
   <schema_version>3.1</schema_version>
   <name>set_meters_idf</name>
   <uid>f6530b2e-e6e0-4b16-888c-54226d297dd4</uid>
-  <version_id>00fb18f2-a9c7-41b1-ba83-49e58fce5224</version_id>
-  <version_modified>2026-03-09T12:03:02Z</version_modified>
+  <version_id>465377fc-db42-463b-b336-7504effa833b</version_id>
+  <version_modified>2026-09-21T10:41:05Z</version_modified>
   <xml_checksum>15DBE762</xml_checksum>
   <class_name>SetMetersIDF</class_name>
   <display_name>SetMetersIDF</display_name>
@@ -89,7 +89,7 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>4210B36C</checksum>
+      <checksum>617AE0B8</checksum>
     </file>
     <file>
       <filename>example_model.idf</filename>

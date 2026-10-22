@@ -3,8 +3,8 @@
   <schema_version>3.1</schema_version>
   <name>add_detailed_hvac</name>
   <uid>75c17475-d6d2-4074-a097-0c2202206dab</uid>
-  <version_id>4ee7b3b3-e322-4f1f-bb0c-c6f2f5f2df43</version_id>
-  <version_modified>2026-03-09T12:02:38Z</version_modified>
+  <version_id>a48bb5af-536c-42b6-b9aa-d0ba8f289fc7</version_id>
+  <version_modified>2026-10-12T15:14:46Z</version_modified>
   <xml_checksum>C49A7DAB</xml_checksum>
   <class_name>AddDetailedHVAC</class_name>
   <display_name>AddDetailedHVAC</display_name>
@@ -249,14 +249,6 @@
       </choices>
     </argument>
     <argument>
-      <name>doas_heating_coil_supply_air_temp</name>
-      <display_name>DOAS heating coil leaving air temperature setpoint</display_name>
-      <type>Double</type>
-      <required>true</required>
-      <model_dependent>false</model_dependent>
-      <default_value>18</default_value>
-    </argument>
-    <argument>
       <name>add_doas_cooling_coil</name>
       <display_name>Add cooling coil to DOAS air loop</display_name>
       <type>Boolean</type>
@@ -273,14 +265,6 @@
           <display_name>false</display_name>
         </choice>
       </choices>
-    </argument>
-    <argument>
-      <name>doas_cooling_coil_supply_air_temp</name>
-      <display_name>DOAS cooling coil leaving air temperature setpoint</display_name>
-      <type>Double</type>
-      <required>true</required>
-      <model_dependent>false</model_dependent>
-      <default_value>14</default_value>
     </argument>
   </arguments>
   <outputs />
@@ -326,13 +310,13 @@
       <filename>measure.rb</filename>
       <filetype>rb</filetype>
       <usage_type>script</usage_type>
-      <checksum>A951739E</checksum>
+      <checksum>320902FE</checksum>
     </file>
     <file>
       <filename>add_detailed_hvac_test.rb</filename>
       <filetype>rb</filetype>
       <usage_type>test</usage_type>
-      <checksum>873D56DD</checksum>
+      <checksum>334FD6E8</checksum>
     </file>
     <file>
       <filename>example_model.osm</filename>

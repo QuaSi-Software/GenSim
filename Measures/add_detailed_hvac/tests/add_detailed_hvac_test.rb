@@ -79,11 +79,27 @@ class AddDetailedHVAC_Test < MiniTest::Test
     # assert that it ran correctly
     assert_equal("Success", result.value.valueName)
     assert(result.info.size >= 1)
-    assert(result.warnings.empty?)
+    # the example model is occupied around the clock, the DOAS runs 05:00-18:00 only
+    assert_equal(1, result.warnings.size)
+    assert_match(/People are present for 4015 h per year while the DOAS is off/, result.warnings[0].logMessage)
     assert(result.errors.empty?)
     refute(result.initialCondition.is_initialized)
     assert(result.finalCondition.is_initialized)
     assert_equal("In the final model 4 zones are connected to the DOAS air loop.", result.finalCondition.get.logMessage)
+    # the economizer bypasses the heat exchanger when the outdoor air is cooler than the return air,
+    # but not below the heating design SAT (heating setpoint 20 - 2 K)
+    controller_OA = model.getControllerOutdoorAirs.first
+    assert_equal("DifferentialDryBulb", controller_OA.getEconomizerControlType)
+    assert_in_delta(18.0, controller_OA.getEconomizerMinimumLimitDryBulbTemperature.get, 0.001)
+    assert_equal("BypassWhenWithinEconomizerLimits", controller_OA.getHeatRecoveryBypassControlType.get)
+    assert(model.getHeatExchangerAirToAirSensibleAndLatents.first.economizerLockout)
+    mixed_air_node = model.getAirLoopHVACOutdoorAirSystems.first.mixedAirModelObject.get.to_Node.get
+    refute_empty(mixed_air_node.setpointManagers)
+    # the heat exchanger tempers the outdoor air to the heating SAT all year, not to the summer SAT
+    hx_outlet = model.getHeatExchangerAirToAirSensibleAndLatents.first.primaryAirOutletModelObject.get.to_Node.get
+    hx_sched = hx_outlet.setpointManagers[0].to_SetpointManagerScheduled.get.schedule.to_ScheduleYear.get
+    assert_equal("HX Setpoint Schedule", hx_sched.name.to_s)
+    assert_equal(["SAT Week Schedule Low"], hx_sched.scheduleWeeks.map { |w| w.name.to_s })
     # save the model to test output directory
     SaveModel(model, dir)
   end
@@ -105,7 +121,8 @@ class AddDetailedHVAC_Test < MiniTest::Test
     args_hash["hvac_sched_holiday"] = hvacSched
     args_hash["holidays"] = "-"
     args_hash["zone_heating_temp_sched_weekday"] = heatingSched
-    args_hash["zone_heating_temp_sched_saturday"] = heatingSched
+    # night setback on Saturdays, to check that every day of the setpoint schedule gets offset
+    args_hash["zone_heating_temp_sched_saturday"] = ((["16"] * 24) + (["20"] * 72)).join(";")
     args_hash["zone_heating_temp_sched_sunday"] = heatingSched
     args_hash["zone_heating_temp_sched_holiday"] = heatingSched
     args_hash["zone_cooling_temp_sched_weekday"] = coolingSched
@@ -125,6 +142,11 @@ class AddDetailedHVAC_Test < MiniTest::Test
     # load an existing model
     dir = __dir__
     model = OpenModel(dir)
+    # the example model has no site location (latitude 0) - place it in Augsburg (northern hemisphere)
+    model.getSite.setLatitude(48.4)
+    # weather files starting on a Sunday (e.g. TRY2015) make the model's assumed base year 2006
+    # instead of OpenStudio's default 2009 - the SAT season dates must still be accepted
+    model.getYearDescription.setDayofWeekforStartDay("Sunday")
     result = TestArguments(AddDetailedHVAC.new, model, args_hash)
 
     # assert that it ran correctly
@@ -138,16 +160,203 @@ class AddDetailedHVAC_Test < MiniTest::Test
     assert_equal(1, heating_coils.size)
     assert_equal(1, cooling_coils.size)
 
+    # the coils must sit downstream of the outdoor air system, so they condition the supply air
+    # (not the exhausted return air): return fan -> OA system -> cooling coil -> heating coil -> supply fan
+    main_comps = air_loop.supplyComponents.reject { |c| c.to_Node.is_initialized }.map { |c| c.iddObjectType.valueName }
+    assert_equal(["OS_Fan_ConstantVolume", "OS_AirLoopHVAC_OutdoorAirSystem", "OS_Coil_Cooling_Water", "OS_Coil_Heating_Water", "OS_Fan_ConstantVolume"], main_comps)
+    assert_equal("Supply Fan", air_loop.supplyComponents.reject { |c| c.to_Node.is_initialized }.last.name.to_s)
+
+    # coils are sized at the full constant DOAS flow, for the SAT they control to
+    sizing_system = air_loop.sizingSystem
+    assert_equal(1.0, sizing_system.centralHeatingMaximumSystemAirFlowRatio.get)
+    assert_equal(18.0, sizing_system.centralHeatingDesignSupplyAirTemperature)
+    assert_equal(27.0, sizing_system.centralCoolingDesignSupplyAirTemperature)
+    # neutral DOAS: saturation humidity ratio at 27 deg C, so the cooling coil is sized sensible-only
+    assert_in_delta(0.0227, sizing_system.centralCoolingDesignSupplyAirHumidityRatio, 0.0005)
+
     hot_water_plant = model.getPlantLoopByName("Hot Water Loop").get
     chilled_water_plant = model.getPlantLoopByName("Chilled Water Loop").get
     assert(hot_water_plant.demandComponents.any? { |c| c.to_CoilHeatingWater.is_initialized })
     assert(chilled_water_plant.demandComponents.any? { |c| c.to_CoilCoolingWater.is_initialized })
 
-    # both coils should be connected to the same shared "main supply air temperature" schedule
+    # both coils share the seasonal "SAT Year Schedule": heating season = zone heating setpoint - 2 K,
+    # cooling season = zone cooling setpoint + 2 K (northern hemisphere)
     heating_coil_spm = heating_coils[0].to_CoilHeatingWater.get.airOutletModelObject.get.to_Node.get.setpointManagers[0].to_SetpointManagerScheduled.get
     cooling_coil_spm = cooling_coils[0].to_CoilCoolingWater.get.airOutletModelObject.get.to_Node.get.setpointManagers[0].to_SetpointManagerScheduled.get
     assert_equal("SAT Year Schedule", heating_coil_spm.schedule.name.to_s)
     assert_equal(heating_coil_spm.schedule, cooling_coil_spm.schedule)
+
+    sat_sched = heating_coil_spm.schedule.to_ScheduleYear.get
+    weeks = sat_sched.scheduleWeeks
+    assert_equal(["SAT Week Schedule Low", "SAT Week Schedule High", "SAT Week Schedule Low"], weeks.map { |w| w.name.to_s })
+    winter_week = weeks[0]
+    summer_week = weeks[1]
+    assert_equal([18.0], winter_week.mondaySchedule.get.values.uniq)
+    assert_equal(([14.0] * 24) + ([18.0] * 72), winter_week.saturdaySchedule.get.values)
+    assert_equal([18.0], winter_week.winterDesignDaySchedule.get.values.uniq)
+    assert_equal([27.0], summer_week.mondaySchedule.get.values.uniq)
+    assert_equal([27.0], summer_week.summerDesignDaySchedule.get.values.uniq)
+    # the SAT day schedules carry temperature limits, so EnergyPlus validates them
+    [winter_week.mondaySchedule.get, summer_week.holidaySchedule.get].each do |day|
+      assert_equal("Temperature", day.scheduleTypeLimits.get.unitType)
+    end
+
+    # in the southern hemisphere the seasons are swapped
+    southern_model = OpenModel(dir)
+    southern_model.getSite.setLatitude(-33.9)
+    TestArguments(AddDetailedHVAC.new, southern_model, args_hash)
+    southern_weeks = southern_model.getScheduleYearByName("SAT Year Schedule").get.scheduleWeeks
+    assert_equal(["SAT Week Schedule High", "SAT Week Schedule Low", "SAT Week Schedule High"], southern_weeks.map { |w| w.name.to_s })
+
+    # the zone setpoint schedules themselves stay untouched
+    zone_heating_sched = model.getScheduleRulesetByName("ZoneHeatingTempSched").get
+    assert_equal([20.0], zone_heating_sched.scheduleRules.find(&:applyMonday).daySchedule.values.uniq)
+  end
+
+  def test_fan_flow_fraction_schedule_applied
+    args_hash = {}
+    # fractional Betriebszeiten: off at night, 30 % flow in the morning, full flow during the day
+    hvacSched = ((["0"] * 20) + (["0.3"] * 12) + (["1"] * 40) + (["0"] * 24)).join(";")
+    heatingSched = " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20"
+    coolingSched = " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25"
+    args_hash["heat_recovery_method"] = "none"
+    args_hash["ach_per_hour"] = 2.0
+    args_hash["hvac_sched_weekday"] = hvacSched
+    args_hash["hvac_sched_saturday"] = hvacSched
+    args_hash["hvac_sched_sunday"] = hvacSched
+    args_hash["hvac_sched_holiday"] = hvacSched
+    args_hash["holidays"] = "-"
+    args_hash["zone_heating_temp_sched_weekday"] = heatingSched
+    args_hash["zone_heating_temp_sched_saturday"] = heatingSched
+    args_hash["zone_heating_temp_sched_sunday"] = heatingSched
+    args_hash["zone_heating_temp_sched_holiday"] = heatingSched
+    args_hash["zone_cooling_temp_sched_weekday"] = coolingSched
+    args_hash["zone_cooling_temp_sched_saturday"] = coolingSched
+    args_hash["zone_cooling_temp_sched_sunday"] = coolingSched
+    args_hash["zone_cooling_temp_sched_holiday"] = coolingSched
+    args_hash["hot_water_temp_setpoint"] = 82
+    args_hash["hot_water_temp_diff"] = 11
+    args_hash["cold_water_temp_setpoint"] = 10
+    args_hash["cold_water_temp_diff"] = 5
+    args_hash["system_type"] = 2
+
+    dir = __dir__
+    model = OpenModel(dir)
+    result = TestArguments(AddDetailedHVAC.new, model, args_hash)
+
+    assert_equal("Success", result.value.valueName)
+    assert(result.errors.empty?)
+
+    # both the supply fan and the return fan get an EMS override for system_type 2
+    actuators = model.getEnergyManagementSystemActuators
+    assert_equal(2, actuators.size)
+    actuators.each do |actuator|
+      assert_equal("Fan", actuator.actuatedComponentType)
+      assert_equal("Fan Air Mass Flow Rate", actuator.actuatedComponentControlType)
+    end
+
+    assert_equal(2, model.getEnergyManagementSystemPrograms.size)
+    assert_equal(2, model.getEnergyManagementSystemProgramCallingManagers.size)
+    assert_equal(2, model.getEnergyManagementSystemSensors.size) # one HVACSched sensor per fan
+    assert_equal(2, model.getEnergyManagementSystemInternalVariables.size)
+
+    # the fractional schedule must still be accepted as the fans' availability schedule,
+    # and the EMS sensors read that same schedule as the flow fraction
+    hvac_sched = model.getFanConstantVolumeByName("Supply Fan").get.availabilitySchedule.to_ScheduleRuleset.get
+    assert_equal(hvac_sched.handle, model.getFanConstantVolumeByName("Return Fan").get.availabilitySchedule.handle)
+    assert_equal("HVAC Operation Fraction", hvac_sched.scheduleTypeLimits.get.name.to_s)
+    model.getEnergyManagementSystemSensors.each do |sensor|
+      assert_equal(hvac_sched.name.to_s, sensor.keyName)
+    end
+    weekday_rule = hvac_sched.scheduleRules.find { |r| r.applyMonday }
+    assert(weekday_rule.daySchedule.values.include?(0.3))
+
+    SaveModel(model, dir)
+  end
+
+  def test_fan_flow_fraction_schedule_return_fan_only
+    args_hash = {}
+    hvacSched = " 0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0"
+    heatingSched = " 20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20;20"
+    coolingSched = " 25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25;25"
+    args_hash["heat_recovery_method"] = "none"
+    args_hash["ach_per_hour"] = 2.0
+    args_hash["hvac_sched_weekday"] = hvacSched
+    args_hash["hvac_sched_saturday"] = hvacSched
+    args_hash["hvac_sched_sunday"] = hvacSched
+    args_hash["hvac_sched_holiday"] = hvacSched
+    args_hash["holidays"] = "-"
+    args_hash["zone_heating_temp_sched_weekday"] = heatingSched
+    args_hash["zone_heating_temp_sched_saturday"] = heatingSched
+    args_hash["zone_heating_temp_sched_sunday"] = heatingSched
+    args_hash["zone_heating_temp_sched_holiday"] = heatingSched
+    args_hash["zone_cooling_temp_sched_weekday"] = coolingSched
+    args_hash["zone_cooling_temp_sched_saturday"] = coolingSched
+    args_hash["zone_cooling_temp_sched_sunday"] = coolingSched
+    args_hash["zone_cooling_temp_sched_holiday"] = coolingSched
+    args_hash["hot_water_temp_setpoint"] = 82
+    args_hash["hot_water_temp_diff"] = 11
+    args_hash["cold_water_temp_setpoint"] = 10
+    args_hash["cold_water_temp_diff"] = 5
+    args_hash["system_type"] = 1
+
+    dir = __dir__
+    model = OpenModel(dir)
+    result = TestArguments(AddDetailedHVAC.new, model, args_hash)
+
+    assert_equal("Success", result.value.valueName)
+    assert(result.errors.empty?)
+
+    # only the return/exhaust fan exists for system_type 1
+    assert_equal(1, model.getEnergyManagementSystemActuators.size)
+    assert_equal(1, model.getEnergyManagementSystemPrograms.size)
+
+    SaveModel(model, dir)
+  end
+
+  def test_unventilated_occupancy_check
+    heatingSched = (["20"] * 96).join(";")
+    coolingSched = (["25"] * 96).join(";")
+    args_hash = {}
+    args_hash["heat_recovery_method"] = "none"
+    args_hash["ach_per_hour"] = 2.0
+    args_hash["holidays"] = "-"
+    %w[weekday saturday sunday holiday].each do |day|
+      args_hash["zone_heating_temp_sched_#{day}"] = heatingSched
+      args_hash["zone_cooling_temp_sched_#{day}"] = coolingSched
+    end
+    args_hash["hot_water_temp_setpoint"] = 82
+    args_hash["hot_water_temp_diff"] = 11
+    args_hash["cold_water_temp_setpoint"] = 10
+    args_hash["cold_water_temp_diff"] = 5
+    args_hash["system_type"] = 2
+    set_hvac_sched = lambda do |values|
+      %w[weekday saturday sunday holiday].each { |day| args_hash["hvac_sched_#{day}"] = values }
+    end
+    ventilation_warning = /People are present for .* h per year while the DOAS is off/
+
+    # a reduced (fractional) flow around the clock covers the always occupied example model
+    set_hvac_sched.call(((["0.3"] * 20) + (["1"] * 52) + (["0.3"] * 24)).join(";"))
+    result = TestArguments(AddDetailedHVAC.new, OpenModel(__dir__), args_hash)
+    assert_equal("Success", result.value.valueName)
+    refute(result.warnings.any? { |w| w.logMessage =~ ventilation_warning })
+
+    # off at night (05:00-18:00 only) - 11 h x 365 days without any outdoor air
+    set_hvac_sched.call(((["0"] * 20) + (["1"] * 52) + (["0"] * 24)).join(";"))
+    result = TestArguments(AddDetailedHVAC.new, OpenModel(__dir__), args_hash)
+    assert(result.warnings.any? { |w| w.logMessage =~ /People are present for 4015 h per year/ })
+
+    # same schedule, but add_infiltration follows in the workflow - only an info then
+    workflow = OpenStudio::WorkflowJSON.new
+    workflow.setWorkflowSteps([OpenStudio::MeasureStep.new("add_infiltration")])
+    runner = OpenStudio::Measure::OSRunner.new(workflow)
+    model = OpenModel(__dir__)
+    measure = AddDetailedHVAC.new
+    measure.run(model, runner, GetArgumentMap(GetArguments(measure, model), args_hash))
+    result = runner.result
+    assert_equal("Success", result.value.valueName)
+    refute(result.warnings.any? { |w| w.logMessage =~ ventilation_warning })
+    assert(result.info.any? { |i| i.logMessage =~ /only infiltration exchanges the zone air/ })
   end
 
   def teardown

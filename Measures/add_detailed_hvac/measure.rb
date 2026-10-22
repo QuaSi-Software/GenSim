@@ -228,10 +228,47 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
         end
     else
         hvacSched = CreateSchedule(model, "HVACSched", hvac_sched_weekday, hvac_sched_saturday, hvac_sched_sunday, hvac_sched_holiday, holidays)
+        # hvacSched (Betriebszeiten) doubles as the DOAS fan flow fraction: 0 = off, values
+        # between 0 and 1 = reduced flow (applied via EMS, see AddFanFlowFractionEms), 1 = full
+        # flow. Continuous 0-1 limits so fractional values are valid for the availability fields
+        # (anything > 0 still counts as "on" for fans, coils, terminals and the heat exchanger)
+        hvacSchedTypeLimits = OpenStudio::Model::ScheduleTypeLimits.new(model)
+        hvacSchedTypeLimits.setName("HVAC Operation Fraction")
+        hvacSchedTypeLimits.setLowerLimitValue(0)
+        hvacSchedTypeLimits.setUpperLimitValue(1)
+        hvacSchedTypeLimits.setNumericType("Continuous")
+        hvacSched.setScheduleTypeLimits(hvacSchedTypeLimits)
+
+        # occupants keep adding moisture while the DOAS is off; without infiltration (added later
+        # in the workflow by add_infiltration) the zones get no outdoor air at all in those hours,
+        # which drives the zone humidity up and shuts the radiant cooling off for condensation
+        people_schedules = model.getPeoples.map { |p| p.numberofPeopleSchedule }
+                                .select(&:is_initialized).map(&:get)
+                                .select { |s| s.to_ScheduleRuleset.is_initialized }
+                                .map { |s| s.to_ScheduleRuleset.get }.uniq { |s| s.handle.to_s }
+        unless people_schedules.empty?
+          unventilated_hours = UnventilatedOccupiedHours(model, people_schedules, hvacSched)
+          has_infiltration = runner.workflow.workflowSteps.any? do |step|
+            step.to_MeasureStep.is_initialized && step.to_MeasureStep.get.measureDirName == "add_infiltration"
+          end
+          if unventilated_hours > 0 && !has_infiltration
+            runner.registerWarning("People are present for #{unventilated_hours.round} h per year while the DOAS is off " \
+                                   "(Betriebszeiten = 0) and no infiltration is simulated, so the zones get no outdoor air " \
+                                   "in these hours. Moisture from the occupants accumulates (high zone humidity, condensation " \
+                                   "shut-offs of the radiant cooling). Extend the Betriebszeiten to the occupied hours " \
+                                   "(a reduced fraction is enough) or enable infiltration.")
+          elsif unventilated_hours > 0
+            runner.registerInfo("People are present for #{unventilated_hours.round} h per year while the DOAS is off; " \
+                                "only infiltration exchanges the zone air in these hours.")
+          end
+        end
 
         # rescale air change rate to conditioned volume and GFA
         ach_per_hour = ach_per_hour * nfa_gfa_ratio * floor_height_ratio
 
+        # components get added one by one at the supply inlet node (see below), so the air flows
+        # through them in REVERSE order of this list: return fan -> outdoor air system -> cooling
+        # coil -> heating coil -> supply fan
         air_loop_comps = []
         # creating the DOAS air loop
         airLoopHVAC = OpenStudio::Model::AirLoopHVAC.new(model)
@@ -239,40 +276,61 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
         sizingSystem = airLoopHVAC.sizingSystem()
         sizingSystem.setTypeofLoadtoSizeOn("VentilationRequirement")
 
-        # SAT Year Schedule, shared by the DOAS heating coil, the DOAS
-        # cooling coil, and (if present) the heat recovery ERV, so they all target the
-        # same leaving air temperature for the air loop
-        high_temp = 27
-        low_temp = 18
-        day_sched_High = OpenStudio::Model::ScheduleDay.new(model, high_temp)
-        day_sched_High.setName("SAT Day Schedule High #{high_temp} deg C")
-        day_sched_Low = OpenStudio::Model::ScheduleDay.new(model, low_temp)
-        day_sched_Low.setName("SAT Day Schedule Low #{low_temp} deg C")
-
-        week_sched_High = OpenStudio::Model::ScheduleWeek.new(model)
-        week_sched_High.setAllSchedules(day_sched_High)
-        week_sched_High.setName("SAT Week Schedule High #{high_temp} deg C")
+        # SAT Year Schedule, shared by the DOAS heating coil and the DOAS cooling coil, so they
+        # target the same leaving air temperature for the air loop (the heat recovery uses only
+        # the Low week, see "HX Setpoint Schedule" below). Low (heating season) = zone heating setpoint - 2 K, high (cooling season)
+        # = zone cooling setpoint + 2 K, so the DOAS delivers near-neutral air incl. setbacks
+        temperature_limits = model.getScheduleTypeLimitsByName("Temperature")
+        if temperature_limits.is_initialized
+          temperature_limits = temperature_limits.get
+        else
+          temperature_limits = OpenStudio::Model::ScheduleTypeLimits.new(model)
+          temperature_limits.setName("Temperature")
+          temperature_limits.setUnitType("Temperature")
+          temperature_limits.setNumericType("Continuous")
+        end
+        week_sched_High = CreateOffsetWeekSchedule(model, zoneCoolingTempSched, "SAT Week Schedule High", 2.0, temperature_limits)
 
         # "SAT Week Schedule Low" is a stable prefix inject_radiant_surfaces_idf matches on
-        # to find a year-round fallback week schedule - keep it as the leading text even if
-        # the temperature value changes
-        week_sched_Low = OpenStudio::Model::ScheduleWeek.new(model)
-        week_sched_Low.setAllSchedules(day_sched_Low)
-        week_sched_Low.setName("SAT Week Schedule Low #{low_temp} deg C")
+        # to find a year-round fallback week schedule - keep it as the leading text
+        week_sched_Low = CreateOffsetWeekSchedule(model, zoneHeatingTempSched, "SAT Week Schedule Low", -2.0, temperature_limits)
+
+        # size the DOAS coils for the SAT they actually control to, at the full (constant) DOAS
+        # air flow - the OpenStudio defaults (16.7 / 12.8 deg C, 30 % heating air flow) are meant for VAV
+        week_values = lambda do |week|
+          [week.mondaySchedule, week.tuesdaySchedule, week.wednesdaySchedule, week.thursdaySchedule, week.fridaySchedule,
+           week.saturdaySchedule, week.sundaySchedule, week.holidaySchedule,
+           week.summerDesignDaySchedule, week.winterDesignDaySchedule].map { |d| d.get.values.to_a }.flatten
+        end
+        sizingSystem.setCentralHeatingMaximumSystemAirFlowRatio(1.0)
+        heating_design_sat = week_values.call(week_sched_Low).max
+        sizingSystem.setCentralHeatingDesignSupplyAirTemperature(heating_design_sat)
+        cooling_design_sat = week_values.call(week_sched_High).min
+        sizingSystem.setCentralCoolingDesignSupplyAirTemperature(cooling_design_sat)
+        # the DOAS stays neutral (no dehumidification): E+ sizes the coil outlet humidity ratio as
+        # min(this value, coil inlet humidity ratio), so the saturation humidity ratio at the design
+        # SAT makes it a sensible-only coil - the default 0.0085 asks for drying at ~27 deg C, which
+        # has no apparatus dew point
+        p_ws = 610.94 * Math.exp(17.625 * cooling_design_sat / (cooling_design_sat + 243.04))
+        sizingSystem.setCentralCoolingDesignSupplyAirHumidityRatio(0.622 * p_ws / (101325.0 - p_ws))
 
         sat_sched = OpenStudio::Model::ScheduleYear.new(model)
         sat_sched.setName("SAT Year Schedule")
+        # build the season dates in the model's own year (set by set_weather_axis_timestep) -
+        # OpenStudio::Date.new without a year assumes 2009, and ScheduleYear rejects such dates
+        # when the model's year differs, leaving the schedule without any weeks
+        year_description = model.getYearDescription
         # for now we check the latitude and if it is possitive then summer is in the middle of the calendar year
         if model.getSite.latitude > 0
           runner.registerInfo("latitude is:  #{model.getSite.latitude} -> summer is in the middle of the calendar year")
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(5), 1), week_sched_High)
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(10), 1), week_sched_Low)
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(12), 31), week_sched_High)
+          sat_sched.addScheduleWeek(year_description.makeDate(5, 1), week_sched_Low)
+          sat_sched.addScheduleWeek(year_description.makeDate(10, 1), week_sched_High)
+          sat_sched.addScheduleWeek(year_description.makeDate(12, 31), week_sched_Low)
         else
           runner.registerInfo("latitude is:  #{model.getSite.latitude} -> summer is at the beginning and end of the calendar year")
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(5), 1), week_sched_Low)
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(10), 1), week_sched_High)
-          sat_sched.addScheduleWeek(OpenStudio::Date.new(OpenStudio::MonthOfYear.new(12), 31), week_sched_Low)
+          sat_sched.addScheduleWeek(year_description.makeDate(5, 1), week_sched_High)
+          sat_sched.addScheduleWeek(year_description.makeDate(10, 1), week_sched_Low)
+          sat_sched.addScheduleWeek(year_description.makeDate(12, 31), week_sched_High)
         end
 
         if system_type == 2
@@ -282,6 +340,7 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
           supplyFan.setPressureRise(supply_fan_pressure_rise)
           supplyFan.setFanEfficiency(1)
           air_loop_comps << supplyFan
+          AddFanFlowFractionEms(model, supplyFan, hvacSched)
         end
 
         controller_OA = OpenStudio::Model::ControllerOutdoorAir.new(model)
@@ -291,7 +350,6 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
         controller_OA.setMaximumFractionofOutdoorAirSchedule(model.alwaysOnDiscreteSchedule)
 
         system_OA = OpenStudio::Model::AirLoopHVACOutdoorAirSystem.new(model, controller_OA)
-        air_loop_comps << system_OA
         system_OA.outboardOANode.get.setName("Outside Air Node")
         system_OA.outboardReliefNode.get.setName("Outside Relief Node")
 
@@ -307,11 +365,16 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
           air_loop_comps << doasCoolingCoil
         end
 
+        # the coils must come after the outdoor air system so they condition the supply air,
+        # not the return air that gets exhausted
+        air_loop_comps << system_OA
+
         returnFan = OpenStudio::Model::FanConstantVolume.new(model, hvacSched)
         returnFan.setName("Return Fan")
         returnFan.setPressureRise(return_fan_pressure_rise)
         returnFan.setFanEfficiency(1)
         air_loop_comps << returnFan
+        AddFanFlowFractionEms(model, returnFan, hvacSched)
 
         if (heat_recovery_method == "Sensible") || (heat_recovery_method == "Enthalpy")
           runner.registerInfo("system_OA.outboardOANode:  #{system_OA.outboardOANode.get}")
@@ -354,12 +417,28 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
           runner.registerInfo("heat_exchanger.secondaryAirInletPort:  #{heat_exchanger.secondaryAirInletPort}")
           runner.registerInfo("heat_exchanger.secondaryAirOutletPort:  #{heat_exchanger.secondaryAirOutletPort}")
 
-          setpoint_scheduled = OpenStudio::Model::SetpointManagerScheduled.new(model, "Temperature", sat_sched)
+          # the heat exchanger tempers the outdoor air only up to the heating SAT (heating setpoint
+          # - 2 K) all year, not to the summer SAT (cooling setpoint + 2 K): otherwise it heats cool
+          # outdoor air on summer nights with the exhaust air and the free cooling is lost. Above that
+          # it is bypassed by its outlet temperature control; the DOAS coils keep the SAT Year Schedule
+          hx_sched = OpenStudio::Model::ScheduleYear.new(model)
+          hx_sched.setName("HX Setpoint Schedule")
+          hx_sched.addScheduleWeek(year_description.makeDate(12, 31), week_sched_Low)
+          setpoint_scheduled = OpenStudio::Model::SetpointManagerScheduled.new(model, "Temperature", hx_sched)
           erv_outlet = heat_exchanger.primaryAirOutletModelObject.get.to_Node.get
           setpoint_scheduled.addToNode(erv_outlet)
 
           # Add setpoint manager, normally this would be a
           # SetpointManagerOutdoorAirPretreat, but you can use any
+
+          # economizer: the DOAS runs on 100 % outdoor air, so it cannot raise the outdoor air flow;
+          # it only bypasses the heat exchanger (economizer lockout) while the outdoor air is cooler
+          # than the return air and warmer than the heating design SAT. Below that limit the economizer
+          # is off, so the heat recovery stays in winter.
+          controller_OA.setEconomizerControlType("DifferentialDryBulb")
+          controller_OA.setEconomizerMinimumLimitDryBulbTemperature(heating_design_sat)
+          controller_OA.setHeatRecoveryBypassControlType("BypassWhenWithinEconomizerLimits")
+          heat_exchanger.setEconomizerLockout(true)
         end
 
         # add the components to the airloop
@@ -376,6 +455,12 @@ class AddDetailedHVAC < OpenStudio::Measure::ModelMeasure
             doasCoolingCoilSPM = OpenStudio::Model::SetpointManagerScheduled.new(model, sat_sched)
             doasCoolingCoilSPM.addToNode(comp.airOutletModelObject.get.to_Node.get)
           end
+        end
+        # an economizer needs a temperature setpoint on the mixed air node; at 100 % outdoor air
+        # it does not change the flow
+        if controller_OA.getEconomizerControlType != "NoEconomizer"
+          mixedAirSPM = OpenStudio::Model::SetpointManagerScheduled.new(model, "Temperature", sat_sched)
+          mixedAirSPM.addToNode(system_OA.mixedAirModelObject.get.to_Node.get)
         end
 
         # add thermal zones to airloop

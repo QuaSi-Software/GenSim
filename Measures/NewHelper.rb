@@ -6,6 +6,94 @@ def ConvertToDouble(argument)
   return double_arg.valueAsDouble
 end
 
+# override a fan's air mass flow rate via EMS to a schedule-defined fraction of its
+# (autosized) nominal flow - the schedule is the fan's own availability schedule, so 0 keeps
+# the fan off and values between 0 and 1 reduce its flow below the constant-volume design flow
+def AddFanFlowFractionEms(model, fan, flow_frac_sched)
+  ems_name = fan.name.to_s.gsub(/[^0-9A-Za-z_]/, "_")
+
+  nominal_flow = OpenStudio::Model::EnergyManagementSystemInternalVariable.new(model, "Fan Maximum Mass Flow Rate")
+  nominal_flow.setName("#{ems_name}_NomFlow")
+  nominal_flow.setInternalDataIndexKeyName(fan.name.to_s)
+
+  frac_sensor = OpenStudio::Model::EnergyManagementSystemSensor.new(model, "Schedule Value")
+  frac_sensor.setName("#{ems_name}_FlowFrac")
+  frac_sensor.setKeyName(flow_frac_sched.name.to_s)
+
+  flow_actuator = OpenStudio::Model::EnergyManagementSystemActuator.new(fan, "Fan", "Fan Air Mass Flow Rate")
+  flow_actuator.setName("#{ems_name}_FlowActuator")
+
+  program = OpenStudio::Model::EnergyManagementSystemProgram.new(model)
+  program.setName("#{ems_name}_FlowFracProgram")
+  program.addLine("SET #{flow_actuator.name} = #{frac_sensor.name} * #{nominal_flow.name}")
+
+  program_calling_manager = OpenStudio::Model::EnergyManagementSystemProgramCallingManager.new(model)
+  program_calling_manager.setName("#{ems_name}_FlowFracPCM")
+  program_calling_manager.setCallingPoint("InsideHVACSystemIterationLoop")
+  program_calling_manager.addProgram(program)
+
+  return program_calling_manager
+end
+
+# build a week schedule from a ruleset schedule (as created by CreateSchedule) with every value
+# shifted by delta, e.g. to derive a supply air temperature from a zone setpoint schedule;
+# type_limits (optional) is set on the new day schedules so EnergyPlus can validate them
+def CreateOffsetWeekSchedule(model, source_sched, name, delta, type_limits = nil)
+  offset_days = {}
+  offset_day = lambda do |day_sch, label|
+    offset_days[day_sch.handle.to_s] ||= begin
+      new_day = OpenStudio::Model::ScheduleDay.new(model)
+      new_day.setName("#{name} #{label}")
+      new_day.setScheduleTypeLimits(type_limits) unless type_limits.nil?
+      day_sch.times.each_with_index { |t, i| new_day.addValue(t, day_sch.values[i] + delta) }
+      new_day
+    end
+  end
+  rule_day = lambda do |apply_method, label|
+    rule = source_sched.scheduleRules.find { |r| r.send(apply_method) }
+    offset_day.call(rule.nil? ? source_sched.defaultDaySchedule : rule.daySchedule, label)
+  end
+
+  week_sched = OpenStudio::Model::ScheduleWeek.new(model)
+  week_sched.setName(name)
+  week_sched.setMondaySchedule(rule_day.call(:applyMonday, "Weekday"))
+  week_sched.setTuesdaySchedule(rule_day.call(:applyTuesday, "Weekday"))
+  week_sched.setWednesdaySchedule(rule_day.call(:applyWednesday, "Weekday"))
+  week_sched.setThursdaySchedule(rule_day.call(:applyThursday, "Weekday"))
+  week_sched.setFridaySchedule(rule_day.call(:applyFriday, "Weekday"))
+  week_sched.setSaturdaySchedule(rule_day.call(:applySaturday, "Saturday"))
+  week_sched.setSundaySchedule(rule_day.call(:applySunday, "Sunday"))
+  holiday = offset_day.call(source_sched.defaultDaySchedule, "Holiday")
+  week_sched.setHolidaySchedule(holiday)
+  week_sched.setCustomDay1Schedule(holiday)
+  week_sched.setCustomDay2Schedule(holiday)
+  week_sched.setSummerDesignDaySchedule(offset_day.call(source_sched.summerDesignDaySchedule, "Summer Design Day"))
+  week_sched.setWinterDesignDaySchedule(offset_day.call(source_sched.winterDesignDaySchedule, "Winter Design Day"))
+
+  return week_sched
+end
+
+# hours per year (15 min resolution, over the model's own calendar year) in which any of the
+# people schedules is > 0 while vent_sched is 0; only ruleset schedules are evaluated
+def UnventilatedOccupiedHours(model, people_schedules, vent_sched)
+  year_description = model.getYearDescription
+  start_date = year_description.makeDate(1, 1)
+  end_date = year_description.makeDate(12, 31)
+  vent_days = vent_sched.getDaySchedules(start_date, end_date)
+  people_days = people_schedules.map { |s| s.getDaySchedules(start_date, end_date) }
+  # sample in the middle of each 15 min interval
+  sample_times = (0...96).map { |q| OpenStudio::Time.new(0, 0, q * 15 + 7, 30) }
+
+  unventilated_steps = 0
+  vent_days.each_with_index do |vent_day, i|
+    sample_times.each do |time|
+      next if vent_day.getValue(time) > 0
+      unventilated_steps += 1 if people_days.any? { |days| days[i].getValue(time) > 0 }
+    end
+  end
+  return unventilated_steps / 4.0
+end
+
 # create a ruleset schedule with a basic profile
 def CreateSchedule(model, name, valuesWeekday, valuesSaturday, valuesSunday, valuesHoliday, _holidays, internalLoad = false, heatingTemperatureSetpoints = false)
   # ScheduleRuleset

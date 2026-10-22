@@ -111,6 +111,18 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
       return refs
   end
 
+  # EnergyManagementSystem:Sensor references a schedule by name in its "Output:Variable or
+  # Output:Meter Index Key Name" field (a plain string, not an IDD object-list reference), so
+  # find_references_by_handle can't see it - without this check, a schedule that's only read
+  # by an EMS sensor (e.g. a fan flow fraction schedule) looks unused and gets deleted here,
+  # leaving the sensor pointing at a schedule that no longer exists.
+  def used_by_ems_sensor?(workspace, target_schedule)
+    workspace.getObjectsByType("EnergyManagementSystem:Sensor".to_IddObjectType).any? do |sensor|
+      key_name = sensor.getString(1, true)
+      key_name.is_initialized && key_name.get == target_schedule.nameString
+    end
+  end
+
 
 
 
@@ -143,7 +155,7 @@ class SetMetersIDF < OpenStudio::Measure::EnergyPlusMeasure
     schedules.each do |schedule|
       runner.registerInfo("Procesing schedule #{schedule.name} Number of fields: #{schedule.numFields}")
       refs = find_references_by_handle(workspace, schedule)
-      if refs.empty?
+      if refs.empty? && !used_by_ems_sensor?(workspace, schedule)
         runner.registerInfo("Schedule #{schedule.nameString} is not used anywhere => delete it!")
         workspace.removeObject(schedule.idfObject.handle)
       else
