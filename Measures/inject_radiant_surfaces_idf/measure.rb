@@ -60,8 +60,10 @@ class InjectRadiantSurfacesIDF < OpenStudio::Measure::EnergyPlusMeasure
       if yearSchedule.getString(0).get == "SAT Year Schedule"
         if !yearSchedule.getDouble(4).is_initialized
           weekSchedules.each do |weekSchedule|
-            if weekSchedule.getString(0).get == "SAT Week Schedule 10 deg C"
-              yearSchedule.setString(2, "SAT Week Schedule 10 deg C")
+            # match by prefix, not the full name, so this keeps working if add_detailed_hvac's
+            # SAT temperature values change
+            if weekSchedule.getString(0).get.start_with?("SAT Week Schedule Low")
+              yearSchedule.setString(2, weekSchedule.getString(0).get)
               yearSchedule.setDouble(3, 1)
               yearSchedule.setDouble(4, 1)
               yearSchedule.setDouble(5, 12)

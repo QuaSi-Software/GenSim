@@ -123,8 +123,8 @@ Sub ExportCustomExportParams( _
     jFile.AddArgument "holidays", strArg
 
     'parameters of the ventilation system
-    jFile.AddArgument "ventilation_lead_time", Range("Vorlauf_Lüftung")
-    jFile.AddArgument "ventilation_follow_up_time", Range("Nachlauf_Lüftung")
+    jFile.AddArgument "ventilation_lead_time", Range("Vorlauf_LÃ¼ftung")
+    jFile.AddArgument "ventilation_follow_up_time", Range("Nachlauf_LÃ¼ftung")
     jFile.AddArgument "conditioned_floor_height", Range("FloorHeight_kond")
     jFile.AddArgument "imported_floor_height", Range("FloorHeight_import")
     jFile.AddArgument "air_changes_input", Range("ACH")
@@ -311,6 +311,8 @@ Sub ExportAddDetailedHVAC( _
     jFile.AddArgument "supply_fan_pressure_rise", CStr(750) 'update 10.01.22 -> new standard DIN EN 16798-3 - SFP2
     jFile.AddArgument "return_fan_pressure_rise", CStr(750)
     jFile.AddArgument "system_type", Range("system_type")
+    jFile.AddArgument "add_doas_heating_coil", Range("HC")
+    jFile.AddArgument "add_doas_cooling_coil", Range("CC")
 
     jFile.AddMeasure "add_detailed_hvac"
 End Sub
@@ -800,7 +802,7 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             Dim cb_manualvent As CheckBox
             Set cb_manualvent = Sheets("HAUPTSEITE").CheckBoxes("Checkbox_manualvent")
 
-            Dim dd_lueftung As DropDown 'Lüftungsanlage Typ
+            Dim dd_lueftung As DropDown 'LÃ¼ftungsanlage Typ
             Set dd_lueftung = Sheets("HAUPTSEITE").DropDowns("dd_lueftung")
 
             'Parameter Modell
@@ -809,9 +811,9 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             If args.Exists("ventilation_type") Then dd_lueftung.Value = GetArgument(args, "ventilation_type")
             Call dropdown_Lueftung
 
-            'Lüftungsanlage
-            If args.Exists("ventilation_lead_time") Then Range("Vorlauf_Lüftung") = GetArgument(args, "ventilation_lead_time")
-            If args.Exists("ventilation_follow_up_time") Then Range("Nachlauf_Lüftung") = GetArgument(args, "ventilation_follow_up_time")
+            'LÃ¼ftungsanlage
+            If args.Exists("ventilation_lead_time") Then Range("Vorlauf_LÃ¼ftung") = GetArgument(args, "ventilation_lead_time")
+            If args.Exists("ventilation_follow_up_time") Then Range("Nachlauf_LÃ¼ftung") = GetArgument(args, "ventilation_follow_up_time")
 
             'Weiteres
             If args.Exists("include_shading_control") Then cb_shadingcontrol.Value = GetArgument(args, "include_shading_control")
@@ -829,10 +831,10 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             Dim iEntry  As Integer
             iEntry = 0
 
-            'Lüftung
+            'LÃ¼ftung
             If args.Exists("conditioned_floor_height") Then Range("FloorHeight_kond") = GetArgument(args, "conditioned_floor_height")
             If args.Exists("imported_floor_height") Then Range("FloorHeight_import") = GetArgument(args, "imported_floor_height")
-            'hier wird durch unveränderte Eingabeparameter zurückgeschrieben (ohne Berücksichtigung FloorHeightRation und NRF/BGF)
+            'hier wird durch unverÃ¤nderte Eingabeparameter zurÃ¼ckgeschrieben (ohne BerÃ¼cksichtigung FloorHeightRation und NRF/BGF)
             If args.Exists("air_changes_input") Then Range("ACH") = GetArgument(args, "air_changes_input")
             If args.Exists("holidays") Then
                 datum = Split(GetArgument(args, "holidays", True), ";")
@@ -911,7 +913,7 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
                             For idx_attr = 1 To UBound(attrs)
                                 ' Wenn kein Bauteil Name eingetragen ist, dann sollen die Nullen der folgenden 'attrs'
                                 ' (Thickness, Conductivity, Density, SpecificHeat)
-                                ' nicht geschrieben, sondern übersprungen werden ...
+                                ' nicht geschrieben, sondern Ã¼bersprungen werden ...
                                 If args.Exists(names(idx_name) & "_" & idx_layer & "_" & attrs(idx_attr)) _
                                     And Not GetArgument(args, names(idx_name) & "_" & idx_layer & "_" & attrs(1)) = "" _
                                 Then
@@ -1178,14 +1180,14 @@ Private Function GetArgument( _
     ElseIf forceCommaReplace Or IsNumeric(sArg) Then
         GetArgument = Replace(sArg, ".", ",")
     Else
-        sArg = Replace(sArg, "$ae$", "ä")
-        sArg = Replace(sArg, "$oe$", "ö")
-        sArg = Replace(sArg, "$ue$", "ü")
-        sArg = Replace(sArg, "$AE$", "Ä")
-        sArg = Replace(sArg, "$OE$", "Ö")
-        sArg = Replace(sArg, "$UE$", "Ü")
-        sArg = Replace(sArg, "$ss$", "ß")
-        sArg = Replace(sArg, "$deg$", "°")
+        sArg = Replace(sArg, "$ae$", "Ã¤")
+        sArg = Replace(sArg, "$oe$", "Ã¶")
+        sArg = Replace(sArg, "$ue$", "Ã¼")
+        sArg = Replace(sArg, "$AE$", "Ã„")
+        sArg = Replace(sArg, "$OE$", "Ã–")
+        sArg = Replace(sArg, "$UE$", "Ãœ")
+        sArg = Replace(sArg, "$ss$", "ÃŸ")
+        sArg = Replace(sArg, "$deg$", "Â°")
         GetArgument = sArg
     End If
 End Function

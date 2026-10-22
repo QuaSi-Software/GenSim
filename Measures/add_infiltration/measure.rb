@@ -73,7 +73,6 @@ class AddInfiltration < OpenStudio::Measure::ModelMeasure
     # loop through spaces used in the model adding space infiltration objects
     spaces = model.getSpaces
     spaces.each do |space|
-      next if spaces.empty?
       new_space_type_infil = OpenStudio::Model::SpaceInfiltrationDesignFlowRate.new(model)
       new_space_type_infil.setAirChangesperHour(infiltration_ach)
       new_space_type_infil.setSpace(space)

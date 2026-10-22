@@ -83,6 +83,7 @@ class AddIdealLoads < OpenStudio::Measure::ModelMeasure
     # array of zones initially using ideal air loads
     startingIdealAir = []
 
+    attribute_error = false
     thermalZones = model.getThermalZones
     thermalZones.each do |zone|
       if zone.useIdealAirLoads
@@ -92,18 +93,26 @@ class AddIdealLoads < OpenStudio::Measure::ModelMeasure
         runner.registerInfo("Setting Ideal loads for zone: #{zone.name}")
         zone.equipment.each do |equipment|
           runner.registerInfo("Equipment type: " + equipment.iddObjectType)
+          # only the ideal loads air system we just created supports these attributes;
+          # other zone equipment types would legitimately fail setAttribute here
+          next unless equipment.to_ZoneHVACIdealLoadsAirSystem.is_initialized
+
           unless equipment.setAttribute("Heat Recovery Type", heat_recovery_method)
-            runner.registerError("Heat Revocery Type was not set.")
+            runner.registerError("Heat Recovery Type was not set for zone #{zone.name}.")
+            attribute_error = true
           end
           unless equipment.setAttribute("Sensible Heat Recovery Effectiveness", sensible_efficiency)
-            runner.registerError("Sensible Heat Recovery Effectiveness.")
+            runner.registerError("Sensible Heat Recovery Effectiveness was not set for zone #{zone.name}.")
+            attribute_error = true
           end
           unless equipment.setAttribute("Latent Heat Recovery Effectiveness", latent_efficiency)
-            runner.registerError("Latent Heat Recovery Effectiveness.")
+            runner.registerError("Latent Heat Recovery Effectiveness was not set for zone #{zone.name}.")
+            attribute_error = true
           end
         end
       end
     end
+    return false if attribute_error
 
     # reporting initial condition of model
     runner.registerInitialCondition("In the initial model #{startingIdealAir.size} zones use ideal air loads.")

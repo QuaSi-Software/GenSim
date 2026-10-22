@@ -61,7 +61,7 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
 
     unless ddy_file
       runner.registerError "Could not find DDY file for #{ddy_file}"
-      return error
+      return false
     end
 
     ddy_model = OpenStudio::EnergyPlus.loadAndTranslateIdf(ddy_file).get
@@ -181,7 +181,7 @@ class SetWeatherAxisTimestep < OpenStudio::Measure::ModelMeasure
 
     # perform sizing depending on chosen method
     if epw_file && sizing_method == "use_ddy_file"
-      sizing_use_ddy_file(model, runner, epw_file)
+      return false unless sizing_use_ddy_file(model, runner, epw_file)
     elsif epw_file && sizing_method == "automatic_design_days"
       sizing_automatic_design_days(model, runner)
     elsif sizing_method == "manual_design_days"

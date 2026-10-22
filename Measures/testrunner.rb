@@ -12,3 +12,4 @@ base_dir = Dir.pwd
 result = runner.run_all(base_dir)
 # result will be 0 or 1, 0=success, 1=failure
 puts result
+exit(result)

@@ -22,14 +22,16 @@ class AddLightingControlsTest < MiniTest::Test
   end
 
   def test_bad_argument_values
-    # create hash of argument values, no arguments defined so there are no bad arguments
+    # a setpoint above the measure's upper limit should fail its own reasonableness check
     args_hash = {}
-    args_hash["space_name"] = ""
+    args_hash["daylighting_setpoint"] = 10_000.0
 
     result = TestArguments(AddLightingControls.new, OpenStudio::Model::Model.new, args_hash)
 
-    # assert that it ran correctly
-    assert_equal("NA", result.value.valueName)
+    # assert that it failed as expected
+    assert_equal("Fail", result.value.valueName)
+    assert_equal(1, result.errors.size)
+    assert(result.errors[0].logMessage.include?("outside the measure limit"))
   end
 
   def test_good_argument_values

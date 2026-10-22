@@ -230,6 +230,58 @@
       <model_dependent>false</model_dependent>
       <default_value>1</default_value>
     </argument>
+    <argument>
+      <name>add_doas_heating_coil</name>
+      <display_name>Add heating coil to DOAS air loop</display_name>
+      <type>Boolean</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+      <default_value>false</default_value>
+      <choices>
+        <choice>
+          <value>true</value>
+          <display_name>true</display_name>
+        </choice>
+        <choice>
+          <value>false</value>
+          <display_name>false</display_name>
+        </choice>
+      </choices>
+    </argument>
+    <argument>
+      <name>doas_heating_coil_supply_air_temp</name>
+      <display_name>DOAS heating coil leaving air temperature setpoint</display_name>
+      <type>Double</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+      <default_value>18</default_value>
+    </argument>
+    <argument>
+      <name>add_doas_cooling_coil</name>
+      <display_name>Add cooling coil to DOAS air loop</display_name>
+      <type>Boolean</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+      <default_value>false</default_value>
+      <choices>
+        <choice>
+          <value>true</value>
+          <display_name>true</display_name>
+        </choice>
+        <choice>
+          <value>false</value>
+          <display_name>false</display_name>
+        </choice>
+      </choices>
+    </argument>
+    <argument>
+      <name>doas_cooling_coil_supply_air_temp</name>
+      <display_name>DOAS cooling coil leaving air temperature setpoint</display_name>
+      <type>Double</type>
+      <required>true</required>
+      <model_dependent>false</model_dependent>
+      <default_value>14</default_value>
+    </argument>
   </arguments>
   <outputs />
   <provenances />

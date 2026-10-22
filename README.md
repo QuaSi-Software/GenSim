@@ -1,4 +1,6 @@
 # GenSim
+[![Measure Tests](https://github.com/QuaSi-Software/GenSim/actions/workflows/measure-tests.yml/badge.svg)](https://github.com/QuaSi-Software/GenSim/actions/workflows/measure-tests.yml)
+
 ![GenSim](docs/logo_gensim.jpg "GenSim")
 
 Generische Gebäudesimulation auf Basis von EnergyPlus™ v25.1.

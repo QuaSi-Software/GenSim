@@ -1,0 +1,75 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.9.0)
+      public_suffix (>= 2.0.2, < 8.0)
+    ansi (1.6.0)
+    ast (2.4.3)
+    builder (3.3.0)
+    date (3.4.1)
+    docile (1.4.1)
+    git (1.13.2)
+      addressable (~> 2.8)
+      rchardet (~> 1.8)
+    json (2.21.2)
+    minitest (5.14.4)
+    minitest-reporters (1.4.3)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
+    openstudio (0.7.6)
+    openstudio_measure_tester (0.5.0)
+      git (~> 1.13.0)
+      minitest (~> 5.14.0)
+      minitest-reporters (~> 1.4.2)
+      parser (= 3.2.2.2)
+      rake (~> 13.0)
+    parallel (1.28.0)
+    parser (3.2.2.2)
+      ast (~> 2.4.1)
+    public_suffix (7.0.5)
+    rainbow (3.1.1)
+    rake (13.4.2)
+    rchardet (1.10.2)
+    regexp_parser (2.12.0)
+    rexml (3.4.4)
+    rubocop (1.51.0)
+      json (~> 2.3)
+      parallel (~> 1.10)
+      parser (>= 3.2.0.0)
+      rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 1.8, < 3.0)
+      rexml (>= 3.2.5, < 4.0)
+      rubocop-ast (>= 1.28.0, < 2.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 2.4.0, < 3.0)
+    rubocop-ast (1.30.0)
+      parser (>= 3.2.1.0)
+    rubocop-checkstyle_formatter (0.6.0)
+      rubocop (>= 1.14.0)
+    ruby-progressbar (1.13.0)
+    simplecov (0.22.0)
+      docile (~> 1.1)
+      simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
+    simplecov-html (0.13.2)
+    simplecov_json_formatter (0.1.4)
+    unicode-display_width (2.6.0)
+
+PLATFORMS
+  x86_64-linux
+
+DEPENDENCIES
+  date (= 3.4.1)
+  openstudio (= 0.7.6)
+  openstudio_measure_tester (= 0.5.0)
+  rubocop (= 1.51.0)
+  rubocop-checkstyle_formatter (= 0.6.0)
+  simplecov (= 0.22.0)
+
+RUBY VERSION
+   ruby 3.2.2p53
+
+BUNDLED WITH
+   2.4.10
