@@ -65,6 +65,10 @@ class CustomExportParams < OpenStudio::Measure::ModelMeasure
     calc_window_vent.setDisplayName("Calculate window ventilation")
     args << calc_window_vent
 
+    calc_manual_vent = OpenStudio::Measure::OSArgument.makeIntegerArgument("include_manual_ventilation", false)
+    calc_manual_vent.setDisplayName("Calculate manual window ventilation")
+    args << calc_manual_vent
+
     is_generic_geom = OpenStudio::Measure::OSArgument.makeIntegerArgument("generate_geometry_selection", false)
     is_generic_geom.setDisplayName("Generic geometry selection value")
     args << is_generic_geom

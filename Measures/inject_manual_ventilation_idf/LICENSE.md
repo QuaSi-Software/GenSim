@@ -1,0 +1,1 @@
+Inherited from overall license of GenSim. See file `LICENSE.md` in project root directory.

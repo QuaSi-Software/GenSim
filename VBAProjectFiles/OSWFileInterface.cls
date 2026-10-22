@@ -85,6 +85,8 @@ Sub ExportCustomExportParams( _
     Set dd_lueftung = Sheets("HAUPTSEITE").DropDowns("dd_lueftung")
     Dim cb_windowvent As CheckBox
     Set cb_windowvent = Sheets("HAUPTSEITE").CheckBoxes("Checkbox_windowvent")
+    Dim cb_manualvent As CheckBox
+    Set cb_manualvent = Sheets("HAUPTSEITE").CheckBoxes("Checkbox_manualvent")
     Dim cb_inf As CheckBox
     Set cb_inf = Sheets("HAUPTSEITE").CheckBoxes("checkbox_inf")
     Dim cb_lightingcontrol As CheckBox
@@ -127,6 +129,7 @@ Sub ExportCustomExportParams( _
     jFile.AddArgument "imported_floor_height", Range("FloorHeight_import")
     jFile.AddArgument "air_changes_input", Range("ACH")
     jFile.AddArgument "include_window_ventilation", IIf(cb_windowvent.Value = 1, 1, 0)
+    jFile.AddArgument "include_manual_ventilation", IIf(cb_manualvent.Value = 1, 1, 0)
     jFile.AddArgument "include_infiltration", IIf(cb_inf.Value = 1, 1, 0)
 
     'other parameters
@@ -234,6 +237,8 @@ Sub ExportAddInternalLoads( _
     Set dd50 = Sheets("HAUPTSEITE").DropDowns("Dropdown50")
     Dim dd51 As DropDown 'activity of persons
     Set dd51 = Sheets("HAUPTSEITE").DropDowns("Dropdown51")
+    Dim dd116 As DropDown 'manual ventilation
+    Set dd116 = Sheets("HAUPTSEITE").DropDowns("Dropdown116")
 
     Dim isCustom As Boolean
     Dim selected As String
@@ -253,6 +258,7 @@ Sub ExportAddInternalLoads( _
     jFile.AddSchedule "lighting_sched", Range("LightWD")
     jFile.AddSchedule "people_sched", Range("PeopleWD")
     jFile.AddSchedule "people_activity_sched", Range("PeopleActivityWD")
+    jFile.AddSchedule "manual_vent_sched", Range("ManualVentWD")
     jFile.AddHolidays "holidays", Range("Feiertage")
     jFile.AddArgument "area_gfa_import", Range("BldgArea_import")
     jFile.AddArgument "nfa_gfa_ratio", CStr(nrf_bgf)
@@ -263,10 +269,12 @@ Sub ExportAddInternalLoads( _
     jFile.AddArgument "lighting_sched_selection", dd49.List(dd49.Value)
     jFile.AddArgument "people_sched_selection", dd50.List(dd50.Value)
     jFile.AddArgument "people_activity_sched_selection", dd51.List(dd51.Value)
+    jFile.AddArgument "manual_vent_sched_selection", dd116.List(dd116.Value)
     jFile.AddArgument "is_custom_electric_equipment", IIf(dd23.Value > (dd23.ListCount - 2), "true", "false")
     jFile.AddArgument "is_custom_lighting", IIf(dd49.Value > (dd49.ListCount - 2), "true", "false")
     jFile.AddArgument "is_custom_people", IIf(dd50.Value > (dd50.ListCount - 2), "true", "false")
     jFile.AddArgument "is_custom_people_activity", IIf(dd51.Value > (dd51.ListCount - 2), "true", "false")
+    jFile.AddArgument "is_custom_manual_vent", IIf(dd116.Value > (dd116.ListCount - 2), "true", "false")
 
     jFile.AddMeasure "add_internal_loads"
 End Sub
@@ -404,6 +412,14 @@ Sub ExportInjectZoneVentilationIDF(ByRef jFile As JSONFile)
     jFile.AddMeasure "inject_zone_ventilation_idf"
 End Sub
 
+' Export method for measure InjectManualVentilationIDF.
+'
+' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
+Sub ExportInjectManualVentilationIDF(ByRef jFile As JSONFile)
+   jFile.AddArgument "air_changes", Range("manualvent_ach")
+   jFile.AddMeasure "inject_manual_ventilation_idf"
+End Sub
+
 ' Export method for measure InjectIdealLoadParametersIDF.
 '
 ' @param jFile JSONFile ByRef The JSON file to which the parameters are exported
@@ -526,6 +542,8 @@ Sub ExportToOSW( _
 )
     Dim cb_windowvent As CheckBox
     Set cb_windowvent = Sheets("HAUPTSEITE").CheckBoxes("Checkbox_windowvent")
+    Dim cb_manualvent As CheckBox
+    Set cb_manualvent = Sheets("HAUPTSEITE").CheckBoxes("Checkbox_manualvent")
     Dim cb_inf As CheckBox
     Set cb_inf = Sheets("HAUPTSEITE").CheckBoxes("checkbox_inf")
     Dim cb_lightingcontrol As CheckBox
@@ -652,6 +670,15 @@ Sub ExportToOSW( _
     End If
     DoEvents
 
+    If Not cb_manualvent.Value = 1 Then
+        Range("manual_ventilation") = "Deaktiviert"
+    Else
+        Range("manual_ventilation") = "Start ..."
+        Call ExportInjectManualVentilationIDF(jFile)
+        Range("manual_ventilation") = "Definiert"
+    End If
+    DoEvents
+
     Range("IDFIdealLoads") = "Start ..."
     Call ExportInjectIdealLoadParametersIDF(jFile, nrf_bgf, FloorHeight_Ratio)
     Range("IDFIdealLoads") = "Definiert"
@@ -770,6 +797,8 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             Set cb_lightingcontrol = Sheets("HAUPTSEITE").CheckBoxes("checkbox lightingcontrol")
             Dim cb_windowvent As CheckBox
             Set cb_windowvent = Sheets("HAUPTSEITE").CheckBoxes("Checkbox_windowvent")
+            Dim cb_manualvent As CheckBox
+            Set cb_manualvent = Sheets("HAUPTSEITE").CheckBoxes("Checkbox_manualvent")
 
             Dim dd_lueftung As DropDown 'Lüftungsanlage Typ
             Set dd_lueftung = Sheets("HAUPTSEITE").DropDowns("dd_lueftung")
@@ -789,6 +818,7 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             If args.Exists("include_infiltration") Then cb_inf.Value = GetArgument(args, "include_infiltration")
             If args.Exists("include_lighting_control") Then cb_lightingcontrol.Value = GetArgument(args, "include_lighting_control")
             If args.Exists("include_window_ventilation") Then cb_windowvent.Value = GetArgument(args, "include_window_ventilation")
+            If args.Exists("include_manual_ventilation") Then cb_manualvent.Value = GetArgument(args, "include_manual_ventilation")
 
             'Geometrie Generisch/Importiert
             If args.Exists("generate_geometry_selection") Then Range("geometry_source") = GetArgument(args, "generate_geometry_selection")
@@ -941,6 +971,8 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
                 ImportSchedule args, "people", "R10:R105", "R8"
             If args.Exists("people_activity_sched_selection") And args.Exists("is_custom_people_activity") Then _
                 ImportSchedule args, "people_activity", "Z10:Z105", "Z8"
+            If args.Exists("manual_vent_sched_selection") And args.Exists("is_custom_manual_vent") Then _
+                ImportSchedule args, "manual_vent", "BF10:BF105", "BF8"
 
             DoEvents
 
@@ -959,6 +991,10 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
             If args.Exists("people_activity_sched_selection") Then
                 Dim dd51 As DropDown: Set dd51 = Sheets("HAUPTSEITE").DropDowns("Dropdown51")
                 DDFindAndSetValue dd51, GetArgument(args, "people_activity_sched_selection")
+            End If
+            If args.Exists("manual_vent_sched_selection") Then
+                Dim dd116 As DropDown: Set dd116 = Sheets("HAUPTSEITE").DropDowns("Dropdown116")
+                DDFindAndSetValue dd116, GetArgument(args, "manual_vent_sched_selection")
             End If
 
         Case "add_ideal_loads":
@@ -1039,6 +1075,9 @@ Sub ImportStep(ByVal item As Scripting.Dictionary)
         Case "inject_holidays_idf":
             'Holidays igored for now
             '@TODO Add import when holiday functionality is implemented
+
+        Case "inject_manual_ventilation_idf":
+            If args.Exists("air_changes") Then Range("manualvent_ach") = GetArgument(args, "air_changes")
 
         Case "set_meters_idf":
             Dim dd80 As DropDown: Set dd80 = Sheets("HAUPTSEITE").DropDowns("Dropdown80")

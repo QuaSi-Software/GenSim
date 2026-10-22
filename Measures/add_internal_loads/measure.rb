@@ -44,6 +44,10 @@ class AddInternalLoads < OpenStudio::Measure::ModelMeasure
     args << OpenStudio::Measure::OSArgument.makeStringArgument("people_activity_sched_saturday", true)
     args << OpenStudio::Measure::OSArgument.makeStringArgument("people_activity_sched_sunday", true)
     args << OpenStudio::Measure::OSArgument.makeStringArgument("people_activity_sched_holiday", true)
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("manual_vent_sched_weekday", true)
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("manual_vent_sched_saturday", true)
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("manual_vent_sched_sunday", true)
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("manual_vent_sched_holiday", false)
     args << OpenStudio::Measure::OSArgument.makeStringArgument("holidays", false)
 
     # custom parameters for loading from OSW
@@ -55,10 +59,12 @@ class AddInternalLoads < OpenStudio::Measure::ModelMeasure
     args << OpenStudio::Measure::OSArgument.makeStringArgument("lighting_sched_selection", false)
     args << OpenStudio::Measure::OSArgument.makeStringArgument("people_sched_selection", false)
     args << OpenStudio::Measure::OSArgument.makeStringArgument("people_activity_sched_selection", false)
+    args << OpenStudio::Measure::OSArgument.makeStringArgument("manual_vent_sched_selection", false)
     args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_electric_equipment", false)
     args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_lighting", false)
     args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_people", false)
     args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_people_activity", false)
+    args << OpenStudio::Measure::OSArgument.makeBoolArgument("is_custom_manual_vent", false)
 
     return args
   end
@@ -91,6 +97,10 @@ class AddInternalLoads < OpenStudio::Measure::ModelMeasure
     people_activity_sched_saturday = runner.getStringArgumentValue("people_activity_sched_saturday", user_arguments)
     people_activity_sched_sunday = runner.getStringArgumentValue("people_activity_sched_sunday", user_arguments)
     people_activity_sched_holiday = runner.getStringArgumentValue("people_activity_sched_holiday", user_arguments)
+    manual_vent_sched_weekday = runner.getStringArgumentValue("manual_vent_sched_weekday", user_arguments)
+    manual_vent_sched_saturday = runner.getStringArgumentValue("manual_vent_sched_saturday", user_arguments)
+    manual_vent_sched_sunday = runner.getStringArgumentValue("manual_vent_sched_sunday", user_arguments)
+    manual_vent_sched_holiday = runner.getStringArgumentValue("manual_vent_sched_holiday", user_arguments)
     holidays = runner.getStringArgumentValue("holidays", user_arguments)
 
     # set power densities relative to net floor area
@@ -105,6 +115,7 @@ class AddInternalLoads < OpenStudio::Measure::ModelMeasure
     lightSched = CreateSchedule(model, "LightSchedule", lighting_sched_weekday, lighting_sched_saturday, lighting_sched_sunday, lighting_sched_holiday, holidays, true)
     peopleSched = CreateSchedule(model, "PeopleSchedule", people_sched_weekday, people_sched_saturday, people_sched_sunday, people_sched_holiday, holidays, true)
     activitySched = CreateSchedule(model, "PeopleActivitySchedule", people_activity_sched_weekday, people_activity_sched_saturday, people_activity_sched_sunday, people_activity_sched_holiday, holidays)
+    manualVentilationSched = CreateSchedule(model, "ManualVentilationSchedule", manual_vent_sched_weekday, manual_vent_sched_saturday, manual_vent_sched_sunday, manual_vent_sched_holiday, holidays)
 
     defSchedules = OpenStudio::Model::DefaultScheduleSet.new(model)
     defSchedules.setElectricEquipmentSchedule(electricSched)
